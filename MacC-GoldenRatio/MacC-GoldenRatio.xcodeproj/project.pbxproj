@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		E276B91C28E46AE900163833 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E276B91B28E46AE900163833 /* UserModel.swift */; };
+		E276B91E28E46B3700163833 /* DiaryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E276B91D28E46B3700163833 /* DiaryModel.swift */; };
 		E28F080228E4655100832F4A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28F080128E4655100832F4A /* AppDelegate.swift */; };
 		E28F080428E4655100832F4A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28F080328E4655100832F4A /* SceneDelegate.swift */; };
 		E28F080628E4655100832F4A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28F080528E4655100832F4A /* ViewController.swift */; };
@@ -37,6 +38,7 @@
 
 /* Begin PBXFileReference section */
 		E276B91B28E46AE900163833 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
+		E276B91D28E46B3700163833 /* DiaryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryModel.swift; sourceTree = "<group>"; };
 		E28F07FE28E4655100832F4A /* MacC-GoldenRatio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MacC-GoldenRatio.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E28F080128E4655100832F4A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E28F080328E4655100832F4A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -122,6 +124,7 @@
 			isa = PBXGroup;
 			children = (
 				E276B91B28E46AE900163833 /* UserModel.swift */,
+				E276B91D28E46B3700163833 /* DiaryModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -314,6 +317,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E28F080628E4655100832F4A /* ViewController.swift in Sources */,
+				E276B91E28E46B3700163833 /* DiaryModel.swift in Sources */,
 				E28F080228E4655100832F4A /* AppDelegate.swift in Sources */,
 				E276B91C28E46AE900163833 /* UserModel.swift in Sources */,
 				E28F080428E4655100832F4A /* SceneDelegate.swift in Sources */,

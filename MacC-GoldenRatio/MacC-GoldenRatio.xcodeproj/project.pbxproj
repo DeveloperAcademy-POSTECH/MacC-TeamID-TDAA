@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CCE1806F28E5919B00AF06DB /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE1806E28E5919B00AF06DB /* SignInViewController.swift */; };
+		CCE1807228E594F700AF06DB /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = CCE1807128E594F700AF06DB /* SnapKit */; };
 		E243425C28E4B890007BB6DE /* MyDiariesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E243425B28E4B890007BB6DE /* MyDiariesViewController.swift */; };
 		E276B91C28E46AE900163833 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E276B91B28E46AE900163833 /* UserModel.swift */; };
 		E276B91E28E46B3700163833 /* DiaryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E276B91D28E46B3700163833 /* DiaryModel.swift */; };
@@ -24,8 +26,6 @@
 		E2EA7F0A28E56CFE00AC1C49 /* MyAlbumsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EA7F0928E56CFE00AC1C49 /* MyAlbumsViewController.swift */; };
 		E2EA7F0C28E56DF600AC1C49 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EA7F0B28E56DF600AC1C49 /* MyPageViewController.swift */; };
 		E2EA7F0E28E56EDF00AC1C49 /* DiaryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EA7F0D28E56EDF00AC1C49 /* DiaryCollectionViewCell.swift */; };
-		E2EA7F1128E56FF900AC1C49 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = E2EA7F1028E56FF900AC1C49 /* SnapKit */; };
-		E2EA7F1328E56FF900AC1C49 /* SnapKit-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = E2EA7F1228E56FF900AC1C49 /* SnapKit-Dynamic */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +46,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CCE1806E28E5919B00AF06DB /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		E243425B28E4B890007BB6DE /* MyDiariesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDiariesViewController.swift; sourceTree = "<group>"; };
 		E276B91B28E46AE900163833 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		E276B91D28E46B3700163833 /* DiaryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryModel.swift; sourceTree = "<group>"; };
@@ -74,8 +75,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E2EA7F1128E56FF900AC1C49 /* SnapKit in Frameworks */,
-				E2EA7F1328E56FF900AC1C49 /* SnapKit-Dynamic in Frameworks */,
+				CCE1807228E594F700AF06DB /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -96,6 +96,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CCE1806D28E5917A00AF06DB /* SignIn */ = {
+			isa = PBXGroup;
+			children = (
+				CCE1806E28E5919B00AF06DB /* SignInViewController.swift */,
+			);
+			path = SignIn;
+			sourceTree = "<group>";
+		};
 		E276B91328E468D700163833 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
@@ -152,6 +160,7 @@
 		E276B91A28E4697E00163833 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				CCE1806D28E5917A00AF06DB /* SignIn */,
 				E2EA7F0428E56BD700AC1C49 /* Main */,
 				E28F080528E4655100832F4A /* ViewController.swift */,
 			);
@@ -236,8 +245,7 @@
 			);
 			name = "MacC-GoldenRatio";
 			packageProductDependencies = (
-				E2EA7F1028E56FF900AC1C49 /* SnapKit */,
-				E2EA7F1228E56FF900AC1C49 /* SnapKit-Dynamic */,
+				CCE1807128E594F700AF06DB /* SnapKit */,
 			);
 			productName = "MacC-GoldenRatio";
 			productReference = E28F07FE28E4655100832F4A /* MacC-GoldenRatio.app */;
@@ -312,7 +320,7 @@
 			);
 			mainGroup = E28F07F528E4655100832F4A;
 			packageReferences = (
-				E2EA7F0F28E56FF900AC1C49 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				CCE1807028E594F700AF06DB /* XCRemoteSwiftPackageReference "SnapKit" */,
 			);
 			productRefGroup = E28F07FF28E4655100832F4A /* Products */;
 			projectDirPath = "";
@@ -361,6 +369,7 @@
 				E2EA7F0828E56CF600AC1C49 /* MyPlacesViewController.swift in Sources */,
 				E276B92028E4812E00163833 /* UIScreen+.swift in Sources */,
 				E2EA7F0E28E56EDF00AC1C49 /* DiaryCollectionViewCell.swift in Sources */,
+				CCE1806F28E5919B00AF06DB /* SignInViewController.swift in Sources */,
 				E2EA7F0A28E56CFE00AC1C49 /* MyAlbumsViewController.swift in Sources */,
 				E276B91E28E46B3700163833 /* DiaryModel.swift in Sources */,
 				E2EA7F0C28E56DF600AC1C49 /* MyPageViewController.swift in Sources */,
@@ -532,6 +541,7 @@
 		E28F082928E4655200832F4A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -561,6 +571,7 @@
 		E28F082A28E4655200832F4A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
@@ -705,9 +716,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		E2EA7F0F28E56FF900AC1C49 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+		CCE1807028E594F700AF06DB /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/SnapKit/SnapKit";
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 5.0.0;
@@ -716,15 +727,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		E2EA7F1028E56FF900AC1C49 /* SnapKit */ = {
+		CCE1807128E594F700AF06DB /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E2EA7F0F28E56FF900AC1C49 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			package = CCE1807028E594F700AF06DB /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
-		};
-		E2EA7F1228E56FF900AC1C49 /* SnapKit-Dynamic */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E2EA7F0F28E56FF900AC1C49 /* XCRemoteSwiftPackageReference "SnapKit" */;
-			productName = "SnapKit-Dynamic";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

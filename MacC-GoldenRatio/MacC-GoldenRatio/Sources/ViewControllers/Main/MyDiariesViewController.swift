@@ -9,6 +9,8 @@ import SnapKit
 import UIKit
 
 final class MyDiariesViewController: UIViewController {
+	let diary = [Diary(diaryUUID: "", diaryName: "🌊포항항", diaryLocation: Location(locationName: "", locationAddress: "", locationCoordinate: [0.0]), diaryStartDate: Date(), diaryEndDate: Date(), diaryPages: [[Page(pageUUID: "", items: [Item(itemUUID: "", itemType: ItemType.text, contents: "", itemSize: [0.0], itemPosition: [0.0], itemAngle: 0.0)])]], userUIDs: [User(userUID: "", userName: "칼리", userImageURL: ""), User(userUID: "", userName: "드록바", userImageURL: ""), User(userUID: "", userName: "해츨링", userImageURL: ""), User(userUID: "", userName: "라우", userImageURL: ""), User(userUID: "", userName: "산", userImageURL: "")])]
+	
 	private lazy var diaryCollectionView: UICollectionView = {
 		let layout = UICollectionViewFlowLayout()
 		let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -40,20 +42,32 @@ final class MyDiariesViewController: UIViewController {
 
 extension MyDiariesViewController: UICollectionViewDataSource {
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		let count = 3
 		let label = UILabel()
 		label.text = "다이어리를 추가해주세요."
 		label.textAlignment = .center
 		
-		if count == 0 {
+		if diary.count == 0 {
 			collectionView.backgroundView = label
 		}
 		
-		return count
+		return diary.count
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DiaryCollectionViewCell", for: indexPath) as? DiaryCollectionViewCell
+		
+		var imageViews = [UIImageView]()
+		
+		for i in 0..<diary[0].userUIDs.count {
+			let imageView = UIImageView(image: UIImage(systemName: "person"))
+			imageView.contentMode = .scaleToFill
+			imageView.clipsToBounds = true
+			imageView.layer.cornerRadius = 12.0
+			imageView.backgroundColor = .gray
+			imageViews.append(imageView)
+		}
+		
+		cell?.setup(imageViews: imageViews)
 
 		cell?.layer.borderWidth = 0.5
 		cell?.layer.cornerRadius = 20

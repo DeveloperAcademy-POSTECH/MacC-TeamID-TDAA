@@ -16,7 +16,7 @@ class DiaryCollectionViewCell: UICollectionViewCell {
 		return label
 	}()
 	
-	func setup(imageViews: [UIImageView]) {
+	func setup(title: String, imageViews: [UIImageView]) {
 		setupSubViews()
 		
 		var trailing = 24.0
@@ -41,7 +41,7 @@ class DiaryCollectionViewCell: UICollectionViewCell {
 		layer.shadowOpacity = 0.3
 		layer.shadowRadius = 10
 		
-		titleLabel.text = "타이틀"
+		titleLabel.text = title
 		
 	}
 }

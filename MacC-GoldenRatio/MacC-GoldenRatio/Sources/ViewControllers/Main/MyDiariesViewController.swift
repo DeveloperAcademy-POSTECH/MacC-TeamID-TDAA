@@ -67,7 +67,7 @@ extension MyDiariesViewController: UICollectionViewDataSource {
 			imageViews.append(imageView)
 		}
 		
-		cell?.setup(imageViews: imageViews)
+		cell?.setup(title: diary[0].diaryName, imageViews: imageViews)
 
 		cell?.layer.borderWidth = 0.5
 		cell?.layer.cornerRadius = 20

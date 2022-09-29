@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E243425C28E4B890007BB6DE /* MyDiariesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E243425B28E4B890007BB6DE /* MyDiariesViewController.swift */; };
 		E276B91C28E46AE900163833 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E276B91B28E46AE900163833 /* UserModel.swift */; };
 		E276B91E28E46B3700163833 /* DiaryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E276B91D28E46B3700163833 /* DiaryModel.swift */; };
 		E276B92028E4812E00163833 /* UIScreen+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E276B91F28E4812E00163833 /* UIScreen+.swift */; };
@@ -18,6 +19,13 @@
 		E28F081928E4655200832F4A /* MacC_GoldenRatioTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28F081828E4655200832F4A /* MacC_GoldenRatioTests.swift */; };
 		E28F082328E4655200832F4A /* MacC_GoldenRatioUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28F082228E4655200832F4A /* MacC_GoldenRatioUITests.swift */; };
 		E28F082528E4655200832F4A /* MacC_GoldenRatioUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28F082428E4655200832F4A /* MacC_GoldenRatioUITestsLaunchTests.swift */; };
+		E2EA7F0628E56C0900AC1C49 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EA7F0528E56C0900AC1C49 /* TabBarController.swift */; };
+		E2EA7F0828E56CF600AC1C49 /* MyPlacesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EA7F0728E56CF600AC1C49 /* MyPlacesViewController.swift */; };
+		E2EA7F0A28E56CFE00AC1C49 /* MyAlbumsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EA7F0928E56CFE00AC1C49 /* MyAlbumsViewController.swift */; };
+		E2EA7F0C28E56DF600AC1C49 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EA7F0B28E56DF600AC1C49 /* MyPageViewController.swift */; };
+		E2EA7F0E28E56EDF00AC1C49 /* DiaryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EA7F0D28E56EDF00AC1C49 /* DiaryCollectionViewCell.swift */; };
+		E2EA7F1128E56FF900AC1C49 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = E2EA7F1028E56FF900AC1C49 /* SnapKit */; };
+		E2EA7F1328E56FF900AC1C49 /* SnapKit-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = E2EA7F1228E56FF900AC1C49 /* SnapKit-Dynamic */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +46,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E243425B28E4B890007BB6DE /* MyDiariesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDiariesViewController.swift; sourceTree = "<group>"; };
 		E276B91B28E46AE900163833 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		E276B91D28E46B3700163833 /* DiaryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryModel.swift; sourceTree = "<group>"; };
 		E276B91F28E4812E00163833 /* UIScreen+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+.swift"; sourceTree = "<group>"; };
@@ -53,6 +62,11 @@
 		E28F081E28E4655200832F4A /* MacC-GoldenRatioUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "MacC-GoldenRatioUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E28F082228E4655200832F4A /* MacC_GoldenRatioUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacC_GoldenRatioUITests.swift; sourceTree = "<group>"; };
 		E28F082428E4655200832F4A /* MacC_GoldenRatioUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacC_GoldenRatioUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		E2EA7F0528E56C0900AC1C49 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		E2EA7F0728E56CF600AC1C49 /* MyPlacesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPlacesViewController.swift; sourceTree = "<group>"; };
+		E2EA7F0928E56CFE00AC1C49 /* MyAlbumsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAlbumsViewController.swift; sourceTree = "<group>"; };
+		E2EA7F0B28E56DF600AC1C49 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
+		E2EA7F0D28E56EDF00AC1C49 /* DiaryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +74,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E2EA7F1128E56FF900AC1C49 /* SnapKit in Frameworks */,
+				E2EA7F1328E56FF900AC1C49 /* SnapKit-Dynamic in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -111,6 +127,7 @@
 		E276B91728E4692B00163833 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				E2EA7F0D28E56EDF00AC1C49 /* DiaryCollectionViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -135,6 +152,7 @@
 		E276B91A28E4697E00163833 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				E2EA7F0428E56BD700AC1C49 /* Main */,
 				E28F080528E4655100832F4A /* ViewController.swift */,
 			);
 			path = ViewControllers;
@@ -189,6 +207,18 @@
 			path = "MacC-GoldenRatioUITests";
 			sourceTree = "<group>";
 		};
+		E2EA7F0428E56BD700AC1C49 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				E243425B28E4B890007BB6DE /* MyDiariesViewController.swift */,
+				E2EA7F0528E56C0900AC1C49 /* TabBarController.swift */,
+				E2EA7F0728E56CF600AC1C49 /* MyPlacesViewController.swift */,
+				E2EA7F0928E56CFE00AC1C49 /* MyAlbumsViewController.swift */,
+				E2EA7F0B28E56DF600AC1C49 /* MyPageViewController.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -205,6 +235,10 @@
 			dependencies = (
 			);
 			name = "MacC-GoldenRatio";
+			packageProductDependencies = (
+				E2EA7F1028E56FF900AC1C49 /* SnapKit */,
+				E2EA7F1228E56FF900AC1C49 /* SnapKit-Dynamic */,
+			);
 			productName = "MacC-GoldenRatio";
 			productReference = E28F07FE28E4655100832F4A /* MacC-GoldenRatio.app */;
 			productType = "com.apple.product-type.application";
@@ -277,6 +311,9 @@
 				Base,
 			);
 			mainGroup = E28F07F528E4655100832F4A;
+			packageReferences = (
+				E2EA7F0F28E56FF900AC1C49 /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
 			productRefGroup = E28F07FF28E4655100832F4A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -320,11 +357,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				E28F080628E4655100832F4A /* ViewController.swift in Sources */,
+				E2EA7F0628E56C0900AC1C49 /* TabBarController.swift in Sources */,
+				E2EA7F0828E56CF600AC1C49 /* MyPlacesViewController.swift in Sources */,
 				E276B92028E4812E00163833 /* UIScreen+.swift in Sources */,
+				E2EA7F0E28E56EDF00AC1C49 /* DiaryCollectionViewCell.swift in Sources */,
+				E2EA7F0A28E56CFE00AC1C49 /* MyAlbumsViewController.swift in Sources */,
 				E276B91E28E46B3700163833 /* DiaryModel.swift in Sources */,
+				E2EA7F0C28E56DF600AC1C49 /* MyPageViewController.swift in Sources */,
 				E28F080228E4655100832F4A /* AppDelegate.swift in Sources */,
 				E276B91C28E46AE900163833 /* UserModel.swift in Sources */,
 				E28F080428E4655100832F4A /* SceneDelegate.swift in Sources */,
+				E243425C28E4B890007BB6DE /* MyDiariesViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -660,6 +703,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		E2EA7F0F28E56FF900AC1C49 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		E2EA7F1028E56FF900AC1C49 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E2EA7F0F28E56FF900AC1C49 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		E2EA7F1228E56FF900AC1C49 /* SnapKit-Dynamic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E2EA7F0F28E56FF900AC1C49 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = "SnapKit-Dynamic";
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = E28F07F628E4655100832F4A /* Project object */;
 }

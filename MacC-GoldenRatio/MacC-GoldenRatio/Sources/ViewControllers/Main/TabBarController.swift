@@ -111,23 +111,27 @@ class TabBarController: UITabBarController {
 			print("a")
 		}
 		let joinDiaryAction = UIAlertAction(title: "초대코드로 입장하기", style: .default) { action in
-			let joinDiaryAlert = UIAlertController(title: "초대코드 입력", message: "", preferredStyle: .alert)
-			let joinAction = UIAlertAction(title: "확인", style: .default) { action in
-				if let textField = joinDiaryAlert.textFields?.first {
-					print(textField.text)
-				}
-			}
-			let cancelAction = UIAlertAction(title: "취소", style: .cancel)
-			joinDiaryAlert.addTextField()
-			joinDiaryAlert.addAction(joinAction)
-			joinDiaryAlert.addAction(cancelAction)
-			self.present(joinDiaryAlert, animated: true)
+			self.showJoinDiaryAlert()
 		}
 		let cancelAction = UIAlertAction(title: "취소", style: .cancel)
 		alert.addAction(createDiaryAction)
 		alert.addAction(joinDiaryAction)
 		alert.addAction(cancelAction)
 		self.present(alert, animated: true)
+	}
+	
+	func showJoinDiaryAlert() {
+		let joinDiaryAlert = UIAlertController(title: "초대코드 입력", message: "", preferredStyle: .alert)
+		let joinAction = UIAlertAction(title: "확인", style: .default) { action in
+			if let textField = joinDiaryAlert.textFields?.first {
+				print(textField.text)
+			}
+		}
+		let cancelAction = UIAlertAction(title: "취소", style: .cancel)
+		joinDiaryAlert.addTextField()
+		joinDiaryAlert.addAction(joinAction)
+		joinDiaryAlert.addAction(cancelAction)
+		self.present(joinDiaryAlert, animated: true)
 	}
 
 	@objc private func createDiaryButtonTapped(sender: UIButton) {

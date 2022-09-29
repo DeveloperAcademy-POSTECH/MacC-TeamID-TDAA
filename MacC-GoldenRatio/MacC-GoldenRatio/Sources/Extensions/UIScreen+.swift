@@ -39,6 +39,18 @@ extension UIScreen {
 		case iPhone8Plus
 		case iPhone8
 		case iPhoneSE
+		
+		var titleLabelLeadingPadding: Int {
+			switch self {
+			default: return 20
+			}
+		}
+		
+		var titleLabelTopPadding: Int {
+			switch self {
+			default: return 45
+			}
+		}
 
 //		var leadingPadding: Int {
 //			switch self {

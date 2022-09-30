@@ -49,8 +49,9 @@ class TabBarController: UITabBarController {
 	private lazy var createDiaryViewController: UIViewController = {
 		let viewController = UIViewController()
 		
-		let tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "photo"), tag: 3)
+		let tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "plus"), tag: 2)
 		
+		viewController.modalTransitionStyle = UIModalTransitionStyle.coverVertical
 		viewController.tabBarItem = tabBarItem
 		
 		return viewController
@@ -79,30 +80,11 @@ class TabBarController: UITabBarController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		setupCreateDiaryButton()
+		self.delegate = self
 		
 		view.backgroundColor = .systemBackground
 		
 		viewControllers = [myDiariesViewController, myPlacesViewController, createDiaryViewController, myAlbumsViewController, myPageViewController]
-	}
-	
-	func setupCreateDiaryButton() {
-		let button = UIButton()
-		button.backgroundColor = UIColor.black
-
-		view.addSubview(button)
-
-		let guide = view.safeAreaLayoutGuide
-		button.snp.makeConstraints {
-			$0.centerX.equalToSuperview()
-			$0.bottom.equalTo(guide).inset(10)
-			$0.width.height.equalTo(38)
-		}
-		button.layer.cornerRadius = 18
-		button.setBackgroundImage(UIImage(systemName: "plus")?.withTintColor(UIColor.white, renderingMode: .alwaysOriginal), for: .normal)
-		button.addTarget(self, action: #selector(createDiaryButtonTapped(sender:)), for: .touchUpInside)
-
-		view.layoutIfNeeded()
 	}
 	
 	func showCreateDiaryAlert() {
@@ -134,8 +116,17 @@ class TabBarController: UITabBarController {
 		self.present(joinDiaryAlert, animated: true)
 	}
 
-	@objc private func createDiaryButtonTapped(sender: UIButton) {
-		showCreateDiaryAlert()
-	}
+}
 
+// 출처:https://www.hackingwithswift.com/example-code/uikit/how-do-you-show-a-modal-view-controller-when-a-uitabbarcontroller-tab-is-tapped
+extension TabBarController: UITabBarControllerDelegate {
+	func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+		
+		if viewController.tabBarItem.tag == 2 {
+			showCreateDiaryAlert()
+			return false
+		}
+		
+		return true
+	}
 }

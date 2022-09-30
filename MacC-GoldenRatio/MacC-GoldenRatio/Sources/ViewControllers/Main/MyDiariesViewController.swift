@@ -92,15 +92,15 @@ extension MyDiariesViewController: UICollectionViewDataSource {
 extension MyDiariesViewController: UICollectionViewDelegateFlowLayout {
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 		
-		return CGSize(width: 350, height: 166)
+		return CGSize(width: UIScreen.getDevice().diaryCollectionViewCellWidth, height: UIScreen.getDevice().diaryCollectionViewCellHeight)
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-		CGSize(width: collectionView.frame.width - 32.0, height: 100.0)
+		CGSize(width: collectionView.frame.width - UIScreen.getDevice().diaryCollectionViewCellHeaderWidth, height: UIScreen.getDevice().diaryCollectionViewCellHeaderHeight)
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
 		
-		return UIEdgeInsets(top: 30, left: 20, bottom: 10, right: 20)
+		return UIEdgeInsets(top: UIScreen.getDevice().diaryCollectionViewCellTopInset, left: UIScreen.getDevice().diaryCollectionViewCellLeadingInset, bottom: UIScreen.getDevice().diaryCollectionViewCellBottomInset, right: UIScreen.getDevice().diaryCollectionViewCellTrailingInset)
 	}
 }

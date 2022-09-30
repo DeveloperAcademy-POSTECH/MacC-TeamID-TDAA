@@ -51,19 +51,72 @@ extension UIScreen {
 			default: return 45
 			}
 		}
+		
+		var titleFontSize: CGFloat {
+			switch self {
+			default: return 28
+			}
+		}
+		
+		var diaryContributerImageViewTrailingPadding: Int {
+			switch self {
+			default: return 24
+			}
+		}
+		
+		var diaryContributerImageViewBottomPadding: Int {
+			switch self {
+			default: return 24
+			}
+		}
 
-//		var leadingPadding: Int {
-//			switch self {
-//			case .iPhone13: return 20
-//			case .iPhone13ProMax: return 22
-//			case .iPhoneMini: return 19
-//			case .iPhone11ProMax: return 21
-//			case .iPhone11: return 19
-//			case .iPhone8Plus: return 22
-//			case .iPhone8: return 15
-//			case .iPhoneSE: return 22
-//			}
-//		}
+		var diaryCollectionViewCellWidth: Int {
+			switch self {
+			default: return 350
+			}
+		}
+		
+		var diaryCollectionViewCellHeight: Int {
+			switch self {
+			default: return 166
+			}
+		}
+		
+		var diaryCollectionViewCellHeaderWidth: CGFloat {
+			switch self {
+			default: return 32
+			}
+		}
+		
+		var diaryCollectionViewCellHeaderHeight: CGFloat {
+			switch self {
+			default: return 100
+			}
+		}
+		
+		var diaryCollectionViewCellTopInset: CGFloat {
+			switch self {
+			default: return 30
+			}
+		}
+		
+		var diaryCollectionViewCellLeadingInset: CGFloat {
+			switch self {
+			default: return 20
+			}
+		}
+		
+		var diaryCollectionViewCellTrailingInset: CGFloat {
+			switch self {
+			default: return 20
+			}
+		}
+		
+		var diaryCollectionViewCellBottomInset: CGFloat {
+			switch self {
+			default: return 10
+			}
+		}
 	}
 
 }

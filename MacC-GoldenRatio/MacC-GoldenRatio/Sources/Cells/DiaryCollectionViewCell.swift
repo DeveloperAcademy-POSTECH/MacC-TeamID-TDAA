@@ -11,7 +11,7 @@ class DiaryCollectionViewCell: UICollectionViewCell {
 	private lazy var titleLabel: UILabel = {
 		let label =  UILabel()
 		label.font = .systemFont(ofSize: 24.0, weight: .bold)
-		label.textColor = .white
+		label.textColor = .black
 		
 		return label
 	}()
@@ -19,27 +19,17 @@ class DiaryCollectionViewCell: UICollectionViewCell {
 	func setup(title: String, imageViews: [UIImageView]) {
 		setupSubViews()
 		
-		var trailing = 24.0
+		var trailing = UIScreen.getDevice().diaryContributerImageViewTrailingPadding
 		
 		imageViews.forEach {
 			addSubview($0)
 			$0.snp.makeConstraints {
 				$0.width.height.equalTo(25)
 				$0.trailing.equalToSuperview().inset(trailing)
-				$0.bottom.equalToSuperview().inset(24.0)
-				trailing += 25
+				$0.bottom.equalToSuperview().inset(UIScreen.getDevice().diaryContributerImageViewBottomPadding)
+				trailing += 26
 			}
 		}
-		
-//		imageView.snp.makeConstraints {
-//			$0.width.height.equalTo(25)
-//			$0.trailing.equalToSuperview().inset(24.0)
-//			$0.bottom.equalToSuperview().inset(24.0)
-//		}
-		
-		layer.shadowColor = UIColor.black.cgColor
-		layer.shadowOpacity = 0.3
-		layer.shadowRadius = 10
 		
 		titleLabel.text = title
 		

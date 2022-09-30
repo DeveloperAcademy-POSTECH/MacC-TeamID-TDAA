@@ -12,7 +12,7 @@ final class DiaryCollectionHeaderView: UICollectionReusableView {
 	private lazy var titleLabel: UILabel = {
 		let label =  UILabel()
 		label.text = "다이어리"
-		label.font = .systemFont(ofSize: 36.0, weight: .black)
+		label.font = .systemFont(ofSize: UIScreen.getDevice().titleFontSize, weight: .black)
 		label.textColor = .label
 		
 		return label

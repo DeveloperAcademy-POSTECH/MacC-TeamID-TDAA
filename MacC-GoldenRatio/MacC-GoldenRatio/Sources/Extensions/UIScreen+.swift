@@ -40,63 +40,87 @@ extension UIScreen {
 		case iPhone8
 		case iPhoneSE
 		
-		var titleLabelLeadingPadding: Int {
+		var MyDiariesViewTitleLabelLeadingPadding: Int {
 			switch self {
 			default: return 20
 			}
 		}
 		
-		var titleLabelTopPadding: Int {
+		var MyDiariesViewTitleLabelTopPadding: Int {
 			switch self {
-			default: return 45
+			default: return 20
 			}
 		}
 		
-		var titleFontSize: CGFloat {
+		var MyDiariesViewTitleFontSize: CGFloat {
 			switch self {
 			default: return 28
 			}
 		}
 		
+		var MyDiariesViewCreateDiaryButtonSize: CGFloat {
+			switch self {
+			default: return 50
+			}
+		}
+		
+		var MyDiariesViewCreateDiaryButtonPadding: Int {
+			switch self {
+			default: return 20
+			}
+		}
+		
+		var diaryContributerImageViewSize: Int {
+			switch self {
+			default: return 25
+			}
+		}
+		
 		var diaryContributerImageViewTrailingPadding: Int {
 			switch self {
-			default: return 24
+			default: return 13
 			}
 		}
 		
 		var diaryContributerImageViewBottomPadding: Int {
 			switch self {
-			default: return 24
+			default: return 10
 			}
 		}
 
 		var diaryCollectionViewCellWidth: Int {
 			switch self {
-			default: return 350
+			default: return 165
 			}
 		}
 		
 		var diaryCollectionViewCellHeight: Int {
 			switch self {
-			default: return 166
+			default: return 207
 			}
 		}
 		
-		var diaryCollectionViewCellHeaderWidth: CGFloat {
+		var diaryCollectionViewCellHeaderWidthPadding: CGFloat {
 			switch self {
-			default: return 32
+			default: return 40
 			}
 		}
 		
 		var diaryCollectionViewCellHeaderHeight: CGFloat {
 			switch self {
-			default: return 100
+			default: return 30
+			}
+		}
+		
+		var diaryCollectionViewCellHeaderHeightPadding: CGFloat {
+			switch self {
+			default: return 20
 			}
 		}
 		
 		var diaryCollectionViewCellTopInset: CGFloat {
 			switch self {
-			default: return 30
+			default: return 20
 			}
 		}
 		
@@ -114,7 +138,25 @@ extension UIScreen {
 		
 		var diaryCollectionViewCellBottomInset: CGFloat {
 			switch self {
-			default: return 10
+			default: return 20
+			}
+		}
+		
+		var diaryCollectionViewCellTitleLabelLeadingInset: CGFloat {
+			switch self {
+			default: return 20
+			}
+		}
+		
+		var diaryCollectionViewCellTitleLabelTrailingInset: CGFloat {
+			switch self {
+			default: return 20
+			}
+		}
+		
+		var diaryCollectionViewCellTitleLabelTopInset: CGFloat {
+			switch self {
+			default: return 20
 			}
 		}
 	}

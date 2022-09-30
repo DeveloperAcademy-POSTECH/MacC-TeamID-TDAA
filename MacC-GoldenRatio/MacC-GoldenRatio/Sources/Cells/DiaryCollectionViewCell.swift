@@ -20,30 +20,27 @@ class DiaryCollectionViewCell: UICollectionViewCell {
 		setupSubViews()
 		
 		var trailing = UIScreen.getDevice().diaryContributerImageViewTrailingPadding
-		
 		imageViews.forEach {
 			addSubview($0)
 			$0.snp.makeConstraints {
-				$0.width.height.equalTo(25)
+				$0.width.height.equalTo(UIScreen.getDevice().diaryContributerImageViewSize)
 				$0.trailing.equalToSuperview().inset(trailing)
 				$0.bottom.equalToSuperview().inset(UIScreen.getDevice().diaryContributerImageViewBottomPadding)
-				trailing += 26
+				trailing += UIScreen.getDevice().diaryContributerImageViewSize-5
 			}
 		}
 		
 		titleLabel.text = title
 		
 	}
-}
-
-private extension DiaryCollectionViewCell {
-	func setupSubViews() {
+	
+	private func setupSubViews() {
 		addSubview(titleLabel)
 		
 		titleLabel.snp.makeConstraints {
-			$0.leading.equalToSuperview().inset(24.0)
-			$0.trailing.equalToSuperview().inset(24.0)
-			$0.top.equalToSuperview().inset(24.0)
+			$0.leading.equalToSuperview().inset(UIScreen.getDevice().diaryCollectionViewCellTitleLabelLeadingInset)
+			$0.trailing.equalToSuperview().inset(UIScreen.getDevice().diaryCollectionViewCellTitleLabelTrailingInset)
+			$0.top.equalToSuperview().inset(UIScreen.getDevice().diaryCollectionViewCellTitleLabelTopInset)
 		}
 	}
 }

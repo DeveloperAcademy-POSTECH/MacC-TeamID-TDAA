@@ -8,7 +8,6 @@
 import UIKit
 
 class TabBarController: UITabBarController {
-	
 	private lazy var myDiariesViewController: UIViewController = {
 		let viewController = MyDiariesViewController()
 		
@@ -32,7 +31,7 @@ class TabBarController: UITabBarController {
 	private lazy var myAlbumsViewController: UIViewController = {
 		let viewController = UINavigationController(rootViewController: MyAlbumsViewController())
 		
-		let tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "photo"), tag: 1)
+		let tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "photo"), tag: 3)
 		
 		viewController.tabBarItem = tabBarItem
 		
@@ -42,18 +41,17 @@ class TabBarController: UITabBarController {
 	private lazy var myPageViewController: UIViewController = {
 		let viewController = UINavigationController(rootViewController: MyPageViewController())
 		
-		let tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "person"), tag: 1)
+		let tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "person"), tag: 4)
 		
 		viewController.tabBarItem = tabBarItem
 		
 		return viewController
 	}()
-
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-	   
+		view.backgroundColor = .systemBackground
 		viewControllers = [myDiariesViewController, myPlacesViewController, myAlbumsViewController, myPageViewController]
 	}
-
 
 }

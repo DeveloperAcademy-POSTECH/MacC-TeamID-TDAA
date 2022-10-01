@@ -19,7 +19,7 @@
 		E28F081928E4655200832F4A /* MacC_GoldenRatioTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28F081828E4655200832F4A /* MacC_GoldenRatioTests.swift */; };
 		E28F082328E4655200832F4A /* MacC_GoldenRatioUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28F082228E4655200832F4A /* MacC_GoldenRatioUITests.swift */; };
 		E28F082528E4655200832F4A /* MacC_GoldenRatioUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28F082428E4655200832F4A /* MacC_GoldenRatioUITestsLaunchTests.swift */; };
-		E2BEFA9628E882BA00EF0254 /* CustomMenuModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEFA9528E882BA00EF0254 /* CustomMenuModalViewController.swift */; };
+		E2BEFA9628E882BA00EF0254 /* MyDiariesViewCustomModalVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEFA9528E882BA00EF0254 /* MyDiariesViewCustomModalVC.swift */; };
 		E2EA7F0628E56C0900AC1C49 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EA7F0528E56C0900AC1C49 /* TabBarController.swift */; };
 		E2EA7F0828E56CF600AC1C49 /* MyPlacesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EA7F0728E56CF600AC1C49 /* MyPlacesViewController.swift */; };
 		E2EA7F0A28E56CFE00AC1C49 /* MyAlbumsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EA7F0928E56CFE00AC1C49 /* MyAlbumsViewController.swift */; };
@@ -85,7 +85,7 @@
 		E28F081E28E4655200832F4A /* MacC-GoldenRatioUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "MacC-GoldenRatioUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E28F082228E4655200832F4A /* MacC_GoldenRatioUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacC_GoldenRatioUITests.swift; sourceTree = "<group>"; };
 		E28F082428E4655200832F4A /* MacC_GoldenRatioUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacC_GoldenRatioUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		E2BEFA9528E882BA00EF0254 /* CustomMenuModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomMenuModalViewController.swift; sourceTree = "<group>"; };
+		E2BEFA9528E882BA00EF0254 /* MyDiariesViewCustomModalVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDiariesViewCustomModalVC.swift; sourceTree = "<group>"; };
 		E2EA7F0528E56C0900AC1C49 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		E2EA7F0728E56CF600AC1C49 /* MyPlacesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPlacesViewController.swift; sourceTree = "<group>"; };
 		E2EA7F0928E56CFE00AC1C49 /* MyAlbumsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAlbumsViewController.swift; sourceTree = "<group>"; };
@@ -189,7 +189,6 @@
 			children = (
 				E2EA7F0428E56BD700AC1C49 /* Main */,
 				E28F080528E4655100832F4A /* ViewController.swift */,
-				E2BEFA9528E882BA00EF0254 /* CustomMenuModalViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -251,6 +250,7 @@
 				E2EA7F0728E56CF600AC1C49 /* MyPlacesViewController.swift */,
 				E2EA7F0928E56CFE00AC1C49 /* MyAlbumsViewController.swift */,
 				E2EA7F0B28E56DF600AC1C49 /* MyPageViewController.swift */,
+				E2BEFA9528E882BA00EF0254 /* MyDiariesViewCustomModalVC.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -420,7 +420,7 @@
 				E2EA7F0C28E56DF600AC1C49 /* MyPageViewController.swift in Sources */,
 				E28F080228E4655100832F4A /* AppDelegate.swift in Sources */,
 				E276B91C28E46AE900163833 /* UserModel.swift in Sources */,
-				E2BEFA9628E882BA00EF0254 /* CustomMenuModalViewController.swift in Sources */,
+				E2BEFA9628E882BA00EF0254 /* MyDiariesViewCustomModalVC.swift in Sources */,
 				E2EA7F1628E5711E00AC1C49 /* DiaryCollectionHeaderView.swift in Sources */,
 				E28F080428E4655100832F4A /* SceneDelegate.swift in Sources */,
 				E243425C28E4B890007BB6DE /* MyDiariesViewController.swift in Sources */,

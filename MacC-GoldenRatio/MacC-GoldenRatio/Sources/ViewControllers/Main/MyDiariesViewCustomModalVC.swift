@@ -8,13 +8,13 @@
 import SnapKit
 import UIKit
 
-protocol CustomMenuModalDelegate: class {
+protocol MyDiariesViewCustomModalDelegate: class {
 	func tapGestureHandler()
 }
 
-class CustomMenuModalViewController: UIViewController {
+class MyDiariesViewCustomModalVC: UIViewController {
 	
-	weak var delegate: CustomMenuModalDelegate?
+	weak var delegate: MyDiariesViewCustomModalDelegate?
 	
 	var bgView: UIView = {
 		let view = UIView()
@@ -27,7 +27,6 @@ class CustomMenuModalViewController: UIViewController {
 		let button = UIButton()
 		button.frame.size = CGSize(width: 150, height: 50)
 		button.layer.cornerRadius = 20
-		button.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMaxXMinYCorner, .layerMinXMinYCorner)
 		button.setTitle("다이어리 생성", for: .normal)
 		button.setTitleColor(UIColor.black, for: .normal)
 		button.addTarget(self, action: #selector(createDiaryButtonTapped), for: .touchUpInside)
@@ -38,15 +37,14 @@ class CustomMenuModalViewController: UIViewController {
 		let button = UIButton()
 		button.frame.size = CGSize(width: 150, height: 50)
 		button.layer.cornerRadius = 20
-		button.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMaxXMaxYCorner, .layerMinXMaxYCorner)
 		button.setTitle("초대코드로 참가", for: .normal)
 		button.setTitleColor(UIColor.black, for: .normal)
 		button.addTarget(self, action: #selector(joinDiaryButtonTapped), for: .touchUpInside)
 		return button
 	}()
 	
-	static func instance() -> CustomMenuModalViewController {
-		let customMenuModalVC = CustomMenuModalViewController(nibName: nil, bundle: nil)
+	static func instance() -> MyDiariesViewCustomModalVC {
+		let customMenuModalVC = MyDiariesViewCustomModalVC(nibName: nil, bundle: nil)
 		customMenuModalVC.modalPresentationStyle = .overFullScreen
 		return customMenuModalVC
 	}

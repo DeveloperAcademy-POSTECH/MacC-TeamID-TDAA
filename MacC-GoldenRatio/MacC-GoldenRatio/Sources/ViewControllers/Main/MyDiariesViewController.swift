@@ -90,14 +90,14 @@ final class MyDiariesViewController: UIViewController {
 	}
 	
 	@objc func createDiaryButtonTapped() {
-		let CustomMenuModalVC = CustomMenuModalViewController.instance()
+		let CustomMenuModalVC = MyDiariesViewCustomModalVC.instance()
 		CustomMenuModalVC.delegate = self
 		addMenuView()
 		present(CustomMenuModalVC, animated: true, completion: nil)
 	}
 }
 
-extension MyDiariesViewController: CustomMenuModalDelegate {
+extension MyDiariesViewController: MyDiariesViewCustomModalDelegate {
 	func tapGestureHandler() {
 		self.removeMenuView()
 	}

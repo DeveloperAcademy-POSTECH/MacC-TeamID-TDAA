@@ -69,6 +69,13 @@ class PageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.tabBarController?.tabBar.isHidden = true
+        let leftBarButtonItem = UIBarButtonItem(title: "취소", style: .plain, target: self, action: nil)
+        let rightBarButtonItem = UIBarButtonItem(title: "완료", style: .plain, target: self, action: nil)
+        self.navigationItem.title = "1일차"
+        self.navigationItem.setLeftBarButton(leftBarButtonItem, animated: false)
+        self.navigationItem.setRightBarButton(rightBarButtonItem, animated: false)
+        
         DispatchQueue.main.async {
             self.addSubviews()
             self.configureBackgroundImageView()

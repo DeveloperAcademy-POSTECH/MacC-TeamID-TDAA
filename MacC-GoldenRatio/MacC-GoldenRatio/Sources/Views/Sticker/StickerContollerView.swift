@@ -10,14 +10,14 @@ import UIKit
 
 /// 스티커에 붙어있는 버튼  ex) 이동, 삭제 버튼
 class StickerControllerView: UIImageView {
-    private let controlSize = CGSize(width: 22, height: 22)
+    private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
     
     init(image: UIImage?, gestureRecognizer: UIGestureRecognizer) {
         super.init(image: image)
 
         self.tintColor = .black
         self.addGestureRecognizer(gestureRecognizer)
-        self.frame = CGRect(origin: .zero, size: controlSize)
+        self.frame = CGRect(origin: .zero, size: myDevice.stickerControllerSize)
 
         layer.cornerRadius = frame.width / 2
         isUserInteractionEnabled = true

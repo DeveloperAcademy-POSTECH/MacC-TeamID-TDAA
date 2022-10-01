@@ -9,10 +9,8 @@ import UIKit
 import SnapKit
 
 class PageViewController: UIViewController {
+    private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
     private var stickers: [StickerView] = []
-    private let pageDescriptionLabelFont: UIFont = UIFont.systemFont(ofSize: 17, weight: .regular)
-    private let toolSize: CGSize = CGSize(width: 30, height: 30)
-    private let toolButtonPointSize: CGFloat = 18
 
     private lazy var backgroundImageView: UIImageView = {
         let backgroundImageView = UIImageView()
@@ -24,7 +22,7 @@ class PageViewController: UIViewController {
     private lazy var pageDescriptionLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.font = pageDescriptionLabelFont
+        label.font = myDevice.pageDescriptionLabelFont
         label.text = "1 / 15"
         
         return label
@@ -100,7 +98,7 @@ class PageViewController: UIViewController {
     private func configureToolButton() {
         [mapToolButton, imageToolButton, stickerToolButton, textToolButton].forEach{
             
-            let imageConfig = UIImage.SymbolConfiguration(pointSize: toolButtonPointSize)
+            let imageConfig = UIImage.SymbolConfiguration(pointSize: myDevice.pageToolButtonPointSize)
             if #available(iOS 15.0, *) {
                 var config = UIButton.Configuration.plain()
                 config.preferredSymbolConfigurationForImage = imageConfig
@@ -126,31 +124,31 @@ class PageViewController: UIViewController {
         }
         
         pageDescriptionLabel.snp.makeConstraints { make in
-            make.trailing.top.equalTo(backgroundImageView).inset(10)
+            make.trailing.top.equalTo(backgroundImageView).inset(myDevice.pagePadding)
         }
         
         mapToolButton.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(10)
-            make.bottom.equalTo(backgroundImageView.snp.bottom).inset(10)
-            make.size.equalTo(toolSize)
+            make.leading.equalToSuperview().offset(myDevice.pagePadding)
+            make.bottom.equalTo(backgroundImageView.snp.bottom).inset(myDevice.pagePadding)
+            make.size.equalTo(myDevice.pageToolButtonSize)
         }
         
         imageToolButton.snp.makeConstraints { make in
-            make.leading.equalTo(mapToolButton.snp.trailing).offset(10)
-            make.bottom.equalTo(backgroundImageView.snp.bottom).inset(10)
-            make.size.equalTo(toolSize)
+            make.leading.equalTo(mapToolButton.snp.trailing).offset(myDevice.pageToolButtonInterval)
+            make.bottom.equalTo(backgroundImageView.snp.bottom).inset(myDevice.pagePadding)
+            make.size.equalTo(myDevice.pageToolButtonSize)
         }
         
         stickerToolButton.snp.makeConstraints { make in
-            make.leading.equalTo(imageToolButton.snp.trailing).offset(10)
-            make.bottom.equalTo(backgroundImageView.snp.bottom).inset(10)
-            make.size.equalTo(toolSize)
+            make.leading.equalTo(imageToolButton.snp.trailing).offset(myDevice.pageToolButtonInterval)
+            make.bottom.equalTo(backgroundImageView.snp.bottom).inset(myDevice.pagePadding)
+            make.size.equalTo(myDevice.pageToolButtonSize)
         }
         
         textToolButton.snp.makeConstraints { make in
-            make.leading.equalTo(stickerToolButton.snp.trailing).offset(10)
-            make.bottom.equalTo(backgroundImageView.snp.bottom).inset(10)
-            make.size.equalTo(toolSize)
+            make.leading.equalTo(stickerToolButton.snp.trailing).offset(myDevice.pageToolButtonInterval)
+            make.bottom.equalTo(backgroundImageView.snp.bottom).inset(myDevice.pagePadding)
+            make.size.equalTo(myDevice.pageToolButtonSize)
         }
     }
     
@@ -158,8 +156,8 @@ class PageViewController: UIViewController {
     @objc private func addSticker() {
         DispatchQueue.main.async {
             let image = UIImage(systemName: "photo")!
-            let stickerView = StickerView(image: image, size: CGSize(width: 100, height: 100))
-            stickerView.center = self.backgroundImageView.center
+            let stickerView = StickerView(image: image, size: self.myDevice.stickerDefaultSize)
+            stickerView.center = CGPoint(x: self.view.center.x, y: self.view.center.y - 100)
             self.backgroundImageView.addSubview(stickerView)
             self.backgroundImageView.bringSubviewToFront(stickerView)
             self.backgroundImageView.isUserInteractionEnabled = true

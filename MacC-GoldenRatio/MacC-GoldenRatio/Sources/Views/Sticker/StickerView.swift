@@ -8,6 +8,8 @@
 import UIKit
 
 class StickerView: UIView {
+    private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
+    
     private var touchStart: CGPoint?
     private var previousPoint: CGPoint?
     private var deltaAngle: CGFloat?
@@ -165,9 +167,9 @@ class StickerView: UIView {
     }
 
     private func updateControlsPosition() {
-        let offset = 5.0
-        borderView.frame = CGRect(x: -offset, y: -offset, width: bounds.size.width + offset * 2,
-                                  height: bounds.size.height + offset * 2)
+        let inset = myDevice.stickerBorderInset
+        borderView.frame = CGRect(x: -inset, y: -inset, width: bounds.size.width + inset * 2,
+                                  height: bounds.size.height + inset * 2)
 
         deleteController.center = CGPoint(x: borderView.frame.maxX, y: borderView.frame.origin.y)
         resizingController.center = CGPoint(x: borderView.frame.maxX, y: borderView.frame.maxY)

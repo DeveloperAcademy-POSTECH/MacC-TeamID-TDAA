@@ -9,7 +9,9 @@ import SnapKit
 import UIKit
 
 final class MyDiariesViewController: UIViewController {
-	let diary = [Diary(diaryUUID: "", diaryName: "🌊포항항", diaryLocation: Location(locationName: "", locationAddress: "", locationCoordinate: [0.0]), diaryStartDate: Date(), diaryEndDate: Date(), diaryPages: [[Page(pageUUID: "", items: [Item(itemUUID: "", itemType: ItemType.text, contents: "", itemSize: [0.0], itemPosition: [0.0], itemAngle: 0.0)])]], userUIDs: [User(userUID: "", userName: "칼리", userImageURL: ""), User(userUID: "", userName: "드록바", userImageURL: ""), User(userUID: "", userName: "해츨링", userImageURL: ""), User(userUID: "", userName: "라우", userImageURL: ""), User(userUID: "", userName: "산", userImageURL: "")])]
+	private let diary = [Diary(diaryUUID: "", diaryName: "🌊포항항", diaryLocation: Location(locationName: "", locationAddress: "", locationCoordinate: [0.0]), diaryStartDate: Date(), diaryEndDate: Date(), diaryPages: [[Page(pageUUID: "", items: [Item(itemUUID: "", itemType: ItemType.text, contents: "", itemSize: [0.0], itemPosition: [0.0], itemAngle: 0.0)])]], userUIDs: [User(userUID: "", userName: "칼리", userImageURL: ""), User(userUID: "", userName: "드록바", userImageURL: ""), User(userUID: "", userName: "해츨링", userImageURL: ""), User(userUID: "", userName: "라우", userImageURL: ""), User(userUID: "", userName: "산", userImageURL: "")])]
+	
+	private var myDiariesViewModalBackgroundView = UIView()
 	
 	private lazy var diaryCollectionView: UICollectionView = {
 		let layout = UICollectionViewFlowLayout()
@@ -28,12 +30,8 @@ final class MyDiariesViewController: UIViewController {
 	lazy var createDiaryButton: UIButton = {
 		let button = UIButton()
 		button.setImage(UIImage(systemName: "plus.circle", withConfiguration: UIImage.SymbolConfiguration(pointSize: UIScreen.getDevice().MyDiariesViewCreateDiaryButtonSize))?.withTintColor(.black, renderingMode: .alwaysOriginal), for: .normal)
-		let createDiaryButton = UIAction(title: "다이어리 생성", handler: { _ in print("다이어리 생성") })
-		let joinDiaryButton = UIAction(title: "초대코드로 참가", handler: { _ in self.showJoinDiaryAlert() })
-		let buttonMenu = UIMenu(title: "", children: [joinDiaryButton, createDiaryButton])
-		button.menu = buttonMenu
-		button.showsMenuAsPrimaryAction = true
-
+		button.addTarget(self, action: #selector(createDiaryButtonTapped), for: .touchUpInside)
+		
 		return button
 	}()
 
@@ -62,6 +60,7 @@ final class MyDiariesViewController: UIViewController {
 		let joinDiaryAlert = UIAlertController(title: "초대코드 입력", message: "받은 초대코드를 입력해주세요.", preferredStyle: .alert)
 		let joinAction = UIAlertAction(title: "확인", style: .default) { action in
 			if let textField = joinDiaryAlert.textFields?.first {
+				// TODO: 초대 코드 복사 로직 추가 예정
 				print(textField.text)
 			}
 		}
@@ -71,7 +70,37 @@ final class MyDiariesViewController: UIViewController {
 		joinDiaryAlert.addAction(cancelAction)
 		self.present(joinDiaryAlert, animated: true)
 	}
+	
+	private func addMenuView() {
+		view.addSubview(myDiariesViewModalBackgroundView)
+		myDiariesViewModalBackgroundView.snp.makeConstraints {
+			$0.edges.equalTo(0)
+		}
+		
+		DispatchQueue.main.async { [weak self] in
+			self?.myDiariesViewModalBackgroundView.backgroundColor = .black
+			self?.myDiariesViewModalBackgroundView.alpha = 0.1
+		}
+	}
+	
+	private func removeMenuView() {
+		DispatchQueue.main.async { [weak self] in
+			self?.myDiariesViewModalBackgroundView.removeFromSuperview()
+		}
+	}
+	
+	@objc func createDiaryButtonTapped() {
+		let CustomMenuModalVC = CustomMenuModalViewController.instance()
+		CustomMenuModalVC.delegate = self
+		addMenuView()
+		present(CustomMenuModalVC, animated: true, completion: nil)
+	}
+}
 
+extension MyDiariesViewController: CustomMenuModalDelegate {
+	func tapGestureHandler() {
+		self.removeMenuView()
+	}
 }
 
 extension MyDiariesViewController: UICollectionViewDataSource {

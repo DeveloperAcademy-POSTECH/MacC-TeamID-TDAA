@@ -53,8 +53,8 @@ class MyDiariesViewCustomModalVC: UIViewController {
 		stackView.snp.makeConstraints {
 			$0.width.equalTo(UIScreen.getDevice().MyDiariesViewCustomModalViewStackWidth)
 			$0.height.equalTo(UIScreen.getDevice().MyDiariesViewCustomModalViewButtonHeight*stackView.arrangedSubviews.count)
-			$0.bottom.equalToSuperview().inset(UIScreen.getDevice().MyDiariesViewCustomModalViewStackBottomPadding)
-			$0.trailing.equalToSuperview().inset(UIScreen.getDevice().MyDiariesViewCustomModalViewStackTrailingPadding)
+			$0.bottom.equalTo(view.safeAreaLayoutGuide).inset(UIScreen.getDevice().MyDiariesViewCustomModalViewStackBottom)
+			$0.trailing.equalTo(view.safeAreaLayoutGuide).inset(UIScreen.getDevice().MyDiariesViewCustomModalViewStackTrailing)
 		}
 	}
 	

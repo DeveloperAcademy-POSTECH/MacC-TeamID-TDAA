@@ -9,8 +9,9 @@ import SnapKit
 import UIKit
 
 final class MyDiariesViewController: UIViewController {
+	// TODO: ViewModel 작업 전까지 사용할 DummyData
 	private let diary = [Diary(diaryUUID: "", diaryName: "🌊포항항", diaryLocation: Location(locationName: "", locationAddress: "", locationCoordinate: [0.0]), diaryStartDate: Date(), diaryEndDate: Date(), diaryPages: [[Page(pageUUID: "", items: [Item(itemUUID: "", itemType: ItemType.text, contents: "", itemSize: [0.0], itemPosition: [0.0], itemAngle: 0.0)])]], userUIDs: [User(userUID: "", userName: "칼리", userImageURL: ""), User(userUID: "", userName: "드록바", userImageURL: ""), User(userUID: "", userName: "해츨링", userImageURL: ""), User(userUID: "", userName: "라우", userImageURL: ""), User(userUID: "", userName: "산", userImageURL: "")])]
-	
+	private let myDevice = UIScreen.getDevice()
 	private var myDiariesViewModalBackgroundView = UIView()
 	
 	private lazy var diaryCollectionView: UICollectionView = {
@@ -70,22 +71,18 @@ final class MyDiariesViewController: UIViewController {
 		[diaryCollectionView, addDiaryButton].forEach { view.addSubview($0) }
 		
 		diaryCollectionView.snp.makeConstraints {
-			$0.top.equalTo(view.safeAreaLayoutGuide)
-			$0.bottom.equalTo(view.safeAreaLayoutGuide)
-			$0.leading.equalTo(view.safeAreaLayoutGuide)
-			$0.trailing.equalTo(view.safeAreaLayoutGuide)
+			$0.edges.equalTo(view.safeAreaLayoutGuide)
 		}
 		
 		addDiaryButton.snp.makeConstraints {
-			$0.bottom.equalTo(view.safeAreaLayoutGuide).inset(UIScreen.getDevice().MyDiariesViewAddDiaryButtonPadding)
-			$0.trailing.equalTo(view.safeAreaLayoutGuide).inset(UIScreen.getDevice().MyDiariesViewAddDiaryButtonPadding)
+			$0.bottom.trailing.equalTo(view.safeAreaLayoutGuide).inset(myDevice.MyDiariesViewAddDiaryButtonPadding)
 		}
 	}
 	
 	private func addMenuView() {
 		view.addSubview(myDiariesViewModalBackgroundView)
 		myDiariesViewModalBackgroundView.snp.makeConstraints {
-			$0.edges.equalTo(0)
+			$0.edges.equalToSuperview()
 		}
 		
 		DispatchQueue.main.async { [weak self] in
@@ -141,6 +138,7 @@ extension MyDiariesViewController: UICollectionViewDataSource {
 		
 		var imageViews = [UIImageView]()
 		
+		// TODO: ViewModel 작업 후 수정 예정
 		for _ in 0..<diary[0].userUIDs.count {
 			let imageView = UIImageView(image: UIImage(systemName: "person"))
 			imageView.contentMode = .scaleToFill
@@ -177,14 +175,14 @@ extension MyDiariesViewController: UICollectionViewDataSource {
 
 extension MyDiariesViewController: UICollectionViewDelegateFlowLayout {
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-		return CGSize(width: UIScreen.getDevice().diaryCollectionViewCellWidth, height: UIScreen.getDevice().diaryCollectionViewCellHeight)
+		return CGSize(width: myDevice.diaryCollectionViewCellWidth, height: UIScreen.getDevice().diaryCollectionViewCellHeight)
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-		CGSize(width: collectionView.frame.width - UIScreen.getDevice().diaryCollectionViewCellHeaderWidthPadding, height: UIScreen.getDevice().diaryCollectionViewCellHeaderHeight+UIScreen.getDevice().diaryCollectionViewCellHeaderHeightPadding)
+		CGSize(width: collectionView.frame.width - myDevice.diaryCollectionViewCellHeaderWidthPadding, height: myDevice.diaryCollectionViewCellHeaderHeight+myDevice.diaryCollectionViewCellHeaderTop)
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-		return UIEdgeInsets(top: UIScreen.getDevice().diaryCollectionViewCellTopInset, left: UIScreen.getDevice().diaryCollectionViewCellLeadingInset, bottom: UIScreen.getDevice().diaryCollectionViewCellBottomInset, right: UIScreen.getDevice().diaryCollectionViewCellTrailingInset)
+		return UIEdgeInsets(top: myDevice.diaryCollectionViewCellTop, left: myDevice.diaryCollectionViewCellLeading, bottom: myDevice.diaryCollectionViewCellBottom, right: myDevice.diaryCollectionViewCellTrailing)
 	}
 }

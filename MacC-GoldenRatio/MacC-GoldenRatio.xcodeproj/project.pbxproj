@@ -85,6 +85,7 @@
 		E28F081E28E4655200832F4A /* MacC-GoldenRatioUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "MacC-GoldenRatioUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E28F082228E4655200832F4A /* MacC_GoldenRatioUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacC_GoldenRatioUITests.swift; sourceTree = "<group>"; };
 		E28F082428E4655200832F4A /* MacC_GoldenRatioUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacC_GoldenRatioUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		E2B0257828E9A74600B73891 /* MacC-GoldenRatio.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "MacC-GoldenRatio.entitlements"; sourceTree = "<group>"; };
 		E2BEFA9528E882BA00EF0254 /* MyDiariesViewCustomModalVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDiariesViewCustomModalVC.swift; sourceTree = "<group>"; };
 		E2EA7F0528E56C0900AC1C49 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		E2EA7F0728E56CF600AC1C49 /* MyPlacesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPlacesViewController.swift; sourceTree = "<group>"; };
@@ -216,6 +217,7 @@
 		E28F080028E4655100832F4A /* MacC-GoldenRatio */ = {
 			isa = PBXGroup;
 			children = (
+				E2B0257828E9A74600B73891 /* MacC-GoldenRatio.entitlements */,
 				E276B91428E468E900163833 /* Resources */,
 				E276B91328E468D700163833 /* Sources */,
 				E28F080A28E4655200832F4A /* Assets.xcassets */,
@@ -592,6 +594,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "MacC-GoldenRatio/MacC-GoldenRatio.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
@@ -623,6 +626,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "MacC-GoldenRatio/MacC-GoldenRatio.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;

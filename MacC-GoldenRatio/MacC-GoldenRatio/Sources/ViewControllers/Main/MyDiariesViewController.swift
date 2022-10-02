@@ -74,10 +74,38 @@ final class MyDiariesViewController: UIViewController {
 		}
 	}
 	
+	private var createDiaryButton: UIButton = {
+		let button = UIButton()
+		button.setTitle("다이어리 생성", for: .normal)
+		button.setTitleColor(UIColor.black, for: .normal)
+		button.addTarget(self, action: #selector(MyDiariesViewCustomModalVC.createDiaryButtonTapped), for: .touchUpInside)
+		
+		button.snp.makeConstraints {
+			$0.height.equalTo(UIScreen.getDevice().MyDiariesViewCustomModalViewButtonHeight)
+		}
+		
+		return button
+	}()
+	
+	private var joinDiaryButton: UIButton = {
+		let button = UIButton()
+		button.setTitle("초대코드로 참가", for: .normal)
+		button.setTitleColor(UIColor.black, for: .normal)
+		button.addTarget(self, action: #selector(MyDiariesViewCustomModalVC.joinDiaryButtonTapped), for: .touchUpInside)
+		
+		button.snp.makeConstraints {
+			$0.height.equalTo(UIScreen.getDevice().MyDiariesViewCustomModalViewButtonHeight)
+		}
+		
+		return button
+	}()
+	
 	@objc private func addDiaryButtonTapped() {
 		let CustomMenuModalVC = MyDiariesViewCustomModalVC.instance()
 		CustomMenuModalVC.delegate = self
 		addMenuView()
+		CustomMenuModalVC.stackView.addArrangedSubview(createDiaryButton)
+		CustomMenuModalVC.stackView.addArrangedSubview(joinDiaryButton)
 		present(CustomMenuModalVC, animated: true, completion: nil)
 	}
 }

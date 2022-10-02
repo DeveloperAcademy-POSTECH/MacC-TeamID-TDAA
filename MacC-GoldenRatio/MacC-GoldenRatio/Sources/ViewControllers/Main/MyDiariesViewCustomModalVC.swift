@@ -18,7 +18,7 @@ class MyDiariesViewCustomModalVC: UIViewController {
 	
 	weak var delegate: MyDiariesViewCustomModalDelegate?
 	
-	private lazy var stackView: UIStackView = {
+	lazy var stackView: UIStackView = {
 		let stackView = UIStackView()
 		stackView.axis = .vertical
 		stackView.distribution = .fill
@@ -26,32 +26,6 @@ class MyDiariesViewCustomModalVC: UIViewController {
 		stackView.backgroundColor = .systemBackground
 		stackView.layer.cornerRadius = 20
 		return stackView
-	}()
-	
-	private var createDiaryButton: UIButton = {
-		let button = UIButton()
-		button.setTitle("다이어리 생성", for: .normal)
-		button.setTitleColor(UIColor.black, for: .normal)
-		button.addTarget(self, action: #selector(createDiaryButtonTapped), for: .touchUpInside)
-		
-		button.snp.makeConstraints {
-			$0.height.equalTo(UIScreen.getDevice().MyDiariesViewCustomModalViewButtonHeight)
-		}
-		
-		return button
-	}()
-	
-	private var joinDiaryButton: UIButton = {
-		let button = UIButton()
-		button.setTitle("초대코드로 참가", for: .normal)
-		button.setTitleColor(UIColor.black, for: .normal)
-		button.addTarget(self, action: #selector(joinDiaryButtonTapped), for: .touchUpInside)
-		
-		button.snp.makeConstraints {
-			$0.height.equalTo(UIScreen.getDevice().MyDiariesViewCustomModalViewButtonHeight)
-		}
-		
-		return button
 	}()
 	
 	static func instance() -> MyDiariesViewCustomModalVC {
@@ -75,8 +49,6 @@ class MyDiariesViewCustomModalVC: UIViewController {
 		view.backgroundColor = .clear
 		
 		view.addSubview(stackView)
-		stackView.addArrangedSubview(createDiaryButton)
-		stackView.addArrangedSubview(joinDiaryButton)
 		
 		stackView.snp.makeConstraints {
 			$0.width.equalTo(UIScreen.getDevice().MyDiariesViewCustomModalViewStackWidth)
@@ -87,7 +59,7 @@ class MyDiariesViewCustomModalVC: UIViewController {
 	}
 	
 	// TODO: Cali 작업 완료 시 View 연결 로직 구현 예정
-	@objc private func createDiaryButtonTapped() {
+	@objc  func createDiaryButtonTapped() {
 		print("create")
 		
 		delegate?.createDiaryButtonTapped()
@@ -95,7 +67,7 @@ class MyDiariesViewCustomModalVC: UIViewController {
 	}
 	
 	// TODO: Cali 작업 완료 시 View 연결 로직 구현 예정
-	@objc private func joinDiaryButtonTapped() {
+	@objc  func joinDiaryButtonTapped() {
 		let joinDiaryAlert = UIAlertController(title: "초대코드 입력", message: "받은 초대코드를 입력해주세요.", preferredStyle: .alert)
 		let joinAction = UIAlertAction(title: "확인", style: .default) { action in
 			if let textField = joinDiaryAlert.textFields?.first {
@@ -112,7 +84,8 @@ class MyDiariesViewCustomModalVC: UIViewController {
 		joinDiaryAlert.addTextField()
 		joinDiaryAlert.addAction(joinAction)
 		joinDiaryAlert.addAction(cancelAction)
-		self.present(joinDiaryAlert, animated: true)	}
+		self.present(joinDiaryAlert, animated: true)
+	}
 	
 	@objc private func tapGestureHandler() {
 		delegate?.tapGestureHandler()

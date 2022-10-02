@@ -30,7 +30,7 @@ final class MyDiariesViewController: UIViewController {
 	lazy var createDiaryButton: UIButton = {
 		let button = UIButton()
 		button.setImage(UIImage(systemName: "plus.circle", withConfiguration: UIImage.SymbolConfiguration(pointSize: UIScreen.getDevice().MyDiariesViewCreateDiaryButtonSize))?.withTintColor(.black, renderingMode: .alwaysOriginal), for: .normal)
-		button.addTarget(self, action: #selector(createDiaryButtonTapped), for: .touchUpInside)
+		button.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
 		
 		return button
 	}()
@@ -56,21 +56,6 @@ final class MyDiariesViewController: UIViewController {
 		}
 	}
 	
-	private func showJoinDiaryAlert() {
-		let joinDiaryAlert = UIAlertController(title: "초대코드 입력", message: "받은 초대코드를 입력해주세요.", preferredStyle: .alert)
-		let joinAction = UIAlertAction(title: "확인", style: .default) { action in
-			if let textField = joinDiaryAlert.textFields?.first {
-				// TODO: 초대 코드 복사 로직 추가 예정
-				print(textField.text)
-			}
-		}
-		let cancelAction = UIAlertAction(title: "취소", style: .cancel)
-		joinDiaryAlert.addTextField()
-		joinDiaryAlert.addAction(joinAction)
-		joinDiaryAlert.addAction(cancelAction)
-		self.present(joinDiaryAlert, animated: true)
-	}
-	
 	private func addMenuView() {
 		view.addSubview(myDiariesViewModalBackgroundView)
 		myDiariesViewModalBackgroundView.snp.makeConstraints {
@@ -89,7 +74,7 @@ final class MyDiariesViewController: UIViewController {
 		}
 	}
 	
-	@objc func createDiaryButtonTapped() {
+	@objc private func addButtonTapped() {
 		let CustomMenuModalVC = MyDiariesViewCustomModalVC.instance()
 		CustomMenuModalVC.delegate = self
 		addMenuView()
@@ -98,6 +83,14 @@ final class MyDiariesViewController: UIViewController {
 }
 
 extension MyDiariesViewController: MyDiariesViewCustomModalDelegate {
+	func createDiaryButtonTapped() {
+		self.removeMenuView()
+	}
+	
+	func joinDiaryButtonTapped() {
+		self.removeMenuView()
+	}
+	
 	func tapGestureHandler() {
 		self.removeMenuView()
 	}

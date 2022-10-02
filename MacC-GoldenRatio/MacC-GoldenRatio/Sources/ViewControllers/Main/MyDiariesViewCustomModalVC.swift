@@ -10,6 +10,8 @@ import UIKit
 
 protocol MyDiariesViewCustomModalDelegate: class {
 	func tapGestureHandler()
+	func createDiaryButtonTapped()
+	func joinDiaryButtonTapped()
 }
 
 class MyDiariesViewCustomModalVC: UIViewController {
@@ -83,16 +85,34 @@ class MyDiariesViewCustomModalVC: UIViewController {
 	}
 	
 	// TODO: Cali 작업 완료 시 View 연결 로직 구현 예정
-	@objc func createDiaryButtonTapped() {
+	@objc private func createDiaryButtonTapped() {
 		print("create")
+		
+		delegate?.createDiaryButtonTapped()
+		dismiss(animated: true, completion: nil)
 	}
 	
 	// TODO: Cali 작업 완료 시 View 연결 로직 구현 예정
-	@objc func joinDiaryButtonTapped() {
-		print("join")
-	}
+	@objc private func joinDiaryButtonTapped() {
+		let joinDiaryAlert = UIAlertController(title: "초대코드 입력", message: "받은 초대코드를 입력해주세요.", preferredStyle: .alert)
+		let joinAction = UIAlertAction(title: "확인", style: .default) { action in
+			if let textField = joinDiaryAlert.textFields?.first {
+				// TODO: 초대 코드 복사 로직 추가 예정
+				print(textField.text)
+				self.delegate?.tapGestureHandler()
+				self.dismiss(animated: true, completion: nil)
+			}
+		}
+		let cancelAction = UIAlertAction(title: "취소", style: .cancel) { action in
+			self.delegate?.tapGestureHandler()
+			self.dismiss(animated: true, completion: nil)
+		}
+		joinDiaryAlert.addTextField()
+		joinDiaryAlert.addAction(joinAction)
+		joinDiaryAlert.addAction(cancelAction)
+		self.present(joinDiaryAlert, animated: true)	}
 	
-	@objc func tapGestureHandler() {
+	@objc private func tapGestureHandler() {
 		delegate?.tapGestureHandler()
 		dismiss(animated: true, completion: nil)
 	}

@@ -17,11 +17,11 @@ final class MyDiariesViewController: UIViewController {
 		
 		collectionView.delegate = self
 		collectionView.dataSource = self
-		
+
 		collectionView.backgroundColor = .systemBackground
 		collectionView.register(DiaryCollectionViewCell.self, forCellWithReuseIdentifier: "DiaryCollectionViewCell")
 		collectionView.register(DiaryCollectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "DiaryCollectionHeaderView")
-		
+
 		return collectionView
 	}()
 	

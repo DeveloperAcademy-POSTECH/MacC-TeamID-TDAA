@@ -27,10 +27,10 @@ final class MyDiariesViewController: UIViewController {
 		return collectionView
 	}()
 	
-	lazy var createDiaryButton: UIButton = {
+	private lazy var addDiaryButton: UIButton = {
 		let button = UIButton()
 		button.setImage(UIImage(systemName: "plus.circle", withConfiguration: UIImage.SymbolConfiguration(pointSize: UIScreen.getDevice().MyDiariesViewCreateDiaryButtonSize))?.withTintColor(.black, renderingMode: .alwaysOriginal), for: .normal)
-		button.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
+		button.addTarget(self, action: #selector(addDiaryButtonTapped), for: .touchUpInside)
 		
 		return button
 	}()
@@ -41,7 +41,7 @@ final class MyDiariesViewController: UIViewController {
     }
 	
 	private func setupSubViews() {
-		[diaryCollectionView, createDiaryButton].forEach { view.addSubview($0) }
+		[diaryCollectionView, addDiaryButton].forEach { view.addSubview($0) }
 		
 		diaryCollectionView.snp.makeConstraints {
 			$0.top.equalTo(view.safeAreaLayoutGuide)
@@ -50,7 +50,7 @@ final class MyDiariesViewController: UIViewController {
 			$0.trailing.equalTo(view.safeAreaLayoutGuide)
 		}
 		
-		createDiaryButton.snp.makeConstraints {
+		addDiaryButton.snp.makeConstraints {
 			$0.bottom.equalTo(view.safeAreaLayoutGuide).inset(UIScreen.getDevice().MyDiariesViewCreateDiaryButtonPadding)
 			$0.trailing.equalTo(view.safeAreaLayoutGuide).inset(UIScreen.getDevice().MyDiariesViewCreateDiaryButtonPadding)
 		}
@@ -74,7 +74,7 @@ final class MyDiariesViewController: UIViewController {
 		}
 	}
 	
-	@objc private func addButtonTapped() {
+	@objc private func addDiaryButtonTapped() {
 		let CustomMenuModalVC = MyDiariesViewCustomModalVC.instance()
 		CustomMenuModalVC.delegate = self
 		addMenuView()

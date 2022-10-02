@@ -18,14 +18,14 @@ class MyDiariesViewCustomModalVC: UIViewController {
 	
 	weak var delegate: MyDiariesViewCustomModalDelegate?
 	
-	var bgView: UIView = {
+	private var bgView: UIView = {
 		let view = UIView()
 		view.backgroundColor = .systemBackground
 		view.layer.cornerRadius = 20
 		return view
 	}()
 	
-	var createDiaryButton: UIButton = {
+	private var createDiaryButton: UIButton = {
 		let button = UIButton()
 		button.frame.size = CGSize(width: 150, height: 50)
 		button.layer.cornerRadius = 20
@@ -35,7 +35,7 @@ class MyDiariesViewCustomModalVC: UIViewController {
 		return button
 	}()
 	
-	var joinDiaryButton: UIButton = {
+	private var joinDiaryButton: UIButton = {
 		let button = UIButton()
 		button.frame.size = CGSize(width: 150, height: 50)
 		button.layer.cornerRadius = 20

@@ -10,8 +10,8 @@ import SnapKit
 
 class PageViewController: UIViewController {
     private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
-    private var stickers: [StickerView] = []
-
+    private let pageViewModel = PageViewModel.pageViewModel
+    
     private lazy var backgroundImageView: UIImageView = {
         let backgroundImageView = UIImageView()
         backgroundImageView.backgroundColor = .gray
@@ -161,14 +161,12 @@ class PageViewController: UIViewController {
             self.backgroundImageView.addSubview(stickerView)
             self.backgroundImageView.bringSubviewToFront(stickerView)
             self.backgroundImageView.isUserInteractionEnabled = true
-            self.stickers.append(stickerView)
+            self.pageViewModel.appendSticker(stickerView)
         }
         
     }
     
     @objc private func setStickerSubviewIsHidden() {
-        stickers.forEach{
-            $0.subviewIsHidden = true
-        }
+        self.pageViewModel.hideStickerSubviews()
     }
 }

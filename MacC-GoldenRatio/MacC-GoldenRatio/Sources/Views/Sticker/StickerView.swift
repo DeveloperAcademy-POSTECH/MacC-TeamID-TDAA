@@ -8,6 +8,7 @@
 import UIKit
 
 class StickerView: UIView {
+    private let pageViewModel = PageViewModel.pageViewModel
     private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
     
     private var touchStart: CGPoint?
@@ -122,6 +123,7 @@ class StickerView: UIView {
         let close = sender.view
         if let close = close {
             close.superview?.removeFromSuperview()
+            pageViewModel.removeSticker(self)
         }
     }
 
@@ -224,6 +226,8 @@ class StickerView: UIView {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard subviewIsHidden == false else { return }
         
+        superview?.bringSubviewToFront(self)
+        pageViewModel.bringStickerToFront(self)
         enableTranslucency(state: true)
 
         let touch = touches.first
@@ -258,8 +262,6 @@ class StickerView: UIView {
     }
 
     private func enableTranslucency(state: Bool) {
-        superview?.bringSubviewToFront(self)
-        
         UIView.animate(withDuration: 0.1) {
             if state == true {
                 self.alpha = 0.65

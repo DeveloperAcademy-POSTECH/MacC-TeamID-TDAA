@@ -11,6 +11,7 @@
 		0A5E904828E857E200B381B8 /* StickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5E904728E857E200B381B8 /* StickerView.swift */; };
 		0A5E904A28E858C000B381B8 /* StickerContollerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5E904928E858C000B381B8 /* StickerContollerView.swift */; };
 		0A5E904C28E858D200B381B8 /* StickerBorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5E904B28E858D200B381B8 /* StickerBorderView.swift */; };
+		0A5E904F28E9948B00B381B8 /* PageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5E904E28E9948B00B381B8 /* PageViewModel.swift */; };
 		E243425C28E4B890007BB6DE /* MyDiariesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E243425B28E4B890007BB6DE /* MyDiariesViewController.swift */; };
 		E276B91C28E46AE900163833 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E276B91B28E46AE900163833 /* UserModel.swift */; };
 		E276B91E28E46B3700163833 /* DiaryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E276B91D28E46B3700163833 /* DiaryModel.swift */; };
@@ -76,6 +77,7 @@
 		0A5E904728E857E200B381B8 /* StickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerView.swift; sourceTree = "<group>"; };
 		0A5E904928E858C000B381B8 /* StickerContollerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerContollerView.swift; sourceTree = "<group>"; };
 		0A5E904B28E858D200B381B8 /* StickerBorderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerBorderView.swift; sourceTree = "<group>"; };
+		0A5E904E28E9948B00B381B8 /* PageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewModel.swift; sourceTree = "<group>"; };
 		E243425B28E4B890007BB6DE /* MyDiariesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDiariesViewController.swift; sourceTree = "<group>"; };
 		E276B91B28E46AE900163833 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		E276B91D28E46B3700163833 /* DiaryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryModel.swift; sourceTree = "<group>"; };
@@ -153,6 +155,14 @@
 			path = Sticker;
 			sourceTree = "<group>";
 		};
+		0A5E904D28E9947800B381B8 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				0A5E904E28E9948B00B381B8 /* PageViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		E276B91328E468D700163833 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
@@ -202,6 +212,7 @@
 		E276B91928E4697900163833 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				0A5E904D28E9947800B381B8 /* ViewModels */,
 				E276B91B28E46AE900163833 /* UserModel.swift */,
 				E276B91D28E46B3700163833 /* DiaryModel.swift */,
 			);
@@ -442,6 +453,7 @@
 				E276B92028E4812E00163833 /* UIScreen+.swift in Sources */,
 				E2EA7F0E28E56EDF00AC1C49 /* DiaryCollectionViewCell.swift in Sources */,
 				0A5E904C28E858D200B381B8 /* StickerBorderView.swift in Sources */,
+				0A5E904F28E9948B00B381B8 /* PageViewModel.swift in Sources */,
 				E2EA7F0A28E56CFE00AC1C49 /* MyAlbumsViewController.swift in Sources */,
 				0A5E904A28E858C000B381B8 /* StickerContollerView.swift in Sources */,
 				E276B91E28E46B3700163833 /* DiaryModel.swift in Sources */,

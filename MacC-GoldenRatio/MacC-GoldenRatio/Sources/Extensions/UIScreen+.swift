@@ -82,12 +82,6 @@ extension UIScreen {
 			}
 		}
 		
-		var MyDiariesViewCustomModalViewStackHeight: Int {
-			switch self {
-			default: return 100
-			}
-		}
-		
 		var MyDiariesViewCustomModalViewStackTrailingPadding: Int {
 			switch self {
 			default: return 20

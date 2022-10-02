@@ -18,30 +18,39 @@ class MyDiariesViewCustomModalVC: UIViewController {
 	
 	weak var delegate: MyDiariesViewCustomModalDelegate?
 	
-	private var bgView: UIView = {
-		let view = UIView()
-		view.backgroundColor = .systemBackground
-		view.layer.cornerRadius = 20
-		return view
+	private lazy var stackView: UIStackView = {
+		let stackView = UIStackView()
+		stackView.axis = .vertical
+		stackView.distribution = .fill
+		stackView.alignment = .fill
+		stackView.backgroundColor = .systemBackground
+		stackView.layer.cornerRadius = 20
+		return stackView
 	}()
 	
 	private var createDiaryButton: UIButton = {
 		let button = UIButton()
-		button.frame.size = CGSize(width: 150, height: 50)
-		button.layer.cornerRadius = 20
 		button.setTitle("다이어리 생성", for: .normal)
 		button.setTitleColor(UIColor.black, for: .normal)
 		button.addTarget(self, action: #selector(createDiaryButtonTapped), for: .touchUpInside)
+		
+		button.snp.makeConstraints {
+			$0.height.equalTo(UIScreen.getDevice().MyDiariesViewCustomModalViewButtonHeight)
+		}
+		
 		return button
 	}()
 	
 	private var joinDiaryButton: UIButton = {
 		let button = UIButton()
-		button.frame.size = CGSize(width: 150, height: 50)
-		button.layer.cornerRadius = 20
 		button.setTitle("초대코드로 참가", for: .normal)
 		button.setTitleColor(UIColor.black, for: .normal)
 		button.addTarget(self, action: #selector(joinDiaryButtonTapped), for: .touchUpInside)
+		
+		button.snp.makeConstraints {
+			$0.height.equalTo(UIScreen.getDevice().MyDiariesViewCustomModalViewButtonHeight)
+		}
+		
 		return button
 	}()
 	
@@ -53,34 +62,27 @@ class MyDiariesViewCustomModalVC: UIViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		setup()
 		setupSubView()
-		
+	}
+	
+	private func setup() {
 		let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapGestureHandler))
 		self.view.addGestureRecognizer(tapGesture)
 	}
 	
 	private func setupSubView() {
 		view.backgroundColor = .clear
-		view.addSubview(bgView)
-		bgView.addSubview(createDiaryButton)
-		bgView.addSubview(joinDiaryButton)
-		bgView.snp.makeConstraints {
-			$0.top.equalToSuperview().inset(view.bounds.height-270)
-			$0.bottom.equalToSuperview().inset(170)
-			$0.leading.equalToSuperview().inset(220)
-			$0.trailing.equalToSuperview().inset(20)
-		}
-		createDiaryButton.snp.makeConstraints {
-			$0.top.equalToSuperview()
-			$0.bottom.equalToSuperview().inset(50)
-			$0.leading.equalToSuperview()
-			$0.trailing.equalToSuperview()
-		}
-		joinDiaryButton.snp.makeConstraints {
-			$0.top.equalToSuperview().inset(50)
-			$0.bottom.equalTo(bgView.snp.bottom)
-			$0.leading.equalToSuperview()
-			$0.trailing.equalToSuperview()
+		
+		view.addSubview(stackView)
+		stackView.addArrangedSubview(createDiaryButton)
+		stackView.addArrangedSubview(joinDiaryButton)
+		
+		stackView.snp.makeConstraints {
+			$0.width.equalTo(UIScreen.getDevice().MyDiariesViewCustomModalViewStackWidth)
+			$0.height.equalTo(UIScreen.getDevice().MyDiariesViewCustomModalViewStackHeight)
+			$0.bottom.equalToSuperview().inset(UIScreen.getDevice().MyDiariesViewCustomModalViewStackBottomPadding)
+			$0.trailing.equalToSuperview().inset(UIScreen.getDevice().MyDiariesViewCustomModalViewStackTrailingPadding)
 		}
 	}
 	

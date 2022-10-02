@@ -29,7 +29,7 @@ final class MyDiariesViewController: UIViewController {
 	
 	private lazy var addDiaryButton: UIButton = {
 		let button = UIButton()
-		button.setImage(UIImage(systemName: "plus.circle", withConfiguration: UIImage.SymbolConfiguration(pointSize: UIScreen.getDevice().MyDiariesViewCreateDiaryButtonSize))?.withTintColor(.black, renderingMode: .alwaysOriginal), for: .normal)
+		button.setImage(UIImage(systemName: "plus.circle", withConfiguration: UIImage.SymbolConfiguration(pointSize: UIScreen.getDevice().MyDiariesViewAddDiaryButtonSize))?.withTintColor(.black, renderingMode: .alwaysOriginal), for: .normal)
 		button.addTarget(self, action: #selector(addDiaryButtonTapped), for: .touchUpInside)
 		
 		return button
@@ -51,8 +51,8 @@ final class MyDiariesViewController: UIViewController {
 		}
 		
 		addDiaryButton.snp.makeConstraints {
-			$0.bottom.equalTo(view.safeAreaLayoutGuide).inset(UIScreen.getDevice().MyDiariesViewCreateDiaryButtonPadding)
-			$0.trailing.equalTo(view.safeAreaLayoutGuide).inset(UIScreen.getDevice().MyDiariesViewCreateDiaryButtonPadding)
+			$0.bottom.equalTo(view.safeAreaLayoutGuide).inset(UIScreen.getDevice().MyDiariesViewAddDiaryButtonPadding)
+			$0.trailing.equalTo(view.safeAreaLayoutGuide).inset(UIScreen.getDevice().MyDiariesViewAddDiaryButtonPadding)
 		}
 	}
 	

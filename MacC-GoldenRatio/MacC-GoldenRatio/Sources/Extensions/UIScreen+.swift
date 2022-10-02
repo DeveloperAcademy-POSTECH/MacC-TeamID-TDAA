@@ -58,15 +58,45 @@ extension UIScreen {
 			}
 		}
 		
-		var MyDiariesViewCreateDiaryButtonSize: CGFloat {
+		var MyDiariesViewAddDiaryButtonSize: CGFloat {
 			switch self {
 			default: return 50
 			}
 		}
 		
-		var MyDiariesViewCreateDiaryButtonPadding: Int {
+		var MyDiariesViewAddDiaryButtonPadding: Int {
 			switch self {
 			default: return 20
+			}
+		}
+		
+		var MyDiariesViewCustomModalViewButtonHeight: Int {
+			switch self {
+			default: return 50
+			}
+		}
+		
+		var MyDiariesViewCustomModalViewStackWidth: Int {
+			switch self {
+			default: return 150
+			}
+		}
+		
+		var MyDiariesViewCustomModalViewStackHeight: Int {
+			switch self {
+			default: return 100
+			}
+		}
+		
+		var MyDiariesViewCustomModalViewStackTrailingPadding: Int {
+			switch self {
+			default: return 20
+			}
+		}
+		
+		var MyDiariesViewCustomModalViewStackBottomPadding: Int {
+			switch self {
+			default: return 170
 			}
 		}
 		

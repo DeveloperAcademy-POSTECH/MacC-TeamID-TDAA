@@ -5,8 +5,9 @@
 //  Created by DongKyu Kim on 2022/09/30.
 //
 
-import UIKit
+import FirebaseAuth
 import SnapKit
+import UIKit
 
 // window.rootViewController = UINavigationController(rootViewController: SignInViewController())
 
@@ -63,9 +64,25 @@ class SignInTestViewController: UIViewController {
     
     @objc private func logoutButtonPressed() {
         print("Sign Out completed with Apple ID")
+        let firebaseAuth = Auth.auth()
+        
+        do{
+            try firebaseAuth.signOut()
+            self.navigationController?.popViewController(animated: true)
+        } catch let signOutError as NSError {
+            print("ERROR: signOut \(signOutError.localizedDescription)")
+        }
     }
     
     @objc private func withdrawalButtonPressed() {
         print("Withdrawal completed with Apple ID")
+        let firebaseAuth = Auth.auth()
+        
+        do{
+            try firebaseAuth.signOut()
+            self.navigationController?.popViewController(animated: true)
+        } catch let signOutError as NSError {
+            print("ERROR: signOut \(signOutError.localizedDescription)")
+        }
     }
 }

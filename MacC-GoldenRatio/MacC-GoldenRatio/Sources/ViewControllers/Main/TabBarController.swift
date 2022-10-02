@@ -39,7 +39,6 @@ class TabBarController: UITabBarController {
 	}()
 	
 	private lazy var myPageViewController: UIViewController = {
-//		let viewController = UINavigationController(rootViewController: MyPageViewController())
         let viewController = UINavigationController(rootViewController: PageViewController())
 
 		let tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "person"), tag: 4)

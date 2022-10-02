@@ -115,12 +115,9 @@ class PageViewController: UIViewController {
     }
     
     private func configureConstraints() {
-        [backgroundImageView, pageDescriptionLabel, mapToolButton, imageToolButton, stickerToolButton, textToolButton].forEach{
-            $0.translatesAutoresizingMaskIntoConstraints = false
-        }
         
         backgroundImageView.snp.makeConstraints { make in
-            make.leading.top.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
+            make.edges.equalTo(view.safeAreaLayoutGuide)
         }
         
         pageDescriptionLabel.snp.makeConstraints { make in

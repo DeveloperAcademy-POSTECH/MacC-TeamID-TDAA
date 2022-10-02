@@ -10,10 +10,8 @@ import UIKit
 extension UIScreen {
 	static func getDevice() -> DeviceSize {
 		if UIScreen.main.bounds.size.width == 428 {
-            // 14 plus, 14 pro max
 			return DeviceSize.iPhone13ProMax
 		} else if UIScreen.main.bounds.size.width == 390 {
-            // 14, 14 pro
 			return DeviceSize.iPhone13
 		} else if UIScreen.main.bounds.size.width == 375 {
 			return DeviceSize.iPhoneMini

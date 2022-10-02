@@ -20,6 +20,11 @@ class SignInViewController: UIViewController {
         
         view.backgroundColor = .systemBackground
         
+        if Auth.auth().currentUser != nil {
+            showTestView()
+            // showMainView()
+        }
+        
         setup()
     }
     
@@ -50,6 +55,11 @@ class SignInViewController: UIViewController {
         self.navigationController?.pushViewController(signInTestVC, animated: true)
     }
     
+    private func showMainView() {
+        let signInTestVC = TabBarController()
+        self.navigationController?.pushViewController(signInTestVC, animated: true)
+    }
+    
     // MARK: - setup
     
     private func setup() {
@@ -65,6 +75,7 @@ class SignInViewController: UIViewController {
     
 }
 
+    // MARK: - Extensions
 extension SignInViewController: ASAuthorizationControllerDelegate {
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
         if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {

@@ -33,6 +33,7 @@ class PageViewController: UIViewController {
         let image = UIImage(systemName: "map")
         button.setImage(image, for: .normal)
         button.tintColor = .black
+        button.addTarget(self, action: #selector(onTapMapButton), for: .touchUpInside)
         
         return button
     }()
@@ -165,5 +166,10 @@ class PageViewController: UIViewController {
     
     @objc private func setStickerSubviewIsHidden() {
         self.pageViewModel.hideStickerSubviews()
+    }
+    
+    @objc private func onTapMapButton() {
+        let mapSearchViewController = MapSearchViewController()
+        self.present(mapSearchViewController, animated: true)
     }
 }

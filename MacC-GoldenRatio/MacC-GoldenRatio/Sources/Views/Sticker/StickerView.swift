@@ -12,6 +12,7 @@ import UIKit
 class StickerView: UIView {
     private let pageViewModel = PageViewModel.pageViewModel
     private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
+    private var mapItem: MKMapItem?
     
     private var touchStart: CGPoint?
     private var previousPoint: CGPoint?
@@ -35,6 +36,7 @@ class StickerView: UIView {
     }
     
     init(mapItem: MKMapItem, size:CGSize) {
+        self.mapItem = mapItem
         let mapLabel = UILabel()
         mapLabel.text = mapItem.name
         mapLabel.textColor = .label
@@ -43,7 +45,10 @@ class StickerView: UIView {
         super.init(frame: mapLabel.frame)
         
         DispatchQueue.main.async {
-            self.setupContentView(content: mapLabel)
+            let mapImage = mapLabel.transformToImage()
+            let mapImageView = UIImageView(image: mapImage)
+            mapImageView.frame = mapLabel.frame
+            self.setupContentView(content: mapImageView)
             self.setupDefaultAttributes()
         }
     }

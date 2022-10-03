@@ -160,6 +160,30 @@ extension UIScreen {
 			}
 		}
         
+
+// MARK: - Sign In
+        var logInButtonSize: CGSize {
+            switch self {
+            default: return CGSize(width: 268, height: 50)
+            }
+        }
+        
+        var logInButtonBottomInset: CGFloat {
+            switch self {
+            default: return 80
+            }
+        }
+        
+        var logInButtonImagePointSize: CGFloat {
+            switch self {
+            default: return 21.4
+            }
+        }
+        
+        var logInButtonFontSize: CGFloat {
+            switch self {
+            default: return 21.4
+
         // MARK: Page
         var pagePadding: CGFloat {
             switch self {
@@ -213,6 +237,7 @@ extension UIScreen {
         var stickerBorderInset: CGFloat {
             switch self {
             default: return CGFloat(5)
+
             }
         }
 	}

@@ -5,6 +5,8 @@
 //  Created by 김상현 on 2022/10/01.
 //
 
+import MapKit
+import SnapKit
 import UIKit
 
 class StickerView: UIView {
@@ -32,6 +34,20 @@ class StickerView: UIView {
         }
     }
     
+    init(mapItem: MKMapItem, size:CGSize) {
+        let mapLabel = UILabel()
+        mapLabel.text = mapItem.name
+        mapLabel.textColor = .label
+        mapLabel.textAlignment = .center
+        mapLabel.frame = CGRect(origin: .zero, size: mapLabel.intrinsicContentSize)
+        super.init(frame: mapLabel.frame)
+        
+        DispatchQueue.main.async {
+            self.setupContentView(content: mapLabel)
+            self.setupDefaultAttributes()
+        }
+    }
+    
     init(image: UIImage, size: CGSize) {
         let stickerImageView = UIImageView(image: image)
         stickerImageView.contentMode = .scaleAspectFit
@@ -43,7 +59,7 @@ class StickerView: UIView {
             self.setupDefaultAttributes()
         }
     }
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
 
@@ -60,21 +76,19 @@ class StickerView: UIView {
         }
     }
 
-    func switchControls(toState state: Bool, animated: Bool = false) {
-        if animated {
-            let controlAlpha: CGFloat = state ? 1 : 0
-            UIView.animate(withDuration: 0.3, animations: {
-                self.resizingController.alpha = controlAlpha
-                self.deleteController.alpha = controlAlpha
-                self.borderView.alpha = controlAlpha
-            })
-        } else {
-            resizingController.isHidden = !state
-            deleteController.isHidden = !state
-            borderView.isHidden = !state
+    private func setupContentView(content: UIView) {
+        let contentView = UIView(frame: content.frame)
+        contentView.backgroundColor = .clear
+        contentView.addSubview(content)
+        contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        addSubview(contentView)
+
+        for subview in contentView.subviews {
+            subview.frame = CGRect(x: 0, y: 0, width: contentView.frame.width, height: contentView.frame.height)
+            subview.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         }
     }
-
+    
     private func setupDefaultAttributes() {
         let stickerSingleTap = UITapGestureRecognizer(target: self, action: #selector(stickerViewSingleTap(_:)))
         addGestureRecognizer(stickerSingleTap)
@@ -104,17 +118,19 @@ class StickerView: UIView {
 
         deltaAngle = atan2(frame.origin.y + frame.height - center.y, frame.origin.x + frame.width - center.x)
     }
-
-    private func setupContentView(content: UIView) {
-        let contentView = UIView(frame: content.frame)
-        contentView.backgroundColor = .clear
-        contentView.addSubview(content)
-        contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        addSubview(contentView)
-
-        for subview in contentView.subviews {
-            subview.frame = CGRect(x: 0, y: 0, width: contentView.frame.width, height: contentView.frame.height)
-            subview.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+    
+    func switchControls(toState state: Bool, animated: Bool = false) {
+        if animated {
+            let controlAlpha: CGFloat = state ? 1 : 0
+            UIView.animate(withDuration: 0.3, animations: {
+                self.resizingController.alpha = controlAlpha
+                self.deleteController.alpha = controlAlpha
+                self.borderView.alpha = controlAlpha
+            })
+        } else {
+            resizingController.isHidden = !state
+            deleteController.isHidden = !state
+            borderView.isHidden = !state
         }
     }
     

@@ -5,8 +5,9 @@
 //  Created by 김상현 on 2022/10/01.
 //
 
-import UIKit
+import MapKit
 import SnapKit
+import UIKit
 
 class PageViewController: UIViewController {
     private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
@@ -109,7 +110,6 @@ class PageViewController: UIViewController {
             }
             
         }
-        self.mapToolButton.addTarget(self, action: #selector(self.addSticker), for: .touchUpInside)
         self.imageToolButton.addTarget(self, action: #selector(self.addSticker), for: .touchUpInside)
         self.stickerToolButton.addTarget(self, action: #selector(self.addSticker), for: .touchUpInside)
         self.textToolButton.addTarget(self, action: #selector(self.addSticker), for: .touchUpInside)
@@ -170,6 +170,19 @@ class PageViewController: UIViewController {
     
     @objc private func onTapMapButton() {
         let mapSearchViewController = MapSearchViewController()
+        mapSearchViewController.completion = self.addMapSticker(mapItem:)
         self.present(mapSearchViewController, animated: true)
+    }
+    
+    // MARK: Completion Method
+    private func addMapSticker(mapItem: MKMapItem) {
+        DispatchQueue.main.async {
+            let stickerView = StickerView(mapItem: mapItem, size: self.myDevice.stickerDefaultSize)
+            stickerView.center = CGPoint(x: self.view.center.x, y: self.view.center.y - 100)
+            self.backgroundImageView.addSubview(stickerView)
+            self.backgroundImageView.bringSubviewToFront(stickerView)
+            self.backgroundImageView.isUserInteractionEnabled = true
+            self.pageViewModel.appendSticker(stickerView)
+        }
     }
 }

@@ -191,6 +191,13 @@ extension UIScreen {
             }
         }
         
+        // MARK: PageToolViewController
+        var mapSearchViewSearchBarTopPadding: CGFloat {
+            switch self {
+            default: return CGFloat(20)
+            }
+        }
+        
         // MARK: Sticker
         var stickerDefaultSize: CGSize {
             switch self {

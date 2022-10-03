@@ -10,9 +10,12 @@ import SnapKit
 import UIKit
 
 class MapSearchViewController: UIViewController {
+    var completion: (_ mapItem: MKMapItem) -> Void = { mapItem in }
+    private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
+    
     private var searchCompleter = MKLocalSearchCompleter()
     private var searchResults = [MKLocalSearchCompletion]()
-        
+
     private lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.delegate = self
@@ -34,11 +37,10 @@ class MapSearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
        
-        self.searchCompleter.delegate = self
-        self.searchCompleter.filterType = .locationsOnly
-        
+        view.backgroundColor = .systemBackground
         self.addSubViews()
         self.configureConstraints()
+        self.configureSearchCompleter()
     }
     
     private func addSubViews() {
@@ -49,13 +51,17 @@ class MapSearchViewController: UIViewController {
     private func configureConstraints() {
         searchBar.snp.makeConstraints { make in
             make.horizontalEdges.equalToSuperview()
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            make.height.equalTo(30)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).inset(myDevice.mapSearchViewSearchBarTopPadding)
         }
         searchResultTable.snp.makeConstraints { make in
             make.top.equalTo(searchBar.snp.bottom)
             make.horizontalEdges.bottom.equalToSuperview()
         }
+    }
+    
+    private func configureSearchCompleter() {
+        self.searchCompleter.delegate = self
+        self.searchCompleter.resultTypes = .query
     }
 }
 
@@ -81,7 +87,7 @@ extension MapSearchViewController: MKLocalSearchCompleterDelegate {
         searchResultTable.reloadData()
     }
     func completer(_ completer: MKLocalSearchCompleter, didFailWithError error: Error) {
-//        print(LocationError.localSearchCompleterFail)
+        // 에러 처리
     }
 }
 
@@ -96,7 +102,6 @@ extension MapSearchViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-//        searchResultTable.dequeueReusableCell(withIdentifier: , for: indexPath)
         let searchResult = searchResults[indexPath.row]
         cell.textLabel?.text = searchResult.title
         return cell
@@ -112,15 +117,12 @@ extension MapSearchViewController: UITableViewDelegate {
         let search = MKLocalSearch(request: searchRequest)
         search.start { (response, error) in
             guard error == nil else {
-//                print(LocationError.localSearchRequstFail)
                 return
             }
-            guard let placeMark = response?.mapItems[0].placemark else {
-                return
+            guard let mapItem = response?.mapItems.first else { return }
+            self.dismiss(animated: true){
+                self.completion(mapItem)
             }
-            debugPrint(response?.mapItems)
-//            let coordinate = Coordinate(coordinate: placeMark.coordinate)
-            self.dismiss(animated: true, completion: nil)
         }
     }
 }

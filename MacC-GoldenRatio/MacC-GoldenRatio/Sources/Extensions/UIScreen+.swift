@@ -160,6 +160,7 @@ extension UIScreen {
 			}
 		}
         
+
 // MARK: - Sign In
         var logInButtonSize: CGSize {
             switch self {
@@ -182,6 +183,61 @@ extension UIScreen {
         var logInButtonFontSize: CGFloat {
             switch self {
             default: return 21.4
+
+        // MARK: Page
+        var pagePadding: CGFloat {
+            switch self {
+            default: return CGFloat(10)
+            }
+        }
+        
+        var pageToolButtonInterval: CGFloat {
+            switch self {
+            default: return CGFloat(10)
+            }
+        }
+
+        var pageDescriptionLabelFont: UIFont {
+            switch self {
+            default: return UIFont.systemFont(ofSize: 17, weight: .regular)
+            }
+        }
+        
+        var pageToolButtonSize: CGSize {
+            switch self {
+            default: return CGSize(width: 30, height: 30)
+            }
+        }
+        
+        var pageToolButtonPointSize: CGFloat {
+            switch self {
+            default: return CGFloat(18)
+            }
+        }
+        
+        // MARK: Sticker
+        var stickerDefaultSize: CGSize {
+            switch self {
+            default: return CGSize(width: 100, height: 100)
+            }
+        }
+        
+        var stickerControllerSize: CGSize {
+            switch self {
+            default: return CGSize(width: 22, height: 22)
+            }
+        }
+        
+        var stickerBorderWidth: CGFloat {
+            switch self {
+            default: return CGFloat(1)
+            }
+        }
+        
+        var stickerBorderInset: CGFloat {
+            switch self {
+            default: return CGFloat(5)
+
             }
         }
 	}

@@ -183,7 +183,9 @@ extension UIScreen {
         var logInButtonFontSize: CGFloat {
             switch self {
             default: return 21.4
-
+            }
+        }
+        
         // MARK: Page
         var pagePadding: CGFloat {
             switch self {

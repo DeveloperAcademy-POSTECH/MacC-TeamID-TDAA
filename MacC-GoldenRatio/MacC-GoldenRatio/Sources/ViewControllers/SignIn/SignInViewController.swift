@@ -13,6 +13,7 @@ import UIKit
 
 class SignInViewController: UIViewController {
 
+    private let device: UIScreen.DeviceSize = UIScreen.getDevice()
     private var currentNonce: String?
     
     override func viewDidLoad() {
@@ -35,9 +36,9 @@ class SignInViewController: UIViewController {
         button.backgroundColor = .black
         button.tintColor = .white
         button.setImage(UIImage(systemName: "applelogo"), for: .normal)
-        button.setPreferredSymbolConfiguration(.init(pointSize: 21.4),forImageIn: .normal)
+        button.setPreferredSymbolConfiguration(.init(pointSize: device.logInButtonImagePointSize),forImageIn: .normal)
         button.setTitle("  Apple로 로그인", for: .normal)
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 21.4)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: device.logInButtonFontSize)
         button.addTarget(self, action: #selector(appleLoginButtonPressed), for: .touchUpInside)
         button.layer.cornerRadius = 4
         return button
@@ -66,9 +67,9 @@ class SignInViewController: UIViewController {
         view.addSubview(appleLoginButton)
         
         appleLoginButton.snp.makeConstraints {
-            $0.size.equalTo(CGSize(width: 268, height: 50))
+            $0.size.equalTo(device.logInButtonSize)
             $0.centerX.equalToSuperview()
-            $0.bottom.equalToSuperview().inset(80)
+            $0.bottom.equalToSuperview().inset(device.logInButtonBottomInset)
         }
 
     }
@@ -101,6 +102,7 @@ extension SignInViewController: ASAuthorizationControllerDelegate {
                 // User is signed in to Firebase with Apple.
                 // ...
                 self.showTestView()
+                // self.showMainView()
             }
         }
     }
@@ -108,7 +110,7 @@ extension SignInViewController: ASAuthorizationControllerDelegate {
 
 extension SignInViewController {
     // 애플에 인증 값을 요청할 때 리퀘스트를 생성해서 전달 (Nonce를 포함시켜서 Relay 공격 방지, Firebase 무결성 보장)
-    func startSignInWithAppleFlow() {
+    private func startSignInWithAppleFlow() {
         let nonce = randomNonceString()
         currentNonce = nonce
         let appleIDProvider = ASAuthorizationAppleIDProvider()

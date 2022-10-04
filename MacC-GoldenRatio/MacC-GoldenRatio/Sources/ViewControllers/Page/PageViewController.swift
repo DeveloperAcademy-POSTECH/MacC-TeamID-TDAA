@@ -17,7 +17,8 @@ class PageViewController: UIViewController {
     private lazy var backgroundImageView: UIImageView = {
         let backgroundImageView = UIImageView()
         backgroundImageView.backgroundColor = .gray
-        
+        backgroundImageView.clipsToBounds = true
+
         return backgroundImageView
     }()
     

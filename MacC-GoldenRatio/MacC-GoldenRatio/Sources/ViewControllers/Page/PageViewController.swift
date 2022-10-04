@@ -173,13 +173,15 @@ class PageViewController: UIViewController {
     // MARK: Completion Method
     private func addMapSticker(mapItem: MKMapItem) {
         let mapStickerView = StickerView(mapItem: mapItem, size: self.myDevice.stickerDefaultSize)
+        mapStickerView.delegate = self
         self.addSticker(stickerView: mapStickerView)
     }
     
     private func addImageSticker(image: UIImage?) {
         guard let image = image else { return }
-        let mapStickerView = StickerView(image: image, size: self.myDevice.stickerDefaultSize)
-        self.addSticker(stickerView: mapStickerView)
+        let imageStickerView = StickerView(image: image, size: self.myDevice.stickerDefaultSize)
+        imageStickerView.delegate = self
+        self.addSticker(stickerView: imageStickerView)
     }
     
     private func addSticker(stickerView: StickerView) {
@@ -193,6 +195,19 @@ class PageViewController: UIViewController {
     }
 
 }
+
+extension PageViewController: StickerViewDelegate {
+    func removeSticker(sticker: StickerView) {
+        sticker.removeFromSuperview()
+        pageViewModel.removeSticker(sticker)
+    }
+    
+    func bringToFront(sticker: StickerView) {
+        backgroundImageView.bringSubviewToFront(sticker)
+        pageViewModel.bringStickerToFront(sticker)
+    }
+}
+
 // MARK: ImagePikcerDelegate
 extension PageViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {

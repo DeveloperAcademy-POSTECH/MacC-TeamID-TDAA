@@ -249,6 +249,37 @@ extension UIScreen {
 
             }
         }
+        
+// MARK: - DiaryConfig
+        var diaryConfigTitleFont: UIFont {
+            switch self {
+            default: return UIFont.boldSystemFont(ofSize: 17)
+            }
+        }
+        
+        var diaryConfigButtonFont: UIFont {
+            switch self {
+            default: return UIFont.systemFont(ofSize: 17)
+            }
+        }
+        
+        var diaryConfigTitleTopInset: CGFloat {
+            switch self {
+            default: return 60
+            }
+        }
+        
+        var diaryConfigCancelButtonLeftInset: CGFloat {
+            switch self {
+            default: return 20
+            }
+        }
+        
+        var diaryConfigDoneButtonRightInset: CGFloat {
+            switch self {
+            default: return 20
+            }
+        }
 	}
 
 }

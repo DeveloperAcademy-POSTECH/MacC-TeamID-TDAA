@@ -265,7 +265,7 @@ extension UIScreen {
         
         var diaryConfigTitleTopInset: CGFloat {
             switch self {
-            default: return 60
+            default: return 20
             }
         }
         

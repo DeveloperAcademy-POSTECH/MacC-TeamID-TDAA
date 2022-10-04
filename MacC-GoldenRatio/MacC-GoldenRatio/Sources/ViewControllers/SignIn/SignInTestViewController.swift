@@ -59,7 +59,7 @@ class SignInTestViewController: UIViewController {
         let button = UIButton(type: .system)
         button.backgroundColor = .black
         button.tintColor = .white
-        button.setTitle("다이어리 생성", for: .normal)
+        button.setTitle("다이어리 추가", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: device.logInButtonFontSize)
         button.addTarget(self, action: #selector(diaryCreateButtonPressed), for: .touchUpInside)
         return button
@@ -103,14 +103,14 @@ class SignInTestViewController: UIViewController {
     }
     
     @objc private func diaryCreateButtonPressed() {
-        let vc = DiaryConfigViewController(configState: .create)
-        vc.modalPresentationStyle = .fullScreen
+        let vc = DiaryConfigViewController(mode: .create)
+        vc.modalPresentationStyle = .overFullScreen
         self.present(vc, animated: true, completion: nil)
     }
     
     @objc private func diaryModifyButtonPressed() {
-        let vc = DiaryConfigViewController(configState: .modify)
-        vc.modalPresentationStyle = .fullScreen
+        let vc = DiaryConfigViewController(mode: .modify)
+        vc.modalPresentationStyle = .overCurrentContext
         self.present(vc, animated: true, completion: nil)
     }
     

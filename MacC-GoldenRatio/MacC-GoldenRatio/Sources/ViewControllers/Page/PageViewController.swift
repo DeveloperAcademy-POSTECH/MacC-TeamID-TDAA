@@ -193,7 +193,7 @@ class PageViewController: UIViewController {
     }
 
 }
-
+// MARK: ImagePikcerDelegate
 extension PageViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         var selectedImage: UIImage? = nil

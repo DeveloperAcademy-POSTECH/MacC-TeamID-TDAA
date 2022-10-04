@@ -12,6 +12,8 @@ import UIKit
 class StickerView: UIView {
     private let pageViewModel = PageViewModel.pageViewModel
     private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
+    
+    private var image: UIImage?
     private var mapItem: MKMapItem?
     
     private var touchStart: CGPoint?
@@ -54,6 +56,7 @@ class StickerView: UIView {
     }
     
     init(image: UIImage, size: CGSize) {
+        self.image = image
         let stickerImageView = UIImageView(image: image)
         stickerImageView.contentMode = .scaleAspectFit
         stickerImageView.frame = CGRect(origin: .zero, size: size)

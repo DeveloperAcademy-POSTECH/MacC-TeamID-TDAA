@@ -172,6 +172,7 @@ class PageViewController: UIViewController {
     
     @objc func onTapStickerButton(){
         let stickerPickerViewController = StickerPickerViewController()
+        stickerPickerViewController.completion = self.addSticker(sticker:)
         stickerPickerViewController.modalPresentationStyle = .custom
         stickerPickerViewController.transitioningDelegate = self
         self.present(stickerPickerViewController, animated: true)
@@ -187,6 +188,12 @@ class PageViewController: UIViewController {
     private func addImageSticker(image: UIImage?) {
         guard let image = image else { return }
         let imageStickerView = StickerView(image: image, size: self.myDevice.stickerDefaultSize)
+        imageStickerView.delegate = self
+        self.addSticker(stickerView: imageStickerView)
+    }
+    
+    private func addSticker(sticker: String) {
+        let imageStickerView = StickerView(sticker: sticker, size: self.myDevice.stickerDefaultSize)
         imageStickerView.delegate = self
         self.addSticker(stickerView: imageStickerView)
     }

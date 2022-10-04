@@ -9,6 +9,7 @@ import SnapKit
 import UIKit
 
 class StickerPickerViewController: UIViewController {
+    var completion: (_ sticker: String) -> Void = { sticker in }
     private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
     private let stickerArray: [String] = ["fireSticker", "fireSticker", "fireSticker", "fireSticker", "hamburgerSticker", "pizzaSticker", "dumplingSticker", "waffleSticker"]
     
@@ -90,6 +91,7 @@ class StickerPickerViewController: UIViewController {
             
         }
     }
+    // MARK: Actions
     @objc private func onTapXMarkButton() {
         self.dismiss(animated: true)
     }
@@ -111,10 +113,8 @@ extension StickerPickerViewController: UICollectionViewDataSource, UICollectionV
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: StickerPickerCollectionViewCell.identifier, for: indexPath) as? StickerPickerCollectionViewCell else { return UICollectionViewCell() }
         let imageString = stickerArray[indexPath.item]
-        
         guard let image = UIImage(named: imageString) else { return cell }
         cell.setImage(image)
         
@@ -127,38 +127,10 @@ extension StickerPickerViewController: UICollectionViewDataSource, UICollectionV
         
         return CGSize(width: cellWidth, height: cellHeight)
     }
-}
-
-class StickerPickerCollectionViewCell: UICollectionViewCell {
-
-    private let imageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
-        return imageView
-    }()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        addSubviews()
-        configureConstraints()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func addSubviews() {
-        contentView.addSubview(imageView)
-    }
-    
-    private func configureConstraints() {
-        imageView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-    }
-    
-    func setImage(_ image: UIImage){
-        self.imageView.image = image
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let imageString = stickerArray[indexPath.item]
+        self.completion(imageString)
+        self.dismiss(animated: true)
     }
 }

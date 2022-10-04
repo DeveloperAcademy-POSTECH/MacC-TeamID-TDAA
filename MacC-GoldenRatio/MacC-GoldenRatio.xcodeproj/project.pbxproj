@@ -18,6 +18,7 @@
 		0AAB2AD328EB14A8009FBD96 /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2AD228EB14A8009FBD96 /* UIView+.swift */; };
 		0AAB2AD528EC1F11009FBD96 /* StickerPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2AD428EC1F11009FBD96 /* StickerPickerViewController.swift */; };
 		0AAB2AD728EC2587009FBD96 /* HalfModalPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2AD628EC2587009FBD96 /* HalfModalPresentationController.swift */; };
+		0AAB2ADA28EC8C8D009FBD96 /* StickerPickerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2AD928EC8C8D009FBD96 /* StickerPickerCollectionViewCell.swift */; };
 		CCE1806F28E5919B00AF06DB /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE1806E28E5919B00AF06DB /* SignInViewController.swift */; };
 		CCE1807428E6B7C500AF06DB /* SignInTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE1807328E6B7C500AF06DB /* SignInTestViewController.swift */; };
 		E243425C28E4B890007BB6DE /* MyDiariesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E243425B28E4B890007BB6DE /* MyDiariesViewController.swift */; };
@@ -92,6 +93,7 @@
 		0AAB2AD228EB14A8009FBD96 /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
 		0AAB2AD428EC1F11009FBD96 /* StickerPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerPickerViewController.swift; sourceTree = "<group>"; };
 		0AAB2AD628EC2587009FBD96 /* HalfModalPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HalfModalPresentationController.swift; path = "MacC-GoldenRatio/Sources/ViewControllers/Page/HalfModalPresentationController.swift"; sourceTree = SOURCE_ROOT; };
+		0AAB2AD928EC8C8D009FBD96 /* StickerPickerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerPickerCollectionViewCell.swift; sourceTree = "<group>"; };
 		CC6BD73728E9790C001ED665 /* MacC-GoldenRatio.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "MacC-GoldenRatio.entitlements"; sourceTree = "<group>"; };
 		CCE1806E28E5919B00AF06DB /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		CCE1807328E6B7C500AF06DB /* SignInTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInTestViewController.swift; sourceTree = "<group>"; };
@@ -182,6 +184,14 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
+		0AAB2AD828EC8C69009FBD96 /* Page */ = {
+			isa = PBXGroup;
+			children = (
+				0AAB2AD928EC8C8D009FBD96 /* StickerPickerCollectionViewCell.swift */,
+			);
+			path = Page;
+			sourceTree = "<group>";
+		};
 		CCE1806D28E5917A00AF06DB /* SignIn */ = {
 			isa = PBXGroup;
 			children = (
@@ -225,6 +235,7 @@
 		E276B91728E4692B00163833 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				0AAB2AD828EC8C69009FBD96 /* Page */,
 				E2EA7F0D28E56EDF00AC1C49 /* DiaryCollectionViewCell.swift */,
 			);
 			path = Cells;
@@ -503,6 +514,7 @@
 				0A5E904828E857E200B381B8 /* StickerView.swift in Sources */,
 				E2EA7F1628E5711E00AC1C49 /* DiaryCollectionHeaderView.swift in Sources */,
 				0AAB2ACF28EAFF52009FBD96 /* TableView+.swift in Sources */,
+				0AAB2ADA28EC8C8D009FBD96 /* StickerPickerCollectionViewCell.swift in Sources */,
 				0AAB2AD328EB14A8009FBD96 /* UIView+.swift in Sources */,
 				E28F080428E4655100832F4A /* SceneDelegate.swift in Sources */,
 				E243425C28E4B890007BB6DE /* MyDiariesViewController.swift in Sources */,

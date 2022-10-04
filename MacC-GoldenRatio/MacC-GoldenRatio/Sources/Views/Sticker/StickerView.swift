@@ -9,9 +9,16 @@ import MapKit
 import SnapKit
 import UIKit
 
+protocol StickerViewDelegate {
+    func removeSticker(sticker: StickerView)
+    func bringToFront(sticker: StickerView)
+}
+
 class StickerView: UIView {
-    private let pageViewModel = PageViewModel.pageViewModel
+    var delegate: StickerViewDelegate!
     private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
+    
+    private var image: UIImage?
     private var mapItem: MKMapItem?
     
     private var touchStart: CGPoint?
@@ -31,6 +38,9 @@ class StickerView: UIView {
                 if $0 is StickerControllerView || $0 is StickerBorderView {
                     $0.isHidden = newValue
                 }
+            }
+            if newValue == true {
+                enableTranslucency(state: !newValue)
             }
         }
     }
@@ -54,6 +64,7 @@ class StickerView: UIView {
     }
     
     init(image: UIImage, size: CGSize) {
+        self.image = image
         let stickerImageView = UIImageView(image: image)
         stickerImageView.contentMode = .scaleAspectFit
         stickerImageView.frame = CGRect(origin: .zero, size: size)
@@ -142,9 +153,8 @@ class StickerView: UIView {
     // MARK: control버튼 제스처 관련 메서드
     @objc private func singleTap(_ sender: UIPanGestureRecognizer) {
         let close = sender.view
-        if let close = close {
-            close.superview?.removeFromSuperview()
-            pageViewModel.removeSticker(self)
+        if let _ = close {
+            self.delegate.removeSticker(sticker: self)
         }
     }
 
@@ -247,8 +257,7 @@ class StickerView: UIView {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard subviewIsHidden == false else { return }
         
-        superview?.bringSubviewToFront(self)
-        pageViewModel.bringStickerToFront(self)
+        self.delegate.bringToFront(sticker: self)
         enableTranslucency(state: true)
 
         let touch = touches.first

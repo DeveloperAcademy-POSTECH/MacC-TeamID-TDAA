@@ -12,7 +12,8 @@ import UIKit
 class PageViewController: UIViewController {
     private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
     private let pageViewModel = PageViewModel.pageViewModel
-    
+    private let imagePicker = UIImagePickerController()
+
     private lazy var backgroundImageView: UIImageView = {
         let backgroundImageView = UIImageView()
         backgroundImageView.backgroundColor = .gray
@@ -44,6 +45,7 @@ class PageViewController: UIViewController {
         let image = UIImage(systemName: "photo")
         button.setImage(image, for: .normal)
         button.tintColor = .black
+        button.addTarget(self, action: #selector(onTapImageButton), for: .touchUpInside)
 
         return button
     }()
@@ -53,7 +55,8 @@ class PageViewController: UIViewController {
         let image = UIImage(systemName: "s.circle.fill")
         button.setImage(image, for: .normal)
         button.tintColor = .black
-        
+        button.addTarget(self, action: #selector(onTapMapButton), for: .touchUpInside)
+
         return button
     }()
     
@@ -62,6 +65,7 @@ class PageViewController: UIViewController {
         let image = UIImage(systemName: "t.square")
         button.setImage(image, for: .normal)
         button.tintColor = .black
+        button.addTarget(self, action: #selector(onTapMapButton), for: .touchUpInside)
 
         return button
     }()
@@ -75,6 +79,10 @@ class PageViewController: UIViewController {
         self.navigationItem.title = "1일차"
         self.navigationItem.setLeftBarButton(leftBarButtonItem, animated: false)
         self.navigationItem.setRightBarButton(rightBarButtonItem, animated: false)
+        
+        self.imagePicker.sourceType = .photoLibrary
+        self.imagePicker.allowsEditing = true
+        self.imagePicker.delegate = self
         
         DispatchQueue.main.async {
             self.addSubviews()
@@ -110,9 +118,6 @@ class PageViewController: UIViewController {
             }
             
         }
-        self.imageToolButton.addTarget(self, action: #selector(self.addSticker), for: .touchUpInside)
-        self.stickerToolButton.addTarget(self, action: #selector(self.addSticker), for: .touchUpInside)
-        self.textToolButton.addTarget(self, action: #selector(self.addSticker), for: .touchUpInside)
     }
     
     private func configureConstraints() {
@@ -151,19 +156,6 @@ class PageViewController: UIViewController {
     }
     
     // MARK: Actions
-    @objc private func addSticker() {
-        DispatchQueue.main.async {
-            let image = UIImage(systemName: "photo")!
-            let stickerView = StickerView(image: image, size: self.myDevice.stickerDefaultSize)
-            stickerView.center = CGPoint(x: self.view.center.x, y: self.view.center.y - 100)
-            self.backgroundImageView.addSubview(stickerView)
-            self.backgroundImageView.bringSubviewToFront(stickerView)
-            self.backgroundImageView.isUserInteractionEnabled = true
-            self.pageViewModel.appendSticker(stickerView)
-        }
-        
-    }
-    
     @objc private func setStickerSubviewIsHidden() {
         self.pageViewModel.hideStickerSubviews()
     }
@@ -174,15 +166,59 @@ class PageViewController: UIViewController {
         self.present(mapSearchViewController, animated: true)
     }
     
+    @objc func onTapImageButton(){
+        self.present(self.imagePicker, animated: true)
+    }
+    
     // MARK: Completion Method
     private func addMapSticker(mapItem: MKMapItem) {
+        let mapStickerView = StickerView(mapItem: mapItem, size: self.myDevice.stickerDefaultSize)
+        mapStickerView.delegate = self
+        self.addSticker(stickerView: mapStickerView)
+    }
+    
+    private func addImageSticker(image: UIImage?) {
+        guard let image = image else { return }
+        let imageStickerView = StickerView(image: image, size: self.myDevice.stickerDefaultSize)
+        imageStickerView.delegate = self
+        self.addSticker(stickerView: imageStickerView)
+    }
+    
+    private func addSticker(stickerView: StickerView) {
         DispatchQueue.main.async {
-            let stickerView = StickerView(mapItem: mapItem, size: self.myDevice.stickerDefaultSize)
             stickerView.center = CGPoint(x: self.view.center.x, y: self.view.center.y - 100)
             self.backgroundImageView.addSubview(stickerView)
             self.backgroundImageView.bringSubviewToFront(stickerView)
             self.backgroundImageView.isUserInteractionEnabled = true
             self.pageViewModel.appendSticker(stickerView)
         }
+    }
+
+}
+
+extension PageViewController: StickerViewDelegate {
+    func removeSticker(sticker: StickerView) {
+        sticker.removeFromSuperview()
+        pageViewModel.removeSticker(sticker)
+    }
+    
+    func bringToFront(sticker: StickerView) {
+        backgroundImageView.bringSubviewToFront(sticker)
+        pageViewModel.bringStickerToFront(sticker)
+    }
+}
+
+// MARK: ImagePikcerDelegate
+extension PageViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        var selectedImage: UIImage? = nil
+        
+        if let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+            selectedImage = image
+        } else if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            selectedImage = image
+        }
+        self.addImageSticker(image: selectedImage)
+        self.imagePicker.dismiss(animated: true, completion: nil)
     }
 }

@@ -16,19 +16,21 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
     
     private lazy var contentTitle: UILabel = {
         let title = UILabel()
-        title.font = UIFont.boldSystemFont(ofSize: 22)
+        title.font = device.diaryConfigCellTitleFont
         return title
     }()
 
-    private lazy var contentTextField: UITextField? = {
+    lazy var contentTextField: UITextField? = {
         let textField = UITextField()
+        textField.placeholder = "PlaceHolder"
+        textField.returnKeyType = .done
+        textField.delegate = self
         return textField
     }()
     
-    private lazy var contentButton: UIButton = {
+    lazy var contentButton: UIButton? = {
         let button = UIButton(type: .system)
-        button.addTarget(self, action: #selector(contentButtonTapped), for: .touchUpInside)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 17)
+        button.titleLabel?.font = device.diaryConfigCellContentFont
         return button
     }()
 
@@ -40,71 +42,78 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
         return button
     }()
 
+    // CollectionView에서 Cell초기화 담당
     func setContent(indexPath: IndexPath, diary: Diary?) {
-        contentType = ConfigContentType.allCases[indexPath.item]
+        contentType = ConfigContentType.allCases[indexPath.row]
         contentTitle.text = contentType?.title
         
         if let diary = diary {
-            contentButton.tintColor = .black
+            contentButton?.tintColor = .black
             
             switch contentType {
             case .diaryName:
-                contentButton.setTitle(diary.diaryName, for: .normal)
+                contentTextField?.text = diary.diaryName
             case .location:
-                contentButton.setTitle(diary.diaryLocation.locationName, for: .normal)
+                contentButton?.setTitle(diary.diaryLocation.locationName, for: .normal)
             case .diaryDate:
-                contentButton.setTitle(diary.diaryStartDate.description, for: .normal)
+                contentButton?.setTitle(diary.diaryStartDate.description, for: .normal)
             default:
-                contentButton.tintColor = .systemGray
-                contentButton.setTitle("PlaceHolder", for: .normal)
+                contentButton?.tintColor = .placeholderText
+                contentButton?.setTitle("PlaceHolder", for: .normal)
             }
-            
         } else {
-            contentButton.tintColor = .systemGray
-            contentButton.setTitle("PlaceHolder", for: .normal)
+            contentButton?.tintColor = .placeholderText
+            contentButton?.setTitle("PlaceHolder", for: .normal)
         }
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        contentView.backgroundColor = .darkGray
+        contentView.backgroundColor = .clear
         
         contentView.addSubview(contentTitle)
         contentTitle.snp.makeConstraints {
-            $0.left.equalToSuperview().inset(20)
-            $0.top.equalToSuperview().inset(10)
+            $0.left.equalToSuperview().inset(device.diaryConfigCellLeftInset)
+            $0.top.equalToSuperview().inset(device.diaryConfigCellTopInset)
         }
         
-        contentView.addSubview(contentButton)
-        contentButton.snp.makeConstraints{
-            $0.left.equalTo(contentTitle)
-            $0.bottom.equalToSuperview().inset(10)
+        switch contentType {
+        case .diaryName:
+            contentView.addSubview(contentTextField ?? UITextField())
+            contentTextField?.snp.makeConstraints{
+                $0.left.equalTo(contentTitle)
+                $0.bottom.equalToSuperview().inset(device.diaryConfigCellBottomInset)
+            }
+        case .diaryDate, .location:
+            contentView.addSubview(contentButton ?? UIButton())
+            contentButton?.snp.makeConstraints{
+                $0.left.equalTo(contentTitle)
+                $0.bottom.equalToSuperview().inset(device.diaryConfigCellBottomInset)
+            }
+        case .none:
+            print("Ther will be no Content Type")
         }
         
         contentView.addSubview(clearButton)
         clearButton.snp.makeConstraints {
-            $0.right.equalToSuperview().inset(10)
-            $0.bottom.equalTo(contentButton)
-        }
-    }
-    
-    @objc func contentButtonTapped() {
-        switch contentType {
-        case .diaryName:
-            print("TextField for Diary name Configuration")
-        case .location:
-            print("Map for Diary location Configuration")
-        case .diaryDate:
-            print("DatePicker for Diary date Configuration")
-        case .none:
-            print("You want New type?")
+            $0.right.equalToSuperview().inset(device.diaryConfigCellRightInset)
+            $0.bottom.equalToSuperview().inset(device.diaryConfigCellBottomInset)
         }
     }
     
     @objc func clearButtonTapped() {
-        contentButton.setTitle("PlaceHolder", for: .normal)
-        contentButton.tintColor = .systemGray
+        UIView.performWithoutAnimation {
+            contentTextField?.text = nil
+            contentButton?.setTitle("PlaceHolder", for: .normal)
+            contentButton?.tintColor = .placeholderText
+        }
+    }
+}
+
+extension DiaryConfigCollectionViewCell: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.endEditing(true)
     }
 }
 

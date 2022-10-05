@@ -250,7 +250,7 @@ extension UIScreen {
             }
         }
         
-// MARK: - DiaryConfig
+// MARK: - Diary Config
         var diaryConfigTitleFont: UIFont {
             switch self {
             default: return UIFont.boldSystemFont(ofSize: 17)
@@ -280,6 +280,62 @@ extension UIScreen {
             default: return 20
             }
         }
+        
+        var diaryConfigCollectionViewInset: CGFloat {
+            switch self {
+            default: return 40
+            }
+        }
+        
+        var diaryConfigCollectionViewCellHeight: CGFloat {
+            switch self {
+            default: return 86
+            }
+        }
+        
+        var diaryConfigCollectionViewCellInset: CGFloat {
+            switch self {
+            default: return 20
+            }
+        }
+        
+// MARK: - Diary Config Cell
+        var diaryConfigCellTitleFont: UIFont {
+            switch self {
+            default: return UIFont.boldSystemFont(ofSize: 22)
+            }
+        }
+        
+        var diaryConfigCellContentFont: UIFont {
+            switch self {
+            default: return UIFont.systemFont(ofSize: 17)
+            }
+        }
+        
+        var diaryConfigCellTopInset: CGFloat {
+            switch self {
+            default: return 10
+            }
+        }
+        
+        var diaryConfigCellLeftInset: CGFloat {
+            switch self {
+            default: return 20
+            }
+        }
+        
+        var diaryConfigCellBottomInset: CGFloat {
+            switch self {
+            default: return 10
+            }
+        }
+        
+        var diaryConfigCellRightInset: CGFloat {
+            switch self {
+            default: return 20
+            }
+        }
+        
 	}
 
 }

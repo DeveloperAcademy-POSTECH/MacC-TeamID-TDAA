@@ -5,6 +5,7 @@
 //  Created by DongKyu Kim on 2022/10/04.
 //
 
+import MapKit
 import SnapKit
 import UIKit
 
@@ -38,8 +39,8 @@ class DiaryConfigViewController: UIViewController {
         
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.backgroundColor = .systemGray5
 
-        collectionView.backgroundColor = .systemBackground
         collectionView.register(DiaryConfigCollectionViewCell.self, forCellWithReuseIdentifier: "DiaryConfigCollectionViewCell")
 
         return collectionView
@@ -112,7 +113,7 @@ class DiaryConfigViewController: UIViewController {
     private func collectionViewSetup() {
         view.addSubview(diaryConfigCollectionView)
         diaryConfigCollectionView.snp.makeConstraints {
-            $0.topMargin.equalTo(view.safeAreaLayoutGuide).inset(40)
+            $0.topMargin.equalTo(view.safeAreaLayoutGuide).inset(device.diaryConfigCollectionViewInset)
             $0.bottom.equalTo(view.safeAreaLayoutGuide)
             $0.leading.equalTo(view.safeAreaLayoutGuide)
             $0.trailing.equalTo(view.safeAreaLayoutGuide)
@@ -123,38 +124,64 @@ class DiaryConfigViewController: UIViewController {
 
 // MARK: - extensions
 extension DiaryConfigViewController: UICollectionViewDataSource {
-    internal func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         let contentsCount = ConfigContentType.allCases.count
         return contentsCount
     }
     
-    internal func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = diaryConfigCollectionView.dequeueReusableCell(withReuseIdentifier: "DiaryConfigCollectionViewCell", for: indexPath) as? DiaryConfigCollectionViewCell else { return UICollectionViewCell() }
         
-        switch configState {
+        switch configState { // 데이터 전달 부분
         case .create:
             cell.setContent(indexPath: indexPath, diary: nil)
         case .modify:
             cell.setContent(indexPath: indexPath, diary: dummyData[0])
         }
         
+        cell.contentButton?.tag = indexPath.row
+        cell.contentButton?.addTarget(self, action: #selector(contentButtonTapped), for: .touchUpInside)
         return cell
     }
+    
+    @objc func contentButtonTapped(_ sender: UIButton) {
+        let configContentType = ConfigContentType.allCases[sender.tag]
+        
+        switch configContentType {
+        case .diaryName:
+            print("TextField for Diary name Configuration")
+            
+        case .location:
+            let mapSearchViewController = MapSearchViewController()
+            mapSearchViewController.completion = { mapItem in
+                UIView.performWithoutAnimation {
+                    sender.setTitle(mapItem.name, for: .normal)
+                    sender.tintColor = .black
+                    sender.layoutIfNeeded()
+                }
+            }
+            self.present(mapSearchViewController, animated: true)
+        
+        case .diaryDate:
+            print("DatePicker for Diary date Configuration")
+        }
+    }
+    
 }
 
 extension DiaryConfigViewController: UICollectionViewDelegate {
-    internal func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         return true
     }
 }
 
 extension DiaryConfigViewController: UICollectionViewDelegateFlowLayout {
-    internal func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: UIScreen.main.bounds.width, height: 86)
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: UIScreen.main.bounds.width, height: device.diaryConfigCollectionViewCellHeight)
     }
     
-    internal func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0)
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: device.diaryConfigCollectionViewCellInset, left: 0, bottom: device.diaryConfigCollectionViewCellInset, right: 0)
     }
 }
 

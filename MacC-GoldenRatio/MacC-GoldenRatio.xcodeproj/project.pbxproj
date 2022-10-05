@@ -91,6 +91,7 @@
 		0AAB2ACE28EAFF52009FBD96 /* TableView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TableView+.swift"; sourceTree = "<group>"; };
 		0AAB2AD028EAFF6D009FBD96 /* CollectionView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionView+.swift"; sourceTree = "<group>"; };
 		0AAB2AD228EB14A8009FBD96 /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
+		8E295A9228EC2CF200127D41 /* EF_Diary.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = EF_Diary.ttf; sourceTree = "<group>"; };
 		0AAB2AD428EC1F11009FBD96 /* StickerPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerPickerViewController.swift; sourceTree = "<group>"; };
 		0AAB2AD628EC2587009FBD96 /* HalfModalPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HalfModalPresentationController.swift; path = "MacC-GoldenRatio/Sources/ViewControllers/Page/HalfModalPresentationController.swift"; sourceTree = SOURCE_ROOT; };
 		0AAB2AD928EC8C8D009FBD96 /* StickerPickerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerPickerCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -184,6 +185,14 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
+		8E295A9128EC2CD400127D41 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				8E295A9228EC2CF200127D41 /* EF_Diary.ttf */,
+			);
+			path = Fonts;
+      sourceTree = "<group>";
+		};
 		0AAB2AD828EC8C69009FBD96 /* Page */ = {
 			isa = PBXGroup;
 			children = (
@@ -217,6 +226,7 @@
 		E276B91428E468E900163833 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				8E295A9128EC2CD400127D41 /* Fonts */,
 				E28F080128E4655100832F4A /* AppDelegate.swift */,
 				E28F080328E4655100832F4A /* SceneDelegate.swift */,
 				E2F5691828E5CE170039BE37 /* GoogleService-Info.plist */,
@@ -722,9 +732,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "MacC-GoldenRatio/MacC-GoldenRatio.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = ZNH7978JJQ;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = ZNH7978JJQ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "MacC-GoldenRatio/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -740,6 +752,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.TwoInterval.MacC-GoldenRatio";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = DiaryAppForDistribution;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = DiaryAppForDevelopment;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

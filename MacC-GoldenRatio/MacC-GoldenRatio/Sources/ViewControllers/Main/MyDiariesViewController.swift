@@ -130,6 +130,8 @@ extension MyDiariesViewController: UICollectionViewDataSource {
 			label.text = "다이어리를 추가해주세요."
 			label.textAlignment = .center
 			collectionView.backgroundView = label
+		} else {
+			collectionView.backgroundView = nil
 		}
 		
 		return viewModel.shouldLoadDiaryResult.count

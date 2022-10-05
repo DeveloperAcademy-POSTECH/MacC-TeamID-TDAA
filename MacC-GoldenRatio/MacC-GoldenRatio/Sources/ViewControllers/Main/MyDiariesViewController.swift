@@ -9,8 +9,7 @@ import SnapKit
 import UIKit
 
 final class MyDiariesViewController: UIViewController {
-	// TODO: ViewModel 작업 전까지 사용할 DummyData
-	private let diary = [Diary(diaryUUID: "", diaryName: "🌊포항항", diaryLocation: Location(locationName: "", locationAddress: "", locationCoordinate: [0.0]), diaryStartDate: Date(), diaryEndDate: Date(), diaryPages: [[Page(pageUUID: "", items: [Item(itemUUID: "", itemType: ItemType.text, contents: "", itemSize: [0.0], itemPosition: [0.0], itemAngle: 0.0)])]], userUIDs: [User(userUID: "", userName: "칼리", userImageURL: ""), User(userUID: "", userName: "드록바", userImageURL: ""), User(userUID: "", userName: "해츨링", userImageURL: ""), User(userUID: "", userName: "라우", userImageURL: ""), User(userUID: "", userName: "산", userImageURL: "")])]
+	private let viewModel = MyDiariesViewModel()
 	private let myDevice = UIScreen.getDevice()
 	private var myDiariesViewModalBackgroundView = UIView()
 	
@@ -40,7 +39,7 @@ final class MyDiariesViewController: UIViewController {
 		let button = UIButton()
 		button.setTitle("다이어리 생성", for: .normal)
 		button.setTitleColor(UIColor.black, for: .normal)
-		button.addTarget(self, action: #selector(MyDiariesViewCustomModalVC.createDiaryButtonTapped), for: .touchUpInside)
+		button.addTarget(MyDiariesViewController.self, action: #selector(MyDiariesViewCustomModalVC.createDiaryButtonTapped), for: .touchUpInside)
 		
 		button.snp.makeConstraints {
 			$0.height.equalTo(UIScreen.getDevice().MyDiariesViewCustomModalViewButtonHeight)
@@ -53,7 +52,7 @@ final class MyDiariesViewController: UIViewController {
 		let button = UIButton()
 		button.setTitle("초대코드로 참가", for: .normal)
 		button.setTitleColor(UIColor.black, for: .normal)
-		button.addTarget(self, action: #selector(MyDiariesViewCustomModalVC.joinDiaryButtonTapped), for: .touchUpInside)
+		button.addTarget(MyDiariesViewController.self, action: #selector(MyDiariesViewCustomModalVC.joinDiaryButtonTapped), for: .touchUpInside)
 		
 		button.snp.makeConstraints {
 			$0.height.equalTo(UIScreen.getDevice().MyDiariesViewCustomModalViewButtonHeight)
@@ -103,6 +102,9 @@ final class MyDiariesViewController: UIViewController {
 		addMenuView()
 		CustomMenuModalVC.stackView.addArrangedSubview(createDiaryButton)
 		CustomMenuModalVC.stackView.addArrangedSubview(joinDiaryButton)
+		CustomMenuModalVC.stackViewBottom = myDevice.MyDiariesViewCustomModalViewStackBottom
+		CustomMenuModalVC.stackViewTrailing = myDevice.MyDiariesViewCustomModalViewStackTrailing
+		CustomMenuModalVC.stackViewSize = CGSize(width: myDevice.MyDiariesViewCustomModalViewStackWidth, height: myDevice.MyDiariesViewCustomModalViewButtonHeight*CustomMenuModalVC.stackView.arrangedSubviews.count)
 		present(CustomMenuModalVC, animated: true, completion: nil)
 	}
 }
@@ -123,14 +125,14 @@ extension MyDiariesViewController: MyDiariesViewCustomModalDelegate {
 
 extension MyDiariesViewController: UICollectionViewDataSource {
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		if diary.count == 0 {
+		if viewModel.shouldLoadDiaryResult.count == 0 {
 			let label = UILabel()
 			label.text = "다이어리를 추가해주세요."
 			label.textAlignment = .center
 			collectionView.backgroundView = label
 		}
 		
-		return diary.count
+		return viewModel.shouldLoadDiaryResult.count
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -139,7 +141,7 @@ extension MyDiariesViewController: UICollectionViewDataSource {
 		var imageViews = [UIImageView]()
 		
 		// TODO: ViewModel 작업 후 수정 예정
-		for _ in 0..<diary[0].userUIDs.count {
+		for _ in 0..<viewModel.shouldLoadDiaryResult[indexPath.item].userUIDs.count {
 			let imageView = UIImageView(image: UIImage(systemName: "person"))
 			imageView.contentMode = .scaleToFill
 			imageView.clipsToBounds = true
@@ -150,7 +152,7 @@ extension MyDiariesViewController: UICollectionViewDataSource {
 			imageViews.append(imageView)
 		}
 		
-		cell?.setup(title: diary[0].diaryName, imageViews: imageViews)
+		cell?.setup(title: viewModel.shouldLoadDiaryResult[indexPath.item].diaryName, imageViews: imageViews)
 
 		cell?.layer.borderWidth = 0.5
 		cell?.layer.cornerRadius = 20

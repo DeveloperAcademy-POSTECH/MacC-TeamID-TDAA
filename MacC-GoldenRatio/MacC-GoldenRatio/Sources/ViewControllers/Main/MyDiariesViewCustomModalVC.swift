@@ -15,8 +15,11 @@ protocol MyDiariesViewCustomModalDelegate: class {
 }
 
 class MyDiariesViewCustomModalVC: UIViewController {
-	
 	weak var delegate: MyDiariesViewCustomModalDelegate?
+	
+	var stackViewBottom: Int?
+	var stackViewTrailing: Int?
+	var stackViewSize: CGSize?
 	
 	lazy var stackView: UIStackView = {
 		let stackView = UIStackView()
@@ -51,15 +54,14 @@ class MyDiariesViewCustomModalVC: UIViewController {
 		view.addSubview(stackView)
 		
 		stackView.snp.makeConstraints {
-			$0.width.equalTo(UIScreen.getDevice().MyDiariesViewCustomModalViewStackWidth)
-			$0.height.equalTo(UIScreen.getDevice().MyDiariesViewCustomModalViewButtonHeight*stackView.arrangedSubviews.count)
-			$0.bottom.equalTo(view.safeAreaLayoutGuide).inset(UIScreen.getDevice().MyDiariesViewCustomModalViewStackBottom)
-			$0.trailing.equalTo(view.safeAreaLayoutGuide).inset(UIScreen.getDevice().MyDiariesViewCustomModalViewStackTrailing)
+			$0.size.equalTo(stackViewSize ?? CGSize(width: 0, height: 0))
+			$0.bottom.equalTo(view.safeAreaLayoutGuide).inset(stackViewBottom ?? 0)
+			$0.trailing.equalTo(view.safeAreaLayoutGuide).inset(stackViewTrailing ?? 0)
 		}
 	}
 	
 	// TODO: Cali 작업 완료 시 View 연결 로직 구현 예정
-	@objc  func createDiaryButtonTapped() {
+	@objc func createDiaryButtonTapped() {
 		print("create")
 		
 		delegate?.createDiaryButtonTapped()
@@ -67,7 +69,7 @@ class MyDiariesViewCustomModalVC: UIViewController {
 	}
 	
 	// TODO: Cali 작업 완료 시 View 연결 로직 구현 예정
-	@objc  func joinDiaryButtonTapped() {
+	@objc func joinDiaryButtonTapped() {
 		let joinDiaryAlert = UIAlertController(title: "초대코드 입력", message: "받은 초대코드를 입력해주세요.", preferredStyle: .alert)
 		let joinAction = UIAlertAction(title: "확인", style: .default) { action in
 			if let textField = joinDiaryAlert.textFields?.first {

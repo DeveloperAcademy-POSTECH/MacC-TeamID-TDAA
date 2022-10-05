@@ -25,7 +25,10 @@ class TextStickerView: StickerView {
         textView.isScrollEnabled = false
         textView.isUserInteractionEnabled = false
         
-        super.init(frame: textView.frame, content: textView)
+        super.init(frame: textView.frame)
+        super.setupContentView(content: textView)
+        super.setupDefaultAttributes()
+        
         self.textView = textView
         self.textView.delegate = self
     }

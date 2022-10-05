@@ -20,6 +20,9 @@
 		0AAB2AD728EC2587009FBD96 /* HalfModalPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2AD628EC2587009FBD96 /* HalfModalPresentationController.swift */; };
 		0AAB2ADA28EC8C8D009FBD96 /* StickerPickerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2AD928EC8C8D009FBD96 /* StickerPickerCollectionViewCell.swift */; };
 		0AAB2ADC28EDA067009FBD96 /* TextStickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2ADB28EDA067009FBD96 /* TextStickerView.swift */; };
+		0AAB2ADE28EDA511009FBD96 /* MapStickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2ADD28EDA510009FBD96 /* MapStickerView.swift */; };
+		0AAB2AE028EDA553009FBD96 /* ImageStickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2ADF28EDA553009FBD96 /* ImageStickerView.swift */; };
+		0AAB2AE228EDA55D009FBD96 /* StickerStickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2AE128EDA55D009FBD96 /* StickerStickerView.swift */; };
 		CCE1806F28E5919B00AF06DB /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE1806E28E5919B00AF06DB /* SignInViewController.swift */; };
 		CCE1807428E6B7C500AF06DB /* SignInTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE1807328E6B7C500AF06DB /* SignInTestViewController.swift */; };
 		E243425C28E4B890007BB6DE /* MyDiariesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E243425B28E4B890007BB6DE /* MyDiariesViewController.swift */; };
@@ -96,6 +99,9 @@
 		0AAB2AD628EC2587009FBD96 /* HalfModalPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HalfModalPresentationController.swift; path = "MacC-GoldenRatio/Sources/ViewControllers/Page/HalfModalPresentationController.swift"; sourceTree = SOURCE_ROOT; };
 		0AAB2AD928EC8C8D009FBD96 /* StickerPickerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerPickerCollectionViewCell.swift; sourceTree = "<group>"; };
 		0AAB2ADB28EDA067009FBD96 /* TextStickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextStickerView.swift; sourceTree = "<group>"; };
+		0AAB2ADD28EDA510009FBD96 /* MapStickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapStickerView.swift; sourceTree = "<group>"; };
+		0AAB2ADF28EDA553009FBD96 /* ImageStickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageStickerView.swift; sourceTree = "<group>"; };
+		0AAB2AE128EDA55D009FBD96 /* StickerStickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerStickerView.swift; sourceTree = "<group>"; };
 		CC6BD73728E9790C001ED665 /* MacC-GoldenRatio.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "MacC-GoldenRatio.entitlements"; sourceTree = "<group>"; };
 		CCE1806E28E5919B00AF06DB /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		CCE1807328E6B7C500AF06DB /* SignInTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInTestViewController.swift; sourceTree = "<group>"; };
@@ -174,6 +180,9 @@
 				0A5E904728E857E200B381B8 /* StickerView.swift */,
 				0A5E904928E858C000B381B8 /* StickerContollerView.swift */,
 				0A5E904B28E858D200B381B8 /* StickerBorderView.swift */,
+				0AAB2ADD28EDA510009FBD96 /* MapStickerView.swift */,
+				0AAB2ADF28EDA553009FBD96 /* ImageStickerView.swift */,
+				0AAB2AE128EDA55D009FBD96 /* StickerStickerView.swift */,
 				0AAB2ADB28EDA067009FBD96 /* TextStickerView.swift */,
 			);
 			path = Sticker;
@@ -507,6 +516,8 @@
 				E2EA7F0E28E56EDF00AC1C49 /* DiaryCollectionViewCell.swift in Sources */,
 				0A5E904C28E858D200B381B8 /* StickerBorderView.swift in Sources */,
 				0A5E904F28E9948B00B381B8 /* PageViewModel.swift in Sources */,
+				0AAB2ADE28EDA511009FBD96 /* MapStickerView.swift in Sources */,
+				0AAB2AE028EDA553009FBD96 /* ImageStickerView.swift in Sources */,
 				CCE1806F28E5919B00AF06DB /* SignInViewController.swift in Sources */,
 				CCE1807428E6B7C500AF06DB /* SignInTestViewController.swift in Sources */,
 				E2EA7F0A28E56CFE00AC1C49 /* MyAlbumsViewController.swift in Sources */,
@@ -515,6 +526,7 @@
 				E2EA7F0C28E56DF600AC1C49 /* MyPageViewController.swift in Sources */,
 				E28F080228E4655100832F4A /* AppDelegate.swift in Sources */,
 				E276B91C28E46AE900163833 /* UserModel.swift in Sources */,
+				0AAB2AE228EDA55D009FBD96 /* StickerStickerView.swift in Sources */,
 				0A5E904828E857E200B381B8 /* StickerView.swift in Sources */,
 				E2EA7F1628E5711E00AC1C49 /* DiaryCollectionHeaderView.swift in Sources */,
 				0AAB2ACF28EAFF52009FBD96 /* TableView+.swift in Sources */,

@@ -185,20 +185,20 @@ class PageViewController: UIViewController {
     
     // MARK: Completion Method
     private func addMapSticker(mapItem: MKMapItem) {
-        let mapStickerView = StickerView(mapItem: mapItem, size: self.myDevice.stickerDefaultSize)
+        let mapStickerView = MapStickerView(mapItem: mapItem, size: self.myDevice.stickerDefaultSize)
         mapStickerView.delegate = self
         self.addSticker(stickerView: mapStickerView)
     }
     
     private func addImageSticker(image: UIImage?) {
         guard let image = image else { return }
-        let imageStickerView = StickerView(image: image, size: self.myDevice.stickerDefaultSize)
+        let imageStickerView = ImageStickerView(image: image, size: self.myDevice.stickerDefaultSize)
         imageStickerView.delegate = self
         self.addSticker(stickerView: imageStickerView)
     }
     
     private func addSticker(sticker: String) {
-        let imageStickerView = StickerView(sticker: sticker, size: self.myDevice.stickerDefaultSize)
+        let imageStickerView = StickerStickerView(sticker: sticker, size: self.myDevice.stickerDefaultSize)
         imageStickerView.delegate = self
         self.addSticker(stickerView: imageStickerView)
     }

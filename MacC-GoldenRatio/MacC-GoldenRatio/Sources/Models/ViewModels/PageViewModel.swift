@@ -8,7 +8,6 @@
 import Foundation
 
 class PageViewModel {
-    static let pageViewModel = PageViewModel()
     var stickerArray: [StickerView] = []
     
     func appendSticker(_ sticker: StickerView) {

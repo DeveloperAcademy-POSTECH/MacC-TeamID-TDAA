@@ -11,7 +11,7 @@ import UIKit
 
 class PageViewController: UIViewController {
     private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
-    private let pageViewModel = PageViewModel.pageViewModel
+    private let pageViewModel = PageViewModel()
     private let imagePicker = UIImagePickerController()
 
     private lazy var backgroundImageView: UIImageView = {

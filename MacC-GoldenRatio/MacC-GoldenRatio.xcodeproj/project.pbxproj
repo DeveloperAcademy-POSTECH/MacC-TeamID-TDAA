@@ -19,6 +19,7 @@
 		0AAB2AD528EC1F11009FBD96 /* StickerPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2AD428EC1F11009FBD96 /* StickerPickerViewController.swift */; };
 		0AAB2AD728EC2587009FBD96 /* HalfModalPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2AD628EC2587009FBD96 /* HalfModalPresentationController.swift */; };
 		0AAB2ADA28EC8C8D009FBD96 /* StickerPickerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2AD928EC8C8D009FBD96 /* StickerPickerCollectionViewCell.swift */; };
+		0AAB2ADC28EDA067009FBD96 /* TextStickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2ADB28EDA067009FBD96 /* TextStickerView.swift */; };
 		CCE1806F28E5919B00AF06DB /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE1806E28E5919B00AF06DB /* SignInViewController.swift */; };
 		CCE1807428E6B7C500AF06DB /* SignInTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE1807328E6B7C500AF06DB /* SignInTestViewController.swift */; };
 		E243425C28E4B890007BB6DE /* MyDiariesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E243425B28E4B890007BB6DE /* MyDiariesViewController.swift */; };
@@ -94,6 +95,7 @@
 		0AAB2AD428EC1F11009FBD96 /* StickerPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerPickerViewController.swift; sourceTree = "<group>"; };
 		0AAB2AD628EC2587009FBD96 /* HalfModalPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HalfModalPresentationController.swift; path = "MacC-GoldenRatio/Sources/ViewControllers/Page/HalfModalPresentationController.swift"; sourceTree = SOURCE_ROOT; };
 		0AAB2AD928EC8C8D009FBD96 /* StickerPickerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerPickerCollectionViewCell.swift; sourceTree = "<group>"; };
+		0AAB2ADB28EDA067009FBD96 /* TextStickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextStickerView.swift; sourceTree = "<group>"; };
 		CC6BD73728E9790C001ED665 /* MacC-GoldenRatio.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "MacC-GoldenRatio.entitlements"; sourceTree = "<group>"; };
 		CCE1806E28E5919B00AF06DB /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		CCE1807328E6B7C500AF06DB /* SignInTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInTestViewController.swift; sourceTree = "<group>"; };
@@ -172,6 +174,7 @@
 				0A5E904728E857E200B381B8 /* StickerView.swift */,
 				0A5E904928E858C000B381B8 /* StickerContollerView.swift */,
 				0A5E904B28E858D200B381B8 /* StickerBorderView.swift */,
+				0AAB2ADB28EDA067009FBD96 /* TextStickerView.swift */,
 			);
 			path = Sticker;
 			sourceTree = "<group>";
@@ -492,6 +495,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E28F080628E4655100832F4A /* ViewController.swift in Sources */,
+				0AAB2ADC28EDA067009FBD96 /* TextStickerView.swift in Sources */,
 				0AAB2ACD28EAFD78009FBD96 /* MapSearchViewController.swift in Sources */,
 				0A5E904528E8578400B381B8 /* PageViewController.swift in Sources */,
 				0AAB2AD528EC1F11009FBD96 /* StickerPickerViewController.swift in Sources */,

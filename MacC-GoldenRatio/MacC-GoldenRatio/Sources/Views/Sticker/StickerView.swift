@@ -22,7 +22,7 @@ class StickerView: UIView {
     private var mapItem: MKMapItem?
     private var sticker: String?
     
-    private var touchStart: CGPoint?
+    internal var touchStart: CGPoint?
     private var previousPoint: CGPoint?
     private var deltaAngle: CGFloat?
 
@@ -87,6 +87,15 @@ class StickerView: UIView {
 
         DispatchQueue.main.async {
             self.setupContentView(content: stickerImageView)
+            self.setupDefaultAttributes()
+        }
+    }
+    
+    init(frame: CGRect, content: UIView) {
+        super.init(frame: frame)
+
+        DispatchQueue.main.async {
+            self.setupContentView(content: content)
             self.setupDefaultAttributes()
         }
     }
@@ -214,11 +223,10 @@ class StickerView: UIView {
         }
     }
 
-    private func updateControlsPosition() {
+    internal func updateControlsPosition() {
         let inset = myDevice.stickerBorderInset
         borderView.frame = CGRect(x: -inset, y: -inset, width: bounds.size.width + inset * 2,
                                   height: bounds.size.height + inset * 2)
-
         deleteController.center = CGPoint(x: borderView.frame.maxX, y: borderView.frame.origin.y)
         resizingController.center = CGPoint(x: borderView.frame.maxX, y: borderView.frame.maxY)
     }
@@ -341,5 +349,5 @@ extension StickerView: UIGestureRecognizerDelegate {
             return false
         }
     }
-
+    
 }

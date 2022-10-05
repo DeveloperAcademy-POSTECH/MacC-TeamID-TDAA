@@ -66,7 +66,7 @@ class PageViewController: UIViewController {
         let image = UIImage(systemName: "t.square")
         button.setImage(image, for: .normal)
         button.tintColor = .black
-        button.addTarget(self, action: #selector(onTapMapButton), for: .touchUpInside)
+        button.addTarget(self, action: #selector(onTapTextButton), for: .touchUpInside)
 
         return button
     }()
@@ -167,7 +167,7 @@ class PageViewController: UIViewController {
         self.present(mapSearchViewController, animated: true)
     }
     
-    @objc func onTapImageButton(){
+    @objc func onTapImageButton() {
         self.present(self.imagePicker, animated: true)
     }
     
@@ -177,6 +177,10 @@ class PageViewController: UIViewController {
         stickerPickerViewController.modalPresentationStyle = .custom
         stickerPickerViewController.transitioningDelegate = self
         self.present(stickerPickerViewController, animated: true)
+    }
+    
+    @objc func onTapTextButton() {
+        self.addTextSticker()
     }
     
     // MARK: Completion Method
@@ -197,6 +201,12 @@ class PageViewController: UIViewController {
         let imageStickerView = StickerView(sticker: sticker, size: self.myDevice.stickerDefaultSize)
         imageStickerView.delegate = self
         self.addSticker(stickerView: imageStickerView)
+    }
+    
+    private func addTextSticker() {
+        let textStickerView = TextStickerView()
+        textStickerView.delegate = self
+        self.addSticker(stickerView: textStickerView)
     }
     
     private func addSticker(stickerView: StickerView) {

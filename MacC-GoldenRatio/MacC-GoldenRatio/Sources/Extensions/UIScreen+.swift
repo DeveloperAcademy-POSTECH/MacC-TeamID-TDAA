@@ -186,6 +186,114 @@ extension UIScreen {
 			default: return 20
 			}
 		}
+        
+
+// MARK: - Sign In
+        var logInButtonSize: CGSize {
+            switch self {
+            default: return CGSize(width: 268, height: 50)
+            }
+        }
+        
+        var logInButtonBottomInset: CGFloat {
+            switch self {
+            default: return 80
+            }
+        }
+        
+        var logInButtonImagePointSize: CGFloat {
+            switch self {
+            default: return 21.4
+            }
+        }
+        
+        var logInButtonFontSize: CGFloat {
+            switch self {
+            default: return 21.4
+            }
+        }
+        
+        // MARK: Page
+        var pagePadding: CGFloat {
+            switch self {
+            default: return CGFloat(10)
+            }
+        }
+        
+        var pageToolButtonInterval: CGFloat {
+            switch self {
+            default: return CGFloat(10)
+            }
+        }
+
+        var pageDescriptionLabelFont: UIFont {
+            switch self {
+            default: return UIFont.systemFont(ofSize: 17, weight: .regular)
+            }
+        }
+        
+        var pageToolButtonSize: CGSize {
+            switch self {
+            default: return CGSize(width: 30, height: 30)
+            }
+        }
+        
+        var pageToolButtonPointSize: CGFloat {
+            switch self {
+            default: return CGFloat(18)
+            }
+        }
+        
+        // MARK: PageToolViewController
+        var mapSearchViewSearchBarTopPadding: CGFloat {
+            switch self {
+            default: return CGFloat(20)
+            }
+        }
+        
+        var stickerPickerPadding: CGFloat {
+            switch self {
+            default: return CGFloat(10)
+            }
+        }
+        
+        var stickerPickerButtonFrameSize: CGSize {
+            switch self {
+            default: return CGSize(width: 35, height: 35)
+            }
+        }
+        
+        var stickerPickerButtonPointSize: CGFloat {
+            switch self {
+            default: return CGFloat(18)
+            }
+        }
+        
+        // MARK: Sticker
+        var stickerDefaultSize: CGSize {
+            switch self {
+            default: return CGSize(width: 100, height: 100)
+            }
+        }
+        
+        var stickerControllerSize: CGSize {
+            switch self {
+            default: return CGSize(width: 22, height: 22)
+            }
+        }
+        
+        var stickerBorderWidth: CGFloat {
+            switch self {
+            default: return CGFloat(1)
+            }
+        }
+        
+        var stickerBorderInset: CGFloat {
+            switch self {
+            default: return CGFloat(5)
+
+            }
+        }
 	}
 
 }

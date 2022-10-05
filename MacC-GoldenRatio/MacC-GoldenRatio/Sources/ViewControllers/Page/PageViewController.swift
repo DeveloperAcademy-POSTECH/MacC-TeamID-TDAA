@@ -17,7 +17,8 @@ class PageViewController: UIViewController {
     private lazy var backgroundImageView: UIImageView = {
         let backgroundImageView = UIImageView()
         backgroundImageView.backgroundColor = .gray
-        
+        backgroundImageView.clipsToBounds = true
+
         return backgroundImageView
     }()
     
@@ -55,7 +56,7 @@ class PageViewController: UIViewController {
         let image = UIImage(systemName: "s.circle.fill")
         button.setImage(image, for: .normal)
         button.tintColor = .black
-        button.addTarget(self, action: #selector(onTapMapButton), for: .touchUpInside)
+        button.addTarget(self, action: #selector(onTapStickerButton), for: .touchUpInside)
 
         return button
     }()
@@ -170,6 +171,14 @@ class PageViewController: UIViewController {
         self.present(self.imagePicker, animated: true)
     }
     
+    @objc func onTapStickerButton(){
+        let stickerPickerViewController = StickerPickerViewController()
+        stickerPickerViewController.completion = self.addSticker(sticker:)
+        stickerPickerViewController.modalPresentationStyle = .custom
+        stickerPickerViewController.transitioningDelegate = self
+        self.present(stickerPickerViewController, animated: true)
+    }
+    
     // MARK: Completion Method
     private func addMapSticker(mapItem: MKMapItem) {
         let mapStickerView = StickerView(mapItem: mapItem, size: self.myDevice.stickerDefaultSize)
@@ -180,6 +189,12 @@ class PageViewController: UIViewController {
     private func addImageSticker(image: UIImage?) {
         guard let image = image else { return }
         let imageStickerView = StickerView(image: image, size: self.myDevice.stickerDefaultSize)
+        imageStickerView.delegate = self
+        self.addSticker(stickerView: imageStickerView)
+    }
+    
+    private func addSticker(sticker: String) {
+        let imageStickerView = StickerView(sticker: sticker, size: self.myDevice.stickerDefaultSize)
         imageStickerView.delegate = self
         self.addSticker(stickerView: imageStickerView)
     }
@@ -220,5 +235,13 @@ extension PageViewController: UIImagePickerControllerDelegate, UINavigationContr
         }
         self.addImageSticker(image: selectedImage)
         self.imagePicker.dismiss(animated: true, completion: nil)
+    }
+}
+
+// MARK: PresentationDelegate
+extension PageViewController: UIViewControllerTransitioningDelegate {
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        
+        return HalfModalPresentationController(presentedViewController: presented, presenting: presenting)
     }
 }

@@ -20,6 +20,7 @@ class StickerView: UIView {
     
     private var image: UIImage?
     private var mapItem: MKMapItem?
+    private var sticker: String?
     
     private var touchStart: CGPoint?
     private var previousPoint: CGPoint?
@@ -65,6 +66,20 @@ class StickerView: UIView {
     
     init(image: UIImage, size: CGSize) {
         self.image = image
+        let stickerImageView = UIImageView(image: image)
+        stickerImageView.contentMode = .scaleAspectFit
+        stickerImageView.frame = CGRect(origin: .zero, size: size)
+        super.init(frame: stickerImageView.frame)
+
+        DispatchQueue.main.async {
+            self.setupContentView(content: stickerImageView)
+            self.setupDefaultAttributes()
+        }
+    }
+    
+    init(sticker: String, size: CGSize) {
+        self.sticker = sticker
+        let image = UIImage(named: sticker)
         let stickerImageView = UIImageView(image: image)
         stickerImageView.contentMode = .scaleAspectFit
         stickerImageView.frame = CGRect(origin: .zero, size: size)

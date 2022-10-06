@@ -31,10 +31,9 @@ struct Page: Codable {
 struct Item: Codable {
 	let itemUUID: String
 	let itemType: ItemType
-	let contents: [String]
-	let itemSize: [Double]
-	let itemPosition: [Double]
-	let itemAngle: Double
+	var contents: [String]
+	var itemBounds: [Double]
+	var itemTransform: [Double]
 }
 
 struct TextBox: Codable {
@@ -51,7 +50,7 @@ struct Sticker: Codable {
 	let stickerName: String
 }
 
-enum ItemType: Codable {
+enum ItemType: String, Codable {
 	case text
 	case image
 	case sticker

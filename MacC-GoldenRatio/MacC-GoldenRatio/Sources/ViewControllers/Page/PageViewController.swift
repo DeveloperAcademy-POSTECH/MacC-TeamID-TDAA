@@ -90,6 +90,7 @@ class PageViewController: UIViewController {
             self.configureBackgroundImageView()
             self.configureToolButton()
             self.configureConstraints()
+            self.addStickerViews()
         }
     }
     
@@ -99,6 +100,14 @@ class PageViewController: UIViewController {
         [mapToolButton, imageToolButton, stickerToolButton, textToolButton].forEach{
             view.addSubview($0)
         }
+    }
+    
+    private func addStickerViews() {
+        print(pageViewModel.stickerArray)
+        pageViewModel.stickerArray.forEach{
+            self.addSticker(stickerView: $0)
+        }
+        
     }
     
     private func configureBackgroundImageView() {
@@ -186,31 +195,28 @@ class PageViewController: UIViewController {
     // MARK: Completion Method
     private func addMapSticker(mapItem: MKMapItem) {
         let mapStickerView = MapStickerView(mapItem: mapItem, size: self.myDevice.stickerDefaultSize)
-        mapStickerView.delegate = self
         self.addSticker(stickerView: mapStickerView)
     }
     
     private func addImageSticker(image: UIImage?) {
         guard let image = image else { return }
         let imageStickerView = ImageStickerView(image: image, size: self.myDevice.stickerDefaultSize)
-        imageStickerView.delegate = self
         self.addSticker(stickerView: imageStickerView)
     }
     
     private func addSticker(sticker: String) {
         let imageStickerView = StickerStickerView(sticker: sticker, size: self.myDevice.stickerDefaultSize)
-        imageStickerView.delegate = self
         self.addSticker(stickerView: imageStickerView)
     }
     
     private func addTextSticker() {
         let textStickerView = TextStickerView()
-        textStickerView.delegate = self
         self.addSticker(stickerView: textStickerView)
     }
     
     private func addSticker(stickerView: StickerView) {
         DispatchQueue.main.async {
+            stickerView.delegate = self
             stickerView.center = CGPoint(x: self.view.center.x, y: self.view.center.y - 100)
             self.backgroundImageView.addSubview(stickerView)
             self.backgroundImageView.bringSubviewToFront(stickerView)

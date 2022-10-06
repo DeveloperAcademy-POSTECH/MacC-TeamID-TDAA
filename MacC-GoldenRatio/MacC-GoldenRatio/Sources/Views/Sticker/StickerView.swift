@@ -16,6 +16,7 @@ protocol StickerViewDelegate {
 
 class StickerView: UIView {
     var delegate: StickerViewDelegate!
+    internal var stickerViewData: StickerViewData!
     private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
 
     internal var touchStart: CGPoint?
@@ -58,9 +59,10 @@ class StickerView: UIView {
         let contentView = UIView(frame: content.frame)
         contentView.backgroundColor = .clear
         contentView.addSubview(content)
-        contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         addSubview(contentView)
-
+        contentView.snp.makeConstraints { make in
+            make.top.leading.bottom.trailing.equalToSuperview()
+        }
         for subview in contentView.subviews {
             subview.frame = CGRect(x: 0, y: 0, width: contentView.frame.width, height: contentView.frame.height)
             subview.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -205,6 +207,7 @@ class StickerView: UIView {
             previousPoint = sender.location(in: self)
             setNeedsDisplay()
         } else if sender.state == .changed {
+            debugPrint(transform)
             transform = CGAffineTransformRotate(oldTransform, sender.rotation)
         } else if sender.state == .ended {
             oldTransform = transform
@@ -217,7 +220,8 @@ class StickerView: UIView {
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard subviewIsHidden == false else { return }
-        
+        print(bounds)
+        print(transform)
         self.delegate.bringToFront(sticker: self)
         enableTranslucency(state: true)
 

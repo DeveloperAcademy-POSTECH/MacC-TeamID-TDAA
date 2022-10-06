@@ -28,14 +28,14 @@ class DiaryConfigViewController: UIViewController {
     private let device: UIScreen.DeviceSize = UIScreen.getDevice()
     private var configState: ConfigState
     
-    let dummyData = [Diary(diaryUUID: "", diaryName: "🌊포항항", diaryLocation: Location(locationName: "포항", locationAddress: "포항시", locationCoordinate: [36.0190, 129.3435]), diaryStartDate: Date(), diaryEndDate: Date(timeIntervalSinceNow: 86400), diaryPages: [[Page(pageUUID: "", items: [Item(itemUUID: "", itemType: ItemType.text, contents: "", itemSize: [0.0], itemPosition: [0.0], itemAngle: 0.0)])]], userUIDs: [User(userUID: "", userName: "칼리", userImageURL: ""), User(userUID: "", userName: "드록바", userImageURL: ""), User(userUID: "", userName: "해츨링", userImageURL: ""), User(userUID: "", userName: "라우", userImageURL: ""), User(userUID: "", userName: "산", userImageURL: "")])]
+//    let dummyData = [Diary(diaryUUID: "", diaryName: "🌊포항항", diaryLocation: Location(locationName: "포항", locationAddress: "포항시", locationCoordinate: [36.0190, 129.3435]), diaryStartDate: Date(), diaryEndDate: Date(timeIntervalSinceNow: 86400), diaryPages: [[Page(pageUUID: "", items: [Item(itemUUID: "", itemType: ItemType.text, contents: "", itemSize: [0.0], itemPosition: [0.0], itemAngle: 0.0)])]], userUIDs: [User(userUID: "", userName: "칼리", userImageURL: ""), User(userUID: "", userName: "드록바", userImageURL: ""), User(userUID: "", userName: "해츨링", userImageURL: ""), User(userUID: "", userName: "라우", userImageURL: ""), User(userUID: "", userName: "산", userImageURL: "")])]
     
     // TO REMOVE (FOR DUMMYDATA)
     private var dummyDataStartDate: Date
     
     init(mode configState: ConfigState) {
         // TO REMOVE (FOR DUMMYDATA)
-        self.dummyDataStartDate = dummyData[0].diaryStartDate
+        self.dummyDataStartDate = Date()
         
         self.configState = configState
         super.init(nibName: nil, bundle: nil)
@@ -158,7 +158,7 @@ extension DiaryConfigViewController: UICollectionViewDataSource {
         case .create:
             cell.setContent(indexPath: indexPath, diary: nil)
         case .modify:
-            cell.setContent(indexPath: indexPath, diary: dummyData[0])
+            cell.setContent(indexPath: indexPath, diary: nil)
         }
         
         cell.contentButton?.tag = indexPath.row

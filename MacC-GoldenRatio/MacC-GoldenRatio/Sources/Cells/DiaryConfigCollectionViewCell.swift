@@ -79,7 +79,7 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
             case .location:
                 contentButton?.setTitle(diary.diaryLocation.locationName, for: .normal)
             case .diaryDate:
-                contentButton?.setTitle(diary.diaryStartDate.customFormat(), for: .normal)
+                contentButton?.setTitle(Date().customFormat(), for: .normal)
             default:
                 contentButton?.tintColor = .placeholderText
                 contentButton?.setTitle("PlaceHolder", for: .normal)
@@ -134,7 +134,6 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
         case .none:
             print("Ther will be no Content Type")
         }
-        
     }
     
     @objc func clearButtonTapped() {

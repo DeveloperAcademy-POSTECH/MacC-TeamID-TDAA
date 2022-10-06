@@ -8,6 +8,23 @@
 import SnapKit
 import UIKit
 
+enum ConfigContentType: CaseIterable { // allCases 사용을 위한 CaseIterable
+    case diaryName
+    case location
+    case diaryDate
+    
+    var title: String {
+        switch self {
+        case .diaryName:
+            return "다이어리 이름"
+        case .location:
+            return "여행지"
+        case .diaryDate:
+            return "날짜"
+        }
+    }
+}
+
 class DiaryConfigCollectionViewCell: UICollectionViewCell {
     private var contentType: ConfigContentType?
     private let device = UIScreen.getDevice()
@@ -41,6 +58,12 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
         button.tintColor = .systemGray
         return button
     }()
+    
+    private lazy var separatorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.placeholderText
+        return view
+    }()
 
     // CollectionView에서 Cell초기화 담당
     func setContent(indexPath: IndexPath, diary: Diary?) {
@@ -56,7 +79,7 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
             case .location:
                 contentButton?.setTitle(diary.diaryLocation.locationName, for: .normal)
             case .diaryDate:
-                contentButton?.setTitle(diary.diaryStartDate.description, for: .normal)
+                contentButton?.setTitle(diary.diaryStartDate.customFormat(), for: .normal)
             default:
                 contentButton?.tintColor = .placeholderText
                 contentButton?.setTitle("PlaceHolder", for: .normal)
@@ -72,34 +95,46 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
         
         contentView.backgroundColor = .clear
         
-        contentView.addSubview(contentTitle)
+        [contentTitle, clearButton, separatorView].forEach {
+            contentView.addSubview($0)
+        }
+
         contentTitle.snp.makeConstraints {
-            $0.left.equalToSuperview().inset(device.diaryConfigCellLeftInset)
+            $0.leading.equalToSuperview().inset(device.diaryConfigCellLeftInset)
             $0.top.equalToSuperview().inset(device.diaryConfigCellTopInset)
+        }
+        
+        clearButton.snp.makeConstraints {
+            $0.trailing.equalToSuperview().inset(device.diaryConfigCellRightInset)
+            $0.bottom.equalToSuperview().inset(device.diaryConfigCellBottomInset)
+        }
+        
+        separatorView.snp.makeConstraints {
+            $0.bottom.equalToSuperview()
+            $0.leading.equalToSuperview().inset(16)
+            $0.trailing.equalToSuperview()
+            $0.height.equalTo(1)
         }
         
         switch contentType {
         case .diaryName:
             contentView.addSubview(contentTextField ?? UITextField())
             contentTextField?.snp.makeConstraints{
-                $0.left.equalTo(contentTitle)
-                $0.bottom.equalToSuperview().inset(device.diaryConfigCellBottomInset)
+                $0.leading.equalTo(contentTitle)
+                $0.height.equalTo(44)
+                $0.bottom.equalToSuperview()
             }
         case .diaryDate, .location:
             contentView.addSubview(contentButton ?? UIButton())
             contentButton?.snp.makeConstraints{
-                $0.left.equalTo(contentTitle)
-                $0.bottom.equalToSuperview().inset(device.diaryConfigCellBottomInset)
+                $0.leading.equalTo(contentTitle)
+                $0.height.equalTo(44)
+                $0.bottom.equalToSuperview()
             }
         case .none:
             print("Ther will be no Content Type")
         }
         
-        contentView.addSubview(clearButton)
-        clearButton.snp.makeConstraints {
-            $0.right.equalToSuperview().inset(device.diaryConfigCellRightInset)
-            $0.bottom.equalToSuperview().inset(device.diaryConfigCellBottomInset)
-        }
     }
     
     @objc func clearButtonTapped() {
@@ -114,22 +149,5 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
 extension DiaryConfigCollectionViewCell: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.endEditing(true)
-    }
-}
-
-enum ConfigContentType: CaseIterable { // allCases 사용을 위한 CaseIterable
-    case diaryName
-    case location
-    case diaryDate
-    
-    var title: String {
-        switch self {
-        case .diaryName:
-            return "다이어리 이름"
-        case .location:
-            return "여행지"
-        case .diaryDate:
-            return "날짜"
-        }
     }
 }

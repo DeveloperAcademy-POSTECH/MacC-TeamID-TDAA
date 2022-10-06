@@ -7,51 +7,51 @@
 
 import Foundation
 
-struct Diary {
+struct Diary: Codable {
 	let diaryUUID: String
 	let diaryName: String
 	let diaryLocation: Location
-	let diaryStartDate: Date
-	let diaryEndDate: Date
-	let diaryPages: [[Page]]
-	let userUIDs: [User]
+	let diaryStartDate: String
+	let diaryEndDate: String
+	let diaryPages: [Page]
+	let userUIDs: [String]
 }
 
-struct Location {
+struct Location: Codable {
 	let locationName: String
 	let locationAddress: String
 	let locationCoordinate: [Double]
 }
 
-struct Page {
+struct Page: Codable {
 	let pageUUID: String
 	let items: [Item]
 }
 
-struct Item {
+struct Item: Codable {
 	let itemUUID: String
 	let itemType: ItemType
-	let contents: Any
+	let contents: [String]
 	let itemSize: [Double]
 	let itemPosition: [Double]
 	let itemAngle: Double
 }
 
-struct TextBox {
+struct TextBox: Codable {
 	let text: String
 	let fontName: String
 	let fontColor: String
 }
 
-struct Image {
+struct Image: Codable {
 	let imageURL: String
 }
 
-struct Sticker {
+struct Sticker: Codable {
 	let stickerName: String
 }
 
-enum ItemType {
+enum ItemType: Codable {
 	case text
 	case image
 	case sticker

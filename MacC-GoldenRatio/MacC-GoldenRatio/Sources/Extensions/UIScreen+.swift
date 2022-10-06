@@ -224,6 +224,24 @@ extension UIScreen {
             }
         }
         
+        var stickerPickerPadding: CGFloat {
+            switch self {
+            default: return CGFloat(10)
+            }
+        }
+        
+        var stickerPickerButtonFrameSize: CGSize {
+            switch self {
+            default: return CGSize(width: 35, height: 35)
+            }
+        }
+        
+        var stickerPickerButtonPointSize: CGFloat {
+            switch self {
+            default: return CGFloat(18)
+            }
+        }
+        
         // MARK: Sticker
         var stickerDefaultSize: CGSize {
             switch self {

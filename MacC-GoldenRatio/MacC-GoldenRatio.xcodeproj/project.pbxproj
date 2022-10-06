@@ -18,6 +18,9 @@
 		0AAB2AD328EB14A8009FBD96 /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2AD228EB14A8009FBD96 /* UIView+.swift */; };
 		CC6BD74428EBFA80001ED665 /* DiaryConfigViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6BD74328EBFA80001ED665 /* DiaryConfigViewController.swift */; };
 		CC6BD74628EC18B8001ED665 /* DiaryConfigCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6BD74528EC18B8001ED665 /* DiaryConfigCollectionViewCell.swift */; };
+		0AAB2AD528EC1F11009FBD96 /* StickerPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2AD428EC1F11009FBD96 /* StickerPickerViewController.swift */; };
+		0AAB2AD728EC2587009FBD96 /* HalfModalPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2AD628EC2587009FBD96 /* HalfModalPresentationController.swift */; };
+		0AAB2ADA28EC8C8D009FBD96 /* StickerPickerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2AD928EC8C8D009FBD96 /* StickerPickerCollectionViewCell.swift */; };
 		CCE1806F28E5919B00AF06DB /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE1806E28E5919B00AF06DB /* SignInViewController.swift */; };
 		CCE1807428E6B7C500AF06DB /* SignInTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE1807328E6B7C500AF06DB /* SignInTestViewController.swift */; };
 		E243425C28E4B890007BB6DE /* MyDiariesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E243425B28E4B890007BB6DE /* MyDiariesViewController.swift */; };
@@ -93,6 +96,11 @@
 		CC6BD73728E9790C001ED665 /* MacC-GoldenRatio.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "MacC-GoldenRatio.entitlements"; sourceTree = "<group>"; };
 		CC6BD74328EBFA80001ED665 /* DiaryConfigViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryConfigViewController.swift; sourceTree = "<group>"; };
 		CC6BD74528EC18B8001ED665 /* DiaryConfigCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryConfigCollectionViewCell.swift; sourceTree = "<group>"; };
+		8E295A9228EC2CF200127D41 /* EF_Diary.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = EF_Diary.ttf; sourceTree = "<group>"; };
+		0AAB2AD428EC1F11009FBD96 /* StickerPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerPickerViewController.swift; sourceTree = "<group>"; };
+		0AAB2AD628EC2587009FBD96 /* HalfModalPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HalfModalPresentationController.swift; path = "MacC-GoldenRatio/Sources/ViewControllers/Page/HalfModalPresentationController.swift"; sourceTree = SOURCE_ROOT; };
+		0AAB2AD928EC8C8D009FBD96 /* StickerPickerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerPickerCollectionViewCell.swift; sourceTree = "<group>"; };
+		CC6BD73728E9790C001ED665 /* MacC-GoldenRatio.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "MacC-GoldenRatio.entitlements"; sourceTree = "<group>"; };
 		CCE1806E28E5919B00AF06DB /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		CCE1807328E6B7C500AF06DB /* SignInTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInTestViewController.swift; sourceTree = "<group>"; };
 		E243425B28E4B890007BB6DE /* MyDiariesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDiariesViewController.swift; sourceTree = "<group>"; };
@@ -159,6 +167,7 @@
 			children = (
 				0A5E904428E8578400B381B8 /* PageViewController.swift */,
 				0AAB2ACC28EAFD78009FBD96 /* MapSearchViewController.swift */,
+				0AAB2AD428EC1F11009FBD96 /* StickerPickerViewController.swift */,
 			);
 			path = Page;
 			sourceTree = "<group>";
@@ -187,6 +196,22 @@
 				CC6BD74328EBFA80001ED665 /* DiaryConfigViewController.swift */,
 			);
 			path = DiaryConfig;
+      sourceTree = "<group>";
+		};
+		8E295A9128EC2CD400127D41 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				8E295A9228EC2CF200127D41 /* EF_Diary.ttf */,
+			);
+			path = Fonts;
+      sourceTree = "<group>";
+		};
+		0AAB2AD828EC8C69009FBD96 /* Page */ = {
+			isa = PBXGroup;
+			children = (
+				0AAB2AD928EC8C8D009FBD96 /* StickerPickerCollectionViewCell.swift */,
+			);
+			path = Page;
 			sourceTree = "<group>";
 		};
 		CCE1806D28E5917A00AF06DB /* SignIn */ = {
@@ -214,6 +239,7 @@
 		E276B91428E468E900163833 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				8E295A9128EC2CD400127D41 /* Fonts */,
 				E28F080128E4655100832F4A /* AppDelegate.swift */,
 				E28F080328E4655100832F4A /* SceneDelegate.swift */,
 				E2F5691828E5CE170039BE37 /* GoogleService-Info.plist */,
@@ -224,6 +250,7 @@
 		E276B91628E4692500163833 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				0AAB2AD628EC2587009FBD96 /* HalfModalPresentationController.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -231,6 +258,7 @@
 		E276B91728E4692B00163833 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				0AAB2AD828EC8C69009FBD96 /* Page */,
 				E2EA7F0D28E56EDF00AC1C49 /* DiaryCollectionViewCell.swift */,
 				CC6BD74528EC18B8001ED665 /* DiaryConfigCollectionViewCell.swift */,
 			);
@@ -491,10 +519,12 @@
 				E28F080628E4655100832F4A /* ViewController.swift in Sources */,
 				0AAB2ACD28EAFD78009FBD96 /* MapSearchViewController.swift in Sources */,
 				0A5E904528E8578400B381B8 /* PageViewController.swift in Sources */,
+				0AAB2AD528EC1F11009FBD96 /* StickerPickerViewController.swift in Sources */,
 				E2EA7F0628E56C0900AC1C49 /* TabBarController.swift in Sources */,
 				0AAB2AD128EAFF6D009FBD96 /* CollectionView+.swift in Sources */,
 				E2EA7F0828E56CF600AC1C49 /* MyPlacesViewController.swift in Sources */,
 				E276B92028E4812E00163833 /* UIScreen+.swift in Sources */,
+				0AAB2AD728EC2587009FBD96 /* HalfModalPresentationController.swift in Sources */,
 				E2EA7F0E28E56EDF00AC1C49 /* DiaryCollectionViewCell.swift in Sources */,
 				0A5E904C28E858D200B381B8 /* StickerBorderView.swift in Sources */,
 				0A5E904F28E9948B00B381B8 /* PageViewModel.swift in Sources */,
@@ -511,6 +541,7 @@
 				0A5E904828E857E200B381B8 /* StickerView.swift in Sources */,
 				E2EA7F1628E5711E00AC1C49 /* DiaryCollectionHeaderView.swift in Sources */,
 				0AAB2ACF28EAFF52009FBD96 /* TableView+.swift in Sources */,
+				0AAB2ADA28EC8C8D009FBD96 /* StickerPickerCollectionViewCell.swift in Sources */,
 				0AAB2AD328EB14A8009FBD96 /* UIView+.swift in Sources */,
 				E28F080428E4655100832F4A /* SceneDelegate.swift in Sources */,
 				E243425C28E4B890007BB6DE /* MyDiariesViewController.swift in Sources */,
@@ -718,9 +749,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "MacC-GoldenRatio/MacC-GoldenRatio.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = ZNH7978JJQ;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = ZNH7978JJQ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "MacC-GoldenRatio/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -736,6 +769,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.TwoInterval.MacC-GoldenRatio";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = DiaryAppForDistribution;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = DiaryAppForDevelopment;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

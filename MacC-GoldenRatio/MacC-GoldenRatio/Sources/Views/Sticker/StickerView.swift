@@ -17,12 +17,8 @@ protocol StickerViewDelegate {
 class StickerView: UIView {
     var delegate: StickerViewDelegate!
     private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
-    
-    private var image: UIImage?
-    private var mapItem: MKMapItem?
-    private var sticker: String?
-    
-    private var touchStart: CGPoint?
+
+    internal var touchStart: CGPoint?
     private var previousPoint: CGPoint?
     private var deltaAngle: CGFloat?
 
@@ -46,57 +42,8 @@ class StickerView: UIView {
         }
     }
     
-    init(mapItem: MKMapItem, size:CGSize) {
-        self.mapItem = mapItem
-        let mapLabel = UILabel()
-        mapLabel.text = mapItem.name
-        mapLabel.textColor = .label
-        mapLabel.textAlignment = .center
-        mapLabel.frame = CGRect(origin: .zero, size: mapLabel.intrinsicContentSize)
-        super.init(frame: mapLabel.frame)
-        
-        DispatchQueue.main.async {
-            let mapImage = mapLabel.transformToImage()
-            let mapImageView = UIImageView(image: mapImage)
-            mapImageView.frame = mapLabel.frame
-            self.setupContentView(content: mapImageView)
-            self.setupDefaultAttributes()
-        }
-    }
-    
-    init(image: UIImage, size: CGSize) {
-        self.image = image
-        let stickerImageView = UIImageView(image: image)
-        stickerImageView.contentMode = .scaleAspectFit
-        stickerImageView.frame = CGRect(origin: .zero, size: size)
-        super.init(frame: stickerImageView.frame)
-
-        DispatchQueue.main.async {
-            self.setupContentView(content: stickerImageView)
-            self.setupDefaultAttributes()
-        }
-    }
-    
-    init(sticker: String, size: CGSize) {
-        self.sticker = sticker
-        let image = UIImage(named: sticker)
-        let stickerImageView = UIImageView(image: image)
-        stickerImageView.contentMode = .scaleAspectFit
-        stickerImageView.frame = CGRect(origin: .zero, size: size)
-        super.init(frame: stickerImageView.frame)
-
-        DispatchQueue.main.async {
-            self.setupContentView(content: stickerImageView)
-            self.setupDefaultAttributes()
-        }
-    }
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
-
-        DispatchQueue.main.async {
-            self.setupDefaultAttributes()
-        }
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -107,7 +54,7 @@ class StickerView: UIView {
         }
     }
 
-    private func setupContentView(content: UIView) {
+    internal func setupContentView(content: UIView) {
         let contentView = UIView(frame: content.frame)
         contentView.backgroundColor = .clear
         contentView.addSubview(content)
@@ -120,7 +67,7 @@ class StickerView: UIView {
         }
     }
     
-    private func setupDefaultAttributes() {
+    internal func setupDefaultAttributes() {
         let stickerSingleTap = UITapGestureRecognizer(target: self, action: #selector(stickerViewSingleTap(_:)))
         addGestureRecognizer(stickerSingleTap)
         
@@ -214,11 +161,10 @@ class StickerView: UIView {
         }
     }
 
-    private func updateControlsPosition() {
+    internal func updateControlsPosition() {
         let inset = myDevice.stickerBorderInset
         borderView.frame = CGRect(x: -inset, y: -inset, width: bounds.size.width + inset * 2,
                                   height: bounds.size.height + inset * 2)
-
         deleteController.center = CGPoint(x: borderView.frame.maxX, y: borderView.frame.origin.y)
         resizingController.center = CGPoint(x: borderView.frame.maxX, y: borderView.frame.maxY)
     }
@@ -341,5 +287,5 @@ extension StickerView: UIGestureRecognizerDelegate {
             return false
         }
     }
-
+    
 }

@@ -11,22 +11,9 @@ import UIKit
 class StickerBorderView: UIView {
     private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
 
-    override func draw(_ rect: CGRect) {
-        let context = UIGraphicsGetCurrentContext()
-        guard let context = context else { return }
-        context.saveGState()
-        context.setLineWidth(myDevice.stickerBorderWidth)
-        let dash: [CGFloat] = [1.0, 0.0]
-        context.setLineDash(phase: 0.0, lengths: dash)
-        context.setStrokeColor(UIColor.black.cgColor)
-        context.addRect(rect)
-        context.strokePath()
-        context.restoreGState()
-    }
-
     override init(frame: CGRect) {
         super.init(frame: frame)
-
+        
         setupView()
     }
 
@@ -35,9 +22,11 @@ class StickerBorderView: UIView {
 
         setupView()
     }
-
+    
     private func setupView() {
         backgroundColor = UIColor.clear
+        layer.borderWidth = myDevice.stickerBorderWidth
+        layer.borderColor = UIColor.black.cgColor
     }
 
 }

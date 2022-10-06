@@ -22,8 +22,8 @@ final class DiaryCollectionHeaderView: UICollectionReusableView {
 		addSubview(titleLabel)
 		
 		titleLabel.snp.makeConstraints {
-			$0.leading.equalToSuperview().inset(UIScreen.getDevice().MyDiariesViewTitleLabelLeadingPadding)
-			$0.top.equalToSuperview().offset(UIScreen.getDevice().MyDiariesViewTitleLabelTopPadding)
+			$0.leading.equalToSuperview().inset(UIScreen.getDevice().MyDiariesViewTitleLabelLeading)
+			$0.top.equalToSuperview().offset(UIScreen.getDevice().MyDiariesViewTitleLabelTop)
 		}
 	}
 }

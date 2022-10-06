@@ -55,6 +55,26 @@ class SignInTestViewController: UIViewController {
         return button
     }()
     
+    private lazy var diaryCreateButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.backgroundColor = .black
+        button.tintColor = .white
+        button.setTitle("다이어리 추가", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: device.logInButtonFontSize)
+        button.addTarget(self, action: #selector(diaryCreateButtonPressed), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var diaryModifyButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.backgroundColor = .black
+        button.tintColor = .white
+        button.setTitle("다이어리 수정", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: device.logInButtonFontSize)
+        button.addTarget(self, action: #selector(diaryModifyButtonPressed), for: .touchUpInside)
+        return button
+    }()
+    
     
     // MARK: - feature methods
     @objc private func logoutButtonPressed() {
@@ -82,6 +102,18 @@ class SignInTestViewController: UIViewController {
         }
     }
     
+    @objc private func diaryCreateButtonPressed() {
+        let vc = DiaryConfigViewController(mode: .create)
+        vc.modalPresentationStyle = .overFullScreen
+        self.present(vc, animated: true, completion: nil)
+    }
+    
+    @objc private func diaryModifyButtonPressed() {
+        let vc = DiaryConfigViewController(mode: .modify)
+        vc.modalPresentationStyle = .overCurrentContext
+        self.present(vc, animated: true, completion: nil)
+    }
+    
     // MARK: - setup
     private func testSetup() {
         view.addSubview(logoutButton)
@@ -95,6 +127,20 @@ class SignInTestViewController: UIViewController {
             $0.size.equalTo(device.logInButtonSize)
             $0.centerX.equalToSuperview()
             $0.centerY.equalTo(logoutButton).offset(80)
+        }
+        
+        view.addSubview(diaryCreateButton)
+        diaryCreateButton.snp.makeConstraints {
+            $0.size.equalTo(device.logInButtonSize)
+            $0.centerX.equalToSuperview()
+            $0.centerY.equalTo(withdrawalButton).offset(80)
+        }
+        
+        view.addSubview(diaryModifyButton)
+        diaryModifyButton.snp.makeConstraints {
+            $0.size.equalTo(device.logInButtonSize)
+            $0.centerX.equalToSuperview()
+            $0.centerY.equalTo(diaryCreateButton).offset(80)
         }
         
         view.addSubview(uidLabel)

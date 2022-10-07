@@ -39,7 +39,7 @@ class StickerViewData {
     }
     
     func updateItem(sticker: StickerView) async {
-        let itemBounds: [Double] = await [sticker.frame.origin.x, sticker.frame.origin.y, sticker.frame.size.width, sticker.frame.size.height]
+        let itemBounds: [Double] = await [sticker.bounds.origin.x, sticker.bounds.origin.y, sticker.bounds.size.width, sticker.bounds.size.height]
         let itemTrasnform: [Double] = await [sticker.transform.a, sticker.transform.b, sticker.transform.c, sticker.transform.d, sticker.transform.tx, sticker.transform.ty]
         var itemContents: [String] = []
         

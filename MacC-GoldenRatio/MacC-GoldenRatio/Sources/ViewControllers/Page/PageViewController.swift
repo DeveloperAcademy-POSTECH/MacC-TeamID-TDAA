@@ -90,7 +90,7 @@ class PageViewController: UIViewController {
             self.configureBackgroundImageView()
             self.configureToolButton()
             self.configureConstraints()
-            self.addStickerViews(pageIndex: self.pageViewModel.currentPageIndex)
+            self.loadStickerViews(pageIndex: self.pageViewModel.currentPageIndex)
         }
     }
     
@@ -102,10 +102,13 @@ class PageViewController: UIViewController {
         }
     }
     
-    private func addStickerViews(pageIndex: Int) {
+    private func loadStickerViews(pageIndex: Int) {
         DispatchQueue.main.async {
             self.pageViewModel.stickerArray[pageIndex].forEach{
-                self.addSticker(stickerView: $0)
+                print($0)
+                $0.delegate = self
+                self.backgroundImageView.addSubview($0)
+                self.backgroundImageView.isUserInteractionEnabled = true
             }
         }
     }

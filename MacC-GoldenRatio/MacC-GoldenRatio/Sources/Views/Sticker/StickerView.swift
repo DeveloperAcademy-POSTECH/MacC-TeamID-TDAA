@@ -64,12 +64,15 @@ class StickerView: UIView {
         contentView.addSubview(content)
         addSubview(contentView)
         contentView.snp.makeConstraints { make in
-            make.top.leading.bottom.trailing.equalToSuperview()
+            make.edges.equalToSuperview()
         }
-        for subview in contentView.subviews {
-            subview.frame = CGRect(x: 0, y: 0, width: contentView.frame.width, height: contentView.frame.height)
-            subview.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        content.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
+//        for subview in contentView.subviews {
+//            subview.frame = CGRect(x: 0, y: 0, width: contentView.frame.width, height: contentView.frame.height)
+//            subview.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+//        }
     }
     
     internal func setupDefaultAttributes() {

@@ -10,7 +10,7 @@ import UIKit
 class TabBarController: UITabBarController {
 	private lazy var myDiariesViewController: UIViewController = {
 		let viewController = MyDiariesViewController()
-		
+							
 		let tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "house"), tag: 0)
 		
 		viewController.tabBarItem = tabBarItem

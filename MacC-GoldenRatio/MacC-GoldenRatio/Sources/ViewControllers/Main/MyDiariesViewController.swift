@@ -5,11 +5,13 @@
 //  Created by woo0 on 2022/09/29.
 //
 
+import Combine
 import SnapKit
 import UIKit
 
 final class MyDiariesViewController: UIViewController {
-	private let viewModel = MyDiariesViewModel()
+	private var cancelBag = Set<AnyCancellable>()
+	private let viewModel = MyDiariesViewModel(userUid: "userUID")
 	private let myDevice = UIScreen.getDevice()
 	private var myDiariesViewModalBackgroundView = UIView()
 	
@@ -64,6 +66,7 @@ final class MyDiariesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 		setupSubViews()
+		setupViewModel()
     }
 	
 	private func setupSubViews() {
@@ -125,7 +128,7 @@ extension MyDiariesViewController: MyDiariesViewCustomModalDelegate {
 
 extension MyDiariesViewController: UICollectionViewDataSource {
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		if viewModel.shouldLoadDiaryResult.count == 0 {
+		if viewModel.shouldLoadDiaryResult.isEmpty {
 			let label = UILabel()
 			label.text = "다이어리를 추가해주세요."
 			label.textAlignment = .center
@@ -179,7 +182,7 @@ extension MyDiariesViewController: UICollectionViewDataSource {
 
 extension MyDiariesViewController: UICollectionViewDelegateFlowLayout {
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-		return CGSize(width: myDevice.diaryCollectionViewCellWidth, height: UIScreen.getDevice().diaryCollectionViewCellHeight)
+		return myDevice.diaryCollectionViewCellSize
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
@@ -188,5 +191,16 @@ extension MyDiariesViewController: UICollectionViewDelegateFlowLayout {
 	
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
 		return UIEdgeInsets(top: myDevice.diaryCollectionViewCellTop, left: myDevice.diaryCollectionViewCellLeading, bottom: myDevice.diaryCollectionViewCellBottom, right: myDevice.diaryCollectionViewCellTrailing)
+	}
+}
+
+private extension MyDiariesViewController {
+	func setupViewModel() {
+		viewModel.$shouldLoadDiaryResult
+			.receive(on: DispatchQueue.main)
+			.sink { [weak self] diary in
+				self?.diaryCollectionView.reloadData()
+			}
+			.store(in: &cancelBag)
 	}
 }

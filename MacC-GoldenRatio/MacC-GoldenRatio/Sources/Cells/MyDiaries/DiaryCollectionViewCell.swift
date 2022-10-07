@@ -5,9 +5,13 @@
 //  Created by woo0 on 2022/09/29.
 //
 
+import Combine
+import Kingfisher
 import UIKit
 
 class DiaryCollectionViewCell: UICollectionViewCell {
+	private var cancelBag = Set<AnyCancellable>()
+	private let viewModel = MyDiariesViewModel(userUid: "userUID")
 	private let myDevice = UIScreen.getDevice()
 	private lazy var titleLabel: UILabel = {
 		let label =  UILabel()

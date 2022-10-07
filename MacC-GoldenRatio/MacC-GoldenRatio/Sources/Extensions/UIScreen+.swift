@@ -53,9 +53,9 @@ extension UIScreen {
 			}
 		}
 		
-		var MyDiariesViewTitleFontSize: CGFloat {
+		var MyDiariesViewTitleFont: UIFont {
 			switch self {
-			default: return 28
+			default: return UIFont.systemFont(ofSize: 28)
 			}
 		}
 		
@@ -115,15 +115,9 @@ extension UIScreen {
 			}
 		}
 
-		var diaryCollectionViewCellWidth: Int {
+		var diaryCollectionViewCellSize: CGSize {
 			switch self {
-			default: return 165
-			}
-		}
-		
-		var diaryCollectionViewCellHeight: Int {
-			switch self {
-			default: return 207
+			default: return CGSize(width: 165, height: 207)
 			}
 		}
 		

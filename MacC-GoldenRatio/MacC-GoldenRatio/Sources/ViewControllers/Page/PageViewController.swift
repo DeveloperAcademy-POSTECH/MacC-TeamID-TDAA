@@ -90,7 +90,7 @@ class PageViewController: UIViewController {
             self.configureBackgroundImageView()
             self.configureToolButton()
             self.configureConstraints()
-            self.addStickerViews()
+            self.addStickerViews(pageIndex: self.pageViewModel.currentPageIndex)
         }
     }
     
@@ -102,12 +102,12 @@ class PageViewController: UIViewController {
         }
     }
     
-    private func addStickerViews() {
-        print(pageViewModel.stickerArray)
-        pageViewModel.stickerArray.forEach{
-            self.addSticker(stickerView: $0)
+    private func addStickerViews(pageIndex: Int) {
+        DispatchQueue.main.async {
+            self.pageViewModel.stickerArray[pageIndex].forEach{
+                self.addSticker(stickerView: $0)
+            }
         }
-        
     }
     
     private func configureBackgroundImageView() {
@@ -168,10 +168,8 @@ class PageViewController: UIViewController {
     // MARK: Actions
     @objc private func onTapNavigationComplete() {
         // TODO: await 처리해주기
-        pageViewModel.stickerArray.forEach{
-            $0.subviewIsHidden = true
-        }
-        pageViewModel.updatePages()
+        pageViewModel.hideStickerSubviews()
+        pageViewModel.updateDBPages()
     }
     
     @objc private func setStickerSubviewIsHidden() {
@@ -204,22 +202,28 @@ class PageViewController: UIViewController {
     private func addMapSticker(mapItem: MKMapItem) {
         let mapStickerView = MapStickerView(mapItem: mapItem, size: self.myDevice.stickerDefaultSize)
         self.addSticker(stickerView: mapStickerView)
+        self.pageViewModel.appendSticker(mapStickerView)
+
     }
     
     private func addImageSticker(image: UIImage?) {
         guard let image = image else { return }
         let imageStickerView = ImageStickerView(image: image, size: self.myDevice.stickerDefaultSize)
         self.addSticker(stickerView: imageStickerView)
+        self.pageViewModel.appendSticker(imageStickerView)
+
     }
     
     private func addSticker(sticker: String) {
         let imageStickerView = StickerStickerView(sticker: sticker, size: self.myDevice.stickerDefaultSize)
         self.addSticker(stickerView: imageStickerView)
+        self.pageViewModel.appendSticker(imageStickerView)
     }
     
     private func addTextSticker() {
         let textStickerView = TextStickerView()
         self.addSticker(stickerView: textStickerView)
+        self.pageViewModel.appendSticker(textStickerView)
     }
     
     private func addSticker(stickerView: StickerView) {
@@ -229,7 +233,6 @@ class PageViewController: UIViewController {
             self.backgroundImageView.addSubview(stickerView)
             self.backgroundImageView.bringSubviewToFront(stickerView)
             self.backgroundImageView.isUserInteractionEnabled = true
-            self.pageViewModel.appendSticker(stickerView)
         }
     }
 

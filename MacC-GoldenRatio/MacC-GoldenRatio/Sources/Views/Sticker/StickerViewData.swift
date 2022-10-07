@@ -38,15 +38,15 @@ class StickerViewData {
         
     }
     
-    func updateItem(sticker: StickerView) {
-        let itemBounds: [Double] = [sticker.frame.origin.x, sticker.frame.origin.y, sticker.frame.size.width, sticker.frame.size.height]
-        let itemTrasnform: [Double] = [sticker.transform.a, sticker.transform.b, sticker.transform.c, sticker.transform.d, sticker.transform.tx, sticker.transform.ty]
+    func updateItem(sticker: StickerView) async {
+        let itemBounds: [Double] = await [sticker.frame.origin.x, sticker.frame.origin.y, sticker.frame.size.width, sticker.frame.size.height]
+        let itemTrasnform: [Double] = await [sticker.transform.a, sticker.transform.b, sticker.transform.c, sticker.transform.d, sticker.transform.tx, sticker.transform.ty]
         var itemContents: [String] = []
         
-        switch sticker.stickerViewData.item.itemType {
+        switch await sticker.stickerViewData.item.itemType {
         case .text:
             let sticker = sticker as! TextStickerView
-            itemContents = [sticker.textView.text]
+            itemContents = await [sticker.textView.text]
 //        case .image:
 //            let sticker = sticker as! ImageStickerView
 //            itemContents = sticker

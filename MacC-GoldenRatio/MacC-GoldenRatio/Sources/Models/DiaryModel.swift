@@ -13,7 +13,7 @@ struct Diary: Codable {
 	let diaryLocation: Location
 	let diaryStartDate: String
 	let diaryEndDate: String
-	let diaryPages: [Page]
+	var diaryPages: [Page]
 	let userUIDs: [String]
 }
 
@@ -25,7 +25,7 @@ struct Location: Codable {
 
 struct Page: Codable {
 	let pageUUID: String
-	let items: [Item]
+	var items: [Item]
 }
 
 struct Item: Codable {

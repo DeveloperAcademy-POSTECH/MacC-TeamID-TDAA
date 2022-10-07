@@ -38,7 +38,10 @@ class StickerView: UIView {
                 }
             }
             if newValue == true {
-                enableTranslucency(state: !newValue)
+                Task{
+                    enableTranslucency(state: !newValue)
+                    await stickerViewData.updateItem(sticker: self)
+                }
             }
         }
     }

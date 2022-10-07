@@ -36,4 +36,19 @@ class FirebaseClient {
 			print(error)
 		}
 	}
+    
+    func updatePage(diary: Diary) {
+        do {
+            var encodedPages: [[String:Any]] = []
+            for page in diary.diaryPages {
+                let endcodedPage = try Firestore.Encoder().encode(page)
+                encodedPages.append(endcodedPage)
+            }
+            let pagesFieldData = ["diaryPages":encodedPages]
+            let diaryRef = db.collection("Diary").document(diary.diaryUUID)
+            diaryRef.updateData(pagesFieldData)
+        } catch {
+            print(error)
+        }
+    }
 }

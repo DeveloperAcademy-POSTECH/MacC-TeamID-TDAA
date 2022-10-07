@@ -76,7 +76,7 @@ class PageViewController: UIViewController {
         
         self.tabBarController?.tabBar.isHidden = true
         let leftBarButtonItem = UIBarButtonItem(title: "취소", style: .plain, target: self, action: nil)
-        let rightBarButtonItem = UIBarButtonItem(title: "완료", style: .plain, target: self, action: nil)
+        let rightBarButtonItem = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(onTapNavigationComplete))
         self.navigationItem.title = "1일차"
         self.navigationItem.setLeftBarButton(leftBarButtonItem, animated: false)
         self.navigationItem.setRightBarButton(rightBarButtonItem, animated: false)
@@ -166,6 +166,14 @@ class PageViewController: UIViewController {
     }
     
     // MARK: Actions
+    @objc private func onTapNavigationComplete() {
+        // TODO: await 처리해주기
+        pageViewModel.stickerArray.forEach{
+            $0.subviewIsHidden = true
+        }
+        pageViewModel.updatePages()
+    }
+    
     @objc private func setStickerSubviewIsHidden() {
         self.pageViewModel.hideStickerSubviews()
     }

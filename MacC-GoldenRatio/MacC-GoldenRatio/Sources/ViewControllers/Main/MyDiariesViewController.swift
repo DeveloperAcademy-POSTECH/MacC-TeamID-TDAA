@@ -11,7 +11,7 @@ import UIKit
 
 final class MyDiariesViewController: UIViewController {
 	private var cancelBag = Set<AnyCancellable>()
-	private let viewModel = MyDiariesViewModel(userUid: "userUID")
+	private let viewModel = MyDiariesViewModel()
 	private let myDevice = UIScreen.getDevice()
 	private var myDiariesViewModalBackgroundView = UIView()
 	
@@ -66,7 +66,6 @@ final class MyDiariesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 		setupSubViews()
-		setupViewModel()
     }
 	
 	private func setupSubViews() {
@@ -128,16 +127,18 @@ extension MyDiariesViewController: MyDiariesViewCustomModalDelegate {
 
 extension MyDiariesViewController: UICollectionViewDataSource {
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		if viewModel.shouldLoadDiaryResult.isEmpty {
-			let label = UILabel()
-			label.text = "다이어리를 추가해주세요."
-			label.textAlignment = .center
-			collectionView.backgroundView = label
-		} else {
-			collectionView.backgroundView = nil
-		}
-		
-		return viewModel.shouldLoadDiaryResult.count
+		// TODO: ViewModel 작업 후 수정 예정
+//		if viewModel.shouldLoadDiaryResult.isEmpty {
+//			let label = UILabel()
+//			label.text = "다이어리를 추가해주세요."
+//			label.textAlignment = .center
+//			collectionView.backgroundView = label
+//		} else {
+//			collectionView.backgroundView = nil
+//		}
+//
+//		return viewModel.shouldLoadDiaryResult.count
+		return 0
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -146,18 +147,18 @@ extension MyDiariesViewController: UICollectionViewDataSource {
 		var imageViews = [UIImageView]()
 		
 		// TODO: ViewModel 작업 후 수정 예정
-		for _ in 0..<viewModel.shouldLoadDiaryResult[indexPath.item].userUIDs.count {
-			let imageView = UIImageView(image: UIImage(systemName: "person"))
-			imageView.contentMode = .scaleToFill
-			imageView.clipsToBounds = true
-			imageView.layer.cornerRadius = 12.5
-			imageView.layer.borderWidth = 0.2
-			imageView.layer.borderColor = UIColor.gray.cgColor
-			imageView.backgroundColor = .white
-			imageViews.append(imageView)
-		}
-		
-		cell?.setup(title: viewModel.shouldLoadDiaryResult[indexPath.item].diaryName, imageViews: imageViews)
+//		for _ in 0..<viewModel.shouldLoadDiaryResult[indexPath.item].userUIDs.count {
+//			let imageView = UIImageView(image: UIImage(systemName: "person"))
+//			imageView.contentMode = .scaleToFill
+//			imageView.clipsToBounds = true
+//			imageView.layer.cornerRadius = 12.5
+//			imageView.layer.borderWidth = 0.2
+//			imageView.layer.borderColor = UIColor.gray.cgColor
+//			imageView.backgroundColor = .white
+//			imageViews.append(imageView)
+//		}
+//
+//		cell?.setup(title: viewModel.shouldLoadDiaryResult[indexPath.item].diaryName, imageViews: imageViews)
 
 		cell?.layer.borderWidth = 0.5
 		cell?.layer.cornerRadius = 20
@@ -191,16 +192,5 @@ extension MyDiariesViewController: UICollectionViewDelegateFlowLayout {
 	
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
 		return UIEdgeInsets(top: myDevice.diaryCollectionViewCellTop, left: myDevice.diaryCollectionViewCellLeading, bottom: myDevice.diaryCollectionViewCellBottom, right: myDevice.diaryCollectionViewCellTrailing)
-	}
-}
-
-private extension MyDiariesViewController {
-	func setupViewModel() {
-		viewModel.$shouldLoadDiaryResult
-			.receive(on: DispatchQueue.main)
-			.sink { [weak self] diary in
-				self?.diaryCollectionView.reloadData()
-			}
-			.store(in: &cancelBag)
 	}
 }

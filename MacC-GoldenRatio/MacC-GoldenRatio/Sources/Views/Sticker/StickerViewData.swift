@@ -14,6 +14,15 @@ class StickerViewData {
         self.item = item
     }
     
+    func fetchFrame() -> CGRect {
+        let x = item.itemFrame[0]
+        let y = item.itemFrame[1]
+        let width = item.itemFrame[2]
+        let height = item.itemFrame[3]
+
+        return CGRect(x: x, y: y, width: width, height: height)
+    }
+    
     func fetchBounds() -> CGRect {
         let x = item.itemBounds[0]
         let y = item.itemBounds[1]
@@ -39,7 +48,8 @@ class StickerViewData {
     }
     
     func updateItem(sticker: StickerView) async {
-        let itemBounds: [Double] = await [sticker.bounds.origin.x, sticker.bounds.origin.y, sticker.bounds.size.width, sticker.bounds.size.height]
+        let itemFrame: [Double] = await [sticker.frame.minX, sticker.frame.minY, sticker.frame.size.width, sticker.frame.size.height]
+        let itemBounds: [Double] = await [sticker.bounds.minX, sticker.bounds.minY, sticker.bounds.size.width, sticker.bounds.size.height]
         let itemTrasnform: [Double] = await [sticker.transform.a, sticker.transform.b, sticker.transform.c, sticker.transform.d, sticker.transform.tx, sticker.transform.ty]
         var itemContents: [String] = []
         
@@ -57,6 +67,7 @@ class StickerViewData {
         default: break
         }
         
+        item.itemFrame = itemFrame
         item.itemBounds = itemBounds
         item.itemTransform = itemTrasnform
         item.contents = itemContents

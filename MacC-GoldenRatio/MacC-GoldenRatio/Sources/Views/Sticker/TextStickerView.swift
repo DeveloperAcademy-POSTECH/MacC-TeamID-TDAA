@@ -54,7 +54,7 @@ class TextStickerView: StickerView {
     
     private func initializeStickerViewData() {
         let id = UUID().uuidString
-        let item = Item(itemUUID: id, itemType: .text, contents: [], itemBounds: [], itemTransform: [])
+        let item = Item(itemUUID: id, itemType: .text, contents: [], itemFrame: [], itemBounds: [], itemTransform: [])
         self.stickerViewData = StickerViewData(item: item)
     }
     
@@ -63,6 +63,7 @@ class TextStickerView: StickerView {
         super.stickerViewData = StickerViewData(item: item)
         self.textView.text = item.contents.first
 
+        self.frame = self.stickerViewData.fetchFrame()
         self.bounds = self.stickerViewData.fetchBounds()
         self.transform = self.stickerViewData.fetchTransform()
     }

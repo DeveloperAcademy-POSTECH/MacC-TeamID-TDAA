@@ -32,7 +32,8 @@ struct Item: Codable {
 	let itemUUID: String
 	let itemType: ItemType
 	var contents: [String]
-	var itemBounds: [Double]
+	var itemFrame: [Double]
+    var itemBounds: [Double]
 	var itemTransform: [Double]
 }
 

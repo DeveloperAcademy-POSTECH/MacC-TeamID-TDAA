@@ -11,14 +11,14 @@ import UIKit
 
 final class MyDiariesViewController: UIViewController {
 	private var cancelBag = Set<AnyCancellable>()
-	private let viewModel = MyDiariesViewModel()
+	private let viewModel = MyDiariesViewModel(userUid: "userUID")
 	private let myDevice = UIScreen.getDevice()
 	private var myDiariesViewModalBackgroundView = UIView()
 	
-	private lazy var diaryCollectionView: UICollectionView = {
+	private lazy var collectionView: UICollectionView = {
 		let layout = UICollectionViewFlowLayout()
 		let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-		
+
 		collectionView.delegate = self
 		collectionView.dataSource = self
 
@@ -66,15 +66,15 @@ final class MyDiariesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 		setupSubViews()
+		setupViewModel()
     }
 	
 	private func setupSubViews() {
-		[diaryCollectionView, addDiaryButton].forEach { view.addSubview($0) }
-		
-		diaryCollectionView.snp.makeConstraints {
+		[collectionView, addDiaryButton].forEach { view.addSubview($0) }
+
+		collectionView.snp.makeConstraints {
 			$0.edges.equalTo(view.safeAreaLayoutGuide)
 		}
-		
 		addDiaryButton.snp.makeConstraints {
 			$0.bottom.trailing.equalTo(view.safeAreaLayoutGuide).inset(myDevice.MyDiariesViewAddDiaryButtonPadding)
 		}
@@ -128,37 +128,36 @@ extension MyDiariesViewController: MyDiariesViewCustomModalDelegate {
 extension MyDiariesViewController: UICollectionViewDataSource {
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 		// TODO: ViewModel 작업 후 수정 예정
-//		if viewModel.shouldLoadDiaryResult.isEmpty {
-//			let label = UILabel()
-//			label.text = "다이어리를 추가해주세요."
-//			label.textAlignment = .center
-//			collectionView.backgroundView = label
-//		} else {
-//			collectionView.backgroundView = nil
-//		}
-//
-//		return viewModel.shouldLoadDiaryResult.count
-		return 0
+		if viewModel.diaryResult.isEmpty {
+			let label = UILabel()
+			label.text = "다이어리를 추가해주세요."
+			label.textAlignment = .center
+			collectionView.backgroundView = label
+		} else {
+			collectionView.backgroundView = nil
+		}
+
+		return viewModel.diaryResult.count
 	}
-	
+
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DiaryCollectionViewCell", for: indexPath) as? DiaryCollectionViewCell
-		
+
 		var imageViews = [UIImageView]()
-		
+
 		// TODO: ViewModel 작업 후 수정 예정
-//		for _ in 0..<viewModel.shouldLoadDiaryResult[indexPath.item].userUIDs.count {
-//			let imageView = UIImageView(image: UIImage(systemName: "person"))
-//			imageView.contentMode = .scaleToFill
-//			imageView.clipsToBounds = true
-//			imageView.layer.cornerRadius = 12.5
-//			imageView.layer.borderWidth = 0.2
-//			imageView.layer.borderColor = UIColor.gray.cgColor
-//			imageView.backgroundColor = .white
-//			imageViews.append(imageView)
-//		}
-//
-//		cell?.setup(title: viewModel.shouldLoadDiaryResult[indexPath.item].diaryName, imageViews: imageViews)
+		for _ in 0..<viewModel.diaryResult[indexPath.item].userUIDs.count {
+			let imageView = UIImageView(image: UIImage(systemName: "person"))
+			imageView.contentMode = .scaleToFill
+			imageView.clipsToBounds = true
+			imageView.layer.cornerRadius = 12.5
+			imageView.layer.borderWidth = 0.2
+			imageView.layer.borderColor = UIColor.gray.cgColor
+			imageView.backgroundColor = .white
+			imageViews.append(imageView)
+		}
+
+		cell?.setup(title: viewModel.diaryResult[indexPath.item].diaryName, imageViews: imageViews)
 
 		cell?.layer.borderWidth = 0.5
 		cell?.layer.cornerRadius = 20
@@ -167,16 +166,16 @@ extension MyDiariesViewController: UICollectionViewDataSource {
 
 		return cell ?? UICollectionViewCell()
 	}
-	
+
 	func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
 		guard kind == UICollectionView.elementKindSectionHeader,
 			  let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "DiaryCollectionHeaderView", for: indexPath) as? DiaryCollectionHeaderView
 		else {
 			return UICollectionReusableView()
 		}
-		
+
 		header.setupViews()
-		
+
 		return header
 	}
 }
@@ -185,12 +184,23 @@ extension MyDiariesViewController: UICollectionViewDelegateFlowLayout {
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 		return myDevice.diaryCollectionViewCellSize
 	}
-	
+
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
 		CGSize(width: collectionView.frame.width - myDevice.diaryCollectionViewCellHeaderWidthPadding, height: myDevice.diaryCollectionViewCellHeaderHeight+myDevice.diaryCollectionViewCellHeaderTop)
 	}
-	
+
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
 		return UIEdgeInsets(top: myDevice.diaryCollectionViewCellTop, left: myDevice.diaryCollectionViewCellLeading, bottom: myDevice.diaryCollectionViewCellBottom, right: myDevice.diaryCollectionViewCellTrailing)
+	}
+}
+
+private extension MyDiariesViewController {
+	func setupViewModel() {
+		viewModel.$diaryResult
+			.receive(on: DispatchQueue.main)
+			.sink { [weak self] diary in
+				self?.collectionView.reloadData()
+			}
+			.store(in: &cancelBag)
 	}
 }

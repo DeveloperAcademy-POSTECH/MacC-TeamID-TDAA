@@ -23,7 +23,7 @@
 		CCE1807428E6B7C500AF06DB /* SignInTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE1807328E6B7C500AF06DB /* SignInTestViewController.swift */; };
 		E243425C28E4B890007BB6DE /* MyDiariesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E243425B28E4B890007BB6DE /* MyDiariesViewController.swift */; };
 		E25753BF28ED9E0600023619 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = E25753BE28ED9E0600023619 /* Kingfisher */; };
-		E276B91C28E46AE900163833 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E276B91B28E46AE900163833 /* UserModel.swift */; };
+		E276B91C28E46AE900163833 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E276B91B28E46AE900163833 /* User.swift */; };
 		E276B91E28E46B3700163833 /* Diary.swift in Sources */ = {isa = PBXBuildFile; fileRef = E276B91D28E46B3700163833 /* Diary.swift */; };
 		E276B92028E4812E00163833 /* UIScreen+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E276B91F28E4812E00163833 /* UIScreen+.swift */; };
 		E28F080228E4655100832F4A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28F080128E4655100832F4A /* AppDelegate.swift */; };
@@ -104,7 +104,7 @@
 		CCE1806E28E5919B00AF06DB /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		CCE1807328E6B7C500AF06DB /* SignInTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInTestViewController.swift; sourceTree = "<group>"; };
 		E243425B28E4B890007BB6DE /* MyDiariesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDiariesViewController.swift; sourceTree = "<group>"; };
-		E276B91B28E46AE900163833 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
+		E276B91B28E46AE900163833 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		E276B91D28E46B3700163833 /* Diary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diary.swift; sourceTree = "<group>"; };
 		E276B91F28E4812E00163833 /* UIScreen+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+.swift"; sourceTree = "<group>"; };
 		E28F07FE28E4655100832F4A /* MacC-GoldenRatio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MacC-GoldenRatio.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -286,7 +286,7 @@
 			isa = PBXGroup;
 			children = (
 				0A5E904D28E9947800B381B8 /* ViewModels */,
-				E276B91B28E46AE900163833 /* UserModel.swift */,
+				E276B91B28E46AE900163833 /* User.swift */,
 				E276B91D28E46B3700163833 /* Diary.swift */,
 			);
 			path = Models;
@@ -546,7 +546,7 @@
 				E276B91E28E46B3700163833 /* Diary.swift in Sources */,
 				E2EA7F0C28E56DF600AC1C49 /* MyPageViewController.swift in Sources */,
 				E28F080228E4655100832F4A /* AppDelegate.swift in Sources */,
-				E276B91C28E46AE900163833 /* UserModel.swift in Sources */,
+				E276B91C28E46AE900163833 /* User.swift in Sources */,
 				E2BEFA9628E882BA00EF0254 /* MyDiariesViewCustomModalVC.swift in Sources */,
 				E2EA7F1628E5711E00AC1C49 /* DiaryCollectionHeaderView.swift in Sources */,
 				E2B025BC28EB326C00B73891 /* MyDiariesViewModel.swift in Sources */,

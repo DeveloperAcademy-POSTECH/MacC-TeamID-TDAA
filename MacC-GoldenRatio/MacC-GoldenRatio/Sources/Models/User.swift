@@ -9,4 +9,5 @@ struct User: Codable {
 	let userUID: String
 	let userName: String
 	let userImageURL: String
+	let diaryUUIDs: [String]
 }

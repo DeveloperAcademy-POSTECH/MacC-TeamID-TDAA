@@ -43,29 +43,15 @@ class StickerViewData {
         return CGAffineTransform(a: a, b: b, c: c, d: d, tx: tx, ty: ty)
     }
     
-    func fetchContent() {
-        
+    func updateContents(contents: [String]) {
+        self.item.contents = contents
     }
     
     func updateItem(sticker: StickerView) async {
         let itemFrame: [Double] = await [sticker.frame.minX, sticker.frame.minY, sticker.frame.size.width, sticker.frame.size.height]
         let itemBounds: [Double] = await [sticker.bounds.minX, sticker.bounds.minY, sticker.bounds.size.width, sticker.bounds.size.height]
         let itemTrasnform: [Double] = await [sticker.transform.a, sticker.transform.b, sticker.transform.c, sticker.transform.d, sticker.transform.tx, sticker.transform.ty]
-        var itemContents: [String] = []
-        
-        switch await sticker.stickerViewData.item.itemType {
-        case .text:
-            let sticker = sticker as! TextStickerView
-            itemContents = await [sticker.textView.text]
-//        case .image:
-//            let sticker = sticker as! ImageStickerView
-//            itemContents = sticker
-//        case .sticker:
-//
-//        case .location:
-
-        default: break
-        }
+        let itemContents: [String] = await sticker.stickerViewData.item.contents
         
         item.itemFrame = itemFrame
         item.itemBounds = itemBounds

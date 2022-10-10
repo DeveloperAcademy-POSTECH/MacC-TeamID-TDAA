@@ -30,8 +30,8 @@ class TextStickerView: StickerView {
     init() {
         super.init(frame: textView.frame)
         
-        self.textView.delegate = self
-        self.initializeStickerViewData()
+        self.initializeStickerViewData(itemType: .text)
+        self.setTextView()
         super.setupContentView(content: textView)
         super.setupDefaultAttributes()
     }
@@ -41,8 +41,8 @@ class TextStickerView: StickerView {
         super.init(frame: textView.frame)
 
         DispatchQueue.main.async{
-            self.textView.delegate = self
             self.configureStickerViewData(item: item)
+            self.setTextView()
             super.setupContentView(content: self.textView)
             super.setupDefaultAttributes()
         }
@@ -52,20 +52,11 @@ class TextStickerView: StickerView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func initializeStickerViewData() {
-        let id = UUID().uuidString
-        let item = Item(itemUUID: id, itemType: .text, contents: [], itemFrame: [], itemBounds: [], itemTransform: [])
-        self.stickerViewData = StickerViewData(item: item)
-    }
-    
-    /// StickerViewData 를 현재 View의 프로퍼티들에게 적용합니다.
-    private func configureStickerViewData(item: Item) {
-        super.stickerViewData = StickerViewData(item: item)
-        self.textView.text = item.contents.first
-
-        self.frame = self.stickerViewData.fetchFrame()
-        self.bounds = self.stickerViewData.fetchBounds()
-        self.transform = self.stickerViewData.fetchTransform()
+    private func setTextView() {
+        self.textView.delegate = self
+        
+        guard let text = self.stickerViewData.item.contents.first else { return }
+        self.textView.text = text
     }
 }
 
@@ -86,6 +77,8 @@ extension TextStickerView {
 extension TextStickerView: UITextViewDelegate {
     
     func textViewDidChange(_ textView: UITextView) {
+        stickerViewData.updateContents(contents: [self.textView.text])
+        
         let size = CGSize(width: 2000, height: 2000)
         let estimatedSize = textView.sizeThatFits(size)
 

@@ -21,22 +21,20 @@ class PageViewModel {
         Task{
             diary = try! await (FirebaseClient().fetchMyDiaries(uid: "userUID")?.first)!
             setStickerArray()
-            print("=====================")
-            debugPrint(stickerArray)
         }
     }
 
     func setStickerArray() {
         DispatchQueue.main.async {
             self.diary.diaryPages.forEach{
-                let stickerViews = $0.items.map {
+                let stickerViews: [StickerView] = $0.items.map {
                     switch $0.itemType {
                     case .text:
                         return TextStickerView(item: $0)
                     case .image:
                         return TextStickerView(item: $0)
                     case .sticker:
-                        return TextStickerView(item: $0)
+                        return StickerStickerView(item: $0)
                     case .location:
                         return TextStickerView(item: $0)
                     }
@@ -48,20 +46,17 @@ class PageViewModel {
     
     func appendSticker(_ sticker: StickerView) {
         stickerArray[currentPageIndex].append(sticker)
-        debugPrint(stickerArray)
     }
     
     func removeSticker(_ sticker: StickerView) {
         guard let index = stickerArray[currentPageIndex].firstIndex(of: sticker) else { return }
         stickerArray[currentPageIndex].remove(at: index)
-        debugPrint(stickerArray)
     }
     
     func hideStickerSubviews() {
         stickerArray[currentPageIndex].forEach{
             $0.subviewIsHidden = true
         }
-        debugPrint(stickerArray)
     }
     
     func bringStickerToFront(_ sticker: StickerView) {
@@ -81,6 +76,5 @@ class PageViewModel {
             diary.diaryPages[$0].items = $1
         }
         FirebaseClient().updatePage(diary: diary)
-        debugPrint(diary)
     }
 }

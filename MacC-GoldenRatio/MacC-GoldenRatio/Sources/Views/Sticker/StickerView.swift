@@ -17,7 +17,7 @@ protocol StickerViewDelegate {
 class StickerView: UIView {
     var delegate: StickerViewDelegate!
     internal var stickerViewData: StickerViewData!
-    private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
+    internal let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
 
     internal var touchStart: CGPoint?
     private var previousPoint: CGPoint?
@@ -58,6 +58,21 @@ class StickerView: UIView {
         }
     }
 
+    internal func initializeStickerViewData(itemType: ItemType) {
+        let id = UUID().uuidString
+        let item = Item(itemUUID: id, itemType: itemType, contents: [], itemFrame: [], itemBounds: [], itemTransform: [])
+        self.stickerViewData = StickerViewData(item: item)
+    }
+
+    /// StickerViewData 를 현재 View의 프로퍼티들에게 적용합니다.
+    internal func configureStickerViewData(item: Item) {
+        self.stickerViewData = StickerViewData(item: item)
+
+        self.frame = self.stickerViewData.fetchFrame()
+        self.bounds = self.stickerViewData.fetchBounds()
+        self.transform = self.stickerViewData.fetchTransform()
+    }
+    
     internal func setupContentView(content: UIView) {
         let contentView = UIView(frame: content.frame)
         contentView.backgroundColor = .clear
@@ -69,10 +84,6 @@ class StickerView: UIView {
         content.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-//        for subview in contentView.subviews {
-//            subview.frame = CGRect(x: 0, y: 0, width: contentView.frame.width, height: contentView.frame.height)
-//            subview.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-//        }
     }
     
     internal func setupDefaultAttributes() {

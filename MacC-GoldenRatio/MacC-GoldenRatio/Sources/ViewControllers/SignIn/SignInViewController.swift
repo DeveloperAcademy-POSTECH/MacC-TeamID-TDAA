@@ -22,8 +22,8 @@ class SignInViewController: UIViewController {
         view.backgroundColor = .systemBackground
         
         if Auth.auth().currentUser != nil {
-            showTestView()
-            // showMainView()
+            // showTestView()
+            showMainView()
         }
         
         setup()
@@ -65,15 +65,14 @@ class SignInViewController: UIViewController {
     
     private func setup() {
         view.addSubview(appleLoginButton)
+        navigationController?.isNavigationBarHidden = true
         
         appleLoginButton.snp.makeConstraints {
             $0.size.equalTo(device.logInButtonSize)
             $0.centerX.equalToSuperview()
             $0.bottom.equalToSuperview().inset(device.logInButtonBottomInset)
         }
-
     }
-    
 }
 
     // MARK: - Extensions
@@ -101,8 +100,8 @@ extension SignInViewController: ASAuthorizationControllerDelegate {
                 }
                 // User is signed in to Firebase with Apple.
                 // ...
-                self.showTestView()
-                // self.showMainView()
+               //  self.showTestView()
+                self.showMainView()
             }
         }
     }

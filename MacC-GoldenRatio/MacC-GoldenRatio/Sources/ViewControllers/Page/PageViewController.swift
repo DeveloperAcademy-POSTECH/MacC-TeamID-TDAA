@@ -11,7 +11,7 @@ import UIKit
 
 class PageViewController: UIViewController {
     private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
-    private let pageViewModel = PageViewModel.pageViewModel
+    private let pageViewModel = PageViewModel()
     private let imagePicker = UIImagePickerController()
 
     private lazy var backgroundImageView: UIImageView = {
@@ -66,7 +66,7 @@ class PageViewController: UIViewController {
         let image = UIImage(systemName: "t.square")
         button.setImage(image, for: .normal)
         button.tintColor = .black
-        button.addTarget(self, action: #selector(onTapMapButton), for: .touchUpInside)
+        button.addTarget(self, action: #selector(onTapTextButton), for: .touchUpInside)
 
         return button
     }()
@@ -167,7 +167,7 @@ class PageViewController: UIViewController {
         self.present(mapSearchViewController, animated: true)
     }
     
-    @objc func onTapImageButton(){
+    @objc func onTapImageButton() {
         self.present(self.imagePicker, animated: true)
     }
     
@@ -179,24 +179,34 @@ class PageViewController: UIViewController {
         self.present(stickerPickerViewController, animated: true)
     }
     
+    @objc func onTapTextButton() {
+        self.addTextSticker()
+    }
+    
     // MARK: Completion Method
     private func addMapSticker(mapItem: MKMapItem) {
-        let mapStickerView = StickerView(mapItem: mapItem, size: self.myDevice.stickerDefaultSize)
+        let mapStickerView = MapStickerView(mapItem: mapItem, size: self.myDevice.stickerDefaultSize)
         mapStickerView.delegate = self
         self.addSticker(stickerView: mapStickerView)
     }
     
     private func addImageSticker(image: UIImage?) {
         guard let image = image else { return }
-        let imageStickerView = StickerView(image: image, size: self.myDevice.stickerDefaultSize)
+        let imageStickerView = ImageStickerView(image: image, size: self.myDevice.stickerDefaultSize)
         imageStickerView.delegate = self
         self.addSticker(stickerView: imageStickerView)
     }
     
     private func addSticker(sticker: String) {
-        let imageStickerView = StickerView(sticker: sticker, size: self.myDevice.stickerDefaultSize)
+        let imageStickerView = StickerStickerView(sticker: sticker, size: self.myDevice.stickerDefaultSize)
         imageStickerView.delegate = self
         self.addSticker(stickerView: imageStickerView)
+    }
+    
+    private func addTextSticker() {
+        let textStickerView = TextStickerView()
+        textStickerView.delegate = self
+        self.addSticker(stickerView: textStickerView)
     }
     
     private func addSticker(stickerView: StickerView) {

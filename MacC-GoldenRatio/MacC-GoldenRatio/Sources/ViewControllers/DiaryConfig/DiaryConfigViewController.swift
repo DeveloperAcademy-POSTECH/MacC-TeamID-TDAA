@@ -10,12 +10,33 @@ import SnapKit
 import UIKit
 
 class DiaryConfigViewController: UIViewController {
+    
+    enum ConfigState {
+        case create
+        case modify
+        
+        var identifier: String {
+            switch self {
+            case .create:
+                return "추가"
+            case .modify:
+                return "수정"
+            }
+        }
+    }
+    
     private let device: UIScreen.DeviceSize = UIScreen.getDevice()
     private var configState: ConfigState
     
-    let dummyData = [Diary(diaryUUID: "", diaryName: "🌊포항항", diaryLocation: Location(locationName: "포항", locationAddress: "포항시", locationCoordinate: [36.0190, 129.3435]), diaryStartDate: Date(), diaryEndDate: Date(timeIntervalSinceNow: 86400), diaryPages: [[Page(pageUUID: "", items: [Item(itemUUID: "", itemType: ItemType.text, contents: "", itemSize: [0.0], itemPosition: [0.0], itemAngle: 0.0)])]], userUIDs: [User(userUID: "", userName: "칼리", userImageURL: ""), User(userUID: "", userName: "드록바", userImageURL: ""), User(userUID: "", userName: "해츨링", userImageURL: ""), User(userUID: "", userName: "라우", userImageURL: ""), User(userUID: "", userName: "산", userImageURL: "")])]
+//    let dummyData = [Diary(diaryUUID: "", diaryName: "🌊포항항", diaryLocation: Location(locationName: "포항", locationAddress: "포항시", locationCoordinate: [36.0190, 129.3435]), diaryStartDate: Date(), diaryEndDate: Date(timeIntervalSinceNow: 86400), diaryPages: [[Page(pageUUID: "", items: [Item(itemUUID: "", itemType: ItemType.text, contents: "", itemSize: [0.0], itemPosition: [0.0], itemAngle: 0.0)])]], userUIDs: [User(userUID: "", userName: "칼리", userImageURL: ""), User(userUID: "", userName: "드록바", userImageURL: ""), User(userUID: "", userName: "해츨링", userImageURL: ""), User(userUID: "", userName: "라우", userImageURL: ""), User(userUID: "", userName: "산", userImageURL: "")])]
+    
+    // TO REMOVE (FOR DUMMYDATA)
+    private var dummyDataStartDate: Date
     
     init(mode configState: ConfigState) {
+        // TO REMOVE (FOR DUMMYDATA)
+        self.dummyDataStartDate = Date()
+        
         self.configState = configState
         super.init(nibName: nil, bundle: nil)
     }
@@ -40,9 +61,9 @@ class DiaryConfigViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.backgroundColor = .systemGray5
-
+        
         collectionView.register(DiaryConfigCollectionViewCell.self, forCellWithReuseIdentifier: "DiaryConfigCollectionViewCell")
-
+        
         return collectionView
     }()
     
@@ -87,7 +108,7 @@ class DiaryConfigViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
-// MARK: - feature methods
+    // MARK: - feature methods
     private func titleSetup() {
         view.addSubview(stateTitle)
         stateTitle.snp.makeConstraints {
@@ -132,11 +153,12 @@ extension DiaryConfigViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = diaryConfigCollectionView.dequeueReusableCell(withReuseIdentifier: "DiaryConfigCollectionViewCell", for: indexPath) as? DiaryConfigCollectionViewCell else { return UICollectionViewCell() }
         
+        
         switch configState { // 데이터 전달 부분
         case .create:
             cell.setContent(indexPath: indexPath, diary: nil)
         case .modify:
-            cell.setContent(indexPath: indexPath, diary: dummyData[0])
+            cell.setContent(indexPath: indexPath, diary: nil)
         }
         
         cell.contentButton?.tag = indexPath.row
@@ -161,12 +183,23 @@ extension DiaryConfigViewController: UICollectionViewDataSource {
                 }
             }
             self.present(mapSearchViewController, animated: true)
-        
+            
         case .diaryDate:
-            print("DatePicker for Diary date Configuration")
+            let pickerController = CalendarPickerViewController(
+                baseDate: self.dummyDataStartDate,
+                selectedDateChanged: { [weak sender] date in
+                    guard let sender = sender else { return }
+                    self.dummyDataStartDate = date
+                    UIView.performWithoutAnimation {
+                        sender.setTitle(date.customFormat(), for: .normal)
+                        sender.tintColor = .black
+                        sender.layoutIfNeeded()
+                    }
+                })
+            
+            present(pickerController, animated: true, completion: nil)
         }
     }
-    
 }
 
 extension DiaryConfigViewController: UICollectionViewDelegate {
@@ -182,19 +215,5 @@ extension DiaryConfigViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: device.diaryConfigCollectionViewCellInset, left: 0, bottom: device.diaryConfigCollectionViewCellInset, right: 0)
-    }
-}
-
-enum ConfigState {
-    case create
-    case modify
-    
-    var identifier: String {
-        switch self {
-        case .create:
-            return "추가"
-        case .modify:
-            return "수정"
-        }
     }
 }

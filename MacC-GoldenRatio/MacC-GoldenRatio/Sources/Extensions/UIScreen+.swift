@@ -347,7 +347,7 @@ extension UIScreen {
 // MARK: - Diary Config Cell
         var diaryConfigCellTitleFont: UIFont {
             switch self {
-            default: return UIFont.boldSystemFont(ofSize: 22)
+            default: return UIFont(name: "EFDiary", size: 17) ?? UIFont.boldSystemFont(ofSize: 17)
             }
         }
         

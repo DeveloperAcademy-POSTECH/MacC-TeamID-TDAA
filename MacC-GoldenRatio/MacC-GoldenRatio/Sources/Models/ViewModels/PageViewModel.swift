@@ -32,7 +32,7 @@ class PageViewModel {
                     case .text:
                         return TextStickerView(item: $0)
                     case .image:
-                        return TextStickerView(item: $0)
+                        return ImageStickerView(item: $0)
                     case .sticker:
                         return StickerStickerView(item: $0)
                     case .location:

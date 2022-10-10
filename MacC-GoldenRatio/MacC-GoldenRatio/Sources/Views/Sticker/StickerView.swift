@@ -38,10 +38,8 @@ class StickerView: UIView {
                 }
             }
             if newValue == true {
-                Task{
-                    enableTranslucency(state: !newValue)
-                    await stickerViewData.updateItem(sticker: self)
-                }
+                enableTranslucency(state: !newValue)
+                stickerViewData.updateItem(sticker: self)
             }
         }
     }
@@ -59,7 +57,7 @@ class StickerView: UIView {
     }
 
     internal func initializeStickerViewData(itemType: ItemType) {
-        let id = UUID().uuidString
+        let id = UUID().uuidString + String(Date().timeIntervalSince1970)
         let item = Item(itemUUID: id, itemType: itemType, contents: [], itemFrame: [], itemBounds: [], itemTransform: [])
         self.stickerViewData = StickerViewData(item: item)
     }
@@ -186,6 +184,14 @@ class StickerView: UIView {
                                   height: bounds.size.height + inset * 2)
         deleteController.center = CGPoint(x: borderView.frame.maxX, y: borderView.frame.origin.y)
         resizingController.center = CGPoint(x: borderView.frame.maxX, y: borderView.frame.maxY)
+    }
+    
+    func subviewIsHidden(_ isHidden: Bool) async {
+        self.subviewIsHidden = isHidden
+    }
+    
+    func getStickerViewDataItem() -> Item {
+        return self.stickerViewData.item
     }
 
     // MARK: 스티커 자체에 입력되는 제스처 관련 메서드

@@ -211,7 +211,7 @@ class PageViewController: UIViewController {
     
     private func addImageSticker(image: UIImage?) {
         guard let image = image else { return }
-        let imageStickerView = ImageStickerView(image: image, size: self.myDevice.stickerDefaultSize)
+        let imageStickerView = ImageStickerView(image: image)
         self.addSticker(stickerView: imageStickerView)
         self.pageViewModel.appendSticker(imageStickerView)
 

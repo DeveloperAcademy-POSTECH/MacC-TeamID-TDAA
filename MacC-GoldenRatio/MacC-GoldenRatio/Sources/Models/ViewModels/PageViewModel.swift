@@ -36,7 +36,7 @@ class PageViewModel {
                     case .sticker:
                         return StickerStickerView(item: $0)
                     case .location:
-                        return TextStickerView(item: $0)
+                        return MapStickerView(item: $0)
                     }
                 }
                 self.stickerArray.append(stickerViews)

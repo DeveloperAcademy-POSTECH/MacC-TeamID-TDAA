@@ -63,9 +63,7 @@ class StickerView: UIView {
     }
 
     /// StickerViewData 를 현재 View의 프로퍼티들에게 적용합니다.
-    internal func configureStickerViewData(item: Item) {
-        self.stickerViewData = StickerViewData(item: item)
-
+    internal func configureStickerViewData() {
         self.frame = self.stickerViewData.fetchFrame()
         self.bounds = self.stickerViewData.fetchBounds()
         self.transform = self.stickerViewData.fetchTransform()

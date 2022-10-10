@@ -33,7 +33,8 @@ class ImageStickerView: StickerView {
         super.init(frame: CGRect())
 
         DispatchQueue.main.async{
-            self.configureStickerViewData(item: item)
+            self.stickerViewData = StickerViewData(item: item)
+            self.configureStickerViewData()
             self.downLoadImage()
             super.setupContentView(content: self.imageView)
             super.setupDefaultAttributes()

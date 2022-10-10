@@ -203,7 +203,7 @@ class PageViewController: UIViewController {
     
     // MARK: Completion Method
     private func addMapSticker(mapItem: MKMapItem) {
-        let mapStickerView = MapStickerView(mapItem: mapItem, size: self.myDevice.stickerDefaultSize)
+        let mapStickerView = MapStickerView(mapItem: mapItem)
         self.addSticker(stickerView: mapStickerView)
         self.pageViewModel.appendSticker(mapStickerView)
 

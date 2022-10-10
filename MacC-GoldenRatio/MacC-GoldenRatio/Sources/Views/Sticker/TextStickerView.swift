@@ -41,7 +41,8 @@ class TextStickerView: StickerView {
         super.init(frame: textView.frame)
 
         DispatchQueue.main.async{
-            self.configureStickerViewData(item: item)
+            self.stickerViewData = StickerViewData(item: item)
+            self.configureStickerViewData()
             self.setTextView()
             super.setupContentView(content: self.textView)
             super.setupDefaultAttributes()

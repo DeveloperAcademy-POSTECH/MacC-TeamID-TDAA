@@ -183,14 +183,6 @@ class StickerView: UIView {
         deleteController.center = CGPoint(x: borderView.frame.maxX, y: borderView.frame.origin.y)
         resizingController.center = CGPoint(x: borderView.frame.maxX, y: borderView.frame.maxY)
     }
-    
-    func subviewIsHidden(_ isHidden: Bool) async {
-        self.subviewIsHidden = isHidden
-    }
-    
-    func getStickerViewDataItem() -> Item {
-        return self.stickerViewData.item
-    }
 
     // MARK: 스티커 자체에 입력되는 제스처 관련 메서드
     @objc private func stickerViewSingleTap(_ sender: UITapGestureRecognizer) {

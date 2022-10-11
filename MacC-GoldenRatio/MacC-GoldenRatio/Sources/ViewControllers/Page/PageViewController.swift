@@ -211,7 +211,7 @@ class PageViewController: UIViewController {
     
     private func addImageSticker(image: UIImage?) {
         guard let image = image else { return }
-        let imageStickerView = ImageStickerView(image: image)
+        let imageStickerView = ImageStickerView(image: image, diaryUUID: pageViewModel.diary.diaryUUID)
         self.addSticker(stickerView: imageStickerView)
         self.pageViewModel.appendSticker(imageStickerView)
 
@@ -241,6 +241,7 @@ class PageViewController: UIViewController {
 
 }
 
+// MARK: StickerViewDelegate
 extension PageViewController: StickerViewDelegate {
     func removeSticker(sticker: StickerView) {
         sticker.removeFromSuperview()

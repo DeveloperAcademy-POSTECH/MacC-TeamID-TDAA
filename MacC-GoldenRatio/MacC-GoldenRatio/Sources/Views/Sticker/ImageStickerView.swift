@@ -8,7 +8,6 @@
 import UIKit
 
 class ImageStickerView: StickerView {
-    
     private let imageView: UIImageView = {
         let imageView = UIImageView(frame: CGRect(origin: .zero, size: UIScreen.getDevice().stickerDefaultSize))
         imageView.contentMode = .scaleAspectFit
@@ -17,10 +16,10 @@ class ImageStickerView: StickerView {
     }()
     
     /// StickerView를 새로 만듭니다.
-    init(image: UIImage) {
+    init(image: UIImage, diaryUUID: String) {
         super.init(frame: imageView.frame)
 
-        upLoadImage(image: image)
+        upLoadImage(image: image, diaryUUID:diaryUUID)
         DispatchQueue.main.async {
             self.initializeStickerViewData(itemType: .image)
             super.setupContentView(content: self.imageView)
@@ -53,8 +52,8 @@ class ImageStickerView: StickerView {
         }
     }
     
-    private func upLoadImage(image: UIImage) {
-        FirebaseStorageManager.uploadImage(image: image, pathRoot: "") { url in
+    private func upLoadImage(image: UIImage, diaryUUID: String) {
+        FirebaseStorageManager.uploadImage(image: image, pathRoot: diaryUUID) { url in
             self.imageView.image = image
             guard let url = url else {return}
             self.stickerViewData.updateContents(contents: [url.absoluteString])

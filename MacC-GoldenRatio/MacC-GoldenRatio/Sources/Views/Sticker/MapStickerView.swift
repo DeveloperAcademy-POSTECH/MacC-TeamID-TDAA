@@ -11,7 +11,6 @@ class MapStickerView: StickerView {
 
     private let mapLabel: UILabel = {
         let label = UILabel()
-//        UILabel(frame: CGRect(origin: .zero, size: UIScreen.getDevice().stickerDefaultSize))
         label.textColor = .label
         label.textAlignment = .center
         

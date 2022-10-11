@@ -37,7 +37,7 @@ class StickerView: UIView {
                     $0.isHidden = newValue
                 }
             }
-            if newValue == true {
+            if newValue {
                 enableTranslucency(state: !newValue)
                 stickerViewData.updateItem(sticker: self)
             }

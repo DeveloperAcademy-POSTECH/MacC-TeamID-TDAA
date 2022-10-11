@@ -86,6 +86,16 @@ class PageViewController: UIViewController {
         return button
     }()
     
+    private lazy var addPageButton: UIButton = {
+        let button = UIButton()
+        let image = UIImage(systemName: "plus")
+        button.setImage(image, for: .normal)
+        button.tintColor = .black
+        button.addTarget(self, action: #selector(onTapPlusButton), for: .touchUpInside)
+
+        return button
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -93,19 +103,11 @@ class PageViewController: UIViewController {
         DispatchQueue.main.async {
             self.configureViewingMode()
             self.addSubviews()
-            self.configureBackgroundImageViewGestureRecognizer()
+            self.configureGestureRecognizer()
             self.configureToolButton()
             self.configureConstraints()
             self.loadStickerViews(pageIndex: self.pageViewModel.currentPageIndex)
             self.setStickerSubviewHidden()
-        }
-    }
-    
-    private func addSubviews() {
-        view.addSubview(backgroundImageView)
-        view.addSubview(pageDescriptionLabel)
-        [mapToolButton, imageToolButton, stickerToolButton, textToolButton].forEach{
-            view.addSubview($0)
         }
     }
     
@@ -118,7 +120,7 @@ class PageViewController: UIViewController {
         }
     }
     
-    private func configureBackgroundImageViewGestureRecognizer() {
+    private func configureGestureRecognizer() {
         let backgroundImageViewSingleTap = UITapGestureRecognizer(target: self, action: #selector(self.setStickerSubviewHidden))
         self.backgroundImageView.addGestureRecognizer(backgroundImageViewSingleTap)
         
@@ -150,6 +152,14 @@ class PageViewController: UIViewController {
         self.imagePicker.sourceType = .photoLibrary
         self.imagePicker.allowsEditing = true
         self.imagePicker.delegate = self
+    }
+    
+    private func addSubviews() {
+        view.addSubview(backgroundImageView)
+        view.addSubview(pageDescriptionLabel)
+        [mapToolButton, imageToolButton, stickerToolButton, textToolButton, addPageButton].forEach{
+            view.addSubview($0)
+        }
     }
     
     private func configureConstraints() {
@@ -185,8 +195,15 @@ class PageViewController: UIViewController {
             make.bottom.equalTo(backgroundImageView.snp.bottom).inset(myDevice.pagePadding)
             make.size.equalTo(myDevice.pageToolButtonSize)
         }
+        
+        addPageButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().offset(-myDevice.pagePadding)
+            make.bottom.equalTo(backgroundImageView.snp.bottom).inset(myDevice.pagePadding)
+            make.size.equalTo(myDevice.pageToolButtonSize)
+        }
     }
     
+    // MARK: Actions
     @objc private func setStickerSubviewHidden() {
         self.pageViewModel.stickerSubviewHidden(true)
     }
@@ -211,33 +228,6 @@ class PageViewController: UIViewController {
     
     @objc func onTapTextButton() {
         self.addTextSticker()
-    }
-    
-    @objc private func swipeAction(_ sender: UISwipeGestureRecognizer) {
-        switch sender.direction {
-        case .left:
-            if pageViewModel.currentPageIndex + 2 <= pageViewModel.stickerArray.count {
-                self.pageViewModel.currentPageIndex += 1
-                self.backgroundImageView.subviews.forEach{
-                    $0.removeFromSuperview()
-                }
-                self.loadStickerViews(pageIndex: self.pageViewModel.currentPageIndex)
-            } else {
-                print("마지막 페이지입니다.")
-            }
-        case .right:
-            if pageViewModel.currentPageIndex - 1 >= 0 {
-                self.pageViewModel.currentPageIndex -= 1
-                self.backgroundImageView.subviews.forEach{
-                    $0.removeFromSuperview()
-                }
-                self.loadStickerViews(pageIndex: self.pageViewModel.currentPageIndex)
-            } else {
-                print("첫 페이지입니다.")
-            }
-        default:
-            break
-        }
     }
     
     // MARK: Completion Method
@@ -279,8 +269,37 @@ class PageViewController: UIViewController {
 
 }
 
-// MARK: NavigtionItemActions
+// MARK: 페이지 편집 처리
 extension PageViewController {
+    
+    @objc private func onTapPlusButton() {
+        pageViewModel.addNewPage()
+        pageViewModel.currentPageIndex += 1
+        reloadStickers()
+    }
+    
+    @objc private func swipeAction(_ sender: UISwipeGestureRecognizer) {
+        switch sender.direction {
+        case .left:
+            if pageViewModel.currentPageIndex + 2 <= pageViewModel.stickerArray.count {
+                pageViewModel.currentPageIndex += 1
+                reloadStickers()
+                reloadPageDescriptionLabel()
+            } else {
+                print("마지막 페이지입니다.")
+            }
+        case .right:
+            if pageViewModel.currentPageIndex - 1 >= 0 {
+                pageViewModel.currentPageIndex -= 1
+                reloadStickers()
+                reloadPageDescriptionLabel()
+            } else {
+                print("첫 페이지입니다.")
+            }
+        default:
+            break
+        }
+    }
     
     @objc private func onTapNavigationBack() {
         self.dismiss(animated: false)
@@ -305,7 +324,7 @@ extension PageViewController {
     private func configureEditMode() {
         self.backgroundImageView.isUserInteractionEnabled = true
 
-        [mapToolButton, imageToolButton, stickerToolButton, textToolButton].forEach{
+        [mapToolButton, imageToolButton, stickerToolButton, textToolButton, addPageButton].forEach{
             $0.isHidden = false
         }
         self.tabBarController?.tabBar.isHidden = true
@@ -319,7 +338,7 @@ extension PageViewController {
         self.navigationItem.title = (pageViewModel.selectedDay + 1).description + "일차"
         self.backgroundImageView.isUserInteractionEnabled = false
 
-        [mapToolButton, imageToolButton, stickerToolButton, textToolButton].forEach{
+        [mapToolButton, imageToolButton, stickerToolButton, textToolButton, addPageButton].forEach{
             $0.isHidden = true
         }
         
@@ -328,6 +347,21 @@ extension PageViewController {
         let rightBarButtonItem = UIBarButtonItem(title: "편집", style: .plain, target: self, action: #selector(onTapNavigationEdit))
         self.navigationItem.setLeftBarButton(leftBarButtonItem, animated: false)
         self.navigationItem.setRightBarButton(rightBarButtonItem, animated: false)
+    }
+    
+    private func reloadStickers() {
+        self.backgroundImageView.subviews.forEach{
+            $0.removeFromSuperview()
+        }
+        self.loadStickerViews(pageIndex: self.pageViewModel.currentPageIndex)
+    }
+    
+    private func reloadPageDescriptionLabel() {
+        let selectedDay = pageViewModel.selectedDay
+        let currentPageString = (pageViewModel.currentPageIndex + 1).description
+        let currentDayPageCount = pageViewModel.diary.diaryPages[selectedDay].pages.count.description
+        let labelText = currentPageString + "/" + currentDayPageCount
+        pageDescriptionLabel.text = labelText
     }
 }
 

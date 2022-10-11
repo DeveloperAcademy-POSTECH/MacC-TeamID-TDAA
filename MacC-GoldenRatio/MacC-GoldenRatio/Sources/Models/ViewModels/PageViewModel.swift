@@ -27,6 +27,14 @@ class PageViewModel {
             setStickerArray()
         }
     }
+    
+    func addNewPage() {
+        let pageUUID = UUID().uuidString + String(Date().timeIntervalSince1970)
+        let newPage = Page(pageUUID: pageUUID, items: [])
+        diary.diaryPages[selectedDay].pages.append(newPage)
+        
+        stickerArray.append([])
+    }
 
     func setStickerArray() {
         DispatchQueue.main.async {
@@ -58,8 +66,10 @@ class PageViewModel {
     }
     
     func stickerSubviewHidden(_ value: Bool) {
-        stickerArray[currentPageIndex].forEach{
-            $0.subviewIsHidden = value
+        stickerArray.forEach{
+            $0.forEach{
+                $0.subviewIsHidden = value
+            }
         }
     }
     

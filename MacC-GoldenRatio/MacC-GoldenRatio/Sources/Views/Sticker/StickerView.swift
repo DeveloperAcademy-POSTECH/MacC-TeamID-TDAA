@@ -30,7 +30,7 @@ class StickerView: UIView {
     private var oldBounds: CGRect!
     private var oldTransform: CGAffineTransform!
 
-    var subviewIsHidden = true {
+    var subviewIsHidden = false {
         willSet {
             self.subviews.forEach{
                 if $0 is StickerControllerView || $0 is StickerBorderView {

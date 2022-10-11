@@ -13,8 +13,8 @@ struct Diary: Codable {
 	let diaryLocation: Location
 	let diaryStartDate: String
 	let diaryEndDate: String
-	let diaryPages: [Page]
 	let userUIDs: [String]
+    var diaryPages: [Page]
 }
 
 struct Location: Codable {
@@ -25,16 +25,19 @@ struct Location: Codable {
 
 struct Page: Codable {
 	let pageUUID: String
-	let items: [Item]
+	var items: [Item]
 }
 
 struct Item: Codable {
 	let itemUUID: String
 	let itemType: ItemType
-	let contents: [String]
-	let itemSize: [Double]
-	let itemPosition: [Double]
-	let itemAngle: Double
+	var contents: [String]
+    /// 상위 뷰의 좌표 시스템에서 Sticker의 위치 좌표, 그리고 크기를 나타냅니다.
+	var itemFrame: [Double]
+    /// Sticker 자체 좌표 시스템에서의 위치 좌표, 그리고 크기를 나타냅니다.
+    var itemBounds: [Double]
+    /// Sticker의 크기, 회전각을 나타냅니다.
+	var itemTransform: [Double]
 }
 
 struct TextBox: Codable {
@@ -51,7 +54,7 @@ struct Sticker: Codable {
 	let stickerName: String
 }
 
-enum ItemType: Codable {
+enum ItemType: String, Codable {
 	case text
 	case image
 	case sticker

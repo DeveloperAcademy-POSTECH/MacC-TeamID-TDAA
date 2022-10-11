@@ -76,7 +76,7 @@ class PageViewController: UIViewController {
         
         self.tabBarController?.tabBar.isHidden = true
         let leftBarButtonItem = UIBarButtonItem(title: "취소", style: .plain, target: self, action: nil)
-        let rightBarButtonItem = UIBarButtonItem(title: "완료", style: .plain, target: self, action: nil)
+        let rightBarButtonItem = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(onTapNavigationComplete))
         self.navigationItem.title = "1일차"
         self.navigationItem.setLeftBarButton(leftBarButtonItem, animated: false)
         self.navigationItem.setRightBarButton(rightBarButtonItem, animated: false)
@@ -90,6 +90,7 @@ class PageViewController: UIViewController {
             self.configureBackgroundImageView()
             self.configureToolButton()
             self.configureConstraints()
+            self.loadStickerViews(pageIndex: self.pageViewModel.currentPageIndex)
         }
     }
     
@@ -98,6 +99,17 @@ class PageViewController: UIViewController {
         view.addSubview(pageDescriptionLabel)
         [mapToolButton, imageToolButton, stickerToolButton, textToolButton].forEach{
             view.addSubview($0)
+        }
+    }
+    
+    private func loadStickerViews(pageIndex: Int) {
+        DispatchQueue.main.async {
+            self.pageViewModel.stickerArray[pageIndex].forEach{
+                print($0)
+                $0.delegate = self
+                self.backgroundImageView.addSubview($0)
+                self.backgroundImageView.isUserInteractionEnabled = true
+            }
         }
     }
     
@@ -157,6 +169,12 @@ class PageViewController: UIViewController {
     }
     
     // MARK: Actions
+    @objc private func onTapNavigationComplete() {
+        // TODO: await 처리해주기
+        pageViewModel.hideStickerSubviews()
+        pageViewModel.updateDBPages()
+    }
+    
     @objc private func setStickerSubviewIsHidden() {
         self.pageViewModel.hideStickerSubviews()
     }
@@ -185,42 +203,45 @@ class PageViewController: UIViewController {
     
     // MARK: Completion Method
     private func addMapSticker(mapItem: MKMapItem) {
-        let mapStickerView = MapStickerView(mapItem: mapItem, size: self.myDevice.stickerDefaultSize)
-        mapStickerView.delegate = self
+        let mapStickerView = MapStickerView(mapItem: mapItem)
         self.addSticker(stickerView: mapStickerView)
+        self.pageViewModel.appendSticker(mapStickerView)
+
     }
     
     private func addImageSticker(image: UIImage?) {
         guard let image = image else { return }
-        let imageStickerView = ImageStickerView(image: image, size: self.myDevice.stickerDefaultSize)
-        imageStickerView.delegate = self
+        let imageStickerView = ImageStickerView(image: image, diaryUUID: pageViewModel.diary.diaryUUID)
         self.addSticker(stickerView: imageStickerView)
+        self.pageViewModel.appendSticker(imageStickerView)
+
     }
     
     private func addSticker(sticker: String) {
-        let imageStickerView = StickerStickerView(sticker: sticker, size: self.myDevice.stickerDefaultSize)
-        imageStickerView.delegate = self
+        let imageStickerView = StickerStickerView(sticker: sticker)
         self.addSticker(stickerView: imageStickerView)
+        self.pageViewModel.appendSticker(imageStickerView)
     }
     
     private func addTextSticker() {
         let textStickerView = TextStickerView()
-        textStickerView.delegate = self
         self.addSticker(stickerView: textStickerView)
+        self.pageViewModel.appendSticker(textStickerView)
     }
     
     private func addSticker(stickerView: StickerView) {
         DispatchQueue.main.async {
+            stickerView.delegate = self
             stickerView.center = CGPoint(x: self.view.center.x, y: self.view.center.y - 100)
             self.backgroundImageView.addSubview(stickerView)
             self.backgroundImageView.bringSubviewToFront(stickerView)
             self.backgroundImageView.isUserInteractionEnabled = true
-            self.pageViewModel.appendSticker(stickerView)
         }
     }
 
 }
 
+// MARK: StickerViewDelegate
 extension PageViewController: StickerViewDelegate {
     func removeSticker(sticker: StickerView) {
         sticker.removeFromSuperview()

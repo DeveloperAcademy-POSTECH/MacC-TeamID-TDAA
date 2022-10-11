@@ -316,9 +316,17 @@ extension PageViewController {
     // TODO: await 처리해주기
     @objc private func onTapNavigationComplete() {
         self.isEditMode = false
-
         pageViewModel.stickerSubviewHidden(true)
-        pageViewModel.updateDBPages()
+
+        if pageViewModel.currentPageIndex == 0 {
+            guard let thumbnailImage = self.backgroundImageView.transformToImage() else { return }
+            pageViewModel.upLoadImage(image: thumbnailImage) {
+                self.pageViewModel.updatePageThumbnail()
+                self.pageViewModel.updateDBPages()
+            }
+        } else {
+            pageViewModel.updateDBPages()
+        }
     }
     
     private func configureEditMode() {

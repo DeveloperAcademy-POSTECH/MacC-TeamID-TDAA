@@ -5,7 +5,7 @@
 //  Created by 김상현 on 2022/10/02.
 //
 
-import Foundation
+import UIKit
 
 class PageViewModel {
     var selectedDay: Int = 0
@@ -78,6 +78,18 @@ class PageViewModel {
         stickerArray[currentPageIndex].remove(at: index)
         stickerArray[currentPageIndex].append(sticker)
         debugPrint(stickerArray)
+    }
+    
+    func upLoadImage(image: UIImage, _ completion: @escaping () -> Void) {
+        FirebaseStorageManager.uploadImage(image: image, pathRoot: diary.diaryUUID + "/thumbnail") { url in
+            guard let url = url else { return }
+            self.diary.pageThumbnails[self.selectedDay] = url.description
+            completion()
+        }
+    }
+    
+    func updatePageThumbnail() {
+        FirebaseClient().updatePageThumbnail(diary: diary)
     }
     
     func updateDBPages() {

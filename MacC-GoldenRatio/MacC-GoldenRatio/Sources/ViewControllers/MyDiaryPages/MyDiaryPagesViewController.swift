@@ -5,12 +5,14 @@
 //  Created by DongKyu Kim on 2022/10/08.
 //
 
+import FirebaseFirestore
 import SnapKit
 import UIKit
 
 class MyDiaryPagesViewController: UIViewController {
     
     // private let device = UIScreen.getDevice()
+    private let itemSpacing: CGFloat = 20 // TODO: UIScreen+ 추가 예정
     let dummyPageCount = Int.random(in: 3...5)
     private var previousOffset: CGFloat = 0
     private var currentPage: Int = 1 {
@@ -23,7 +25,24 @@ class MyDiaryPagesViewController: UIViewController {
             self.dayLabel.text = "\(currentPage)일차"
         }
     }
-    private let itemSpacing: CGFloat = 20 // UIScreen+ 추가 예정
+    
+    // TODO: client 분리 예정
+    //    var db = Firestore.firestore()
+    //    var diaryResult: [Diary] = []
+    
+    private lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "🌊포항항"
+        label.font = UIFont.systemFont(ofSize: 24)
+        return label
+    }()
+    
+    private lazy var dayLabel: UILabel = {
+        let label = UILabel()
+        label.text = "1일차"
+        label.font = UIFont.systemFont(ofSize: 20)
+        return label
+    }()
     
     private lazy var myPagesCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -45,20 +64,6 @@ class MyDiaryPagesViewController: UIViewController {
         
     }()
     
-    private lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "🌊포항항"
-        label.font = UIFont.systemFont(ofSize: 24)
-        return label
-    }()
-    
-    private lazy var dayLabel: UILabel = {
-        let label = UILabel()
-        label.text = "1일차"
-        label.font = UIFont.systemFont(ofSize: 20)
-        return label
-    }()
-    
     private lazy var previousButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "chevron.left"), for: .normal)
@@ -77,15 +82,89 @@ class MyDiaryPagesViewController: UIViewController {
         
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        navigationItem.hidesBackButton = true
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backButtonTapped))
         
-        let copyButton = UIBarButtonItem(image: UIImage(systemName: "doc.on.doc"), style: .plain, target: self, action: #selector(copyButtonTapped))
-        let menuButton = UIBarButtonItem(image: UIImage(systemName: "line.3.horizontal"), style: .plain, target: self, action: #selector(menuButtonTapped))
-        navigationItem.rightBarButtonItems = [copyButton, menuButton]
-        
+        navigationBarSetup()
         collectionViewSetup()
         componentsSetup()
+        // databaseSetup() // FIXME: 데이터베이스 fetch 구현 후 삭제 예정
+        
+        
+    }
+    
+    // MARK: - Feature methods
+    @objc private func backButtonTapped() {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    @objc private func menuButtonTapped() {
+        print("menu Button Tapped!")
+    }
+    
+    @objc private func copyButtonTapped() {
+        UIPasteboard.general.string = "복사된 텍스트 입니다."
+        
+        let ac = UIAlertController(title: "초대코드 복사 완료!", message: "", preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+        present(ac, animated: true, completion: nil)
+    }
+    
+    @objc private func modifyButtonTapped() {
+        let vc = DiaryConfigViewController(mode: .modify)
+        vc.modalPresentationStyle = .fullScreen
+        self.present(vc, animated: true, completion: nil)
+    }
+    
+    @objc private func outButtonTapped() {
+        
+    }
+    
+    @objc private func previousButtonTapped(_ sender: UIButton) {
+        if self.currentPage != 1 {
+            currentPage -= 1
+            updatePageOffset()
+        }
+    }
+    
+    @objc private func nextButtonTapped() {
+        if self.currentPage != self.dummyPageCount {
+            currentPage += 1
+            updatePageOffset()
+        }
+    }
+    
+    private func updatePageOffset() {
+        let newXPoint = CGFloat(self.currentPage-1) * (self.myPagesCollectionView.frame.width + self.itemSpacing)
+        
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.2, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.5, options: .allowUserInteraction, animations: {
+                self.myPagesCollectionView.setContentOffset(CGPoint(x: newXPoint, y: 0), animated: true)
+            }, completion: nil)
+        }
+    }
+    
+    // MARK: - Setup methods
+    private func navigationBarSetup() {
+        let menuButton = UIBarButtonItem(image: UIImage(systemName: "line.3.horizontal"), style: .plain, target: self, action: nil)
+        
+        navigationItem.hidesBackButton = true
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backButtonTapped))
+        navigationItem.rightBarButtonItem = menuButton
+        navigationItem.leftBarButtonItem?.tintColor = .darkText
+        navigationItem.rightBarButtonItem?.tintColor = .darkText
+        
+        
+        let copyAction = UIAction(title: "초대코드 복사", image: nil) { _ in
+            self.copyButtonTapped()
+        }
+        let modifyAction = UIAction(title: "다이어리 수정", image: nil) { _ in
+            print("메뉴 다이어리 수정 버튼")
+            self.modifyButtonTapped()
+        }
+        let outAction = UIAction(title: "다이어리 나가기", image: nil) { _ in
+            print("메뉴 다이어리 나가기 버튼")
+        }
+        
+        menuButton.menu = UIMenu(title: "", options: .displayInline, children: [copyAction, modifyAction, outAction])
         
     }
     
@@ -125,46 +204,29 @@ class MyDiaryPagesViewController: UIViewController {
         }
     }
     
-    // MARK: - Actions
-    @objc func backButtonTapped() {
-        self.navigationController?.popViewController(animated: true)
-    }
-    
-    @objc func copyButtonTapped() {
-        UIPasteboard.general.string = "복사된 텍스트 입니다."
-        
-        let ac = UIAlertController(title: "초대코드 복사 완료!", message: "", preferredStyle: .alert)
-        ac.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
-        present(ac, animated: true, completion: nil)
-    }
-    
-    @objc func menuButtonTapped() {
-        print("menu Button Tapped!")
-    }
-    
-    @objc func previousButtonTapped(_ sender: UIButton) {
-        if self.currentPage != 1 {
-            currentPage -= 1
-            updatePageOffset()
-        }
-    }
-    
-    @objc func nextButtonTapped() {
-        if self.currentPage != self.dummyPageCount {
-            currentPage += 1
-            updatePageOffset()
-        }
-    }
-    
-    private func updatePageOffset() {
-        let newXPoint = CGFloat(self.currentPage-1) * (self.myPagesCollectionView.frame.width + self.itemSpacing)
-        
-        DispatchQueue.main.async {
-            UIView.animate(withDuration: 0.2, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.5, options: .allowUserInteraction, animations: {
-                self.myPagesCollectionView.setContentOffset(CGPoint(x: newXPoint, y: 0), animated: true)
-            }, completion: nil)
-        }
-    }
+    // FIXME: 데이터베이스 fetch 구현 후 삭제 예정
+    //    private func databaseSetup() {
+    //        db.collection("Diary").addSnapshotListener { snapshot, error in
+    //            guard let documents = snapshot?.documents else {
+    //                print("ERROR Firestore fetching document \(String(describing: error))")
+    //                return
+    //            }
+    //
+    //            self.diaryResult = documents.compactMap { doc -> Diary? in
+    //                do {
+    //                    let jsonData = try JSONSerialization.data(withJSONObject: doc.data(), options: [])
+    //                    let diary = try JSONDecoder().decode(Diary.self, from: jsonData)
+    //                    return diary
+    //
+    //                } catch let error {
+    //                    print("ERROR JSON Parsing \(error)")
+    //                    return nil
+    //                }
+    //            }
+    //        }
+    //
+    //        print(diaryResult)
+    //    }
 }
 
 // MARK: - Extensions

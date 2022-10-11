@@ -14,13 +14,18 @@ struct Diary: Codable {
 	let diaryStartDate: String
 	let diaryEndDate: String
 	let userUIDs: [String]
-    var diaryPages: [Page]
+    var diaryPages: [Pages]
+    var pageThumbnails: [String] = []
 }
 
 struct Location: Codable {
 	let locationName: String
 	let locationAddress: String
 	let locationCoordinate: [Double]
+}
+
+struct Pages: Codable {
+    var pages: [Page]
 }
 
 struct Page: Codable {

@@ -13,11 +13,22 @@ class PageViewController: UIViewController {
     private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
     private let pageViewModel = PageViewModel()
     private let imagePicker = UIImagePickerController()
-
-    private lazy var backgroundImageView: UIImageView = {
+    private var isEditMode = false {
+        willSet{
+            switch newValue {
+            case true:
+                self.configureEditMode()
+            case false:
+                self.configureViewingMode()
+            }
+        }
+    }
+    
+    private let backgroundImageView: UIImageView = {
         let backgroundImageView = UIImageView()
         backgroundImageView.backgroundColor = .gray
         backgroundImageView.clipsToBounds = true
+        backgroundImageView.isUserInteractionEnabled = false
 
         return backgroundImageView
     }()
@@ -26,7 +37,11 @@ class PageViewController: UIViewController {
         let label = UILabel()
         label.textColor = .black
         label.font = myDevice.pageDescriptionLabelFont
-        label.text = "1 / 15"
+        let selectedDay = pageViewModel.selectedDay
+        let currentPageString = (pageViewModel.currentPageIndex + 1).description
+        let currentDayPageCount = pageViewModel.diary.diaryPages[selectedDay].pages.count.description
+        let labelText = currentPageString + "/" + currentDayPageCount
+        label.text = labelText
         
         return label
     }()
@@ -73,24 +88,16 @@ class PageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.tabBarController?.tabBar.isHidden = true
-        let leftBarButtonItem = UIBarButtonItem(title: "취소", style: .plain, target: self, action: nil)
-        let rightBarButtonItem = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(onTapNavigationComplete))
-        self.navigationItem.title = "1일차"
-        self.navigationItem.setLeftBarButton(leftBarButtonItem, animated: false)
-        self.navigationItem.setRightBarButton(rightBarButtonItem, animated: false)
-        
-        self.imagePicker.sourceType = .photoLibrary
-        self.imagePicker.allowsEditing = true
-        self.imagePicker.delegate = self
-        
+
+        self.configureImagePicker()
         DispatchQueue.main.async {
+            self.configureViewingMode()
             self.addSubviews()
-            self.configureBackgroundImageView()
+            self.configureBackgroundImageViewGestureRecognizer()
             self.configureToolButton()
             self.configureConstraints()
             self.loadStickerViews(pageIndex: self.pageViewModel.currentPageIndex)
+            self.setStickerSubviewHidden()
         }
     }
     
@@ -105,17 +112,23 @@ class PageViewController: UIViewController {
     private func loadStickerViews(pageIndex: Int) {
         DispatchQueue.main.async {
             self.pageViewModel.stickerArray[pageIndex].forEach{
-                print($0)
                 $0.delegate = self
                 self.backgroundImageView.addSubview($0)
-                self.backgroundImageView.isUserInteractionEnabled = true
             }
         }
     }
     
-    private func configureBackgroundImageView() {
-        let backgroundImageViewSingleTap = UITapGestureRecognizer(target: self, action: #selector(self.setStickerSubviewIsHidden))
+    private func configureBackgroundImageViewGestureRecognizer() {
+        let backgroundImageViewSingleTap = UITapGestureRecognizer(target: self, action: #selector(self.setStickerSubviewHidden))
         self.backgroundImageView.addGestureRecognizer(backgroundImageViewSingleTap)
+        
+        let directions: [UISwipeGestureRecognizer.Direction] = [.right, .left]
+        for direction in directions {
+            let gesture = UISwipeGestureRecognizer(target: self, action: #selector(self.swipeAction(_ :)))
+            gesture.direction = direction
+            gesture.delegate = self
+            self.view.addGestureRecognizer(gesture)
+        }
     }
     
     private func configureToolButton() {
@@ -131,6 +144,12 @@ class PageViewController: UIViewController {
             }
             
         }
+    }
+    
+    private func configureImagePicker() {
+        self.imagePicker.sourceType = .photoLibrary
+        self.imagePicker.allowsEditing = true
+        self.imagePicker.delegate = self
     }
     
     private func configureConstraints() {
@@ -168,15 +187,8 @@ class PageViewController: UIViewController {
         }
     }
     
-    // MARK: Actions
-    @objc private func onTapNavigationComplete() {
-        // TODO: await 처리해주기
-        pageViewModel.hideStickerSubviews()
-        pageViewModel.updateDBPages()
-    }
-    
-    @objc private func setStickerSubviewIsHidden() {
-        self.pageViewModel.hideStickerSubviews()
+    @objc private func setStickerSubviewHidden() {
+        self.pageViewModel.stickerSubviewHidden(true)
     }
     
     @objc private func onTapMapButton() {
@@ -199,6 +211,33 @@ class PageViewController: UIViewController {
     
     @objc func onTapTextButton() {
         self.addTextSticker()
+    }
+    
+    @objc private func swipeAction(_ sender: UISwipeGestureRecognizer) {
+        switch sender.direction {
+        case .left:
+            if pageViewModel.currentPageIndex + 2 <= pageViewModel.stickerArray.count {
+                self.pageViewModel.currentPageIndex += 1
+                self.backgroundImageView.subviews.forEach{
+                    $0.removeFromSuperview()
+                }
+                self.loadStickerViews(pageIndex: self.pageViewModel.currentPageIndex)
+            } else {
+                print("마지막 페이지입니다.")
+            }
+        case .right:
+            if pageViewModel.currentPageIndex - 1 >= 0 {
+                self.pageViewModel.currentPageIndex -= 1
+                self.backgroundImageView.subviews.forEach{
+                    $0.removeFromSuperview()
+                }
+                self.loadStickerViews(pageIndex: self.pageViewModel.currentPageIndex)
+            } else {
+                print("첫 페이지입니다.")
+            }
+        default:
+            break
+        }
     }
     
     // MARK: Completion Method
@@ -235,11 +274,63 @@ class PageViewController: UIViewController {
             stickerView.center = CGPoint(x: self.view.center.x, y: self.view.center.y - 100)
             self.backgroundImageView.addSubview(stickerView)
             self.backgroundImageView.bringSubviewToFront(stickerView)
-            self.backgroundImageView.isUserInteractionEnabled = true
         }
     }
 
 }
+
+// MARK: NavigtionItemActions
+extension PageViewController {
+    
+    @objc private func onTapNavigationBack() {
+        self.dismiss(animated: false)
+    }
+    
+    @objc private func onTapNavigationEdit() {
+        self.isEditMode = true
+    }
+    
+    @objc private func onTapNavigationCancel() {
+        self.isEditMode = false
+    }
+    
+    // TODO: await 처리해주기
+    @objc private func onTapNavigationComplete() {
+        self.isEditMode = false
+
+        pageViewModel.stickerSubviewHidden(true)
+        pageViewModel.updateDBPages()
+    }
+    
+    private func configureEditMode() {
+        self.backgroundImageView.isUserInteractionEnabled = true
+
+        [mapToolButton, imageToolButton, stickerToolButton, textToolButton].forEach{
+            $0.isHidden = false
+        }
+        self.tabBarController?.tabBar.isHidden = true
+        let leftBarButtonItem = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(onTapNavigationCancel))
+        let rightBarButtonItem = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(onTapNavigationComplete))
+        self.navigationItem.setLeftBarButton(leftBarButtonItem, animated: false)
+        self.navigationItem.setRightBarButton(rightBarButtonItem, animated: false)
+    }
+    
+    private func configureViewingMode() {
+        self.navigationItem.title = (pageViewModel.selectedDay + 1).description + "일차"
+        self.backgroundImageView.isUserInteractionEnabled = false
+
+        [mapToolButton, imageToolButton, stickerToolButton, textToolButton].forEach{
+            $0.isHidden = true
+        }
+        
+        self.tabBarController?.tabBar.isHidden = true
+        let leftBarButtonItem = UIBarButtonItem(title: "이전", style: .plain, target: self, action: #selector(onTapNavigationBack))
+        let rightBarButtonItem = UIBarButtonItem(title: "편집", style: .plain, target: self, action: #selector(onTapNavigationEdit))
+        self.navigationItem.setLeftBarButton(leftBarButtonItem, animated: false)
+        self.navigationItem.setRightBarButton(rightBarButtonItem, animated: false)
+    }
+}
+
 
 // MARK: StickerViewDelegate
 extension PageViewController: StickerViewDelegate {
@@ -274,5 +365,15 @@ extension PageViewController: UIViewControllerTransitioningDelegate {
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         
         return HalfModalPresentationController(presentedViewController: presented, presenting: presenting)
+    }
+}
+
+// MARK: UIGestureRecognizerDelegate
+extension PageViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        if gestureRecognizer is UISwipeGestureRecognizer && isEditMode == false {
+            return true
+        }
+        return false
     }
 }

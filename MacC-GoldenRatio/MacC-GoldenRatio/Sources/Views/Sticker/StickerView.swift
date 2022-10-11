@@ -30,7 +30,7 @@ class StickerView: UIView {
     private var oldBounds: CGRect!
     private var oldTransform: CGAffineTransform!
 
-    var subviewIsHidden = false {
+    var subviewIsHidden = true {
         willSet {
             self.subviews.forEach{
                 if $0 is StickerControllerView || $0 is StickerBorderView {
@@ -233,8 +233,6 @@ class StickerView: UIView {
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard subviewIsHidden == false else { return }
-        print(bounds)
-        print(transform)
         self.delegate.bringToFront(sticker: self)
         enableTranslucency(state: true)
 

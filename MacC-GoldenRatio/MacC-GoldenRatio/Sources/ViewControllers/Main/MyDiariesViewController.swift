@@ -24,7 +24,7 @@ final class MyDiariesViewController: UIViewController {
 		collectionView.delegate = self
 		collectionView.dataSource = self
 
-		collectionView.backgroundColor = .systemBackground
+		collectionView.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
 		collectionView.register(DiaryCollectionViewCell.self, forCellWithReuseIdentifier: "DiaryCollectionViewCell")
 		collectionView.register(DiaryCollectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "DiaryCollectionHeaderView")
 
@@ -72,6 +72,8 @@ final class MyDiariesViewController: UIViewController {
     }
 	
 	private func setupSubViews() {
+		self.view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
+		
 		[collectionView, addDiaryButton].forEach { view.addSubview($0) }
 
 		collectionView.snp.makeConstraints {

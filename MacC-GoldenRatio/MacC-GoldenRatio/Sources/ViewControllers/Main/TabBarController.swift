@@ -10,10 +10,12 @@ import UIKit
 class TabBarController: UITabBarController {
 	private lazy var myDiariesViewController: UIViewController = {
 		let viewController = MyDiariesViewController()
-							
-		let tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "house"), tag: 0)
 		
-		viewController.tabBarItem = tabBarItem
+		let pressImage = UIImage(named: "pressHome")?.withRenderingMode(.alwaysOriginal)
+		let notPressImage = UIImage(named: "notPressHome")?.withRenderingMode(.alwaysOriginal)
+		
+		viewController.tabBarItem.image = notPressImage
+		viewController.tabBarItem.selectedImage = pressImage
 		
 		return viewController
 	}()
@@ -21,9 +23,11 @@ class TabBarController: UITabBarController {
 	private lazy var myPlacesViewController: UIViewController = {
 		let viewController = UINavigationController(rootViewController: MyPlacesViewController())
 		
-		let tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "map"), tag: 1)
-		
-		viewController.tabBarItem = tabBarItem
+		let pressImage = UIImage(named: "pressMap")?.withRenderingMode(.alwaysOriginal)
+		let notPressImage = UIImage(named: "notPressMap")?.withRenderingMode(.alwaysOriginal)
+
+		viewController.tabBarItem.image = notPressImage
+		viewController.tabBarItem.selectedImage = pressImage
 		
 		return viewController
 	}()
@@ -31,9 +35,11 @@ class TabBarController: UITabBarController {
 	private lazy var myAlbumsViewController: UIViewController = {
 		let viewController = UINavigationController(rootViewController: MyAlbumsViewController())
 		
-		let tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "photo"), tag: 3)
-		
-		viewController.tabBarItem = tabBarItem
+		let pressImage = UIImage(named: "pressAlbum")?.withRenderingMode(.alwaysOriginal)
+		let notPressImage = UIImage(named: "notPressAlbum")?.withRenderingMode(.alwaysOriginal)
+
+		viewController.tabBarItem.image = notPressImage
+		viewController.tabBarItem.selectedImage = pressImage
 		
 		return viewController
 	}()
@@ -41,9 +47,11 @@ class TabBarController: UITabBarController {
 	private lazy var myPageViewController: UIViewController = {
         let viewController = UINavigationController(rootViewController: PageViewController())
 
-		let tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "person"), tag: 4)
-		
-		viewController.tabBarItem = tabBarItem
+		let pressImage = UIImage(named: "pressProfile")?.withRenderingMode(.alwaysOriginal)
+		let notPressImage = UIImage(named: "notPressProfile")?.withRenderingMode(.alwaysOriginal)
+
+		viewController.tabBarItem.image = notPressImage
+		viewController.tabBarItem.selectedImage = pressImage
 		
 		return viewController
 	}()
@@ -51,6 +59,8 @@ class TabBarController: UITabBarController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		view.backgroundColor = .systemBackground
+		self.tabBar.tintColor = UIColor.clear
+		self.tabBar.unselectedItemTintColor = UIColor.clear
 		viewControllers = [myDiariesViewController, myPlacesViewController, myAlbumsViewController, myPageViewController]
 	}
 

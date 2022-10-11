@@ -6,12 +6,14 @@
 //
 
 import Combine
+import Firebase
+import FirebaseAuth
 import SnapKit
 import UIKit
 
 final class MyDiariesViewController: UIViewController {
 	private var cancelBag = Set<AnyCancellable>()
-	private let viewModel = MyDiariesViewModel(userUid: "userUID")
+	private let viewModel = MyDiariesViewModel(userUid: Auth.auth().currentUser?.uid ?? "")
 	private let myDevice = UIScreen.getDevice()
 	private var myDiariesViewModalBackgroundView = UIView()
 	
@@ -128,7 +130,7 @@ extension MyDiariesViewController: MyDiariesViewCustomModalDelegate {
 extension MyDiariesViewController: UICollectionViewDataSource {
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 		// TODO: ViewModel 작업 후 수정 예정
-		if viewModel.diaryResult.isEmpty {
+		if viewModel.diaryCellData.isEmpty {
 			let label = UILabel()
 			label.text = "다이어리를 추가해주세요."
 			label.textAlignment = .center
@@ -137,33 +139,12 @@ extension MyDiariesViewController: UICollectionViewDataSource {
 			collectionView.backgroundView = nil
 		}
 
-		return viewModel.diaryResult.count
+		return viewModel.diaryCellData.count
 	}
 
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DiaryCollectionViewCell", for: indexPath) as? DiaryCollectionViewCell
-
-		var imageViews = [UIImageView]()
-
-		// TODO: ViewModel 작업 후 수정 예정
-		for _ in 0..<viewModel.diaryResult[indexPath.item].userUIDs.count {
-			let imageView = UIImageView(image: UIImage(systemName: "person"))
-			imageView.contentMode = .scaleToFill
-			imageView.clipsToBounds = true
-			imageView.layer.cornerRadius = 12.5
-			imageView.layer.borderWidth = 0.2
-			imageView.layer.borderColor = UIColor.gray.cgColor
-			imageView.backgroundColor = .white
-			imageViews.append(imageView)
-		}
-
-		cell?.setup(title: viewModel.diaryResult[indexPath.item].diaryName, imageViews: imageViews)
-
-		cell?.layer.borderWidth = 0.5
-		cell?.layer.cornerRadius = 20
-		cell?.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMaxXMinYCorner, .layerMaxXMaxYCorner)
-		cell?.layer.borderColor = UIColor.gray.cgColor
-
+		cell?.setup(cellData: viewModel.diaryCellData[indexPath.item])
 		return cell ?? UICollectionViewCell()
 	}
 
@@ -177,6 +158,12 @@ extension MyDiariesViewController: UICollectionViewDataSource {
 		header.setupViews()
 
 		return header
+	}
+}
+
+extension MyDiariesViewController: UICollectionViewDelegate {
+	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+		// TODO: 다이어리 화면 완료시 작업 예정
 	}
 }
 
@@ -196,9 +183,9 @@ extension MyDiariesViewController: UICollectionViewDelegateFlowLayout {
 
 private extension MyDiariesViewController {
 	func setupViewModel() {
-		viewModel.$diaryResult
+		viewModel.$diaryCellData
 			.receive(on: DispatchQueue.main)
-			.sink { [weak self] diary in
+			.sink { [weak self] diaryCell in
 				self?.collectionView.reloadData()
 			}
 			.store(in: &cancelBag)

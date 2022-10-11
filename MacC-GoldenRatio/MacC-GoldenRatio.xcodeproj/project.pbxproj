@@ -19,6 +19,10 @@
 		0AAB2AD528EC1F11009FBD96 /* StickerPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2AD428EC1F11009FBD96 /* StickerPickerViewController.swift */; };
 		0AAB2AD728EC2587009FBD96 /* HalfModalPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2AD628EC2587009FBD96 /* HalfModalPresentationController.swift */; };
 		0AAB2ADA28EC8C8D009FBD96 /* StickerPickerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2AD928EC8C8D009FBD96 /* StickerPickerCollectionViewCell.swift */; };
+		0AAB2ADC28EDA067009FBD96 /* TextStickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2ADB28EDA067009FBD96 /* TextStickerView.swift */; };
+		0AAB2ADE28EDA511009FBD96 /* MapStickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2ADD28EDA510009FBD96 /* MapStickerView.swift */; };
+		0AAB2AE028EDA553009FBD96 /* ImageStickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2ADF28EDA553009FBD96 /* ImageStickerView.swift */; };
+		0AAB2AE228EDA55D009FBD96 /* StickerStickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2AE128EDA55D009FBD96 /* StickerStickerView.swift */; };
 		CC40BC1628EEADEB00DF48E1 /* CalendarPickerFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC40BC1528EEADEB00DF48E1 /* CalendarPickerFooterView.swift */; };
 		CC40BC1828EEADFD00DF48E1 /* CalendarPickerHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC40BC1728EEADFD00DF48E1 /* CalendarPickerHeaderView.swift */; };
 		CC40BC1A28EEAE2400DF48E1 /* CalendarDateCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC40BC1928EEAE2400DF48E1 /* CalendarDateCollectionViewCell.swift */; };
@@ -28,10 +32,6 @@
 		CC65514728EEBF7C00E637A2 /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC65514628EEBF7C00E637A2 /* Date+.swift */; };
 		CC6BD74428EBFA80001ED665 /* DiaryConfigViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6BD74328EBFA80001ED665 /* DiaryConfigViewController.swift */; };
 		CC6BD74628EC18B8001ED665 /* DiaryConfigCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6BD74528EC18B8001ED665 /* DiaryConfigCollectionViewCell.swift */; };
-		0AAB2ADC28EDA067009FBD96 /* TextStickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2ADB28EDA067009FBD96 /* TextStickerView.swift */; };
-		0AAB2ADE28EDA511009FBD96 /* MapStickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2ADD28EDA510009FBD96 /* MapStickerView.swift */; };
-		0AAB2AE028EDA553009FBD96 /* ImageStickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2ADF28EDA553009FBD96 /* ImageStickerView.swift */; };
-		0AAB2AE228EDA55D009FBD96 /* StickerStickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2AE128EDA55D009FBD96 /* StickerStickerView.swift */; };
 		CCE1806F28E5919B00AF06DB /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE1806E28E5919B00AF06DB /* SignInViewController.swift */; };
 		CCE1807428E6B7C500AF06DB /* SignInTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE1807328E6B7C500AF06DB /* SignInTestViewController.swift */; };
 		E243425C28E4B890007BB6DE /* MyDiariesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E243425B28E4B890007BB6DE /* MyDiariesViewController.swift */; };
@@ -56,7 +56,6 @@
 		E2EA7F0828E56CF600AC1C49 /* MyPlacesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EA7F0728E56CF600AC1C49 /* MyPlacesViewController.swift */; };
 		E2EA7F0A28E56CFE00AC1C49 /* MyAlbumsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EA7F0928E56CFE00AC1C49 /* MyAlbumsViewController.swift */; };
 		E2EA7F0C28E56DF600AC1C49 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EA7F0B28E56DF600AC1C49 /* MyPageViewController.swift */; };
-		E2EA7F0E28E56EDF00AC1C49 /* DiaryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EA7F0D28E56EDF00AC1C49 /* DiaryCollectionViewCell.swift */; };
 		E2EA7F1628E5711E00AC1C49 /* DiaryCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EA7F1528E5711E00AC1C49 /* DiaryCollectionHeaderView.swift */; };
 		E2F5690328E57E7B0039BE37 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = E2F5690228E57E7B0039BE37 /* SnapKit */; };
 		E2F5690928E5CCDC0039BE37 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = E2F5690828E5CCDC0039BE37 /* FirebaseAuth */; };
@@ -68,6 +67,10 @@
 		E2F5691528E5CCDC0039BE37 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = E2F5691428E5CCDC0039BE37 /* FirebaseStorage */; };
 		E2F5691728E5CCDC0039BE37 /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = E2F5691628E5CCDC0039BE37 /* FirebaseStorageCombine-Community */; };
 		E2F5691928E5CE170039BE37 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E2F5691828E5CE170039BE37 /* GoogleService-Info.plist */; };
+		E2FA41A128F4752D00BBA354 /* DiaryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2FA41A028F4752D00BBA354 /* DiaryCollectionViewCell.swift */; };
+		E2FA41A328F48C1B00BBA354 /* DiaryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2FA41A228F48C1B00BBA354 /* DiaryCell.swift */; };
+		E2FA41A528F496D100BBA354 /* UIImageView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2FA41A428F496D100BBA354 /* UIImageView+.swift */; };
+		E2FA41A728F5383500BBA354 /* EF_Diary.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E2FA41A628F5383500BBA354 /* EF_Diary.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -113,7 +116,10 @@
 		0AAB2AD428EC1F11009FBD96 /* StickerPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerPickerViewController.swift; sourceTree = "<group>"; };
 		0AAB2AD628EC2587009FBD96 /* HalfModalPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HalfModalPresentationController.swift; path = "MacC-GoldenRatio/Sources/ViewControllers/Page/HalfModalPresentationController.swift"; sourceTree = SOURCE_ROOT; };
 		0AAB2AD928EC8C8D009FBD96 /* StickerPickerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerPickerCollectionViewCell.swift; sourceTree = "<group>"; };
-		8E295A9228EC2CF200127D41 /* EF_Diary.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = EF_Diary.ttf; sourceTree = "<group>"; };
+		0AAB2ADB28EDA067009FBD96 /* TextStickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextStickerView.swift; sourceTree = "<group>"; };
+		0AAB2ADD28EDA510009FBD96 /* MapStickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapStickerView.swift; sourceTree = "<group>"; };
+		0AAB2ADF28EDA553009FBD96 /* ImageStickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageStickerView.swift; sourceTree = "<group>"; };
+		0AAB2AE128EDA55D009FBD96 /* StickerStickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerStickerView.swift; sourceTree = "<group>"; };
 		CC40BC1328EEADD100DF48E1 /* CalendarPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPickerViewController.swift; sourceTree = "<group>"; };
 		CC40BC1528EEADEB00DF48E1 /* CalendarPickerFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPickerFooterView.swift; sourceTree = "<group>"; };
 		CC40BC1728EEADFD00DF48E1 /* CalendarPickerHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPickerHeaderView.swift; sourceTree = "<group>"; };
@@ -121,10 +127,6 @@
 		CC40BC1B28EEAEB200DF48E1 /* Day.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day.swift; sourceTree = "<group>"; };
 		CC40BC1D28EEAEDA00DF48E1 /* MonthMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthMetadata.swift; sourceTree = "<group>"; };
 		CC65514628EEBF7C00E637A2 /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
-		0AAB2ADB28EDA067009FBD96 /* TextStickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextStickerView.swift; sourceTree = "<group>"; };
-		0AAB2ADD28EDA510009FBD96 /* MapStickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapStickerView.swift; sourceTree = "<group>"; };
-		0AAB2ADF28EDA553009FBD96 /* ImageStickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageStickerView.swift; sourceTree = "<group>"; };
-		0AAB2AE128EDA55D009FBD96 /* StickerStickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerStickerView.swift; sourceTree = "<group>"; };
 		CC6BD73728E9790C001ED665 /* MacC-GoldenRatio.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "MacC-GoldenRatio.entitlements"; sourceTree = "<group>"; };
 		CC6BD74328EBFA80001ED665 /* DiaryConfigViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryConfigViewController.swift; sourceTree = "<group>"; };
 		CC6BD74528EC18B8001ED665 /* DiaryConfigCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryConfigCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -153,9 +155,12 @@
 		E2EA7F0728E56CF600AC1C49 /* MyPlacesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPlacesViewController.swift; sourceTree = "<group>"; };
 		E2EA7F0928E56CFE00AC1C49 /* MyAlbumsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAlbumsViewController.swift; sourceTree = "<group>"; };
 		E2EA7F0B28E56DF600AC1C49 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
-		E2EA7F0D28E56EDF00AC1C49 /* DiaryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryCollectionViewCell.swift; sourceTree = "<group>"; };
 		E2EA7F1528E5711E00AC1C49 /* DiaryCollectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryCollectionHeaderView.swift; sourceTree = "<group>"; };
 		E2F5691828E5CE170039BE37 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		E2FA41A028F4752D00BBA354 /* DiaryCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiaryCollectionViewCell.swift; sourceTree = "<group>"; };
+		E2FA41A228F48C1B00BBA354 /* DiaryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryCell.swift; sourceTree = "<group>"; };
+		E2FA41A428F496D100BBA354 /* UIImageView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+.swift"; sourceTree = "<group>"; };
+		E2FA41A628F5383500BBA354 /* EF_Diary.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = EF_Diary.ttf; path = ../../../../../../../../Downloads/EF_Diary.ttf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -239,7 +244,7 @@
 		8E295A9128EC2CD400127D41 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
-				8E295A9228EC2CF200127D41 /* EF_Diary.ttf */,
+				E2FA41A628F5383500BBA354 /* EF_Diary.ttf */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -278,7 +283,7 @@
 		E25753BC28ED8E3B00023619 /* MyDiaries */ = {
 			isa = PBXGroup;
 			children = (
-				E2EA7F0D28E56EDF00AC1C49 /* DiaryCollectionViewCell.swift */,
+				E2FA41A028F4752D00BBA354 /* DiaryCollectionViewCell.swift */,
 			);
 			path = MyDiaries;
 			sourceTree = "<group>";
@@ -321,7 +326,6 @@
 			children = (
 				E25753BC28ED8E3B00023619 /* MyDiaries */,
 				0AAB2AD828EC8C69009FBD96 /* Page */,
-				E2EA7F0D28E56EDF00AC1C49 /* DiaryCollectionViewCell.swift */,
 				CC6BD74528EC18B8001ED665 /* DiaryConfigCollectionViewCell.swift */,
 			);
 			path = Cells;
@@ -335,6 +339,7 @@
 				0AAB2AD028EAFF6D009FBD96 /* CollectionView+.swift */,
 				0AAB2AD228EB14A8009FBD96 /* UIView+.swift */,
 				CC65514628EEBF7C00E637A2 /* Date+.swift */,
+				E2FA41A428F496D100BBA354 /* UIImageView+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -345,6 +350,7 @@
 				0A5E904D28E9947800B381B8 /* ViewModels */,
 				E276B91B28E46AE900163833 /* User.swift */,
 				E276B91D28E46B3700163833 /* Diary.swift */,
+				E2FA41A228F48C1B00BBA354 /* DiaryCell.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -561,6 +567,7 @@
 				E28F080E28E4655200832F4A /* LaunchScreen.storyboard in Resources */,
 				E28F080B28E4655200832F4A /* Assets.xcassets in Resources */,
 				E2F5691928E5CE170039BE37 /* GoogleService-Info.plist in Resources */,
+				E2FA41A728F5383500BBA354 /* EF_Diary.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -590,14 +597,15 @@
 				0AAB2ADC28EDA067009FBD96 /* TextStickerView.swift in Sources */,
 				0AAB2ACD28EAFD78009FBD96 /* MapSearchViewController.swift in Sources */,
 				0A5E904528E8578400B381B8 /* PageViewController.swift in Sources */,
+				E2FA41A328F48C1B00BBA354 /* DiaryCell.swift in Sources */,
 				0AAB2AD528EC1F11009FBD96 /* StickerPickerViewController.swift in Sources */,
 				E2EA7F0628E56C0900AC1C49 /* TabBarController.swift in Sources */,
 				0AAB2AD128EAFF6D009FBD96 /* CollectionView+.swift in Sources */,
 				E2EA7F0828E56CF600AC1C49 /* MyPlacesViewController.swift in Sources */,
+				E2FA41A528F496D100BBA354 /* UIImageView+.swift in Sources */,
 				E276B92028E4812E00163833 /* UIScreen+.swift in Sources */,
 				CC40BC1F28EEB10800DF48E1 /* CalendarPickerViewController.swift in Sources */,
 				0AAB2AD728EC2587009FBD96 /* HalfModalPresentationController.swift in Sources */,
-				E2EA7F0E28E56EDF00AC1C49 /* DiaryCollectionViewCell.swift in Sources */,
 				0A5E904C28E858D200B381B8 /* StickerBorderView.swift in Sources */,
 				0A5E904F28E9948B00B381B8 /* PageViewModel.swift in Sources */,
 				0AAB2ADE28EDA511009FBD96 /* MapStickerView.swift in Sources */,
@@ -614,7 +622,7 @@
 				CC40BC1828EEADFD00DF48E1 /* CalendarPickerHeaderView.swift in Sources */,
 				E28F080228E4655100832F4A /* AppDelegate.swift in Sources */,
 				E276B91C28E46AE900163833 /* User.swift in Sources */,
-				E276B91C28E46AE900163833 /* UserModel.swift in Sources */,
+				E276B91C28E46AE900163833 /* User.swift in Sources */,
 				0AAB2AE228EDA55D009FBD96 /* StickerStickerView.swift in Sources */,
 				0A5E904828E857E200B381B8 /* StickerView.swift in Sources */,
 				CC65514728EEBF7C00E637A2 /* Date+.swift in Sources */,
@@ -627,6 +635,7 @@
 				0AAB2ADA28EC8C8D009FBD96 /* StickerPickerCollectionViewCell.swift in Sources */,
 				0AAB2AD328EB14A8009FBD96 /* UIView+.swift in Sources */,
 				E28F080428E4655100832F4A /* SceneDelegate.swift in Sources */,
+				E2FA41A128F4752D00BBA354 /* DiaryCollectionViewCell.swift in Sources */,
 				CC40BC1628EEADEB00DF48E1 /* CalendarPickerFooterView.swift in Sources */,
 				E243425C28E4B890007BB6DE /* MyDiariesViewController.swift in Sources */,
 				E2B025C728EC163500B73891 /* FirestoreClient.swift in Sources */,

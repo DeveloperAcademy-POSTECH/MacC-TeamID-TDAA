@@ -10,7 +10,7 @@ import UIKit
 
 // TODO: 수정 예정
 class MyDiariesViewModel {
-	@Published var diaryResult = [Diary]()
+	@Published var diaryCellData = [DiaryCell]()
 	private let client = FirestoreClient()
 	var userUid: String
 	
@@ -22,7 +22,7 @@ class MyDiariesViewModel {
 	func fetchLoadData(_ uid: String) {
 		Task {
 			do {
-				self.diaryResult = try await client.fetchMyDiaries(uid)
+				self.diaryCellData = try await client.fetchDiaryCellData(uid)
 			} catch {
 				print(error)
 			}

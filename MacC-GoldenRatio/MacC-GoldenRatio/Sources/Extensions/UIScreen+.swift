@@ -55,7 +55,7 @@ extension UIScreen {
 		
 		var MyDiariesViewTitleFont: UIFont {
 			switch self {
-			default: return UIFont.systemFont(ofSize: 28)
+			default: return UIFont(name: "EF_Diary", size: 28) ?? UIFont.systemFont(ofSize: 28)
 			}
 		}
 		
@@ -178,6 +178,12 @@ extension UIScreen {
 		var diaryCollectionViewCellTitleLabelTop: CGFloat {
 			switch self {
 			default: return 20
+			}
+		}
+		
+		var diaryCollectionViewCellTitleLabelFont: UIFont {
+			switch self {
+			default: return UIFont(name: "EF_Diary", size: 24) ?? UIFont.systemFont(ofSize: 24)
 			}
 		}
         

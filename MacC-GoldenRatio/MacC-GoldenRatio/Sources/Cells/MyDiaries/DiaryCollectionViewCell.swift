@@ -52,7 +52,6 @@ class DiaryCollectionViewCell: UICollectionViewCell {
 					$0.trailing.equalToSuperview().inset(trailing-8)
 					$0.bottom.equalToSuperview().inset(myDevice.diaryContributerImageViewBottom)
 					trailing += myDevice.diaryContributerImageViewSize-5
-					print(trailing)
 				}
 			} else if index <= 3 {
 				let imageView = UIImageView()
@@ -69,7 +68,6 @@ class DiaryCollectionViewCell: UICollectionViewCell {
 					$0.trailing.equalToSuperview().inset(trailing)
 					$0.bottom.equalToSuperview().inset(myDevice.diaryContributerImageViewBottom)
 					trailing += myDevice.diaryContributerImageViewSize-5
-					print(trailing)
 				}
 			} else {
 				break

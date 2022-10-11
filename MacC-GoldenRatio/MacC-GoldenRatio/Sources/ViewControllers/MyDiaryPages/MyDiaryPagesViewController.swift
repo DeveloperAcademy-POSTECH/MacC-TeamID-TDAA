@@ -11,9 +11,8 @@ import UIKit
 
 class MyDiaryPagesViewController: UIViewController {
     
-    // private let device = UIScreen.getDevice()
+    private let device = UIScreen.getDevice()
     private let itemSpacing: CGFloat = 20 // TODO: UIScreen+ 추가 예정
-    let dummyPageCount = Int.random(in: 3...5)
     private var previousOffset: CGFloat = 0
     private var currentPage: Int = 1 {
         didSet {
@@ -27,6 +26,7 @@ class MyDiaryPagesViewController: UIViewController {
     }
     
     // TODO: client 분리 예정
+    let dummyPageCount = Int.random(in: 3...5)
     //    var db = Firestore.firestore()
     //    var diaryResult: [Diary] = []
     
@@ -66,14 +66,18 @@ class MyDiaryPagesViewController: UIViewController {
     
     private lazy var previousButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "chevron.left"), for: .normal)
+        let configuration = UIImage.SymbolConfiguration(pointSize: 28, weight: .semibold, scale: .medium)
+        button.tintColor = .black
+        button.setImage(UIImage(systemName: "chevron.compact.left", withConfiguration: configuration), for: .normal)
         button.addTarget(self, action: #selector(previousButtonTapped), for: .touchUpInside)
         return button
     }()
     
     private lazy var nextButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "chevron.right"), for: .normal)
+        let configuration = UIImage.SymbolConfiguration(pointSize: 28, weight: .semibold, scale: .medium)
+        button.tintColor = .black
+        button.setImage(UIImage(systemName: "chevron.compact.right", withConfiguration: configuration), for: .normal)
         button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -87,8 +91,6 @@ class MyDiaryPagesViewController: UIViewController {
         collectionViewSetup()
         componentsSetup()
         // databaseSetup() // FIXME: 데이터베이스 fetch 구현 후 삭제 예정
-        
-        
     }
     
     // MARK: - Feature methods
@@ -97,10 +99,14 @@ class MyDiaryPagesViewController: UIViewController {
     }
     
     @objc private func menuButtonTapped() {
-        print("menu Button Tapped!")
+        let popUp = PopUpViewController(popUpPosition: .top)
+        popUp.addButton(buttonTitle: "초대 코드 복사", action: copyButtonTapped)
+        popUp.addButton(buttonTitle: "다이어리 수정", action: modifyButtonTapped)
+        popUp.addButton(buttonTitle: "다이어리 나가기", action: outButtonTapped)
+        present(popUp, animated: false)
     }
     
-    @objc private func copyButtonTapped() {
+    @objc func copyButtonTapped() {
         UIPasteboard.general.string = "복사된 텍스트 입니다."
         
         let ac = UIAlertController(title: "초대코드 복사 완료!", message: "", preferredStyle: .alert)
@@ -108,14 +114,21 @@ class MyDiaryPagesViewController: UIViewController {
         present(ac, animated: true, completion: nil)
     }
     
-    @objc private func modifyButtonTapped() {
+    @objc func modifyButtonTapped() {
         let vc = DiaryConfigViewController(mode: .modify)
         vc.modalPresentationStyle = .fullScreen
         self.present(vc, animated: true, completion: nil)
     }
     
-    @objc private func outButtonTapped() {
-        
+    @objc func outButtonTapped() {
+        let ac = UIAlertController(title: "다이어리를 나가시겠습니까?", message: "다이어리를 나가면 공동편집을 할 수 없습니다.", preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "다이어리 나가기", style: .destructive) { _ in
+            print("다이어리 나가기")
+            // TODO: 다이어리 목록에서 삭제
+            self.backButtonTapped()
+        })
+        ac.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
+        present(ac, animated: true, completion: nil)
     }
     
     @objc private func previousButtonTapped(_ sender: UIButton) {
@@ -144,28 +157,14 @@ class MyDiaryPagesViewController: UIViewController {
     
     // MARK: - Setup methods
     private func navigationBarSetup() {
-        let menuButton = UIBarButtonItem(image: UIImage(systemName: "line.3.horizontal"), style: .plain, target: self, action: nil)
+        let configuration = UIImage.SymbolConfiguration(pointSize: 24, weight: .semibold, scale: .medium)
+        let menuButton = UIBarButtonItem(image: UIImage(systemName: "line.3.horizontal", withConfiguration: configuration), style: .plain, target: self, action: #selector(menuButtonTapped))
         
         navigationItem.hidesBackButton = true
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backButtonTapped))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left", withConfiguration: configuration), style: .plain, target: self, action: #selector(backButtonTapped))
         navigationItem.rightBarButtonItem = menuButton
-        navigationItem.leftBarButtonItem?.tintColor = .darkText
-        navigationItem.rightBarButtonItem?.tintColor = .darkText
-        
-        
-        let copyAction = UIAction(title: "초대코드 복사", image: nil) { _ in
-            self.copyButtonTapped()
-        }
-        let modifyAction = UIAction(title: "다이어리 수정", image: nil) { _ in
-            print("메뉴 다이어리 수정 버튼")
-            self.modifyButtonTapped()
-        }
-        let outAction = UIAction(title: "다이어리 나가기", image: nil) { _ in
-            print("메뉴 다이어리 나가기 버튼")
-        }
-        
-        menuButton.menu = UIMenu(title: "", options: .displayInline, children: [copyAction, modifyAction, outAction])
-        
+        navigationItem.leftBarButtonItem?.tintColor = .black
+        navigationItem.rightBarButtonItem?.tintColor = .black
     }
     
     private func collectionViewSetup() {

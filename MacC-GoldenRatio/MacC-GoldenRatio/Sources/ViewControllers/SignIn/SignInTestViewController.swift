@@ -39,7 +39,7 @@ class SignInTestViewController: UIViewController {
         button.backgroundColor = .black
         button.tintColor = .white
         button.setTitle("로그아웃", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: device.logInButtonFontSize)
+        button.titleLabel?.font = device.loginButtonFont
         button.addTarget(self, action: #selector(logoutButtonPressed), for: .touchUpInside)
         return button
     }()
@@ -49,7 +49,7 @@ class SignInTestViewController: UIViewController {
         button.backgroundColor = .black
         button.tintColor = .white
         button.setTitle("회원 탈퇴", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: device.logInButtonFontSize)
+        button.titleLabel?.font = device.loginButtonFont
         button.addTarget(self, action: #selector(withdrawalButtonPressed), for: .touchUpInside)
         return button
     }()
@@ -59,7 +59,7 @@ class SignInTestViewController: UIViewController {
         button.backgroundColor = .black
         button.tintColor = .white
         button.setTitle("다이어리 추가", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: device.logInButtonFontSize)
+        button.titleLabel?.font = device.loginButtonFont
         button.addTarget(self, action: #selector(diaryCreateButtonPressed), for: .touchUpInside)
         return button
     }()
@@ -69,7 +69,7 @@ class SignInTestViewController: UIViewController {
         button.backgroundColor = .black
         button.tintColor = .white
         button.setTitle("다이어리 수정", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: device.logInButtonFontSize)
+        button.titleLabel?.font = device.loginButtonFont
         button.addTarget(self, action: #selector(diaryModifyButtonPressed), for: .touchUpInside)
         return button
     }()

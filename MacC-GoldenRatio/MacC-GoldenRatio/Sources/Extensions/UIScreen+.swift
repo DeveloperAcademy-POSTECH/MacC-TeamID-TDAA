@@ -203,13 +203,13 @@ extension UIScreen {
         
         var logInButtonImagePointSize: CGFloat {
             switch self {
-            default: return 21.4
+            default: return 17
             }
         }
         
-        var logInButtonFontSize: CGFloat {
+        var loginButtonFont: UIFont {
             switch self {
-            default: return 21.4
+            default: return UIFont(name: "EF_Diary", size: 17) ?? UIFont.systemFont(ofSize: 17)
             }
         }
         
@@ -380,6 +380,8 @@ extension UIScreen {
             default: return 20
             }
         }
+        
+// MARK: - My Diary Pages
         
 	}
 

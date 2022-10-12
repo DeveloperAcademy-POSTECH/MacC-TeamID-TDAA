@@ -53,9 +53,9 @@ extension UIScreen {
 			}
 		}
 		
-		var MyDiariesViewTitleFontSize: CGFloat {
+		var MyDiariesViewTitleFont: UIFont {
 			switch self {
-			default: return 28
+			default: return UIFont(name: "EF_Diary", size: 28) ?? UIFont.systemFont(ofSize: 28)
 			}
 		}
 		
@@ -115,15 +115,9 @@ extension UIScreen {
 			}
 		}
 
-		var diaryCollectionViewCellWidth: Int {
+		var diaryCollectionViewCellSize: CGSize {
 			switch self {
-			default: return 165
-			}
-		}
-		
-		var diaryCollectionViewCellHeight: Int {
-			switch self {
-			default: return 207
+			default: return CGSize(width: 165, height: 207)
 			}
 		}
 		
@@ -184,6 +178,12 @@ extension UIScreen {
 		var diaryCollectionViewCellTitleLabelTop: CGFloat {
 			switch self {
 			default: return 20
+			}
+		}
+		
+		var diaryCollectionViewCellTitleLabelFont: UIFont {
+			switch self {
+			default: return UIFont(name: "EF_Diary", size: 24) ?? UIFont.systemFont(ofSize: 24)
 			}
 		}
         

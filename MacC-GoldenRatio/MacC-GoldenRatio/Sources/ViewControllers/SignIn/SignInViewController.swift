@@ -22,7 +22,6 @@ class SignInViewController: UIViewController {
         view.backgroundColor = .systemBackground
         
         if Auth.auth().currentUser != nil {
-            // showTestView()
             showMainView()
         }
         
@@ -49,11 +48,6 @@ class SignInViewController: UIViewController {
     @objc private func appleLoginButtonPressed() {
         print("Sign In completed with Apple ID")
         startSignInWithAppleFlow()
-    }
-    
-    private func showTestView() {
-        let signInTestVC = SignInTestViewController()
-        self.navigationController?.pushViewController(signInTestVC, animated: true)
     }
     
     private func showMainView() {
@@ -98,9 +92,7 @@ extension SignInViewController: ASAuthorizationControllerDelegate {
                     print ("Error Apple sign in: %@", error)
                     return
                 }
-                // User is signed in to Firebase with Apple.
-                // ...
-               //  self.showTestView()
+                
                 self.showMainView()
             }
         }

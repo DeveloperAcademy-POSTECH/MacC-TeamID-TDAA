@@ -36,7 +36,7 @@
 		CC6BD74628EC18B8001ED665 /* DiaryConfigCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6BD74528EC18B8001ED665 /* DiaryConfigCollectionViewCell.swift */; };
 		CCE1806F28E5919B00AF06DB /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE1806E28E5919B00AF06DB /* SignInViewController.swift */; };
 		CCE1807428E6B7C500AF06DB /* SignInTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE1807328E6B7C500AF06DB /* SignInTestViewController.swift */; };
-		E243425C28E4B890007BB6DE /* MyDiariesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E243425B28E4B890007BB6DE /* MyDiariesViewController.swift */; };
+		E243425C28E4B890007BB6DE /* MyHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E243425B28E4B890007BB6DE /* MyHomeViewController.swift */; };
 		E25753BF28ED9E0600023619 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = E25753BE28ED9E0600023619 /* Kingfisher */; };
 		E276B91C28E46AE900163833 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E276B91B28E46AE900163833 /* User.swift */; };
 		E276B91E28E46B3700163833 /* DiaryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E276B91D28E46B3700163833 /* DiaryModel.swift */; };
@@ -49,14 +49,14 @@
 		E28F081928E4655200832F4A /* MacC_GoldenRatioTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28F081828E4655200832F4A /* MacC_GoldenRatioTests.swift */; };
 		E28F082328E4655200832F4A /* MacC_GoldenRatioUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28F082228E4655200832F4A /* MacC_GoldenRatioUITests.swift */; };
 		E28F082528E4655200832F4A /* MacC_GoldenRatioUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28F082428E4655200832F4A /* MacC_GoldenRatioUITestsLaunchTests.swift */; };
-		E2B025BC28EB326C00B73891 /* MyDiariesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B025BB28EB326C00B73891 /* MyDiariesViewModel.swift */; };
+		E2B025BC28EB326C00B73891 /* MyHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B025BB28EB326C00B73891 /* MyHomeViewModel.swift */; };
 		E2B025BF28EB335100B73891 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = E2B025BE28EB335100B73891 /* RxCocoa */; };
 		E2B025C128EB335100B73891 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E2B025C028EB335100B73891 /* RxSwift */; };
 		E2B025C728EC163500B73891 /* FirestoreClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B025C628EC163500B73891 /* FirestoreClient.swift */; };
-		E2BEFA9628E882BA00EF0254 /* MyDiariesViewCustomModalVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEFA9528E882BA00EF0254 /* MyDiariesViewCustomModalVC.swift */; };
+		E2BEFA9628E882BA00EF0254 /* MyHomeViewCustomModalVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEFA9528E882BA00EF0254 /* MyHomeViewCustomModalVC.swift */; };
 		E2EA7F0628E56C0900AC1C49 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EA7F0528E56C0900AC1C49 /* TabBarController.swift */; };
-		E2EA7F0828E56CF600AC1C49 /* MyPlacesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EA7F0728E56CF600AC1C49 /* MyPlacesViewController.swift */; };
-		E2EA7F0A28E56CFE00AC1C49 /* MyAlbumsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EA7F0928E56CFE00AC1C49 /* MyAlbumsViewController.swift */; };
+		E2EA7F0828E56CF600AC1C49 /* MyPlaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EA7F0728E56CF600AC1C49 /* MyPlaceViewController.swift */; };
+		E2EA7F0A28E56CFE00AC1C49 /* MyAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EA7F0928E56CFE00AC1C49 /* MyAlbumViewController.swift */; };
 		E2EA7F0C28E56DF600AC1C49 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EA7F0B28E56DF600AC1C49 /* MyPageViewController.swift */; };
 		E2EA7F1628E5711E00AC1C49 /* DiaryCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EA7F1528E5711E00AC1C49 /* DiaryCollectionHeaderView.swift */; };
 		E2F5690328E57E7B0039BE37 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = E2F5690228E57E7B0039BE37 /* SnapKit */; };
@@ -136,7 +136,7 @@
 		CC6BD74528EC18B8001ED665 /* DiaryConfigCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryConfigCollectionViewCell.swift; sourceTree = "<group>"; };
 		CCE1806E28E5919B00AF06DB /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		CCE1807328E6B7C500AF06DB /* SignInTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInTestViewController.swift; sourceTree = "<group>"; };
-		E243425B28E4B890007BB6DE /* MyDiariesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDiariesViewController.swift; sourceTree = "<group>"; };
+		E243425B28E4B890007BB6DE /* MyHomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyHomeViewController.swift; sourceTree = "<group>"; };
 		E276B91B28E46AE900163833 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		E276B91D28E46B3700163833 /* DiaryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryModel.swift; sourceTree = "<group>"; };
 		E276B91F28E4812E00163833 /* UIScreen+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+.swift"; sourceTree = "<group>"; };
@@ -152,12 +152,12 @@
 		E28F081E28E4655200832F4A /* MacC-GoldenRatioUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "MacC-GoldenRatioUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E28F082228E4655200832F4A /* MacC_GoldenRatioUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacC_GoldenRatioUITests.swift; sourceTree = "<group>"; };
 		E28F082428E4655200832F4A /* MacC_GoldenRatioUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacC_GoldenRatioUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		E2B025BB28EB326C00B73891 /* MyDiariesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDiariesViewModel.swift; sourceTree = "<group>"; };
+		E2B025BB28EB326C00B73891 /* MyHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyHomeViewModel.swift; sourceTree = "<group>"; };
 		E2B025C628EC163500B73891 /* FirestoreClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreClient.swift; sourceTree = "<group>"; };
-		E2BEFA9528E882BA00EF0254 /* MyDiariesViewCustomModalVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDiariesViewCustomModalVC.swift; sourceTree = "<group>"; };
+		E2BEFA9528E882BA00EF0254 /* MyHomeViewCustomModalVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyHomeViewCustomModalVC.swift; sourceTree = "<group>"; };
 		E2EA7F0528E56C0900AC1C49 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
-		E2EA7F0728E56CF600AC1C49 /* MyPlacesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPlacesViewController.swift; sourceTree = "<group>"; };
-		E2EA7F0928E56CFE00AC1C49 /* MyAlbumsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAlbumsViewController.swift; sourceTree = "<group>"; };
+		E2EA7F0728E56CF600AC1C49 /* MyPlaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPlaceViewController.swift; sourceTree = "<group>"; };
+		E2EA7F0928E56CFE00AC1C49 /* MyAlbumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAlbumViewController.swift; sourceTree = "<group>"; };
 		E2EA7F0B28E56DF600AC1C49 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		E2EA7F1528E5711E00AC1C49 /* DiaryCollectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryCollectionHeaderView.swift; sourceTree = "<group>"; };
 		E2F5691828E5CE170039BE37 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -233,7 +233,7 @@
 			isa = PBXGroup;
 			children = (
 				0A5E904E28E9948B00B381B8 /* PageViewModel.swift */,
-				E2B025BB28EB326C00B73891 /* MyDiariesViewModel.swift */,
+				E2B025BB28EB326C00B73891 /* MyHomeViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -277,20 +277,20 @@
 			path = SignIn;
 			sourceTree = "<group>";
 		};
-		E25753B928ED8C0600023619 /* MyDiaries */ = {
+		E25753B928ED8C0600023619 /* MyHome */ = {
 			isa = PBXGroup;
 			children = (
 				E2EA7F1528E5711E00AC1C49 /* DiaryCollectionHeaderView.swift */,
 			);
-			path = MyDiaries;
+			path = MyHome;
 			sourceTree = "<group>";
 		};
-		E25753BC28ED8E3B00023619 /* MyDiaries */ = {
+		E25753BC28ED8E3B00023619 /* MyHome */ = {
 			isa = PBXGroup;
 			children = (
 				E2FA41A028F4752D00BBA354 /* DiaryCollectionViewCell.swift */,
 			);
-			path = MyDiaries;
+			path = MyHome;
 			sourceTree = "<group>";
 		};
 		E276B91328E468D700163833 /* Sources */ = {
@@ -330,7 +330,7 @@
 		E276B91728E4692B00163833 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				E25753BC28ED8E3B00023619 /* MyDiaries */,
+				E25753BC28ED8E3B00023619 /* MyHome */,
 				0AAB2AD828EC8C69009FBD96 /* Page */,
 				CC6BD74528EC18B8001ED665 /* DiaryConfigCollectionViewCell.swift */,
 			);
@@ -426,12 +426,12 @@
 		E2EA7F0428E56BD700AC1C49 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				E243425B28E4B890007BB6DE /* MyDiariesViewController.swift */,
+				E243425B28E4B890007BB6DE /* MyHomeViewController.swift */,
 				E2EA7F0528E56C0900AC1C49 /* TabBarController.swift */,
-				E2EA7F0728E56CF600AC1C49 /* MyPlacesViewController.swift */,
-				E2EA7F0928E56CFE00AC1C49 /* MyAlbumsViewController.swift */,
+				E2EA7F0728E56CF600AC1C49 /* MyPlaceViewController.swift */,
+				E2EA7F0928E56CFE00AC1C49 /* MyAlbumViewController.swift */,
 				E2EA7F0B28E56DF600AC1C49 /* MyPageViewController.swift */,
-				E2BEFA9528E882BA00EF0254 /* MyDiariesViewCustomModalVC.swift */,
+				E2BEFA9528E882BA00EF0254 /* MyHomeViewCustomModalVC.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -439,7 +439,7 @@
 		E2EA7F1428E570F100AC1C49 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				E25753B928ED8C0600023619 /* MyDiaries */,
+				E25753B928ED8C0600023619 /* MyHome */,
 				0A5E904628E857BB00B381B8 /* Sticker */,
 			);
 			path = Views;
@@ -607,7 +607,7 @@
 				0AAB2AD528EC1F11009FBD96 /* StickerPickerViewController.swift in Sources */,
 				E2EA7F0628E56C0900AC1C49 /* TabBarController.swift in Sources */,
 				0AAB2AD128EAFF6D009FBD96 /* CollectionView+.swift in Sources */,
-				E2EA7F0828E56CF600AC1C49 /* MyPlacesViewController.swift in Sources */,
+				E2EA7F0828E56CF600AC1C49 /* MyPlaceViewController.swift in Sources */,
 				E2FA41A528F496D100BBA354 /* UIImageView+.swift in Sources */,
 				E276B92028E4812E00163833 /* UIScreen+.swift in Sources */,
 				CC40BC1F28EEB10800DF48E1 /* CalendarPickerViewController.swift in Sources */,
@@ -621,7 +621,7 @@
 				CCE1806F28E5919B00AF06DB /* SignInViewController.swift in Sources */,
 				CCE1807428E6B7C500AF06DB /* SignInTestViewController.swift in Sources */,
 				CC40BC1A28EEAE2400DF48E1 /* CalendarDateCollectionViewCell.swift in Sources */,
-				E2EA7F0A28E56CFE00AC1C49 /* MyAlbumsViewController.swift in Sources */,
+				E2EA7F0A28E56CFE00AC1C49 /* MyAlbumViewController.swift in Sources */,
 				CC6BD74628EC18B8001ED665 /* DiaryConfigCollectionViewCell.swift in Sources */,
 				0A5E904A28E858C000B381B8 /* StickerContollerView.swift in Sources */,
 				E276B91E28E46B3700163833 /* DiaryModel.swift in Sources */,
@@ -635,9 +635,9 @@
 				0AAB2AE228EDA55D009FBD96 /* StickerStickerView.swift in Sources */,
 				0A5E904828E857E200B381B8 /* StickerView.swift in Sources */,
 				CC65514728EEBF7C00E637A2 /* Date+.swift in Sources */,
-				E2BEFA9628E882BA00EF0254 /* MyDiariesViewCustomModalVC.swift in Sources */,
+				E2BEFA9628E882BA00EF0254 /* MyHomeViewCustomModalVC.swift in Sources */,
 				E2EA7F1628E5711E00AC1C49 /* DiaryCollectionHeaderView.swift in Sources */,
-				E2B025BC28EB326C00B73891 /* MyDiariesViewModel.swift in Sources */,
+				E2B025BC28EB326C00B73891 /* MyHomeViewModel.swift in Sources */,
 				0A5E904828E857E200B381B8 /* StickerView.swift in Sources */,
 				0AAB2ACF28EAFF52009FBD96 /* TableView+.swift in Sources */,
 				CC40BC1C28EEAEB200DF48E1 /* Day.swift in Sources */,
@@ -646,7 +646,7 @@
 				E28F080428E4655100832F4A /* SceneDelegate.swift in Sources */,
 				E2FA41A128F4752D00BBA354 /* DiaryCollectionViewCell.swift in Sources */,
 				CC40BC1628EEADEB00DF48E1 /* CalendarPickerFooterView.swift in Sources */,
-				E243425C28E4B890007BB6DE /* MyDiariesViewController.swift in Sources */,
+				E243425C28E4B890007BB6DE /* MyHomeViewController.swift in Sources */,
 				E2B025C728EC163500B73891 /* FirestoreClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -11,9 +11,9 @@ import FirebaseAuth
 import SnapKit
 import UIKit
 
-final class MyDiariesViewController: UIViewController {
+final class MyHomeViewController: UIViewController {
 	private var cancelBag = Set<AnyCancellable>()
-	private let viewModel = MyDiariesViewModel(userUid: Auth.auth().currentUser?.uid ?? "")
+	private let viewModel = MyHomeViewModel(userUid: Auth.auth().currentUser?.uid ?? "")
 	private let myDevice = UIScreen.getDevice()
 	private var myDiariesViewModalBackgroundView = UIView()
 	
@@ -43,7 +43,7 @@ final class MyDiariesViewController: UIViewController {
 		let button = UIButton()
 		button.setTitle("다이어리 생성", for: .normal)
 		button.setTitleColor(UIColor.black, for: .normal)
-		button.addTarget(self, action: #selector(MyDiariesViewCustomModalVC.createDiaryButtonTapped), for: .touchUpInside)
+		button.addTarget(self, action: #selector(MyHomeViewCustomModalVC.createDiaryButtonTapped), for: .touchUpInside)
 		
 		button.snp.makeConstraints {
 			$0.height.equalTo(UIScreen.getDevice().MyDiariesViewCustomModalViewButtonHeight)
@@ -56,7 +56,7 @@ final class MyDiariesViewController: UIViewController {
 		let button = UIButton()
 		button.setTitle("초대코드로 참가", for: .normal)
 		button.setTitleColor(UIColor.black, for: .normal)
-		button.addTarget(self, action: #selector(MyDiariesViewCustomModalVC.joinDiaryButtonTapped), for: .touchUpInside)
+		button.addTarget(self, action: #selector(MyHomeViewCustomModalVC.joinDiaryButtonTapped), for: .touchUpInside)
 		
 		button.snp.makeConstraints {
 			$0.height.equalTo(UIScreen.getDevice().MyDiariesViewCustomModalViewButtonHeight)
@@ -103,7 +103,7 @@ final class MyDiariesViewController: UIViewController {
 	}
 	
 	@objc private func addDiaryButtonTapped() {
-		let CustomMenuModalVC = MyDiariesViewCustomModalVC.instance()
+		let CustomMenuModalVC = MyHomeViewCustomModalVC.instance()
 		CustomMenuModalVC.delegate = self
 		addMenuView()
 		CustomMenuModalVC.stackView.addArrangedSubview(createDiaryButton)
@@ -115,7 +115,7 @@ final class MyDiariesViewController: UIViewController {
 	}
 }
 
-extension MyDiariesViewController: MyDiariesViewCustomModalDelegate {
+extension MyHomeViewController: MyHomeViewCustomModalDelegate {
 	func createDiaryButtonTapped() {
 		self.removeMenuView()
 	}
@@ -129,7 +129,7 @@ extension MyDiariesViewController: MyDiariesViewCustomModalDelegate {
 	}
 }
 
-extension MyDiariesViewController: UICollectionViewDataSource {
+extension MyHomeViewController: UICollectionViewDataSource {
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 		// TODO: ViewModel 작업 후 수정 예정
 		if viewModel.diaryCellData.isEmpty {
@@ -163,13 +163,13 @@ extension MyDiariesViewController: UICollectionViewDataSource {
 	}
 }
 
-extension MyDiariesViewController: UICollectionViewDelegate {
+extension MyHomeViewController: UICollectionViewDelegate {
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 		// TODO: 다이어리 화면 완료시 작업 예정
 	}
 }
 
-extension MyDiariesViewController: UICollectionViewDelegateFlowLayout {
+extension MyHomeViewController: UICollectionViewDelegateFlowLayout {
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 		return myDevice.diaryCollectionViewCellSize
 	}
@@ -183,7 +183,7 @@ extension MyDiariesViewController: UICollectionViewDelegateFlowLayout {
 	}
 }
 
-private extension MyDiariesViewController {
+private extension MyHomeViewController {
 	func setupViewModel() {
 		viewModel.$diaryCellData
 			.receive(on: DispatchQueue.main)

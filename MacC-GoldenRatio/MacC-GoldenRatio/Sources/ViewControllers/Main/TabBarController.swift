@@ -9,7 +9,7 @@ import UIKit
 
 class TabBarController: UITabBarController {
 	private lazy var myDiariesViewController: UIViewController = {
-		let viewController = MyDiariesViewController()
+		let viewController = MyHomeViewController()
 		
 		let pressImage = UIImage(named: "pressHome")?.withRenderingMode(.alwaysOriginal)
 		let notPressImage = UIImage(named: "notPressHome")?.withRenderingMode(.alwaysOriginal)
@@ -21,7 +21,7 @@ class TabBarController: UITabBarController {
 	}()
 	
 	private lazy var myPlacesViewController: UIViewController = {
-		let viewController = UINavigationController(rootViewController: MyPlacesViewController())
+		let viewController = UINavigationController(rootViewController: MyPlaceViewController())
 		
 		let pressImage = UIImage(named: "pressMap")?.withRenderingMode(.alwaysOriginal)
 		let notPressImage = UIImage(named: "notPressMap")?.withRenderingMode(.alwaysOriginal)
@@ -33,7 +33,7 @@ class TabBarController: UITabBarController {
 	}()
 	
 	private lazy var myAlbumsViewController: UIViewController = {
-		let viewController = UINavigationController(rootViewController: MyAlbumsViewController())
+		let viewController = UINavigationController(rootViewController: MyAlbumViewController())
 		
 		let pressImage = UIImage(named: "pressAlbum")?.withRenderingMode(.alwaysOriginal)
 		let notPressImage = UIImage(named: "notPressAlbum")?.withRenderingMode(.alwaysOriginal)

@@ -8,14 +8,14 @@
 import SnapKit
 import UIKit
 
-protocol MyDiariesViewCustomModalDelegate: class {
+protocol MyHomeViewCustomModalDelegate: class {
 	func tapGestureHandler()
 	func createDiaryButtonTapped()
 	func joinDiaryButtonTapped()
 }
 
-class MyDiariesViewCustomModalVC: UIViewController {
-	weak var delegate: MyDiariesViewCustomModalDelegate?
+class MyHomeViewCustomModalVC: UIViewController {
+	weak var delegate: MyHomeViewCustomModalDelegate?
 	
 	var stackViewBottom: Int?
 	var stackViewTrailing: Int?
@@ -31,8 +31,8 @@ class MyDiariesViewCustomModalVC: UIViewController {
 		return stackView
 	}()
 	
-	static func instance() -> MyDiariesViewCustomModalVC {
-		let customMenuModalVC = MyDiariesViewCustomModalVC(nibName: nil, bundle: nil)
+	static func instance() -> MyHomeViewCustomModalVC {
+		let customMenuModalVC = MyHomeViewCustomModalVC(nibName: nil, bundle: nil)
 		customMenuModalVC.modalPresentationStyle = .overFullScreen
 		return customMenuModalVC
 	}

@@ -9,7 +9,7 @@ import FirebaseFirestore
 import UIKit
 
 // TODO: 수정 예정
-class MyDiariesViewModel {
+class MyHomeViewModel {
 	@Published var diaryCellData = [DiaryCell]()
 	private let client = FirestoreClient()
 	var userUid: String

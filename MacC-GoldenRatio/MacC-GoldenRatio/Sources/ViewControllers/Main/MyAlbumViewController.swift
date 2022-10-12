@@ -1,5 +1,5 @@
 //
-//  MyPlacesViewController.swift
+//  MyAlbumsViewController.swift
 //  MacC-GoldenRatio
 //
 //  Created by woo0 on 2022/09/29.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MyPlacesViewController: UIViewController {
+class MyAlbumViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -13,6 +13,8 @@ class PageViewController: UIViewController {
     private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
     private let pageViewModel = PageViewModel()
     private let imagePicker = UIImagePickerController()
+    private var myDiariesViewModalBackgroundView = UIView()
+
     private var isEditMode = false {
         willSet{
             switch newValue {
@@ -91,8 +93,34 @@ class PageViewController: UIViewController {
         let image = UIImage(systemName: "plus")
         button.setImage(image, for: .normal)
         button.tintColor = .black
-        button.addTarget(self, action: #selector(onTapPlusButton), for: .touchUpInside)
+        button.addTarget(self, action: #selector(onTapAddPageToLastMenu), for: .touchUpInside)
 
+        return button
+    }()
+    
+    private var createDiaryButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("다이어리 생성", for: .normal)
+        button.setTitleColor(UIColor.black, for: .normal)
+        button.addTarget(self, action: #selector(MyDiariesViewCustomModalVC.createDiaryButtonTapped), for: .touchUpInside)
+        
+        button.snp.makeConstraints {
+            $0.height.equalTo(UIScreen.getDevice().MyDiariesViewCustomModalViewButtonHeight)
+        }
+        
+        return button
+    }()
+    
+    private var joinDiaryButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("초대코드로 참가", for: .normal)
+        button.setTitleColor(UIColor.black, for: .normal)
+        button.addTarget(self, action: #selector(MyDiariesViewCustomModalVC.joinDiaryButtonTapped), for: .touchUpInside)
+        
+        button.snp.makeConstraints {
+            $0.height.equalTo(UIScreen.getDevice().MyDiariesViewCustomModalViewButtonHeight)
+        }
+        
         return button
     }()
     
@@ -271,12 +299,27 @@ class PageViewController: UIViewController {
 
 // MARK: 페이지 편집 처리
 extension PageViewController {
-    
-    @objc private func onTapPlusButton() {
+    @objc private func onTapAddPageToLastMenu() {
         pageViewModel.addNewPage()
         pageViewModel.currentPageIndex = pageViewModel.diary.diaryPages[pageViewModel.selectedDay].pages.count - 1
         reloadStickers()
         reloadPageDescriptionLabel()
+    }
+
+    @objc private func onTapDeletePageMenu() {
+        
+    }
+    
+    @objc private func onTapPlusButton() {
+        let CustomMenuModalVC = MyDiariesViewCustomModalVC.instance()
+        CustomMenuModalVC.delegate = self
+        addMenuView()
+        CustomMenuModalVC.stackView.addArrangedSubview(createDiaryButton)
+        CustomMenuModalVC.stackView.addArrangedSubview(joinDiaryButton)
+        CustomMenuModalVC.stackViewBottom = myDevice.MyDiariesViewCustomModalViewStackBottom
+        CustomMenuModalVC.stackViewTrailing = myDevice.MyDiariesViewCustomModalViewStackTrailing
+        CustomMenuModalVC.stackViewSize = CGSize(width: myDevice.MyDiariesViewCustomModalViewStackWidth, height: myDevice.MyDiariesViewCustomModalViewButtonHeight * CustomMenuModalVC.stackView.arrangedSubviews.count)
+        present(CustomMenuModalVC, animated: true, completion: nil)
     }
     
     @objc private func swipeAction(_ sender: UISwipeGestureRecognizer) {
@@ -418,5 +461,38 @@ extension PageViewController: UIGestureRecognizerDelegate {
             return true
         }
         return false
+    }
+}
+
+extension PageViewController: MyDiariesViewCustomModalDelegate {
+    private func addMenuView() {
+        view.addSubview(myDiariesViewModalBackgroundView)
+        myDiariesViewModalBackgroundView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.myDiariesViewModalBackgroundView.backgroundColor = .black
+            self?.myDiariesViewModalBackgroundView.alpha = 0.1
+        }
+    }
+    
+    private func removeMenuView() {
+        DispatchQueue.main.async { [weak self] in
+            self?.myDiariesViewModalBackgroundView.removeFromSuperview()
+        }
+    }
+    
+    
+    func createDiaryButtonTapped() {
+        self.removeMenuView()
+    }
+    
+    func joinDiaryButtonTapped() {
+        self.removeMenuView()
+    }
+    
+    func tapGestureHandler() {
+        self.removeMenuView()
     }
 }

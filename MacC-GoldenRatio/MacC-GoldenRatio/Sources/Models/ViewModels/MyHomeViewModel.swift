@@ -15,7 +15,7 @@ class MyHomeViewModel {
 	@Published var diaryCellData = [DiaryCell]()
 	private let client = FirestoreClient()
 	private let db = Firestore.firestore()
-	var myUID = Auth.auth().currentUser?.uid ?? ""
+	private var myUID = Auth.auth().currentUser?.uid ?? ""
 	
 	init() {
 		fetchLoadData()

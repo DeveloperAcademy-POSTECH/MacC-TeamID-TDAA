@@ -14,7 +14,7 @@ final class DiaryCollectionHeaderView: UICollectionReusableView {
 	private lazy var titleLabel: UILabel = {
 		let label =  UILabel()
 		label.text = "다이어리"
-		label.font = myDevice.MyDiariesViewTitleFont
+		label.font = myDevice.TabBarTitleFont
 		label.textColor = .label
 		
 		return label
@@ -24,8 +24,8 @@ final class DiaryCollectionHeaderView: UICollectionReusableView {
 		addSubview(titleLabel)
 		
 		titleLabel.snp.makeConstraints {
-			$0.leading.equalToSuperview().inset(myDevice.MyDiariesViewTitleLabelLeading)
-			$0.top.equalToSuperview().offset(myDevice.MyDiariesViewTitleLabelTop)
+			$0.leading.equalToSuperview().inset(myDevice.TabBarTitleLabelLeading)
+			$0.top.equalToSuperview().offset(myDevice.TabBarTitleLabelTop)
 		}
 	}
 }

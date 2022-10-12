@@ -41,19 +41,19 @@ extension UIScreen {
 		case iPhoneSE
 		
 		// MARK: MyDiariesView
-		var MyDiariesViewTitleLabelLeading: Int {
+		var TabBarTitleLabelLeading: Int {
 			switch self {
 			default: return 20
 			}
 		}
 		
-		var MyDiariesViewTitleLabelTop: Int {
+		var TabBarTitleLabelTop: Int {
 			switch self {
-			default: return 20
+			default: return 30
 			}
 		}
 		
-		var MyDiariesViewTitleFont: UIFont {
+		var TabBarTitleFont: UIFont {
 			switch self {
 			default: return UIFont(name: "EF_Diary", size: 28) ?? UIFont.systemFont(ofSize: 28)
 			}
@@ -184,6 +184,31 @@ extension UIScreen {
 		var diaryCollectionViewCellTitleLabelFont: UIFont {
 			switch self {
 			default: return UIFont(name: "EF_Diary", size: 24) ?? UIFont.systemFont(ofSize: 24)
+			}
+		}
+		
+		// MARK: MyPlaceView
+		var mapViewTop: Int {
+			switch self {
+			default: return 145
+			}
+		}
+		
+		var mapViewBottom: Int {
+			switch self {
+			default: return 30
+			}
+		}
+		
+		var AnnotationSize: CGSize {
+			switch self {
+			default: return CGSize(width: 52, height: 60)
+			}
+		}
+		
+		var AnnotationTitleFont: UIFont {
+			switch self {
+			default: return UIFont(name: "EF_Diary", size: 10) ?? UIFont.systemFont(ofSize: 10)
 			}
 		}
         

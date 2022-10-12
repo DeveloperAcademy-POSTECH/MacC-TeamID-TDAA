@@ -51,4 +51,11 @@ class FirebaseClient {
             print(error)
         }
     }
+    
+    func updatePageThumbnail(diary: Diary) {
+        let pagesFieldData = ["pageThumbnails":diary.pageThumbnails]
+        let diaryRef = db.collection("Diary").document(diary.diaryUUID)
+        diaryRef.updateData(pagesFieldData)
+    }
+
 }

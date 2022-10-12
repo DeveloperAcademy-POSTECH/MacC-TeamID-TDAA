@@ -5,6 +5,7 @@
 //  Created by DongKyu Kim on 2022/10/04.
 //
 
+import FirebaseFirestore
 import MapKit
 import SnapKit
 import UIKit
@@ -27,8 +28,6 @@ class DiaryConfigViewController: UIViewController {
     
     private let device: UIScreen.DeviceSize = UIScreen.getDevice()
     private var configState: ConfigState
-    
-//    let dummyData = [Diary(diaryUUID: "", diaryName: "🌊포항항", diaryLocation: Location(locationName: "포항", locationAddress: "포항시", locationCoordinate: [36.0190, 129.3435]), diaryStartDate: Date(), diaryEndDate: Date(timeIntervalSinceNow: 86400), diaryPages: [[Page(pageUUID: "", items: [Item(itemUUID: "", itemType: ItemType.text, contents: "", itemSize: [0.0], itemPosition: [0.0], itemAngle: 0.0)])]], userUIDs: [User(userUID: "", userName: "칼리", userImageURL: ""), User(userUID: "", userName: "드록바", userImageURL: ""), User(userUID: "", userName: "해츨링", userImageURL: ""), User(userUID: "", userName: "라우", userImageURL: ""), User(userUID: "", userName: "산", userImageURL: "")])]
     
     // TO REMOVE (FOR DUMMYDATA)
     private var dummyDataStartDate: Date
@@ -93,7 +92,7 @@ class DiaryConfigViewController: UIViewController {
     }()
     
     
-    // MARK: - feature methods
+// MARK: - Feature methods
     @objc func cancelButtonPressed(_ sender: UIButton) {
         let ac = UIAlertController(title: nil, message: "변경사항은 저장되지 않습니다. 정말 취소하시겠습니까?", preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "취소", style: .cancel))
@@ -104,11 +103,25 @@ class DiaryConfigViewController: UIViewController {
     }
     
     @objc func doneButtonPressed(_ sender: UIButton) {
-        // 다이어리 저장
-        self.dismiss(animated: true, completion: nil)
+        
+        let parentNavigationController: UINavigationController = self.presentingViewController as! UINavigationController
+        let MyDiaryPagesVC = MyDiaryPagesViewController()
+        
+        presentingViewController?.dismiss(animated: true) {
+            switch self.configState {
+            case .create:
+                // TODO: createAction 추가
+                parentNavigationController.isNavigationBarHidden = false
+                parentNavigationController.pushViewController(MyDiaryPagesVC, animated: true)
+            case .modify:
+                // TODO: modify Action 추가
+                return
+            }
+            // TODO: 저장 Action 추가
+        }
     }
     
-    // MARK: - feature methods
+// MARK: - Setup methods
     private func titleSetup() {
         view.addSubview(stateTitle)
         stateTitle.snp.makeConstraints {

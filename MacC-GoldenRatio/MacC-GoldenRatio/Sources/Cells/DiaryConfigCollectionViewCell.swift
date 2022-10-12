@@ -59,7 +59,7 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
         return button
     }()
     
-    private lazy var separatorView: UIView = {
+    private lazy var dividerView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.placeholderText
         return view
@@ -95,7 +95,7 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
         
         contentView.backgroundColor = .clear
         
-        [contentTitle, clearButton, separatorView].forEach {
+        [contentTitle, clearButton, dividerView].forEach {
             contentView.addSubview($0)
         }
 
@@ -109,7 +109,7 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
             $0.bottom.equalToSuperview().inset(device.diaryConfigCellBottomInset)
         }
         
-        separatorView.snp.makeConstraints {
+        dividerView.snp.makeConstraints {
             $0.bottom.equalToSuperview()
             $0.leading.equalToSuperview().inset(16)
             $0.trailing.equalToSuperview()

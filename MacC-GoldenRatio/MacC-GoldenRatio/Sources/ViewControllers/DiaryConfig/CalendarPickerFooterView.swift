@@ -18,15 +18,16 @@ class CalendarPickerFooterView: UIView {
     
     private lazy var selectButton: UIButton = {
         let button = UIButton()
+        button.setTitle("날짜를 선택하세요", for: .normal)
+        button.backgroundColor = .systemGray
+        button.layer.cornerRadius = 5
         button.addTarget(self, action: #selector(selectButtonTapped), for: .touchUpInside)
         return button
     }()
     
     let selectButtonCompletionHanlder: (() -> Void)
     
-    init(
-        selectButtonCompltionHanlder: @escaping (() -> Void)
-    ) {
+    init(selectButtonCompletionHanlder: @escaping (() -> Void)) {
         self.selectButtonCompletionHanlder = selectButtonCompletionHanlder
         
         super.init(frame: CGRect.zero)
@@ -68,8 +69,8 @@ class CalendarPickerFooterView: UIView {
         }
     }
     
-    @objc func didTapExitButton() {
-        selectButtonCompletionHandler()
+    @objc func selectButtonTapped() {
+        self.selectButtonCompletionHanlder()
     }
     
 }

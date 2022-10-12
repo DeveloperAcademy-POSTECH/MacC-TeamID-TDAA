@@ -38,20 +38,6 @@ class CalendarPickerHeaderView: UIView {
         return button
     }()
     
-    lazy var closeButton: UIButton = {
-        let button = UIButton()
-        let configuration = UIImage.SymbolConfiguration(scale: .large)
-        let image = UIImage(systemName: "xmark.circle.fill", withConfiguration: configuration)
-        button.setImage(image, for: .normal)
-        
-        button.tintColor = .secondaryLabel
-        button.contentMode = .scaleAspectFill
-        button.isUserInteractionEnabled = true
-        button.isAccessibilityElement = true
-        button.accessibilityLabel = "Close Picker"
-        return button
-    }()
-    
     lazy var dayOfWeekStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.distribution = .fillEqually
@@ -80,14 +66,11 @@ class CalendarPickerHeaderView: UIView {
     
     let didTapLastMonthCompletionHandler: (() -> Void)
     let didTapNextMonthCompletionHandler: (() -> Void)
-    var exitButtonTappedCompletionHandler: (() -> Void)
     
     init(didTapLastMonthCompletionHandler: @escaping (() -> Void),
-         didTapNextMonthCompletionHandler: @escaping (() -> Void),
-         exitButtonTappedCompletionHandler: @escaping (() -> Void)) {
+         didTapNextMonthCompletionHandler: @escaping (() -> Void)) {
         self.didTapLastMonthCompletionHandler = didTapLastMonthCompletionHandler
         self.didTapNextMonthCompletionHandler = didTapNextMonthCompletionHandler
-        self.exitButtonTappedCompletionHandler = exitButtonTappedCompletionHandler
         
         super.init(frame: CGRect.zero)
         
@@ -100,7 +83,7 @@ class CalendarPickerHeaderView: UIView {
         layer.cornerCurve = .continuous
         layer.cornerRadius = 15
 
-        [monthLabel, previousMonthButton, nextMonthButton, closeButton, dayOfWeekStackView, separatorView].forEach {
+        [monthLabel, previousMonthButton, nextMonthButton, dayOfWeekStackView, separatorView].forEach {
             self.addSubview($0)
         }
         
@@ -113,8 +96,6 @@ class CalendarPickerHeaderView: UIView {
             dayLabel.isAccessibilityElement = false
             dayOfWeekStackView.addArrangedSubview(dayLabel)
         }
-        
-        closeButton.addTarget(self, action: #selector(didTapExitButton), for: .touchUpInside)
     }
     
     required init?(coder: NSCoder) {
@@ -152,15 +133,10 @@ class CalendarPickerHeaderView: UIView {
         
         previousMonthButton.snp.makeConstraints {
             $0.centerY.equalTo(monthLabel)
-            $0.trailing.equalTo(nextMonthButton.snp.leading).offset(-30)
+            $0.trailing.equalTo(nextMonthButton.snp.leading).offset(-20)
         }
         
         nextMonthButton.snp.makeConstraints {
-            $0.centerY.equalTo(monthLabel)
-            $0.trailing.equalTo(closeButton.snp.leading).offset(-20)
-        }
-        
-        closeButton.snp.makeConstraints {
             $0.centerY.equalTo(monthLabel)
             $0.size.equalTo(CGSize(width: 28, height: 28))
             $0.trailing.equalToSuperview().inset(15)
@@ -184,10 +160,6 @@ class CalendarPickerHeaderView: UIView {
     
     @objc func didTapNextMonthButton() {
         didTapNextMonthCompletionHandler()
-    }
-    
-    @objc func didTapExitButton() {
-        exitButtonTappedCompletionHandler()
     }
 }
 

@@ -73,6 +73,7 @@
 		E2FA41A328F48C1B00BBA354 /* DiaryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2FA41A228F48C1B00BBA354 /* DiaryCell.swift */; };
 		E2FA41A528F496D100BBA354 /* UIImageView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2FA41A428F496D100BBA354 /* UIImageView+.swift */; };
 		E2FA41A728F5383500BBA354 /* EF_Diary.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E2FA41A628F5383500BBA354 /* EF_Diary.ttf */; };
+		E2FA41B028F6A89900BBA354 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2FA41AF28F6A89900BBA354 /* MapView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -165,6 +166,7 @@
 		E2FA41A228F48C1B00BBA354 /* DiaryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryCell.swift; sourceTree = "<group>"; };
 		E2FA41A428F496D100BBA354 /* UIImageView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+.swift"; sourceTree = "<group>"; };
 		E2FA41A628F5383500BBA354 /* EF_Diary.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = EF_Diary.ttf; path = ../../../../../../../../Downloads/EF_Diary.ttf; sourceTree = "<group>"; };
+		E2FA41AF28F6A89900BBA354 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -439,10 +441,19 @@
 		E2EA7F1428E570F100AC1C49 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				E2FA41AE28F6A89000BBA354 /* Place */,
 				E25753B928ED8C0600023619 /* MyHome */,
 				0A5E904628E857BB00B381B8 /* Sticker */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		E2FA41AE28F6A89000BBA354 /* Place */ = {
+			isa = PBXGroup;
+			children = (
+				E2FA41AF28F6A89900BBA354 /* MapView.swift */,
+			);
+			path = Place;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -641,6 +652,7 @@
 				0A5E904828E857E200B381B8 /* StickerView.swift in Sources */,
 				0AAB2ACF28EAFF52009FBD96 /* TableView+.swift in Sources */,
 				CC40BC1C28EEAEB200DF48E1 /* Day.swift in Sources */,
+				E2FA41B028F6A89900BBA354 /* MapView.swift in Sources */,
 				0AAB2ADA28EC8C8D009FBD96 /* StickerPickerCollectionViewCell.swift in Sources */,
 				0AAB2AD328EB14A8009FBD96 /* UIView+.swift in Sources */,
 				E28F080428E4655100832F4A /* SceneDelegate.swift in Sources */,

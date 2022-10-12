@@ -36,6 +36,8 @@
 		CC6BD74628EC18B8001ED665 /* DiaryConfigCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6BD74528EC18B8001ED665 /* DiaryConfigCollectionViewCell.swift */; };
 		CCE1806F28E5919B00AF06DB /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE1806E28E5919B00AF06DB /* SignInViewController.swift */; };
 		CCE1807428E6B7C500AF06DB /* SignInTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE1807328E6B7C500AF06DB /* SignInTestViewController.swift */; };
+		E21342D928F6B0660048D9CF /* FirebaseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21342D828F6B0660048D9CF /* FirebaseClient.swift */; };
+		E21342DB28F6B0800048D9CF /* EF_Diary.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E21342DA28F6B07F0048D9CF /* EF_Diary.ttf */; };
 		E243425C28E4B890007BB6DE /* MyDiariesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E243425B28E4B890007BB6DE /* MyDiariesViewController.swift */; };
 		E25753BF28ED9E0600023619 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = E25753BE28ED9E0600023619 /* Kingfisher */; };
 		E276B91C28E46AE900163833 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E276B91B28E46AE900163833 /* User.swift */; };
@@ -72,7 +74,6 @@
 		E2FA41A128F4752D00BBA354 /* DiaryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2FA41A028F4752D00BBA354 /* DiaryCollectionViewCell.swift */; };
 		E2FA41A328F48C1B00BBA354 /* DiaryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2FA41A228F48C1B00BBA354 /* DiaryCell.swift */; };
 		E2FA41A528F496D100BBA354 /* UIImageView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2FA41A428F496D100BBA354 /* UIImageView+.swift */; };
-		E2FA41A728F5383500BBA354 /* EF_Diary.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E2FA41A628F5383500BBA354 /* EF_Diary.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -136,6 +137,8 @@
 		CC6BD74528EC18B8001ED665 /* DiaryConfigCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryConfigCollectionViewCell.swift; sourceTree = "<group>"; };
 		CCE1806E28E5919B00AF06DB /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		CCE1807328E6B7C500AF06DB /* SignInTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInTestViewController.swift; sourceTree = "<group>"; };
+		E21342D828F6B0660048D9CF /* FirebaseClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseClient.swift; sourceTree = "<group>"; };
+		E21342DA28F6B07F0048D9CF /* EF_Diary.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = EF_Diary.ttf; sourceTree = "<group>"; };
 		E243425B28E4B890007BB6DE /* MyDiariesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDiariesViewController.swift; sourceTree = "<group>"; };
 		E276B91B28E46AE900163833 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		E276B91D28E46B3700163833 /* DiaryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryModel.swift; sourceTree = "<group>"; };
@@ -164,7 +167,6 @@
 		E2FA41A028F4752D00BBA354 /* DiaryCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiaryCollectionViewCell.swift; sourceTree = "<group>"; };
 		E2FA41A228F48C1B00BBA354 /* DiaryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryCell.swift; sourceTree = "<group>"; };
 		E2FA41A428F496D100BBA354 /* UIImageView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+.swift"; sourceTree = "<group>"; };
-		E2FA41A628F5383500BBA354 /* EF_Diary.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = EF_Diary.ttf; path = ../../../../../../../../Downloads/EF_Diary.ttf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -249,7 +251,7 @@
 		8E295A9128EC2CD400127D41 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
-				E2FA41A628F5383500BBA354 /* EF_Diary.ttf */,
+				E21342DA28F6B07F0048D9CF /* EF_Diary.ttf */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -320,6 +322,7 @@
 		E276B91628E4692500163833 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				E21342D828F6B0660048D9CF /* FirebaseClient.swift */,
 				E2B025C628EC163500B73891 /* FirestoreClient.swift */,
 				0AAB2AD628EC2587009FBD96 /* HalfModalPresentationController.swift */,
 				0AE27F2428F442B100D79208 /* FirebaseStorage.swift */,
@@ -571,9 +574,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				E28F080E28E4655200832F4A /* LaunchScreen.storyboard in Resources */,
+				E21342DB28F6B0800048D9CF /* EF_Diary.ttf in Resources */,
 				E28F080B28E4655200832F4A /* Assets.xcassets in Resources */,
 				E2F5691928E5CE170039BE37 /* GoogleService-Info.plist in Resources */,
-				E2FA41A728F5383500BBA354 /* EF_Diary.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -609,6 +612,7 @@
 				0AAB2AD128EAFF6D009FBD96 /* CollectionView+.swift in Sources */,
 				E2EA7F0828E56CF600AC1C49 /* MyPlacesViewController.swift in Sources */,
 				E2FA41A528F496D100BBA354 /* UIImageView+.swift in Sources */,
+				E21342D928F6B0660048D9CF /* FirebaseClient.swift in Sources */,
 				E276B92028E4812E00163833 /* UIScreen+.swift in Sources */,
 				CC40BC1F28EEB10800DF48E1 /* CalendarPickerViewController.swift in Sources */,
 				0AAB2AD728EC2587009FBD96 /* HalfModalPresentationController.swift in Sources */,

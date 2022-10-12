@@ -1,17 +1,16 @@
 //
-//  MyDiariesViewModel.swift
+//  MyPlaceViewModel.swift
 //  MacC-GoldenRatio
 //
-//  Created by woo0 on 2022/10/04.
+//  Created by woo0 on 2022/10/12.
 //
 
 import FirebaseFirestore
 import UIKit
 
 // TODO: 수정 예정
-class MyHomeViewModel {
-	@Published var diaryData = [Diary]()
-	@Published var diaryCellData = [DiaryCell]()
+class MyPlaceViewModel {
+	@Published var mapDatas = [MapData]()
 	private let client = FirestoreClient()
 	var userUid: String
 	
@@ -23,8 +22,7 @@ class MyHomeViewModel {
 	func fetchLoadData(_ uid: String) {
 		Task {
 			do {
-				self.diaryData = try await client.fetchMyDiaries(uid)
-				self.diaryCellData = try await client.fetchDiaryCellData(uid)
+				self.mapDatas = try await client.fetchDiaryMapData(uid)
 			} catch {
 				print(error)
 			}

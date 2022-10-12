@@ -5,15 +5,16 @@
 //  Created by woo0 on 2022/09/29.
 //
 
+import Combine
 import CoreLocation
+import FirebaseAuth
 import MapKit
 import UIKit
 
 class MyPlaceViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
-
-	let mapView = MapView()
-	
-	let locations = [CLLocationCoordinate2D(latitude: 37.51818789942702, longitude: 126.88541765534906)]
+	private var cancelBag = Set<AnyCancellable>()
+	private let viewModel = MyPlaceViewModel(userUid: Auth.auth().currentUser?.uid ?? "")
+	private let mapView = MapView()
 	
 	let locationManager = CLLocationManager()
 	
@@ -26,19 +27,17 @@ class MyPlaceViewController: UIViewController, MKMapViewDelegate, CLLocationMana
 		// Do any additional setup after loading the view.
 		locationManager.requestWhenInUseAuthorization()
 		
-//		mapView.map.setRegion(MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 127.0016985, longitude: 37.5642135), span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)), animated: true)
 		mapView.map.delegate = self
 		
 		locationManager.delegate = self
 		
-		addCustomPin(locations: locations)
 	}
 
-	private func addCustomPin(locations: [CLLocationCoordinate2D]) {
-		for location in locations {
+	private func addCustomPin(_ mapData: [MapData]) {
+		mapData.forEach { data in
 			let pin = MKPointAnnotation()
-			pin.coordinate = location
-			pin.title = "3"
+			pin.coordinate = CLLocationCoordinate2D(latitude: data.location.locationCoordinate[1], longitude: data.location.locationCoordinate[0])
+			
 			mapView.map.addAnnotation(pin)
 		}
 	}
@@ -79,3 +78,13 @@ class MyPlaceViewController: UIViewController, MKMapViewDelegate, CLLocationMana
 
 }
 
+private extension MyPlaceViewController {
+	func setupViewModel() {
+		viewModel.$mapDatas
+			.receive(on: DispatchQueue.main)
+			.sink { [weak self] data in
+				self?.addCustomPin(data)
+			}
+			.store(in: &cancelBag)
+	}
+}

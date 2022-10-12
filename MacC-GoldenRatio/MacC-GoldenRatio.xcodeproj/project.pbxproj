@@ -39,6 +39,8 @@
 		E21342DB28F6B0800048D9CF /* EF_Diary.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E21342DA28F6B07F0048D9CF /* EF_Diary.ttf */; };
 		E21342DD28F6B2740048D9CF /* HalfModalPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21342DC28F6B2740048D9CF /* HalfModalPresentationController.swift */; };
 		E21342DF28F6B31D0048D9CF /* MyHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21342DE28F6B31D0048D9CF /* MyHomeViewController.swift */; };
+		E21342E128F6B6940048D9CF /* MyPlaceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21342E028F6B6940048D9CF /* MyPlaceViewModel.swift */; };
+		E21342E328F6B6BC0048D9CF /* MapData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21342E228F6B6BC0048D9CF /* MapData.swift */; };
 		E25753BF28ED9E0600023619 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = E25753BE28ED9E0600023619 /* Kingfisher */; };
 		E276B91C28E46AE900163833 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E276B91B28E46AE900163833 /* User.swift */; };
 		E276B91E28E46B3700163833 /* DiaryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E276B91D28E46B3700163833 /* DiaryModel.swift */; };
@@ -141,6 +143,8 @@
 		E21342DA28F6B07F0048D9CF /* EF_Diary.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = EF_Diary.ttf; sourceTree = "<group>"; };
 		E21342DC28F6B2740048D9CF /* HalfModalPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HalfModalPresentationController.swift; sourceTree = "<group>"; };
 		E21342DE28F6B31D0048D9CF /* MyHomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyHomeViewController.swift; sourceTree = "<group>"; };
+		E21342E028F6B6940048D9CF /* MyPlaceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPlaceViewModel.swift; sourceTree = "<group>"; };
+		E21342E228F6B6BC0048D9CF /* MapData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapData.swift; sourceTree = "<group>"; };
 		E276B91B28E46AE900163833 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		E276B91D28E46B3700163833 /* DiaryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryModel.swift; sourceTree = "<group>"; };
 		E276B91F28E4812E00163833 /* UIScreen+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+.swift"; sourceTree = "<group>"; };
@@ -238,6 +242,7 @@
 			children = (
 				0A5E904E28E9948B00B381B8 /* PageViewModel.swift */,
 				E2B025BB28EB326C00B73891 /* MyHomeViewModel.swift */,
+				E21342E028F6B6940048D9CF /* MyPlaceViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -362,6 +367,7 @@
 				E276B91B28E46AE900163833 /* User.swift */,
 				E276B91D28E46B3700163833 /* DiaryModel.swift */,
 				E2FA41A228F48C1B00BBA354 /* DiaryCell.swift */,
+				E21342E228F6B6BC0048D9CF /* MapData.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -615,6 +621,7 @@
 				E28F080628E4655100832F4A /* ViewController.swift in Sources */,
 				CC40BC1E28EEAEDA00DF48E1 /* MonthMetadata.swift in Sources */,
 				0AAB2ADC28EDA067009FBD96 /* TextStickerView.swift in Sources */,
+				E21342E328F6B6BC0048D9CF /* MapData.swift in Sources */,
 				0AAB2ACD28EAFD78009FBD96 /* MapSearchViewController.swift in Sources */,
 				0A5E904528E8578400B381B8 /* PageViewController.swift in Sources */,
 				E2FA41A328F48C1B00BBA354 /* DiaryCell.swift in Sources */,
@@ -634,6 +641,7 @@
 				CC6BD74428EBFA80001ED665 /* DiaryConfigViewController.swift in Sources */,
 				CCE1806F28E5919B00AF06DB /* SignInViewController.swift in Sources */,
 				CCE1807428E6B7C500AF06DB /* SignInTestViewController.swift in Sources */,
+				E21342E128F6B6940048D9CF /* MyPlaceViewModel.swift in Sources */,
 				CC40BC1A28EEAE2400DF48E1 /* CalendarDateCollectionViewCell.swift in Sources */,
 				E2EA7F0A28E56CFE00AC1C49 /* MyAlbumViewController.swift in Sources */,
 				E21342DF28F6B31D0048D9CF /* MyHomeViewController.swift in Sources */,

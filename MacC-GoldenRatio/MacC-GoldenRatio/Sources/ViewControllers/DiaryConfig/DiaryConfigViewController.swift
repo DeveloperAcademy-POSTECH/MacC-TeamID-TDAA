@@ -32,12 +32,15 @@ class DiaryConfigViewController: UIViewController {
     
     // TO REMOVE (FOR DUMMYDATA)
     private var dummyDataStartDate: Date
+	
+	var diaryData: [Diary]
     
-    init(mode configState: ConfigState) {
+	init(mode configState: ConfigState, diaryData: [Diary]) {
         // TO REMOVE (FOR DUMMYDATA)
         self.dummyDataStartDate = Date()
         
         self.configState = configState
+		self.diaryData = diaryData
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -49,7 +52,7 @@ class DiaryConfigViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .systemGray5
-        
+        print(diaryData)
         titleSetup()
         collectionViewSetup()
     }

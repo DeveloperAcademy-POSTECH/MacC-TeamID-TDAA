@@ -28,41 +28,6 @@ class FirestoreClient {
 		
 		return diaries
 	}
-
-	func fetchDiaryCellData(_ uid: String) async throws -> [DiaryCell] {
-		var diaries = [Diary]()
-		var userImageURL = [String]()
-		
-		var diaryCellData = [DiaryCell]()
-		
-		var query = db.collection("Diary").whereField("userUIDs", arrayContains: uid)
-		
-		let querySnapshot = try await query.getDocuments()
-		
-		querySnapshot.documents.forEach { document in
-			do {
-				diaries.append(try document.data(as: Diary.self))
-			} catch {
-				print(error)
-			}
-		}
-
-		for diary in diaries {
-			for userUID in diary.userUIDs {
-				query = db.collection("User").whereField("userUID", isEqualTo: userUID)
-				let documents = try await query.getDocuments()
-
-				documents.documents.forEach { querySnapshot in
-					let data = querySnapshot.data()
-					userImageURL.append(data["userImageURL"] as? String ?? "")
-				}
-			}
-			diaryCellData.append(DiaryCell(diaryUUID: diary.diaryUUID, diaryName: diary.diaryName, diaryCover: diary.diaryCover, userImageURLs: userImageURL))
-			userImageURL.removeAll()
-		}
-
-		return diaryCellData
-	}
 	
 	func fetchDiaryMapData(_ uid: String) async throws -> [MapData] {
 		var diaries = [Diary]()

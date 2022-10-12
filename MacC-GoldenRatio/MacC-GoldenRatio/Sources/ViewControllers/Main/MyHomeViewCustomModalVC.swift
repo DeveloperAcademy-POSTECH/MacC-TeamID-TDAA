@@ -62,7 +62,6 @@ class MyHomeViewCustomModalVC: UIViewController {
 	
 	// TODO: Cali 작업 완료 시 View 연결 로직 구현 예정
 	@objc func createDiaryButtonTapped() {
-		print("create")
 		
 		delegate?.createDiaryButtonTapped()
 		dismiss(animated: true, completion: nil)

@@ -24,7 +24,18 @@ class MyDiaryPagesViewController: UIViewController {
             self.dayLabel.text = "\(currentPage)일차"
         }
     }
-    
+	
+	var diaryData: Diary?
+
+	init(diaryData: Diary) {
+		self.diaryData = diaryData
+		super.init(nibName: nil, bundle: nil)
+	}
+	
+	required init?(coder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
+	
     // TODO: client 분리 예정
     let dummyPageCount = Int.random(in: 3...5)
     //    var db = Firestore.firestore()

@@ -102,7 +102,7 @@ class PageViewController: UIViewController {
         let button = UIButton()
         button.setTitle("다이어리 생성", for: .normal)
         button.setTitleColor(UIColor.black, for: .normal)
-        button.addTarget(self, action: #selector(MyDiariesViewCustomModalVC.createDiaryButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(MyHomeViewCustomModalVC.createDiaryButtonTapped), for: .touchUpInside)
         
         button.snp.makeConstraints {
             $0.height.equalTo(UIScreen.getDevice().MyDiariesViewCustomModalViewButtonHeight)
@@ -115,7 +115,7 @@ class PageViewController: UIViewController {
         let button = UIButton()
         button.setTitle("초대코드로 참가", for: .normal)
         button.setTitleColor(UIColor.black, for: .normal)
-        button.addTarget(self, action: #selector(MyDiariesViewCustomModalVC.joinDiaryButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(MyHomeViewCustomModalVC.joinDiaryButtonTapped), for: .touchUpInside)
         
         button.snp.makeConstraints {
             $0.height.equalTo(UIScreen.getDevice().MyDiariesViewCustomModalViewButtonHeight)
@@ -311,7 +311,7 @@ extension PageViewController {
     }
     
     @objc private func onTapPlusButton() {
-        let CustomMenuModalVC = MyDiariesViewCustomModalVC.instance()
+        let CustomMenuModalVC = MyHomeViewCustomModalVC.instance()
         CustomMenuModalVC.delegate = self
         addMenuView()
         CustomMenuModalVC.stackView.addArrangedSubview(createDiaryButton)
@@ -464,7 +464,7 @@ extension PageViewController: UIGestureRecognizerDelegate {
     }
 }
 
-extension PageViewController: MyDiariesViewCustomModalDelegate {
+extension PageViewController: MyHomeViewCustomModalDelegate {
     private func addMenuView() {
         view.addSubview(myDiariesViewModalBackgroundView)
         myDiariesViewModalBackgroundView.snp.makeConstraints {

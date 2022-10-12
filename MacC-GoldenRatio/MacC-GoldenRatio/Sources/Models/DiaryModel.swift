@@ -13,8 +13,9 @@ struct Diary: Codable {
 	let diaryLocation: Location
 	let diaryStartDate: String
 	let diaryEndDate: String
-	let userUIDs: [String]
-    var diaryPages: [Pages]
+	let diaryCover: String
+	var userUIDs: [String] = []
+    var diaryPages: [Pages] = []
     var pageThumbnails: [String] = []
 }
 

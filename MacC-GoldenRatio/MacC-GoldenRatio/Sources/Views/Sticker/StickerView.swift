@@ -16,7 +16,8 @@ protocol StickerViewDelegate {
 
 class StickerView: UIView {
     var delegate: StickerViewDelegate!
-    private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
+    internal var stickerViewData: StickerViewData!
+    internal let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
 
     internal var touchStart: CGPoint?
     private var previousPoint: CGPoint?
@@ -36,8 +37,9 @@ class StickerView: UIView {
                     $0.isHidden = newValue
                 }
             }
-            if newValue == true {
+            if newValue {
                 enableTranslucency(state: !newValue)
+                stickerViewData.updateItem(sticker: self)
             }
         }
     }
@@ -54,16 +56,29 @@ class StickerView: UIView {
         }
     }
 
+    internal func initializeStickerViewData(itemType: ItemType) {
+        let id = UUID().uuidString + String(Date().timeIntervalSince1970)
+        let item = Item(itemUUID: id, itemType: itemType, contents: [], itemFrame: [], itemBounds: [], itemTransform: [])
+        self.stickerViewData = StickerViewData(item: item)
+    }
+
+    /// StickerViewData 를 현재 View의 프로퍼티들에게 적용합니다.
+    internal func configureStickerViewData() {
+        self.frame = self.stickerViewData.fetchFrame()
+        self.bounds = self.stickerViewData.fetchBounds()
+        self.transform = self.stickerViewData.fetchTransform()
+    }
+    
     internal func setupContentView(content: UIView) {
         let contentView = UIView(frame: content.frame)
         contentView.backgroundColor = .clear
         contentView.addSubview(content)
-        contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         addSubview(contentView)
-
-        for subview in contentView.subviews {
-            subview.frame = CGRect(x: 0, y: 0, width: contentView.frame.width, height: contentView.frame.height)
-            subview.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        contentView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        content.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
     }
     
@@ -205,6 +220,7 @@ class StickerView: UIView {
             previousPoint = sender.location(in: self)
             setNeedsDisplay()
         } else if sender.state == .changed {
+            debugPrint(transform)
             transform = CGAffineTransformRotate(oldTransform, sender.rotation)
         } else if sender.state == .ended {
             oldTransform = transform
@@ -217,7 +233,6 @@ class StickerView: UIView {
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard subviewIsHidden == false else { return }
-        
         self.delegate.bringToFront(sticker: self)
         enableTranslucency(state: true)
 

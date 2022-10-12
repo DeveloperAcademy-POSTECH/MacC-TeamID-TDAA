@@ -18,4 +18,10 @@ extension UIView {
             layer.render(in: rendererContext.cgContext)
         }
     }
+    func convertViewToImageView() -> UIImageView {
+        let image = self.transformToImage()
+        let imageView = UIImageView(image: image)
+        imageView.frame = self.frame
+        return imageView
+    }
 }

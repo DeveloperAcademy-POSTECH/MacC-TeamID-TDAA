@@ -5,22 +5,26 @@
 //  Created by woo0 on 2022/09/29.
 //
 
+import Combine
+import Firebase
+import FirebaseAuth
 import SnapKit
 import UIKit
 
 final class MyDiariesViewController: UIViewController {
-	private let viewModel = MyDiariesViewModel()
+	private var cancelBag = Set<AnyCancellable>()
+	private let viewModel = MyDiariesViewModel(userUid: Auth.auth().currentUser?.uid ?? "")
 	private let myDevice = UIScreen.getDevice()
 	private var myDiariesViewModalBackgroundView = UIView()
 	
-	private lazy var diaryCollectionView: UICollectionView = {
+	private lazy var collectionView: UICollectionView = {
 		let layout = UICollectionViewFlowLayout()
 		let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-		
+
 		collectionView.delegate = self
 		collectionView.dataSource = self
 
-		collectionView.backgroundColor = .systemBackground
+		collectionView.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
 		collectionView.register(DiaryCollectionViewCell.self, forCellWithReuseIdentifier: "DiaryCollectionViewCell")
 		collectionView.register(DiaryCollectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "DiaryCollectionHeaderView")
 
@@ -64,15 +68,17 @@ final class MyDiariesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 		setupSubViews()
+		setupViewModel()
     }
 	
 	private func setupSubViews() {
-		[diaryCollectionView, addDiaryButton].forEach { view.addSubview($0) }
+		self.view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
 		
-		diaryCollectionView.snp.makeConstraints {
+		[collectionView, addDiaryButton].forEach { view.addSubview($0) }
+
+		collectionView.snp.makeConstraints {
 			$0.edges.equalTo(view.safeAreaLayoutGuide)
 		}
-		
 		addDiaryButton.snp.makeConstraints {
 			$0.bottom.trailing.equalTo(view.safeAreaLayoutGuide).inset(myDevice.MyDiariesViewAddDiaryButtonPadding)
 		}
@@ -125,7 +131,8 @@ extension MyDiariesViewController: MyDiariesViewCustomModalDelegate {
 
 extension MyDiariesViewController: UICollectionViewDataSource {
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		if viewModel.shouldLoadDiaryResult.count == 0 {
+		// TODO: ViewModel 작업 후 수정 예정
+		if viewModel.diaryCellData.isEmpty {
 			let label = UILabel()
 			label.text = "다이어리를 추가해주세요."
 			label.textAlignment = .center
@@ -133,60 +140,56 @@ extension MyDiariesViewController: UICollectionViewDataSource {
 		} else {
 			collectionView.backgroundView = nil
 		}
-		
-		return viewModel.shouldLoadDiaryResult.count
+
+		return viewModel.diaryCellData.count
 	}
-	
+
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DiaryCollectionViewCell", for: indexPath) as? DiaryCollectionViewCell
-		
-		var imageViews = [UIImageView]()
-		
-		// TODO: ViewModel 작업 후 수정 예정
-		for _ in 0..<viewModel.shouldLoadDiaryResult[indexPath.item].userUIDs.count {
-			let imageView = UIImageView(image: UIImage(systemName: "person"))
-			imageView.contentMode = .scaleToFill
-			imageView.clipsToBounds = true
-			imageView.layer.cornerRadius = 12.5
-			imageView.layer.borderWidth = 0.2
-			imageView.layer.borderColor = UIColor.gray.cgColor
-			imageView.backgroundColor = .white
-			imageViews.append(imageView)
-		}
-		
-		cell?.setup(title: viewModel.shouldLoadDiaryResult[indexPath.item].diaryName, imageViews: imageViews)
-
-		cell?.layer.borderWidth = 0.5
-		cell?.layer.cornerRadius = 20
-		cell?.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMaxXMinYCorner, .layerMaxXMaxYCorner)
-		cell?.layer.borderColor = UIColor.gray.cgColor
-
+		cell?.setup(cellData: viewModel.diaryCellData[indexPath.item])
 		return cell ?? UICollectionViewCell()
 	}
-	
+
 	func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
 		guard kind == UICollectionView.elementKindSectionHeader,
 			  let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "DiaryCollectionHeaderView", for: indexPath) as? DiaryCollectionHeaderView
 		else {
 			return UICollectionReusableView()
 		}
-		
+
 		header.setupViews()
-		
+
 		return header
+	}
+}
+
+extension MyDiariesViewController: UICollectionViewDelegate {
+	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+		// TODO: 다이어리 화면 완료시 작업 예정
 	}
 }
 
 extension MyDiariesViewController: UICollectionViewDelegateFlowLayout {
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-		return CGSize(width: myDevice.diaryCollectionViewCellWidth, height: UIScreen.getDevice().diaryCollectionViewCellHeight)
+		return myDevice.diaryCollectionViewCellSize
 	}
-	
+
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
 		CGSize(width: collectionView.frame.width - myDevice.diaryCollectionViewCellHeaderWidthPadding, height: myDevice.diaryCollectionViewCellHeaderHeight+myDevice.diaryCollectionViewCellHeaderTop)
 	}
-	
+
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
 		return UIEdgeInsets(top: myDevice.diaryCollectionViewCellTop, left: myDevice.diaryCollectionViewCellLeading, bottom: myDevice.diaryCollectionViewCellBottom, right: myDevice.diaryCollectionViewCellTrailing)
+	}
+}
+
+private extension MyDiariesViewController {
+	func setupViewModel() {
+		viewModel.$diaryCellData
+			.receive(on: DispatchQueue.main)
+			.sink { [weak self] diaryCell in
+				self?.collectionView.reloadData()
+			}
+			.store(in: &cancelBag)
 	}
 }

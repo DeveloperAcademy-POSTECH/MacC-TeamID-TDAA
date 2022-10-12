@@ -28,7 +28,7 @@ class ImageStickerView: StickerView {
     }
     
     /// DB에서 StickerView를 불러옵니다.
-    init(item: Item) {
+    init(item: Item, isSubviewHidden: Bool) {
         super.init(frame: CGRect())
 
         DispatchQueue.main.async{
@@ -37,6 +37,7 @@ class ImageStickerView: StickerView {
             self.downLoadImage()
             super.setupContentView(content: self.imageView)
             super.setupDefaultAttributes()
+            self.subviewIsHidden = isSubviewHidden
         }
     }
     

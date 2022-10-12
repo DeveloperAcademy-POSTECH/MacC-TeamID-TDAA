@@ -139,15 +139,7 @@ class PageViewController: UIViewController {
         }
     }
     
-    private func loadStickerViews(pageIndex: Int) {
-        DispatchQueue.main.async {
-            self.pageViewModel.stickerArray[pageIndex].forEach{
-                $0.delegate = self
-                self.backgroundImageView.addSubview($0)
-            }
-        }
-    }
-    
+    //MARK: view 세팅 관련
     private func configureGestureRecognizer() {
         let backgroundImageViewSingleTap = UITapGestureRecognizer(target: self, action: #selector(self.setStickerSubviewHidden))
         self.backgroundImageView.addGestureRecognizer(backgroundImageViewSingleTap)
@@ -294,7 +286,34 @@ class PageViewController: UIViewController {
             self.backgroundImageView.bringSubviewToFront(stickerView)
         }
     }
+}
 
+// MARK: 스티커 로딩 처리
+extension PageViewController {
+    private func reloadStickers() {
+        DispatchQueue.main.async {
+            self.backgroundImageView.subviews.forEach{
+                $0.removeFromSuperview()
+            }
+            self.loadStickerViews(pageIndex: self.pageViewModel.currentPageIndex)
+        }
+    }
+    private func loadStickerViews(pageIndex: Int) {
+        DispatchQueue.main.async {
+            self.pageViewModel.stickerArray[pageIndex].forEach{
+                $0.delegate = self
+                self.backgroundImageView.addSubview($0)
+            }
+        }
+    }
+    
+    private func reloadPageDescriptionLabel() {
+        let selectedDay = pageViewModel.selectedDay
+        let currentPageString = (pageViewModel.currentPageIndex + 1).description
+        let currentDayPageCount = pageViewModel.diary.diaryPages[selectedDay].pages.count.description
+        let labelText = currentPageString + "/" + currentDayPageCount
+        pageDescriptionLabel.text = labelText
+    }
 }
 
 // MARK: 페이지 편집 처리
@@ -359,13 +378,20 @@ extension PageViewController {
     }
     
     @objc private func onTapNavigationEdit() {
+        pageViewModel.saveOldData()
         self.isEditMode = true
     }
-    
+
     @objc private func onTapNavigationCancel() {
-        self.isEditMode = false
+        DispatchQueue.main.async {
+            self.isEditMode = false
+            self.pageViewModel.restoreOldData()
+            self.pageViewModel.setStickerArray(isSubviewHidden: true)
+            self.reloadStickers()
+            self.reloadPageDescriptionLabel()
+        }
     }
-    
+
     // TODO: await 처리해주기
     @objc private func onTapNavigationComplete() {
         self.isEditMode = false
@@ -408,21 +434,6 @@ extension PageViewController {
         let rightBarButtonItem = UIBarButtonItem(title: "편집", style: .plain, target: self, action: #selector(onTapNavigationEdit))
         self.navigationItem.setLeftBarButton(leftBarButtonItem, animated: false)
         self.navigationItem.setRightBarButton(rightBarButtonItem, animated: false)
-    }
-    
-    private func reloadStickers() {
-        self.backgroundImageView.subviews.forEach{
-            $0.removeFromSuperview()
-        }
-        self.loadStickerViews(pageIndex: self.pageViewModel.currentPageIndex)
-    }
-    
-    private func reloadPageDescriptionLabel() {
-        let selectedDay = pageViewModel.selectedDay
-        let currentPageString = (pageViewModel.currentPageIndex + 1).description
-        let currentDayPageCount = pageViewModel.diary.diaryPages[selectedDay].pages.count.description
-        let labelText = currentPageString + "/" + currentDayPageCount
-        pageDescriptionLabel.text = labelText
     }
 }
 

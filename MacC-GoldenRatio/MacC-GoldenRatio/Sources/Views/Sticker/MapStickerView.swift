@@ -31,7 +31,7 @@ class MapStickerView: StickerView {
     }
     
     /// DB에서 StickerView를 불러옵니다.
-    init(item: Item) {
+    init(item: Item, isSubviewHidden: Bool) {
         super.init(frame: CGRect())
 
         DispatchQueue.main.async{
@@ -40,6 +40,7 @@ class MapStickerView: StickerView {
             self.configureStickerViewData()
             super.setupContentView(content: self.mapLabel.convertViewToImageView())
             super.setupDefaultAttributes()
+            self.subviewIsHidden = isSubviewHidden
         }
     }
     

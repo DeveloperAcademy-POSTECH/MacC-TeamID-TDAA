@@ -35,6 +35,11 @@ class PageViewModel {
         
         stickerArray.append([])
     }
+    
+    func deletePage() {
+        diary.diaryPages[selectedDay].pages.remove(at: currentPageIndex)
+        stickerArray.remove(at: currentPageIndex)
+    }
 
     func setStickerArray() {
         DispatchQueue.main.async {
@@ -65,7 +70,7 @@ class PageViewModel {
         stickerArray[currentPageIndex].remove(at: index)
     }
     
-    func stickerSubviewHidden(_ value: Bool) {
+    func hideStickerSubview(_ value: Bool) {
         stickerArray.forEach{
             $0.forEach{
                 $0.subviewIsHidden = value

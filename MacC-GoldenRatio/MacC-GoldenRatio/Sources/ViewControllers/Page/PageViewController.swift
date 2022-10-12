@@ -274,8 +274,9 @@ extension PageViewController {
     
     @objc private func onTapPlusButton() {
         pageViewModel.addNewPage()
-        pageViewModel.currentPageIndex += 1
+        pageViewModel.currentPageIndex = pageViewModel.diary.diaryPages[pageViewModel.selectedDay].pages.count - 1
         reloadStickers()
+        reloadPageDescriptionLabel()
     }
     
     @objc private func swipeAction(_ sender: UISwipeGestureRecognizer) {

@@ -8,31 +8,26 @@ import SnapKit
 import UIKit
 
 class CalendarPickerFooterView: UIView {
-    lazy var separatorView: UIView = {
+    
+    
+    private lazy var separatorView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.label.withAlphaComponent(0.2)
         return view
     }()
     
-    lazy var dateTypeSelector: UISegmentedControl = {
-        let dateType = ["출발일", "도착일"]
-        let sc = UISegmentedControl(items: dateType)
-        sc.backgroundColor = UIColor.lightGray
-        sc.tintColor = UIColor.white
-        sc.selectedSegmentIndex = 0
-        sc.addTarget(self, action: #selector(controllerTapped), for: UIControl.Event.valueChanged)
-        return sc
+    private lazy var selectButton: UIButton = {
+        let button = UIButton()
+        button.addTarget(self, action: #selector(selectButtonTapped), for: .touchUpInside)
+        return button
     }()
     
-    let didTapStartDateCompletionHandler: (() -> Void)
-    let didTapEndDateCompletionHandler: (() -> Void)
+    let selectButtonCompletionHanlder: (() -> Void)
     
     init(
-        didTapStartDateCompletionHandler: @escaping (() -> Void),
-        didTapEndDateCompletionHandler: @escaping (() -> Void)
+        selectButtonCompltionHanlder: @escaping (() -> Void)
     ) {
-        self.didTapStartDateCompletionHandler = didTapStartDateCompletionHandler
-        self.didTapEndDateCompletionHandler = didTapEndDateCompletionHandler
+        self.selectButtonCompletionHanlder = selectButtonCompletionHanlder
         
         super.init(frame: CGRect.zero)
         
@@ -45,7 +40,7 @@ class CalendarPickerFooterView: UIView {
         layer.cornerCurve = .continuous
         layer.cornerRadius = 15
         
-        [separatorView, dateTypeSelector].forEach {
+        [separatorView, selectButton].forEach {
             self.addSubview($0)
         }
     }
@@ -65,7 +60,7 @@ class CalendarPickerFooterView: UIView {
             $0.height.equalTo(1)
         }
         
-        dateTypeSelector.snp.makeConstraints {
+        selectButton.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(16)
             $0.trailing.equalToSuperview().inset(16)
             $0.center.equalToSuperview()
@@ -73,17 +68,8 @@ class CalendarPickerFooterView: UIView {
         }
     }
     
-    @objc func controllerTapped(_ controller: UISegmentedControl) {
-        let switchIndex = controller.selectedSegmentIndex
-        
-        switch switchIndex {
-        case 0:
-            didTapStartDateCompletionHandler()
-        case 1:
-            didTapEndDateCompletionHandler()
-        default:
-            return
-        }
+    @objc func didTapExitButton() {
+        selectButtonCompletionHandler()
     }
     
 }

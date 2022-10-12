@@ -14,12 +14,6 @@ class CalendarPickerFooterView: UIView {
         }
     }
     
-    private lazy var separatorView: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor.label.withAlphaComponent(0.2)
-        return view
-    }()
-    
     private lazy var selectButton: UIButton = {
         let button = UIButton()
         button.setTitle("날짜를 선택하세요", for: .normal)
@@ -45,9 +39,7 @@ class CalendarPickerFooterView: UIView {
         layer.cornerCurve = .continuous
         layer.cornerRadius = 15
         
-        [separatorView, selectButton].forEach {
-            self.addSubview($0)
-        }
+        self.addSubview(selectButton)
     }
     
     required init?(coder: NSCoder) {
@@ -58,12 +50,6 @@ class CalendarPickerFooterView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
-        separatorView.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview()
-            $0.top.equalToSuperview()
-            $0.height.equalTo(1)
-        }
         
         selectButton.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(16)

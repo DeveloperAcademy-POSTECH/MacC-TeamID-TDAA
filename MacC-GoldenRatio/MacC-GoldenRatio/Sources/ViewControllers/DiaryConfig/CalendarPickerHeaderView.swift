@@ -44,12 +44,6 @@ class CalendarPickerHeaderView: UIView {
         return stackView
     }()
     
-    lazy var separatorView: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor.label.withAlphaComponent(0.2)
-        return view
-    }()
-    
     private lazy var dateFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
         dateFormatter.calendar = Calendar(identifier: .gregorian)
@@ -83,7 +77,7 @@ class CalendarPickerHeaderView: UIView {
         layer.cornerCurve = .continuous
         layer.cornerRadius = 15
 
-        [monthLabel, previousMonthButton, nextMonthButton, dayOfWeekStackView, separatorView].forEach {
+        [monthLabel, previousMonthButton, nextMonthButton, dayOfWeekStackView].forEach {
             self.addSubview($0)
         }
         
@@ -145,12 +139,7 @@ class CalendarPickerHeaderView: UIView {
         dayOfWeekStackView.snp.makeConstraints {
             $0.leading.equalToSuperview()
             $0.trailing.equalToSuperview()
-            $0.bottom.equalTo(separatorView.snp.bottom).inset(5)
-        }
-    
-        separatorView.snp.makeConstraints {
-            $0.leading.trailing.bottom.equalToSuperview()
-            $0.height.equalTo(1)
+            $0.bottom.equalToSuperview().inset(5)
         }
     }
     

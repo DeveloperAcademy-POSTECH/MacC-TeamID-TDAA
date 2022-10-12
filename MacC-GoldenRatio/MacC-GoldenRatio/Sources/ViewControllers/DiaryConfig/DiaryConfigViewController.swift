@@ -30,11 +30,11 @@ class DiaryConfigViewController: UIViewController {
     private var configState: ConfigState
     
     // TO REMOVE (FOR DUMMYDATA)
-    private var dummyDataStartDate: Date
+    private var dummyDate: [Date]
     
     init(mode configState: ConfigState) {
         // TO REMOVE (FOR DUMMYDATA)
-        self.dummyDataStartDate = Date()
+        self.dummyDate = [Date(), Date()]
         
         self.configState = configState
         super.init(nibName: nil, bundle: nil)
@@ -47,7 +47,7 @@ class DiaryConfigViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .systemGray5
+        view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
         
         titleSetup()
         collectionViewSetup()
@@ -59,7 +59,7 @@ class DiaryConfigViewController: UIViewController {
         
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.backgroundColor = .systemGray5
+        collectionView.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
         
         collectionView.register(DiaryConfigCollectionViewCell.self, forCellWithReuseIdentifier: "DiaryConfigCollectionViewCell")
         
@@ -198,13 +198,14 @@ extension DiaryConfigViewController: UICollectionViewDataSource {
             self.present(mapSearchViewController, animated: true)
             
         case .diaryDate:
-            let pickerController = CalendarPickerViewController(
-                baseDate: self.dummyDataStartDate,
-                selectedDateChanged: { [weak sender] date in
+            let pickerController = CalendarPickerViewController(startBaseDate: dummyDate[0], selectedDateChanged: { [weak sender] date in
                     guard let sender = sender else { return }
-                    self.dummyDataStartDate = date
                     UIView.performWithoutAnimation {
-                        sender.setTitle(date.customFormat(), for: .normal)
+                        let startDate = date[0]
+                        let endDate = date[1]
+                        
+                        self.dummyDate = [startDate, endDate]
+                        sender.setTitle("\(startDate.customFormat()) \(startDate.dayOfTheWeek())  - \(endDate.customFormat()) \(endDate.dayOfTheWeek())", for: .normal)
                         sender.tintColor = .black
                         sender.layoutIfNeeded()
                     }

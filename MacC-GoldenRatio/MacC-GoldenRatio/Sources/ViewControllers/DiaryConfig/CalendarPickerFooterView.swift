@@ -8,7 +8,11 @@ import SnapKit
 import UIKit
 
 class CalendarPickerFooterView: UIView {
-    
+    var buttonLabel: String = "날짜를 선택하세요" {
+        didSet {
+            self.selectButton.setTitle(buttonLabel, for: .normal)
+        }
+    }
     
     private lazy var separatorView: UIView = {
         let view = UIView()

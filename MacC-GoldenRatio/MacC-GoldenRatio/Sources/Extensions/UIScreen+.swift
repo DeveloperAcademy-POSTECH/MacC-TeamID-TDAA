@@ -298,13 +298,13 @@ extension UIScreen {
 // MARK: - Diary Config
         var diaryConfigTitleFont: UIFont {
             switch self {
-            default: return UIFont.boldSystemFont(ofSize: 17)
+            default: return UIFont(name: "EF_Diary", size: 17) ?? UIFont.boldSystemFont(ofSize: 17)
             }
         }
         
         var diaryConfigButtonFont: UIFont {
             switch self {
-            default: return UIFont.systemFont(ofSize: 17)
+            default: return UIFont(name: "EF_Diary", size: 17) ?? UIFont.systemFont(ofSize: 17)
             }
         }
         
@@ -347,13 +347,13 @@ extension UIScreen {
 // MARK: - Diary Config Cell
         var diaryConfigCellTitleFont: UIFont {
             switch self {
-            default: return UIFont(name: "EFDiary", size: 17) ?? UIFont.boldSystemFont(ofSize: 17)
+            default: return UIFont(name: "EF_Diary", size: 17) ?? UIFont.systemFont(ofSize: 17)
             }
         }
         
         var diaryConfigCellContentFont: UIFont {
             switch self {
-            default: return UIFont.systemFont(ofSize: 17)
+            default: return UIFont(name: "EF_Diary", size: 17) ?? UIFont.systemFont(ofSize: 17)
             }
         }
         

@@ -9,10 +9,14 @@ import SnapKit
 import UIKit
 
 class CalendarPickerViewController: UIViewController {
+    var dateInterval: [Date] = []
+    
     // MARK: Views
     private lazy var dimmedBackgroundView: UIView = {
         let view = UIView()
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissCalendar))
         view.backgroundColor = UIColor.black.withAlphaComponent(0.3)
+        view.addGestureRecognizer(tapGestureRecognizer)
         return view
     }()
     
@@ -30,40 +34,48 @@ class CalendarPickerViewController: UIViewController {
         didTapLastMonthCompletionHandler: { [weak self] in
             guard let self = self else { return }
             
-            self.baseDate = self.calendar.date(byAdding: .month, value: -1, to: self.baseDate) ?? self.baseDate
+            self.startBaseDate = self.calendar.date(byAdding: .month, value: -1, to: self.startBaseDate) ?? self.startBaseDate
         },
         didTapNextMonthCompletionHandler: { [weak self] in
             guard let self = self else { return }
             
-            self.baseDate = self.calendar.date(byAdding: .month, value: 1, to: self.baseDate) ?? self.baseDate
+            self.startBaseDate = self.calendar.date(byAdding: .month, value: 1, to: self.startBaseDate) ?? self.startBaseDate
         })
     
-    private lazy var footerView = CalendarPickerFooterView(
+    lazy var footerView = CalendarPickerFooterView(
         selectButtonCompletionHanlder: { [weak self] in
             guard let self = self else { return }
             
-            self.dismiss(animated: true, completion: nil)
+            
+            self.selectedDateChanged(self.dateInterval)
+            self.dismissCalendar()
         })
     
     // MARK: Calendar Data Values
     
-    private let selectedDate: Date
-    private var baseDate: Date {
+    private let selectedStartDate: Date
+    private var startBaseDate: Date {
         didSet {
-            days = generateDaysInMonth(for: baseDate)
+            days = generateDaysInMonth(for: startBaseDate)
             collectionView.reloadData()
-            headerView.baseDate = baseDate
+            headerView.baseDate = startBaseDate
+            
+        }
+    }
+    private var endBaseDate: Date? {
+        didSet {
+            collectionView.reloadData()
         }
     }
     
     
-    private lazy var days = generateDaysInMonth(for: baseDate)
+    private lazy var days = generateDaysInMonth(for: startBaseDate)
     
     private var numberOfWeeksInBaseDate: Int {
-        calendar.range(of: .weekOfMonth, in: .month, for: baseDate)?.count ?? 0
+        calendar.range(of: .weekOfMonth, in: .month, for: startBaseDate)?.count ?? 0
     }
     
-    private let selectedDateChanged: ((Date) -> Void)
+    private let selectedDateChanged: (([Date]) -> Void)
     private let calendar = Calendar(identifier: .gregorian)
     
     private lazy var dateFormatter: DateFormatter = {
@@ -74,9 +86,9 @@ class CalendarPickerViewController: UIViewController {
     
     // MARK: Initializers
     
-    init(baseDate: Date, selectedDateChanged: @escaping ((Date) -> Void)) {
-        self.selectedDate = baseDate
-        self.baseDate = baseDate
+    init(startBaseDate: Date, selectedDateChanged: @escaping (([Date]) -> Void)) {
+        self.selectedStartDate = startBaseDate
+        self.startBaseDate = startBaseDate
         self.selectedDateChanged = selectedDateChanged
         
         super.init(nibName: nil, bundle: nil)
@@ -126,21 +138,25 @@ class CalendarPickerViewController: UIViewController {
         
         collectionView.dataSource = self
         collectionView.delegate = self
-        headerView.baseDate = baseDate
+        headerView.baseDate = startBaseDate
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         collectionView.reloadData()
     }
+    
+    @objc private func dismissCalendar() {
+        self.dismiss(animated: true, completion: nil)
+    }
 }
 
 // MARK: - Day Generation
 private extension CalendarPickerViewController {
-    func monthMetadata(for baseDate: Date) throws -> MonthMetadata {
+    func monthMetadata(for startBaseDate: Date) throws -> MonthMetadata {
         guard
-            let numberOfDaysInMonth = calendar.range(of: .day, in: .month, for: baseDate)?.count,
-            let firstDayOfMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: baseDate))
+            let numberOfDaysInMonth = calendar.range(of: .day, in: .month, for: startBaseDate)?.count,
+            let firstDayOfMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: startBaseDate))
         else {
             throw CalendarDataError.metadataGeneration
         }
@@ -150,9 +166,9 @@ private extension CalendarPickerViewController {
         return MonthMetadata(numberOfDays: numberOfDaysInMonth, firstDay: firstDayOfMonth, firstDayWeekday: firstDayWeekday)
     }
     
-    func generateDaysInMonth(for baseDate: Date) -> [Day] {
-        guard let metadata = try? monthMetadata(for: baseDate) else {
-            preconditionFailure("An error occurred when generating the metadata for \(baseDate)")
+    func generateDaysInMonth(for startBaseDate: Date) -> [Day] {
+        guard let metadata = try? monthMetadata(for: startBaseDate) else {
+            preconditionFailure("An error occurred when generating the metadata for \(startBaseDate)")
         }
         
         let numberOfDaysInMonth = metadata.numberOfDays
@@ -172,15 +188,14 @@ private extension CalendarPickerViewController {
         return days
     }
     
-    func generateDay(offsetBy dayOffset: Int, for baseDate: Date, isWithinDisplayedMonth: Bool) -> Day {
-        let date = calendar.date(byAdding: .day, value: dayOffset, to: baseDate) ?? baseDate
+    func generateDay(offsetBy dayOffset: Int, for startBaseDate: Date, isWithinDisplayedMonth: Bool) -> Day {
+        let date = calendar.date(byAdding: .day, value: dayOffset, to: startBaseDate) ?? startBaseDate
         
-        return Day(date: date, number: dateFormatter.string(from: date), isSelected: calendar.isDate(date, inSameDayAs: selectedDate), isWithinDisplayedMonth: isWithinDisplayedMonth)
+        return Day(date: date, number: dateFormatter.string(from: date), isSelected: calendar.isDate(date, inSameDayAs: selectedStartDate), isWithinDisplayedMonth: isWithinDisplayedMonth)
     }
     
     func generateStartOfNextMonth(
-        using firstDayOfDisplayedMonth: Date
-    ) -> [Day] {
+        using firstDayOfDisplayedMonth: Date) -> [Day] {
         guard
             let lastDayInMonth = calendar.date(byAdding: DateComponents(month: 1, day: -1), to: firstDayOfDisplayedMonth)
         else {
@@ -222,15 +237,44 @@ extension CalendarPickerViewController: UICollectionViewDataSource {
 
 // MARK: - UICollectionViewDelegateFlowLayout
 extension CalendarPickerViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView,didSelectItemAt indexPath: IndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let day = days[indexPath.row]
-        selectedDateChanged(day.date)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CalendarDateCollectionViewCell.reuseIdentifier, for: indexPath) as! CalendarDateCollectionViewCell
+        
+        cell.day = day
+        collectionView.reloadData()
+        updateFooterButtonLabel(day: day)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = Int(collectionView.frame.width / 7)
         let height = Int(collectionView.frame.height) / numberOfWeeksInBaseDate
         return CGSize(width: width, height: height)
+    }
+    
+    private func updateFooterButtonLabel(day: Day) {
+        if dateInterval.count == 2 {
+            dateInterval.removeAll()
+        }
+        dateInterval.append(day.date)
+        
+        switch dateInterval.count {
+        case 1:
+            let startDate = dateInterval[0]
+            self.footerView.buttonLabel = "\(startDate.customFormat()) \(startDate.dayOfTheWeek()) 부터"
+        case 2:
+            let startDate = dateInterval[0]
+            let endDate = dateInterval[1]
+            let timeInterval = Int(endDate.timeIntervalSince(startDate)) / 86400
+            if timeInterval < 0 {
+                dateInterval.removeAll()
+                return
+            } else {
+                self.footerView.buttonLabel = "\(startDate.customFormat()) \(startDate.dayOfTheWeek()) ~ \(endDate.customFormat()) \(endDate.dayOfTheWeek()) ∙ \(timeInterval)박"
+            }
+        default:
+            self.footerView.buttonLabel = "날짜를 선택하세요"
+        }
     }
 }
 

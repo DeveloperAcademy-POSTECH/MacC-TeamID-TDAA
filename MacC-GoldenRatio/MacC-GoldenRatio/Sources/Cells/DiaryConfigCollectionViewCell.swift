@@ -40,6 +40,7 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
     lazy var contentTextField: UITextField? = {
         let textField = UITextField()
         textField.placeholder = "PlaceHolder"
+        textField.font = UIFont(name: "EF_Diary", size: 17)
         textField.returnKeyType = .done
         textField.delegate = self
         return textField

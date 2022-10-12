@@ -6,6 +6,7 @@
 //
 
 import FirebaseFirestore
+import FirebaseAuth
 import UIKit
 
 // TODO: 수정 예정
@@ -14,17 +15,16 @@ class MyHomeViewModel {
 	@Published var diaryCellData = [DiaryCell]()
 	private let client = FirestoreClient()
 	private let db = Firestore.firestore()
-	var userUid: String
+	var myUID = Auth.auth().currentUser?.uid ?? ""
 	
-	init(userUid: String) {
-		self.userUid = userUid
-		fetchLoadData(userUid)
+	init() {
+		fetchLoadData()
 	}
 	
-	private func fetchLoadData(_ uid: String) {
+	func fetchLoadData() {
 		Task {
 			do {
-				self.diaryData = try await client.fetchMyDiaries(uid)
+				self.diaryData = try await client.fetchMyDiaries(myUID)
 				self.diaryCellData = try await convertDiaryToCellData(diaryData)
 			} catch {
 				print(error)
@@ -51,5 +51,9 @@ class MyHomeViewModel {
 		}
 
 		return diaryCellData
+	}
+	
+	func updateJoinDiary(_ diaryUUID: String) {
+		db.collection("Diary").document(diaryUUID).updateData(["userUIDs": FieldValue.arrayUnion([myUID])])
 	}
 }

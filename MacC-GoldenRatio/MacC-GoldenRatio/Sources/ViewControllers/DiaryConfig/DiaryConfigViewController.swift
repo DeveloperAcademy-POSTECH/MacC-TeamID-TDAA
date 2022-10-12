@@ -31,15 +31,12 @@ class DiaryConfigViewController: UIViewController {
     
     // TO REMOVE (FOR DUMMYDATA)
     private var dummyDataStartDate: Date
-	
-	var diaryData: [Diary]
     
-	init(mode configState: ConfigState, diaryData: [Diary]) {
+	init(mode configState: ConfigState) {
         // TO REMOVE (FOR DUMMYDATA)
         self.dummyDataStartDate = Date()
         
         self.configState = configState
-		self.diaryData = diaryData
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -51,7 +48,6 @@ class DiaryConfigViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .systemGray5
-        print(diaryData)
         titleSetup()
         collectionViewSetup()
     }
@@ -108,7 +104,8 @@ class DiaryConfigViewController: UIViewController {
     @objc func doneButtonPressed(_ sender: UIButton) {
         
         let parentNavigationController: UINavigationController = self.presentingViewController as! UINavigationController
-        let MyDiaryPagesVC = MyDiaryPagesViewController()
+		// MARK: 칼리가 수정 예정
+        let MyDiaryPagesVC = MyDiaryPagesViewController(diaryData: Diary(diaryUUID: "", diaryName: "", diaryLocation: Location(locationName: "", locationAddress: "", locationCoordinate: []), diaryStartDate: "", diaryEndDate: "", diaryCover: ""))
         
         presentingViewController?.dismiss(animated: true) {
             switch self.configState {

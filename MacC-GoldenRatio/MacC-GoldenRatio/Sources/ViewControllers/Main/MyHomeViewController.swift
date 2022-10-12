@@ -13,7 +13,7 @@ import UIKit
 
 final class MyHomeViewController: UIViewController {
 	private var cancelBag = Set<AnyCancellable>()
-	private let viewModel = MyHomeViewModel(userUid: Auth.auth().currentUser?.uid ?? "")
+	private let viewModel = MyHomeViewModel()
 	private let myDevice = UIScreen.getDevice()
 	private var myDiariesViewModalBackgroundView = UIView()
 	
@@ -33,34 +33,8 @@ final class MyHomeViewController: UIViewController {
 	
 	private lazy var addDiaryButton: UIButton = {
 		let button = UIButton()
-		button.setImage(UIImage(systemName: "plus.circle", withConfiguration: UIImage.SymbolConfiguration(pointSize: UIScreen.getDevice().MyDiariesViewAddDiaryButtonSize))?.withTintColor(.black, renderingMode: .alwaysOriginal), for: .normal)
-		button.addTarget(self, action: #selector(addDiaryButtonTapped), for: .touchUpInside)
-		
-		return button
-	}()
-	
-	private var createDiaryButton: UIButton = {
-		let button = UIButton()
-		button.setTitle("다이어리 생성", for: .normal)
-		button.setTitleColor(UIColor.black, for: .normal)
-		button.addTarget(self, action: #selector(MyHomeViewCustomModalVC.createDiaryButtonTapped), for: .touchUpInside)
-		
-		button.snp.makeConstraints {
-			$0.height.equalTo(UIScreen.getDevice().MyDiariesViewCustomModalViewButtonHeight)
-		}
-		
-		return button
-	}()
-	
-	private var joinDiaryButton: UIButton = {
-		let button = UIButton()
-		button.setTitle("초대코드로 참가", for: .normal)
-		button.setTitleColor(UIColor.black, for: .normal)
-		button.addTarget(self, action: #selector(MyHomeViewCustomModalVC.joinDiaryButtonTapped), for: .touchUpInside)
-		
-		button.snp.makeConstraints {
-			$0.height.equalTo(UIScreen.getDevice().MyDiariesViewCustomModalViewButtonHeight)
-		}
+		button.setImage(UIImage(named: "plusButton"), for: .normal)
+		button.addTarget(self, action: #selector(menuButtonTapped), for: .touchUpInside)
 		
 		return button
 	}()
@@ -84,48 +58,36 @@ final class MyHomeViewController: UIViewController {
 		}
 	}
 	
-	private func addMenuView() {
-		view.addSubview(myDiariesViewModalBackgroundView)
-		myDiariesViewModalBackgroundView.snp.makeConstraints {
-			$0.edges.equalToSuperview()
+	@objc private func menuButtonTapped() {
+		let popUp = PopUpViewController(popUpPosition: .bottom)
+		popUp.addButton(buttonTitle: "다이어리 생성", action: createButtonTapped)
+		popUp.addButton(buttonTitle: "초대코드로 참가", action: joinButtonTapped)
+		present(popUp, animated: false)
+	}
+	
+	@objc func createButtonTapped() {
+		let vc = DiaryConfigViewController(mode: .create)
+		vc.modalPresentationStyle = .fullScreen
+		self.present(vc, animated: true, completion: nil)
+	}
+	
+	@objc func joinButtonTapped() {
+		let joinDiaryAlert = UIAlertController(title: "초대코드 입력", message: "받은 초대코드를 입력해주세요.", preferredStyle: .alert)
+		let joinAction = UIAlertAction(title: "확인", style: .default) { action in
+			if let textField = joinDiaryAlert.textFields?.first {
+				// TODO: 초대 코드 복사 로직 추가 예정
+				self.viewModel.updateJoinDiary(textField.text ?? "")
+				self.viewModel.fetchLoadData()
+				self.dismiss(animated: true, completion: nil)
+			}
 		}
-		
-		DispatchQueue.main.async { [weak self] in
-			self?.myDiariesViewModalBackgroundView.backgroundColor = .black
-			self?.myDiariesViewModalBackgroundView.alpha = 0.1
+		let cancelAction = UIAlertAction(title: "취소", style: .cancel) { action in
+			self.dismiss(animated: true, completion: nil)
 		}
-	}
-	
-	private func removeMenuView() {
-		DispatchQueue.main.async { [weak self] in
-			self?.myDiariesViewModalBackgroundView.removeFromSuperview()
-		}
-	}
-	
-	@objc private func addDiaryButtonTapped() {
-		let CustomMenuModalVC = MyHomeViewCustomModalVC.instance()
-		CustomMenuModalVC.delegate = self
-		addMenuView()
-		CustomMenuModalVC.stackView.addArrangedSubview(createDiaryButton)
-		CustomMenuModalVC.stackView.addArrangedSubview(joinDiaryButton)
-		CustomMenuModalVC.stackViewBottom = myDevice.MyDiariesViewCustomModalViewStackBottom
-		CustomMenuModalVC.stackViewTrailing = myDevice.MyDiariesViewCustomModalViewStackTrailing
-		CustomMenuModalVC.stackViewSize = CGSize(width: myDevice.MyDiariesViewCustomModalViewStackWidth, height: myDevice.MyDiariesViewCustomModalViewButtonHeight*CustomMenuModalVC.stackView.arrangedSubviews.count)
-		present(CustomMenuModalVC, animated: true, completion: nil)
-	}
-}
-
-extension MyHomeViewController: MyHomeViewCustomModalDelegate {
-	func createDiaryButtonTapped() {
-		self.removeMenuView()
-	}
-	
-	func joinDiaryButtonTapped() {
-		self.removeMenuView()
-	}
-	
-	func tapGestureHandler() {
-		self.removeMenuView()
+		joinDiaryAlert.addTextField()
+		joinDiaryAlert.addAction(joinAction)
+		joinDiaryAlert.addAction(cancelAction)
+		self.present(joinDiaryAlert, animated: true)
 	}
 }
 
@@ -165,7 +127,10 @@ extension MyHomeViewController: UICollectionViewDataSource {
 
 extension MyHomeViewController: UICollectionViewDelegate {
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-		// TODO: 다이어리 화면 완료시 작업 예정
+		let vc = MyDiaryPagesViewController(diaryData: viewModel.diaryData[indexPath.item])
+		// TODO: 수정 예정
+		self.navigationController?.isNavigationBarHidden = false
+		self.navigationController?.pushViewController(vc, animated: true)
 	}
 }
 

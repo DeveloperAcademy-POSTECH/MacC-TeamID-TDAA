@@ -5,7 +5,7 @@
 //  Created by 김상현 on 2022/10/02.
 //
 
-import Foundation
+import UIKit
 
 class PageViewModel {
     var selectedDay: Int = 0
@@ -26,6 +26,14 @@ class PageViewModel {
             diary = try! await (FirebaseClient().fetchMyDiaries(uid: "testUser")?.first)!
             setStickerArray()
         }
+    }
+    
+    func addNewPage() {
+        let pageUUID = UUID().uuidString + String(Date().timeIntervalSince1970)
+        let newPage = Page(pageUUID: pageUUID, items: [])
+        diary.diaryPages[selectedDay].pages.append(newPage)
+        
+        stickerArray.append([])
     }
 
     func setStickerArray() {
@@ -58,8 +66,10 @@ class PageViewModel {
     }
     
     func stickerSubviewHidden(_ value: Bool) {
-        stickerArray[currentPageIndex].forEach{
-            $0.subviewIsHidden = value
+        stickerArray.forEach{
+            $0.forEach{
+                $0.subviewIsHidden = value
+            }
         }
     }
     
@@ -68,6 +78,18 @@ class PageViewModel {
         stickerArray[currentPageIndex].remove(at: index)
         stickerArray[currentPageIndex].append(sticker)
         debugPrint(stickerArray)
+    }
+    
+    func upLoadImage(image: UIImage, _ completion: @escaping () -> Void) {
+        FirebaseStorageManager.uploadImage(image: image, pathRoot: diary.diaryUUID + "/thumbnail") { url in
+            guard let url = url else { return }
+            self.diary.pageThumbnails[self.selectedDay] = url.description
+            completion()
+        }
+    }
+    
+    func updatePageThumbnail() {
+        FirebaseClient().updatePageThumbnail(diary: diary)
     }
     
     func updateDBPages() {

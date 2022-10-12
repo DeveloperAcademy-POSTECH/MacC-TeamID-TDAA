@@ -13,6 +13,8 @@ class PageViewController: UIViewController {
     private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
     private let pageViewModel = PageViewModel()
     private let imagePicker = UIImagePickerController()
+    private var myDiariesViewModalBackgroundView = UIView()
+
     private var isEditMode = false {
         willSet{
             switch newValue {
@@ -86,6 +88,42 @@ class PageViewController: UIViewController {
         return button
     }()
     
+    private lazy var addPageButton: UIButton = {
+        let button = UIButton()
+        let image = UIImage(systemName: "plus")
+        button.setImage(image, for: .normal)
+        button.tintColor = .black
+        button.addTarget(self, action: #selector(onTapAddPageToLastMenu), for: .touchUpInside)
+
+        return button
+    }()
+    
+    private var createDiaryButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("다이어리 생성", for: .normal)
+        button.setTitleColor(UIColor.black, for: .normal)
+        button.addTarget(self, action: #selector(MyDiariesViewCustomModalVC.createDiaryButtonTapped), for: .touchUpInside)
+        
+        button.snp.makeConstraints {
+            $0.height.equalTo(UIScreen.getDevice().MyDiariesViewCustomModalViewButtonHeight)
+        }
+        
+        return button
+    }()
+    
+    private var joinDiaryButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("초대코드로 참가", for: .normal)
+        button.setTitleColor(UIColor.black, for: .normal)
+        button.addTarget(self, action: #selector(MyDiariesViewCustomModalVC.joinDiaryButtonTapped), for: .touchUpInside)
+        
+        button.snp.makeConstraints {
+            $0.height.equalTo(UIScreen.getDevice().MyDiariesViewCustomModalViewButtonHeight)
+        }
+        
+        return button
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -93,19 +131,11 @@ class PageViewController: UIViewController {
         DispatchQueue.main.async {
             self.configureViewingMode()
             self.addSubviews()
-            self.configureBackgroundImageViewGestureRecognizer()
+            self.configureGestureRecognizer()
             self.configureToolButton()
             self.configureConstraints()
             self.loadStickerViews(pageIndex: self.pageViewModel.currentPageIndex)
             self.setStickerSubviewHidden()
-        }
-    }
-    
-    private func addSubviews() {
-        view.addSubview(backgroundImageView)
-        view.addSubview(pageDescriptionLabel)
-        [mapToolButton, imageToolButton, stickerToolButton, textToolButton].forEach{
-            view.addSubview($0)
         }
     }
     
@@ -118,7 +148,7 @@ class PageViewController: UIViewController {
         }
     }
     
-    private func configureBackgroundImageViewGestureRecognizer() {
+    private func configureGestureRecognizer() {
         let backgroundImageViewSingleTap = UITapGestureRecognizer(target: self, action: #selector(self.setStickerSubviewHidden))
         self.backgroundImageView.addGestureRecognizer(backgroundImageViewSingleTap)
         
@@ -150,6 +180,14 @@ class PageViewController: UIViewController {
         self.imagePicker.sourceType = .photoLibrary
         self.imagePicker.allowsEditing = true
         self.imagePicker.delegate = self
+    }
+    
+    private func addSubviews() {
+        view.addSubview(backgroundImageView)
+        view.addSubview(pageDescriptionLabel)
+        [mapToolButton, imageToolButton, stickerToolButton, textToolButton, addPageButton].forEach{
+            view.addSubview($0)
+        }
     }
     
     private func configureConstraints() {
@@ -185,8 +223,15 @@ class PageViewController: UIViewController {
             make.bottom.equalTo(backgroundImageView.snp.bottom).inset(myDevice.pagePadding)
             make.size.equalTo(myDevice.pageToolButtonSize)
         }
+        
+        addPageButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().offset(-myDevice.pagePadding)
+            make.bottom.equalTo(backgroundImageView.snp.bottom).inset(myDevice.pagePadding)
+            make.size.equalTo(myDevice.pageToolButtonSize)
+        }
     }
     
+    // MARK: Actions
     @objc private func setStickerSubviewHidden() {
         self.pageViewModel.stickerSubviewHidden(true)
     }
@@ -211,33 +256,6 @@ class PageViewController: UIViewController {
     
     @objc func onTapTextButton() {
         self.addTextSticker()
-    }
-    
-    @objc private func swipeAction(_ sender: UISwipeGestureRecognizer) {
-        switch sender.direction {
-        case .left:
-            if pageViewModel.currentPageIndex + 2 <= pageViewModel.stickerArray.count {
-                self.pageViewModel.currentPageIndex += 1
-                self.backgroundImageView.subviews.forEach{
-                    $0.removeFromSuperview()
-                }
-                self.loadStickerViews(pageIndex: self.pageViewModel.currentPageIndex)
-            } else {
-                print("마지막 페이지입니다.")
-            }
-        case .right:
-            if pageViewModel.currentPageIndex - 1 >= 0 {
-                self.pageViewModel.currentPageIndex -= 1
-                self.backgroundImageView.subviews.forEach{
-                    $0.removeFromSuperview()
-                }
-                self.loadStickerViews(pageIndex: self.pageViewModel.currentPageIndex)
-            } else {
-                print("첫 페이지입니다.")
-            }
-        default:
-            break
-        }
     }
     
     // MARK: Completion Method
@@ -279,8 +297,53 @@ class PageViewController: UIViewController {
 
 }
 
-// MARK: NavigtionItemActions
+// MARK: 페이지 편집 처리
 extension PageViewController {
+    @objc private func onTapAddPageToLastMenu() {
+        pageViewModel.addNewPage()
+        pageViewModel.currentPageIndex = pageViewModel.diary.diaryPages[pageViewModel.selectedDay].pages.count - 1
+        reloadStickers()
+        reloadPageDescriptionLabel()
+    }
+
+    @objc private func onTapDeletePageMenu() {
+        
+    }
+    
+    @objc private func onTapPlusButton() {
+        let CustomMenuModalVC = MyDiariesViewCustomModalVC.instance()
+        CustomMenuModalVC.delegate = self
+        addMenuView()
+        CustomMenuModalVC.stackView.addArrangedSubview(createDiaryButton)
+        CustomMenuModalVC.stackView.addArrangedSubview(joinDiaryButton)
+        CustomMenuModalVC.stackViewBottom = myDevice.MyDiariesViewCustomModalViewStackBottom
+        CustomMenuModalVC.stackViewTrailing = myDevice.MyDiariesViewCustomModalViewStackTrailing
+        CustomMenuModalVC.stackViewSize = CGSize(width: myDevice.MyDiariesViewCustomModalViewStackWidth, height: myDevice.MyDiariesViewCustomModalViewButtonHeight * CustomMenuModalVC.stackView.arrangedSubviews.count)
+        present(CustomMenuModalVC, animated: true, completion: nil)
+    }
+    
+    @objc private func swipeAction(_ sender: UISwipeGestureRecognizer) {
+        switch sender.direction {
+        case .left:
+            if pageViewModel.currentPageIndex + 2 <= pageViewModel.stickerArray.count {
+                pageViewModel.currentPageIndex += 1
+                reloadStickers()
+                reloadPageDescriptionLabel()
+            } else {
+                print("마지막 페이지입니다.")
+            }
+        case .right:
+            if pageViewModel.currentPageIndex - 1 >= 0 {
+                pageViewModel.currentPageIndex -= 1
+                reloadStickers()
+                reloadPageDescriptionLabel()
+            } else {
+                print("첫 페이지입니다.")
+            }
+        default:
+            break
+        }
+    }
     
     @objc private func onTapNavigationBack() {
         self.dismiss(animated: false)
@@ -297,15 +360,23 @@ extension PageViewController {
     // TODO: await 처리해주기
     @objc private func onTapNavigationComplete() {
         self.isEditMode = false
-
         pageViewModel.stickerSubviewHidden(true)
-        pageViewModel.updateDBPages()
+
+        if pageViewModel.currentPageIndex == 0 {
+            guard let thumbnailImage = self.backgroundImageView.transformToImage() else { return }
+            pageViewModel.upLoadImage(image: thumbnailImage) {
+                self.pageViewModel.updatePageThumbnail()
+                self.pageViewModel.updateDBPages()
+            }
+        } else {
+            pageViewModel.updateDBPages()
+        }
     }
     
     private func configureEditMode() {
         self.backgroundImageView.isUserInteractionEnabled = true
 
-        [mapToolButton, imageToolButton, stickerToolButton, textToolButton].forEach{
+        [mapToolButton, imageToolButton, stickerToolButton, textToolButton, addPageButton].forEach{
             $0.isHidden = false
         }
         self.tabBarController?.tabBar.isHidden = true
@@ -319,7 +390,7 @@ extension PageViewController {
         self.navigationItem.title = (pageViewModel.selectedDay + 1).description + "일차"
         self.backgroundImageView.isUserInteractionEnabled = false
 
-        [mapToolButton, imageToolButton, stickerToolButton, textToolButton].forEach{
+        [mapToolButton, imageToolButton, stickerToolButton, textToolButton, addPageButton].forEach{
             $0.isHidden = true
         }
         
@@ -328,6 +399,21 @@ extension PageViewController {
         let rightBarButtonItem = UIBarButtonItem(title: "편집", style: .plain, target: self, action: #selector(onTapNavigationEdit))
         self.navigationItem.setLeftBarButton(leftBarButtonItem, animated: false)
         self.navigationItem.setRightBarButton(rightBarButtonItem, animated: false)
+    }
+    
+    private func reloadStickers() {
+        self.backgroundImageView.subviews.forEach{
+            $0.removeFromSuperview()
+        }
+        self.loadStickerViews(pageIndex: self.pageViewModel.currentPageIndex)
+    }
+    
+    private func reloadPageDescriptionLabel() {
+        let selectedDay = pageViewModel.selectedDay
+        let currentPageString = (pageViewModel.currentPageIndex + 1).description
+        let currentDayPageCount = pageViewModel.diary.diaryPages[selectedDay].pages.count.description
+        let labelText = currentPageString + "/" + currentDayPageCount
+        pageDescriptionLabel.text = labelText
     }
 }
 
@@ -375,5 +461,38 @@ extension PageViewController: UIGestureRecognizerDelegate {
             return true
         }
         return false
+    }
+}
+
+extension PageViewController: MyDiariesViewCustomModalDelegate {
+    private func addMenuView() {
+        view.addSubview(myDiariesViewModalBackgroundView)
+        myDiariesViewModalBackgroundView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.myDiariesViewModalBackgroundView.backgroundColor = .black
+            self?.myDiariesViewModalBackgroundView.alpha = 0.1
+        }
+    }
+    
+    private func removeMenuView() {
+        DispatchQueue.main.async { [weak self] in
+            self?.myDiariesViewModalBackgroundView.removeFromSuperview()
+        }
+    }
+    
+    
+    func createDiaryButtonTapped() {
+        self.removeMenuView()
+    }
+    
+    func joinDiaryButtonTapped() {
+        self.removeMenuView()
+    }
+    
+    func tapGestureHandler() {
+        self.removeMenuView()
     }
 }

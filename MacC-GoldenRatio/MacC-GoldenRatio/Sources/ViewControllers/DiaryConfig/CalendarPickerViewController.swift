@@ -50,8 +50,10 @@ class CalendarPickerViewController: UIViewController {
         })
     
     private lazy var closeButton: UIButton = {
-       let button = UIButton()
-        button.setImage(UIImage(named: "plusButton"), for: .normal) // TODO: 이미지 수정 필요
+        let button = UIButton()
+        let configuration = UIImage.SymbolConfiguration(pointSize: 50)
+        button.setImage(UIImage(systemName: "xmark.circle.fill", withConfiguration: configuration), for: .normal)
+        button.tintColor = .white
         button.addTarget(self, action: #selector(dismissCalendar), for: .touchUpInside)
         return button
     }()
@@ -166,13 +168,7 @@ class CalendarPickerViewController: UIViewController {
     }
     
     @objc private func dismissCalendar() {
-        if dateInterval.count == 2 {
-            self.dismiss(animated: true, completion: nil)
-        } else {
-            print("날짜를 2개 고르세요")
-            // TODO: Toast View
-        }
-        
+        self.dismiss(animated: true, completion: nil)
     }
 }
 
@@ -216,7 +212,7 @@ private extension CalendarPickerViewController {
     func generateDay(offsetBy dayOffset: Int, for startBaseDate: Date, isWithinDisplayedMonth: Bool) -> Day {
         let date = calendar.date(byAdding: .day, value: dayOffset, to: startBaseDate) ?? startBaseDate
         
-        return Day(date: date, number: dateFormatter.string(from: date), isSelected: false, isWithinDisplayedMonth: isWithinDisplayedMonth)
+        return Day(date: date, number: dateFormatter.string(from: date), isSelected: false, isInTerm: false, isWithinDisplayedMonth: isWithinDisplayedMonth)
     }
     
     func generateStartOfNextMonth(
@@ -257,9 +253,18 @@ extension CalendarPickerViewController: UICollectionViewDataSource {
         
         cell.day = day
         guard let date = cell.day?.date else { return cell }
-        if dateInterval.contains(date) {
-            cell.day?.isSelected = true
+        
+        if !dateInterval.isEmpty {
+            let startDate = dateInterval[0]
+            let endDate = dateInterval.last ?? dateInterval[0]
+            let allDate = Date.dates(from: startDate, to: endDate)
+            if allDate.contains(date) && dateInterval.contains(date) {
+                cell.day?.isSelected = true
+            } else if allDate.contains(date) {
+                cell.day?.isInTerm = true
+            }
         }
+        
         return cell
     }
 }
@@ -289,9 +294,11 @@ extension CalendarPickerViewController: UICollectionViewDelegateFlowLayout {
         
         switch dateInterval.count {
         case 1:
+            self.footerView.selectButton.isEnabled = false
             let startDate = dateInterval[0]
             self.footerView.buttonLabel = "\(startDate.customFormat()) \(startDate.dayOfTheWeek()) 부터"
         case 2:
+            self.footerView.selectButton.isEnabled = true
             let startDate = dateInterval[0]
             let endDate = dateInterval[1]
             let timeInterval = Int(endDate.timeIntervalSince(startDate)) / 86400
@@ -302,6 +309,7 @@ extension CalendarPickerViewController: UICollectionViewDelegateFlowLayout {
                 self.footerView.buttonLabel = "\(startDate.customFormat()) \(startDate.dayOfTheWeek()) ~ \(endDate.customFormat()) \(endDate.dayOfTheWeek()) ∙ \(timeInterval)박"
             }
         default:
+            self.footerView.selectButton.isEnabled = false
             self.footerView.buttonLabel = "날짜를 선택하세요"
         }
     }

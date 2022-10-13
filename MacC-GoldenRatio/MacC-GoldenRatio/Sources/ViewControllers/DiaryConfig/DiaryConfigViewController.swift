@@ -197,6 +197,7 @@ extension DiaryConfigViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
         guard let cell = diaryConfigCollectionView.dequeueReusableCell(withReuseIdentifier: "DiaryConfigCollectionViewCell", for: indexPath) as? DiaryConfigCollectionViewCell else { return UICollectionViewCell() }
         
         
@@ -207,8 +208,8 @@ extension DiaryConfigViewController: UICollectionViewDataSource {
             cell.setContent(indexPath: indexPath, diary: diaryToConfig)
         }
         
-        cell.contentButton?.tag = indexPath.row
-        cell.contentButton?.addTarget(self, action: #selector(contentButtonTapped), for: .touchUpInside)
+        cell.contentButton.tag = indexPath.row
+        cell.contentButton.addTarget(self, action: #selector(contentButtonTapped), for: .touchUpInside)
         return cell
     }
     

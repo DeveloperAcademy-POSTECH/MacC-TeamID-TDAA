@@ -15,11 +15,11 @@ class CalendarPickerFooterView: UIView {
         }
     }
     
-    private lazy var selectButton: UIButton = {
+    lazy var selectButton: UIButton = {
         let button = UIButton()
         button.setTitle(buttonLabel, for: .normal)
         button.titleLabel?.font = UIFont(name: "EF_Diary", size: 14) ?? UIFont.systemFont(ofSize: 14)
-        button.backgroundColor = .systemGray
+        button.backgroundColor = UIColor(red: 0.608, green: 0.533, blue: 0.486, alpha: 1.0)
         button.layer.cornerRadius = 5
         button.addTarget(self, action: #selector(selectButtonTapped), for: .touchUpInside)
         return button

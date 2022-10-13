@@ -431,7 +431,12 @@ extension UIScreen {
         }
         
 // MARK: - My Diary Pages
-        
+// MARK: - PopUp Modal View
+        var popUpModalFont: UIFont {
+            switch self {
+            default: return UIFont(name: "EF_Diary", size: 17) ?? UIFont.systemFont(ofSize: 17)
+            }
+        }
 	}
 
 }

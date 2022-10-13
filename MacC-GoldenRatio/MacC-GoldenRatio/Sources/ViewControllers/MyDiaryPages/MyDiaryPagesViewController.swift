@@ -38,6 +38,24 @@ class MyDiaryPagesViewController: UIViewController {
 		fatalError("init(coder:) has not been implemented")
 	}
     
+    private lazy var backButton: UIButton = {
+        let button = UIButton()
+        let configuration = UIImage.SymbolConfiguration(pointSize: 24, weight: .semibold, scale: .medium)
+        button.tintColor = .black
+        button.setImage(UIImage(systemName: "chevron.left", withConfiguration: configuration), for: .normal)
+        button.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var menuButton: UIButton = {
+        let button = UIButton()
+        let configuration = UIImage.SymbolConfiguration(pointSize: 24, weight: .semibold, scale: .medium)
+        button.tintColor = .black
+        button.setImage(UIImage(systemName: "ellipsis", withConfiguration: configuration), for: .normal)
+        button.addTarget(self, action: #selector(menuButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = diaryData.diaryName
@@ -94,8 +112,7 @@ class MyDiaryPagesViewController: UIViewController {
         
         super.viewDidLoad()
         view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
-        
-        navigationBarSetup()
+        self.navigationController?.isNavigationBarHidden = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -110,6 +127,7 @@ class MyDiaryPagesViewController: UIViewController {
                 print(error.localizedDescription)
             }
             print(diaryData)
+            
             self.collectionViewSetup()
             self.componentsSetup()
             
@@ -118,6 +136,7 @@ class MyDiaryPagesViewController: UIViewController {
     
     // MARK: - Feature methods
     @objc private func backButtonTapped() {
+        self.navigationController?.isNavigationBarHidden = true
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -179,16 +198,6 @@ class MyDiaryPagesViewController: UIViewController {
     }
     
     // MARK: - Setup methods
-    private func navigationBarSetup() {
-        let configuration = UIImage.SymbolConfiguration(pointSize: 24, weight: .semibold, scale: .medium)
-        let menuButton = UIBarButtonItem(image: UIImage(systemName: "ellipsis", withConfiguration: configuration), style: .plain, target: self, action: #selector(menuButtonTapped))
-        
-        navigationItem.hidesBackButton = true
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left", withConfiguration: configuration), style: .plain, target: self, action: #selector(backButtonTapped))
-        navigationItem.rightBarButtonItem = menuButton
-        navigationItem.leftBarButtonItem?.tintColor = .black
-        navigationItem.rightBarButtonItem?.tintColor = .black
-    }
     
     private func collectionViewSetup() {
         
@@ -201,7 +210,7 @@ class MyDiaryPagesViewController: UIViewController {
     }
     
     private func componentsSetup() {
-        [titleLabel, dayLabel, previousButton, nextButton].forEach {
+        [titleLabel, dayLabel, backButton, menuButton, previousButton, nextButton].forEach {
             view.addSubview($0)
         }
         
@@ -213,6 +222,16 @@ class MyDiaryPagesViewController: UIViewController {
         dayLabel.snp.makeConstraints {
             $0.leading.equalTo(myPagesCollectionView)
             $0.bottom.equalTo(myPagesCollectionView.snp.top).offset(-30)
+        }
+        
+        backButton.snp.makeConstraints {
+            $0.leading.equalToSuperview().inset(20)
+            $0.top.equalTo(view.safeAreaLayoutGuide).inset(13)
+        }
+        
+        menuButton.snp.makeConstraints {
+            $0.trailing.equalToSuperview().inset(20)
+            $0.top.equalTo(view.safeAreaLayoutGuide).inset(13)
         }
         
         previousButton.snp.makeConstraints {

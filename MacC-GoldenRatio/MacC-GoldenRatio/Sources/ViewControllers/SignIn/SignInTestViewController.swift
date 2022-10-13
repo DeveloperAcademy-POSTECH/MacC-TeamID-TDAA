@@ -28,7 +28,6 @@ class SignInTestViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .systemBackground
-        
         // Firebase Test setup (Logout, Withdrawal)
         testSetup()
     }
@@ -104,13 +103,13 @@ class SignInTestViewController: UIViewController {
     
     @objc private func diaryCreateButtonPressed() {
         let vc = DiaryConfigViewController(mode: .create)
-        vc.modalPresentationStyle = .overFullScreen
+        vc.modalPresentationStyle = .fullScreen
         self.present(vc, animated: true, completion: nil)
     }
     
     @objc private func diaryModifyButtonPressed() {
         let vc = DiaryConfigViewController(mode: .modify)
-        vc.modalPresentationStyle = .overCurrentContext
+        vc.modalPresentationStyle = .fullScreen
         self.present(vc, animated: true, completion: nil)
     }
     

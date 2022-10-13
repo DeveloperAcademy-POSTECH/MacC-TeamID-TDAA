@@ -102,13 +102,13 @@ class SignInTestViewController: UIViewController {
     }
     
     @objc private func diaryCreateButtonPressed() {
-        let vc = DiaryConfigViewController(mode: .create)
+        let vc = DiaryConfigViewController(mode: .create, diary: nil)
         vc.modalPresentationStyle = .fullScreen
         self.present(vc, animated: true, completion: nil)
     }
     
     @objc private func diaryModifyButtonPressed() {
-        let vc = DiaryConfigViewController(mode: .modify)
+        let vc = DiaryConfigViewController(mode: .modify, diary: nil)
         vc.modalPresentationStyle = .fullScreen
         self.present(vc, animated: true, completion: nil)
     }

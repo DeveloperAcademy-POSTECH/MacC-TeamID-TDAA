@@ -66,7 +66,7 @@ final class MyHomeViewController: UIViewController {
 	}
 	
 	@objc func createButtonTapped() {
-		let vc = DiaryConfigViewController(mode: .create)
+		let vc = DiaryConfigViewController(mode: .create, diary: nil)
 		vc.modalPresentationStyle = .fullScreen
 		self.present(vc, animated: true, completion: nil)
 	}

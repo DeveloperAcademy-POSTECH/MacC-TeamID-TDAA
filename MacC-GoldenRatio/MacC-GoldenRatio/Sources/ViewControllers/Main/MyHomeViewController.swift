@@ -15,7 +15,6 @@ final class MyHomeViewController: UIViewController {
 	private var cancelBag = Set<AnyCancellable>()
 	private let viewModel = MyHomeViewModel()
 	private let myDevice = UIScreen.getDevice()
-	private var myDiariesViewModalBackgroundView = UIView()
 	
 	private lazy var collectionView: UICollectionView = {
 		let layout = UICollectionViewFlowLayout()

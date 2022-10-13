@@ -41,19 +41,19 @@ extension UIScreen {
 		case iPhoneSE
 		
 		// MARK: MyDiariesView
-		var MyDiariesViewTitleLabelLeading: Int {
+		var TabBarTitleLabelLeading: Int {
 			switch self {
 			default: return 20
 			}
 		}
 		
-		var MyDiariesViewTitleLabelTop: Int {
+		var TabBarTitleLabelTop: Int {
 			switch self {
-			default: return 20
+			default: return 30
 			}
 		}
 		
-		var MyDiariesViewTitleFont: UIFont {
+		var TabBarTitleFont: UIFont {
 			switch self {
 			default: return UIFont(name: "EF_Diary", size: 28) ?? UIFont.systemFont(ofSize: 28)
 			}
@@ -184,6 +184,55 @@ extension UIScreen {
 		var diaryCollectionViewCellTitleLabelFont: UIFont {
 			switch self {
 			default: return UIFont(name: "EF_Diary", size: 24) ?? UIFont.systemFont(ofSize: 24)
+			}
+		}
+		
+		// MARK: MyPlaceView
+		var mapViewTop: Int {
+			switch self {
+			default: return 145
+			}
+		}
+		
+		var mapViewBottom: Int {
+			switch self {
+			default: return 30
+			}
+		}
+		
+		var AnnotationSize: CGSize {
+			switch self {
+			default: return CGSize(width: 52, height: 60)
+			}
+		}
+		
+		var AnnotationTitleFont: UIFont {
+			switch self {
+			default: return UIFont(name: "EF_Diary", size: 10) ?? UIFont.systemFont(ofSize: 10)
+			}
+		}
+		
+		var ClusterAnnotationLabelFont: UIFont {
+			switch self {
+			default: return UIFont(name: "EF_Diary", size: 13) ?? UIFont.systemFont(ofSize: 13)
+			}
+		}
+		
+		var ClusterAnnotationSize: CGSize {
+			switch self {
+			default: return CGSize(width: AnnotationSize.width+12, height: AnnotationSize.height+12)
+			}
+		}
+		
+		var ClusterAnnotationImageFrame: CGRect {
+			switch self {
+			default: return CGRect(x: 0, y: 12, width: AnnotationSize.width, height: AnnotationSize.height)
+			}
+		}
+		
+		var ClusterAnnotationLabelFrame: CGRect {
+			switch self {
+			default: return CGRect(x: AnnotationSize.width-15, y: 0, width: 25, height: 25)
 			}
 		}
         

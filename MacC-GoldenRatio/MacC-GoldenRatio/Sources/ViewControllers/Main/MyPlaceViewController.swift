@@ -9,14 +9,23 @@ import Combine
 import CoreLocation
 import FirebaseAuth
 import MapKit
+import SnapKit
 import UIKit
 
 class MyPlaceViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
 	private var cancelBag = Set<AnyCancellable>()
-	private let viewModel = MyPlaceViewModel(userUid: Auth.auth().currentUser?.uid ?? "")
+	private let viewModel = MyPlaceViewModel()
+	private let myDevice = UIScreen.getDevice()
 	private let mapView = MapView()
+	private let locationManager = CLLocationManager()
 	
-	let locationManager = CLLocationManager()
+	private lazy var titleLabel: UILabel = {
+		let label = UILabel()
+		label.text = "지도"
+		label.font = myDevice.TabBarTitleFont
+		
+		return label
+	}()
 	
 	override func loadView() {
 		view = mapView
@@ -25,53 +34,80 @@ class MyPlaceViewController: UIViewController, MKMapViewDelegate, CLLocationMana
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		// Do any additional setup after loading the view.
+		setup()
+		setupSubView()
+		setupRegister()
+		setupViewModel()
+	}
+	
+	private func setup() {
 		locationManager.requestWhenInUseAuthorization()
-		
-		mapView.map.delegate = self
-		
 		locationManager.delegate = self
-		
+		mapView.map.delegate = self
+		self.view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
+	}
+	
+	private func setupSubView() {
+		view.addSubview(titleLabel)
+		titleLabel.snp.makeConstraints {
+			$0.top.equalTo(view.safeAreaLayoutGuide).inset(myDevice.TabBarTitleLabelTop)
+			$0.leading.equalToSuperview().inset(myDevice.TabBarTitleLabelLeading)
+		}
+	}
+	
+	private func setupRegister() {
+		mapView.map.register(CustomAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
+		mapView.map.register(CustomClusterAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultClusterAnnotationViewReuseIdentifier)
 	}
 
 	private func addCustomPin(_ mapData: [MapData]) {
 		mapData.forEach { data in
-			let pin = MKPointAnnotation()
-			pin.coordinate = CLLocationCoordinate2D(latitude: data.location.locationCoordinate[1], longitude: data.location.locationCoordinate[0])
-			
+			let pin = CustomAnnotation(diaryTitle: data.diaryName, stampName: data.diaryCover, coordinate: CLLocationCoordinate2D(latitude: data.location.locationCoordinate[0], longitude: data.location.locationCoordinate[1]))
 			mapView.map.addAnnotation(pin)
 		}
 	}
 	
 	func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-		guard !annotation.isKind(of: MKUserLocation.self) else {
+		guard let annotation = annotation as? CustomAnnotation else {
 			return nil
 		}
 		
-		var annotationView = self.mapView.map.dequeueReusableAnnotationView(withIdentifier: "Custom")
-
+		var annotationView = self.mapView.map.dequeueReusableAnnotationView(withIdentifier: CustomAnnotationView.identifier)
+		
 		if annotationView == nil {
-			annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: "Custom")
-			annotationView?.canShowCallout = true
-
-			let miniButton = UIButton(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
-			miniButton.setImage(UIImage(systemName: "person"), for: .normal)
-			miniButton.tintColor = .blue
-			annotationView?.rightCalloutAccessoryView = miniButton
+			annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: CustomAnnotationView.identifier)
+			annotationView?.canShowCallout = false
+			annotationView?.contentMode = .scaleAspectFit
 		} else {
 			annotationView?.annotation = annotation
 		}
 		
-		annotationView?.image = UIImage(systemName: "circle.fill")
+		let diaryTitle = UILabel()
+		diaryTitle.text = annotation.diaryTitle
+		diaryTitle.font = myDevice.AnnotationTitleFont
+		diaryTitle.textAlignment = .center
 		
-		let annotationLabel = UILabel(frame: CGRect(x: 0, y: -35, width: 45, height: 15))
-		annotationLabel.backgroundColor = .systemOrange
-		annotationLabel.textColor = .white
-		annotationLabel.numberOfLines = 3
-		annotationLabel.textAlignment = .center
-		annotationLabel.font = UIFont.boldSystemFont(ofSize: 10)
-		annotationLabel.text = annotation.title!
+		annotationView?.addSubview(diaryTitle)
 		
-		annotationView?.addSubview(annotationLabel)
+		diaryTitle.snp.makeConstraints {
+			$0.leading.trailing.equalToSuperview()
+			$0.top.equalToSuperview().inset(10)
+		}
+		
+		let stampName = UIImage(named: annotation.stampName) ?? UIImage()
+		let size = myDevice.AnnotationSize
+		UIGraphicsBeginImageContext(size)
+		
+		stampName.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+		let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
+		annotationView?.image = resizedImage
+		
+		annotationView?.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMaxXMinYCorner]
+		annotationView?.layer.cornerRadius = 5
+		annotationView?.layer.borderWidth = 1
+		annotationView?.layer.borderColor = UIColor.white.cgColor
+		
+		annotationView?.clusteringIdentifier = "diary"
 		
 		return annotationView
 	}

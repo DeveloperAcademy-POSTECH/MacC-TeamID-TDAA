@@ -6,23 +6,23 @@
 //
 
 import FirebaseFirestore
+import FirebaseAuth
 import UIKit
 
 // TODO: 수정 예정
 class MyPlaceViewModel {
 	@Published var mapDatas = [MapData]()
 	private let client = FirestoreClient()
-	var userUid: String
+	private var myUID = Auth.auth().currentUser?.uid ?? ""
 	
-	init(userUid: String) {
-		self.userUid = userUid
-		fetchLoadData(userUid)
+	init() {
+		fetchLoadData()
 	}
 	
-	func fetchLoadData(_ uid: String) {
+	func fetchLoadData() {
 		Task {
 			do {
-				self.mapDatas = try await client.fetchDiaryMapData(uid)
+				self.mapDatas = try await client.fetchDiaryMapData(myUID)
 			} catch {
 				print(error)
 			}

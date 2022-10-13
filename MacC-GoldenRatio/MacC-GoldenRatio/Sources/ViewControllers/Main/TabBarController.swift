@@ -22,7 +22,7 @@ class TabBarController: UITabBarController {
 	
 	private lazy var myPlacesViewController: UIViewController = {
 		let viewController = UINavigationController(rootViewController: MyPlaceViewController())
-		
+		viewController.isNavigationBarHidden = true
 		let pressImage = UIImage(named: "pressMap")?.withRenderingMode(.alwaysOriginal)
 		let notPressImage = UIImage(named: "notPressMap")?.withRenderingMode(.alwaysOriginal)
 

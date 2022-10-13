@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A5235B028F8510C00AC77AC /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5235AF28F8510C00AC77AC /* UIFont+.swift */; };
+		0A5235B228F854C200AC77AC /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5235B128F854C200AC77AC /* UIColor+.swift */; };
 		0A5DC37B28F7F65B00AABED1 /* ImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5DC37A28F7F65B00AABED1 /* ImageManager.swift */; };
 		0A5E904528E8578400B381B8 /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5E904428E8578400B381B8 /* PageViewController.swift */; };
 		0A5E904828E857E200B381B8 /* StickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5E904728E857E200B381B8 /* StickerView.swift */; };
@@ -119,6 +121,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0A5235AF28F8510C00AC77AC /* UIFont+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+.swift"; sourceTree = "<group>"; };
+		0A5235B128F854C200AC77AC /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		0A5DC37A28F7F65B00AABED1 /* ImageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageManager.swift; sourceTree = "<group>"; };
 		0A5E904428E8578400B381B8 /* PageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
 		0A5E904728E857E200B381B8 /* StickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerView.swift; sourceTree = "<group>"; };
@@ -388,6 +392,8 @@
 				CC65514628EEBF7C00E637A2 /* Date+.swift */,
 				E2FA41A428F496D100BBA354 /* UIImageView+.swift */,
 				B93EC22828F7BC8000BB89C5 /* String+.swift */,
+				0A5235AF28F8510C00AC77AC /* UIFont+.swift */,
+				0A5235B128F854C200AC77AC /* UIColor+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -675,6 +681,7 @@
 				0A5E904F28E9948B00B381B8 /* PageViewModel.swift in Sources */,
 				0AAB2ADE28EDA511009FBD96 /* MapStickerView.swift in Sources */,
 				0AAB2AE028EDA553009FBD96 /* ImageStickerView.swift in Sources */,
+				0A5235B028F8510C00AC77AC /* UIFont+.swift in Sources */,
 				CC6BD74428EBFA80001ED665 /* DiaryConfigViewController.swift in Sources */,
 				CCE1806F28E5919B00AF06DB /* SignInViewController.swift in Sources */,
 				CCE1807428E6B7C500AF06DB /* SignInTestViewController.swift in Sources */,
@@ -696,6 +703,7 @@
 				0AAB2AE228EDA55D009FBD96 /* StickerStickerView.swift in Sources */,
 				0A5E904828E857E200B381B8 /* StickerView.swift in Sources */,
 				CC9F969628F7E0B100E4B68A /* MyDiaryPagesViewModel.swift in Sources */,
+				0A5235B228F854C200AC77AC /* UIColor+.swift in Sources */,
 				CC65514728EEBF7C00E637A2 /* Date+.swift in Sources */,
 				E2BEFA9628E882BA00EF0254 /* MyHomeViewCustomModalVC.swift in Sources */,
 				E2BEFA9628E882BA00EF0254 /* MyHomeViewCustomModalVC.swift in Sources */,

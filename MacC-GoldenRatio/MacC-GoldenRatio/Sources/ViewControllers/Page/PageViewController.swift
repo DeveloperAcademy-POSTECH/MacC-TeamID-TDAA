@@ -9,6 +9,11 @@ import MapKit
 import SnapKit
 import UIKit
 
+enum pageViewMode {
+    case edit
+    case view
+}
+
 class PageViewController: UIViewController {
     private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
     private let imagePicker = UIImagePickerController()
@@ -19,9 +24,9 @@ class PageViewController: UIViewController {
         willSet{
             switch newValue {
             case true:
-                self.configureEditMode()
+                self.configurePageViewMode(mode: .edit)
             case false:
-                self.configureViewingMode()
+                self.configurePageViewMode(mode: .view)
             }
         }
     }
@@ -31,19 +36,15 @@ class PageViewController: UIViewController {
         backgroundImageView.backgroundColor = .gray
         backgroundImageView.clipsToBounds = true
         backgroundImageView.isUserInteractionEnabled = false
-
+        backgroundImageView.backgroundColor = .diaryInnerTexture
+        
         return backgroundImageView
     }()
     
     private lazy var pageDescriptionLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.font = myDevice.pageDescriptionLabelFont
-        let selectedDay = pageViewModel.selectedDay
-        let currentPageString = (pageViewModel.currentPageIndex + 1).description
-        let currentDayPageCount = pageViewModel.diary.diaryPages[selectedDay].pages.count.description
-        let labelText = currentPageString + "/" + currentDayPageCount
-        label.text = labelText
+        label.font = .navigationTitleFont
         
         return label
     }()
@@ -54,6 +55,7 @@ class PageViewController: UIViewController {
         button.setImage(image, for: .normal)
         button.tintColor = .black
         button.addTarget(self, action: #selector(onTapMapButton), for: .touchUpInside)
+        button.isHidden = true
         
         return button
     }()
@@ -64,6 +66,7 @@ class PageViewController: UIViewController {
         button.setImage(image, for: .normal)
         button.tintColor = .black
         button.addTarget(self, action: #selector(onTapImageButton), for: .touchUpInside)
+        button.isHidden = true
 
         return button
     }()
@@ -74,6 +77,7 @@ class PageViewController: UIViewController {
         button.setImage(image, for: .normal)
         button.tintColor = .black
         button.addTarget(self, action: #selector(onTapStickerButton), for: .touchUpInside)
+        button.isHidden = true
 
         return button
     }()
@@ -84,6 +88,7 @@ class PageViewController: UIViewController {
         button.setImage(image, for: .normal)
         button.tintColor = .black
         button.addTarget(self, action: #selector(onTapTextButton), for: .touchUpInside)
+        button.isHidden = true
 
         return button
     }()
@@ -94,10 +99,12 @@ class PageViewController: UIViewController {
         button.setImage(image, for: .normal)
         button.tintColor = .black
         button.addTarget(self, action: #selector(onTapDocsButton), for: .touchUpInside)
+        button.isHidden = true
 
         return button
     }()
     
+    // MARK: init
     init(diary: Diary, selectedDay: Int) {
         super.init(nibName: nil, bundle: nil)
         self.pageViewModel = PageViewModel(diary: diary, selectedDay: selectedDay)
@@ -109,10 +116,10 @@ class PageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        self.configureImagePicker()
         DispatchQueue.main.async {
-            self.configureViewingMode()
+            self.view.backgroundColor = .backgroundTexture
+            self.configureImagePicker()
+            self.reloadPageDescriptionLabel()
             self.addSubviews()
             self.configureGestureRecognizer()
             self.configureToolButton()
@@ -120,6 +127,12 @@ class PageViewController: UIViewController {
             self.loadStickerViews(pageIndex: self.pageViewModel.currentPageIndex)
             self.setStickerSubviewHidden()
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.backgroundImageView.isUserInteractionEnabled = false
+        self.configureNavigation()
     }
     
     //MARK: view 세팅 관련
@@ -156,6 +169,45 @@ class PageViewController: UIViewController {
         self.imagePicker.allowsEditing = true
         self.imagePicker.delegate = self
     }
+    
+    private func configureNavigation() {
+        let leftBarButtonItem = UIBarButtonItem(title: "이전", style: .plain, target: self, action: #selector(onTapNavigationBack))
+        let rightBarButtonItem = UIBarButtonItem(title: "편집", style: .plain, target: self, action: #selector(onTapNavigationEdit))
+        leftBarButtonItem.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.navigationTitleFont, NSAttributedString.Key.foregroundColor:UIColor.navigationbarColor], for: .normal)
+        rightBarButtonItem.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.navigationTitleFont, NSAttributedString.Key.foregroundColor:UIColor.navigationbarColor], for: .normal)
+        self.navigationItem.setLeftBarButton(leftBarButtonItem, animated: false)
+        self.navigationItem.setRightBarButton(rightBarButtonItem, animated: false)
+        self.navigationItem.title = (pageViewModel.selectedDay + 1).description + "일차"
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.navigationTitleFont, NSAttributedString.Key.foregroundColor:UIColor.black]
+    }
+    
+    private func configurePageViewMode(mode: pageViewMode) {
+        let isToolHidden: Bool!
+        let leftBarButtonItem = self.navigationItem.leftBarButtonItem
+        let rightBarButtonItem = self.navigationItem.rightBarButtonItem
+        
+        switch mode {
+        case .edit:
+            isToolHidden = false
+            leftBarButtonItem?.title = "취소"
+            leftBarButtonItem?.action = #selector(onTapNavigationCancel)
+            
+            rightBarButtonItem?.title = "완료"
+            rightBarButtonItem?.action = #selector(onTapNavigationComplete)
+            
+        case .view:
+            isToolHidden = true
+            leftBarButtonItem?.title = "이전"
+            leftBarButtonItem?.action = #selector(onTapNavigationBack)
+            
+            rightBarButtonItem?.title = "편집"
+            rightBarButtonItem?.action = #selector(onTapNavigationEdit)
+        }
+        self.backgroundImageView.isUserInteractionEnabled = !isToolHidden
+        [mapToolButton, imageToolButton, stickerToolButton, textToolButton, docsButton].forEach{
+            $0.isHidden = isToolHidden
+        }
+      }
     
     private func addSubviews() {
         view.addSubview(backgroundImageView)
@@ -246,7 +298,6 @@ class PageViewController: UIViewController {
         let imageStickerView = ImageStickerView(image: image, diaryUUID: pageViewModel.diary.diaryUUID)
         self.addSticker(stickerView: imageStickerView)
         self.pageViewModel.appendSticker(imageStickerView)
-
     }
     
     private func addSticker(sticker: String) {
@@ -280,6 +331,7 @@ extension PageViewController {
                 $0.removeFromSuperview()
             }
             self.loadStickerViews(pageIndex: self.pageViewModel.currentPageIndex)
+            self.pageViewModel.hideStickerSubview(true)
         }
     }
     
@@ -376,8 +428,7 @@ extension PageViewController {
     // TODO: await 처리해주기
     @objc private func onTapNavigationComplete() {
         self.isEditMode = false
-        pageViewModel.hideStickerSubview(true)
-        
+        self.pageViewModel.hideStickerSubview(true)
         if pageViewModel.currentPageIndex == 0 {
             guard let thumbnailImage = self.backgroundImageView.transformToImage() else { return }
             pageViewModel.upLoadThumbnail(image: thumbnailImage) {
@@ -387,34 +438,6 @@ extension PageViewController {
         } else {
             pageViewModel.updateDBPages()
         }
-    }
-    
-    private func configureEditMode() {
-        self.backgroundImageView.isUserInteractionEnabled = true
-
-        [mapToolButton, imageToolButton, stickerToolButton, textToolButton, docsButton].forEach{
-            $0.isHidden = false
-        }
-        self.tabBarController?.tabBar.isHidden = true
-        let leftBarButtonItem = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(onTapNavigationCancel))
-        let rightBarButtonItem = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(onTapNavigationComplete))
-        self.navigationItem.setLeftBarButton(leftBarButtonItem, animated: false)
-        self.navigationItem.setRightBarButton(rightBarButtonItem, animated: false)
-    }
-    
-    private func configureViewingMode() {
-        self.navigationItem.title = (pageViewModel.selectedDay + 1).description + "일차"
-        self.backgroundImageView.isUserInteractionEnabled = false
-
-        [mapToolButton, imageToolButton, stickerToolButton, textToolButton, docsButton].forEach{
-            $0.isHidden = true
-        }
-        
-        self.tabBarController?.tabBar.isHidden = true
-        let leftBarButtonItem = UIBarButtonItem(title: "이전", style: .plain, target: self, action: #selector(onTapNavigationBack))
-        let rightBarButtonItem = UIBarButtonItem(title: "편집", style: .plain, target: self, action: #selector(onTapNavigationEdit))
-        self.navigationItem.setLeftBarButton(leftBarButtonItem, animated: false)
-        self.navigationItem.setRightBarButton(rightBarButtonItem, animated: false)
     }
 }
 

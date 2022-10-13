@@ -5,53 +5,50 @@
 //  Created by DongKyu Kim on 2022/10/08.
 //
 
-import FirebaseFirestore
 import SnapKit
 import UIKit
 
 class MyDiaryPagesViewController: UIViewController {
     
     private let device = UIScreen.getDevice()
+    private var viewModel = MyDiaryPagesViewModel()
     private let itemSpacing: CGFloat = 20 // TODO: UIScreen+ 추가 예정
     private var previousOffset: CGFloat = 0
     private var currentPage: Int = 1 {
         didSet {
             if currentPage == 0 {
                 currentPage = 1
-            } else if currentPage > dummyPageCount {
-                currentPage = dummyPageCount
+            } else if currentPage > pageCount {
+                currentPage = pageCount
             }
             self.dayLabel.text = "\(currentPage)일차"
         }
     }
-	
-	var diaryData: Diary?
+    var pageCount: Int
+	var diaryData: Diary
 
 	init(diaryData: Diary) {
 		self.diaryData = diaryData
-		super.init(nibName: nil, bundle: nil)
+        self.pageCount = diaryData.pageThumbnails.count
+        
+        super.init(nibName: nil, bundle: nil)
 	}
 	
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
-	
-    // TODO: client 분리 예정
-    let dummyPageCount = Int.random(in: 3...5)
-    //    var db = Firestore.firestore()
-    //    var diaryResult: [Diary] = []
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "🌊포항항"
-        label.font = UIFont.systemFont(ofSize: 24)
+        label.text = diaryData.diaryName
+        label.font = UIFont(name: "EF_Diary", size: 24) ?? UIFont.systemFont(ofSize: 24)
         return label
     }()
     
     private lazy var dayLabel: UILabel = {
         let label = UILabel()
         label.text = "1일차"
-        label.font = UIFont.systemFont(ofSize: 20)
+        label.font = UIFont(name: "EF_Diary", size: 20) ?? UIFont.systemFont(ofSize: 20)
         return label
     }()
     
@@ -66,7 +63,7 @@ class MyDiaryPagesViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = .systemBackground
+        collectionView.backgroundColor = UIColor(patternImage: UIImage(named: "diaryInnerTexture.png") ?? UIImage())
         collectionView.register(MyDiaryPagesViewCollectionViewCell.self, forCellWithReuseIdentifier: "MyDiaryPagesViewCollectionViewCell")
         collectionView.decelerationRate = .fast
         collectionView.isPagingEnabled = false
@@ -96,12 +93,27 @@ class MyDiaryPagesViewController: UIViewController {
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
         
         navigationBarSetup()
-        collectionViewSetup()
-        componentsSetup()
-        // databaseSetup() // FIXME: 데이터베이스 fetch 구현 후 삭제 예정
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        // Full Modal dismiss 이후 호출, 업데이트된 다이어리 정보 반영
+        super.viewWillAppear(animated)
+        
+        // TODO: - modal completion handler 필요?
+        Task {
+            do {
+                diaryData = try await self.viewModel.getDiaryData(uuid: self.diaryData.diaryUUID) ?? self.diaryData
+            } catch {
+                print(error.localizedDescription)
+            }
+            print(diaryData)
+            self.collectionViewSetup()
+            self.componentsSetup()
+            
+        }
     }
     
     // MARK: - Feature methods
@@ -118,7 +130,7 @@ class MyDiaryPagesViewController: UIViewController {
     }
     
     @objc func copyButtonTapped() {
-        UIPasteboard.general.string = "복사된 텍스트 입니다."
+        UIPasteboard.general.string = diaryData.diaryUUID
         
         let ac = UIAlertController(title: "초대코드 복사 완료!", message: "", preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
@@ -126,7 +138,7 @@ class MyDiaryPagesViewController: UIViewController {
     }
     
     @objc func modifyButtonTapped() {
-        let vc = DiaryConfigViewController(mode: .modify)
+        let vc = DiaryConfigViewController(mode: .modify, diary: diaryData)
         vc.modalPresentationStyle = .fullScreen
         self.present(vc, animated: true, completion: nil)
     }
@@ -135,7 +147,7 @@ class MyDiaryPagesViewController: UIViewController {
         let ac = UIAlertController(title: "다이어리를 나가시겠습니까?", message: "다이어리를 나가면 공동편집을 할 수 없습니다.", preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "다이어리 나가기", style: .destructive) { _ in
             print("다이어리 나가기")
-            // TODO: 다이어리 목록에서 삭제
+            self.viewModel.outCurrentDiary(diary: self.diaryData)
             self.backButtonTapped()
         })
         ac.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
@@ -150,7 +162,7 @@ class MyDiaryPagesViewController: UIViewController {
     }
     
     @objc private func nextButtonTapped() {
-        if self.currentPage != self.dummyPageCount {
+        if self.currentPage != self.pageCount {
             currentPage += 1
             updatePageOffset()
         }
@@ -169,7 +181,7 @@ class MyDiaryPagesViewController: UIViewController {
     // MARK: - Setup methods
     private func navigationBarSetup() {
         let configuration = UIImage.SymbolConfiguration(pointSize: 24, weight: .semibold, scale: .medium)
-        let menuButton = UIBarButtonItem(image: UIImage(systemName: "line.3.horizontal", withConfiguration: configuration), style: .plain, target: self, action: #selector(menuButtonTapped))
+        let menuButton = UIBarButtonItem(image: UIImage(systemName: "ellipsis", withConfiguration: configuration), style: .plain, target: self, action: #selector(menuButtonTapped))
         
         navigationItem.hidesBackButton = true
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left", withConfiguration: configuration), style: .plain, target: self, action: #selector(backButtonTapped))
@@ -213,30 +225,6 @@ class MyDiaryPagesViewController: UIViewController {
             $0.centerY.equalTo(myPagesCollectionView)
         }
     }
-    
-    // FIXME: 데이터베이스 fetch 구현 후 삭제 예정
-    //    private func databaseSetup() {
-    //        db.collection("Diary").addSnapshotListener { snapshot, error in
-    //            guard let documents = snapshot?.documents else {
-    //                print("ERROR Firestore fetching document \(String(describing: error))")
-    //                return
-    //            }
-    //
-    //            self.diaryResult = documents.compactMap { doc -> Diary? in
-    //                do {
-    //                    let jsonData = try JSONSerialization.data(withJSONObject: doc.data(), options: [])
-    //                    let diary = try JSONDecoder().decode(Diary.self, from: jsonData)
-    //                    return diary
-    //
-    //                } catch let error {
-    //                    print("ERROR JSON Parsing \(error)")
-    //                    return nil
-    //                }
-    //            }
-    //        }
-    //
-    //        print(diaryResult)
-    //    }
 }
 
 // MARK: - Extensions
@@ -246,13 +234,17 @@ extension MyDiaryPagesViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return dummyPageCount
+        return pageCount
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MyDiaryPagesViewCollectionViewCell", for: indexPath)
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MyDiaryPagesViewCollectionViewCell", for: indexPath) as? MyDiaryPagesViewCollectionViewCell else { return UICollectionViewCell() }
         
-        cell.backgroundColor = .systemGray
+        if diaryData.pageThumbnails[indexPath.row] != "NoURL" {
+            // TODO: 이미지 로드 해서 cell에 할당
+            cell.previewImageView.image = UIImage(systemName: "applelogo") ?? UIImage()
+        }
+        
         return cell
     }
     

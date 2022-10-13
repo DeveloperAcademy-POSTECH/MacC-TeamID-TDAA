@@ -40,6 +40,7 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
     lazy var contentTextField: UITextField? = {
         let textField = UITextField()
         textField.placeholder = "PlaceHolder"
+        textField.font = UIFont(name: "EF_Diary", size: 17)
         textField.returnKeyType = .done
         textField.delegate = self
         return textField
@@ -71,15 +72,18 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
         contentTitle.text = contentType?.title
         
         if let diary = diary {
+            let startDate = diary.diaryStartDate.toDate() ?? Date()
+            let endDate = diary.diaryEndDate.toDate() ?? Date()
             contentButton?.tintColor = .black
             
             switch contentType {
             case .diaryName:
-                contentTextField?.text = diary.diaryName
+                // contentTextField?.text = diary.diaryName
+                contentButton?.setTitle(diary.diaryName, for: .normal)
             case .location:
                 contentButton?.setTitle(diary.diaryLocation.locationName, for: .normal)
             case .diaryDate:
-                contentButton?.setTitle(Date().customFormat(), for: .normal)
+                contentButton?.setTitle("\(startDate.customFormat()) \(startDate.dayOfTheWeek())  - \(endDate.customFormat()) \(endDate.dayOfTheWeek())", for: .normal)
             default:
                 contentButton?.tintColor = .placeholderText
                 contentButton?.setTitle("PlaceHolder", for: .normal)
@@ -118,8 +122,8 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
         
         switch contentType {
         case .diaryName:
-            contentView.addSubview(contentTextField ?? UITextField())
-            contentTextField?.snp.makeConstraints{
+            contentView.addSubview(contentButton ?? UIButton())
+            contentButton?.snp.makeConstraints{
                 $0.leading.equalTo(contentTitle)
                 $0.height.equalTo(44)
                 $0.bottom.equalToSuperview()

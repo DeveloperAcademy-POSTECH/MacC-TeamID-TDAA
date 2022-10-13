@@ -28,15 +28,20 @@ class DiaryConfigViewController: UIViewController {
     
     private let device: UIScreen.DeviceSize = UIScreen.getDevice()
     private var configState: ConfigState
+    private var viewModel = DiaryConfigViewModel()
+    private var diaryToConfig: Diary?
     
-    // TO REMOVE (FOR DUMMYDATA)
-    private var dummyDataStartDate: Date
     
-	init(mode configState: ConfigState) {
-        // TO REMOVE (FOR DUMMYDATA)
-        self.dummyDataStartDate = Date()
-        
+    init(mode configState: ConfigState, diary: Diary?) {
         self.configState = configState
+        switch configState {
+        case .create:
+            print("New Diary Page")
+        case .modify:
+            self.diaryToConfig = diary
+            self.viewModel.getDiaryData(diary: self.diaryToConfig!)
+        }
+
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -47,7 +52,7 @@ class DiaryConfigViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .systemGray5
+        view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
         titleSetup()
         collectionViewSetup()
     }
@@ -58,11 +63,21 @@ class DiaryConfigViewController: UIViewController {
         
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.backgroundColor = .systemGray5
+        collectionView.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
         
         collectionView.register(DiaryConfigCollectionViewCell.self, forCellWithReuseIdentifier: "DiaryConfigCollectionViewCell")
         
         return collectionView
+    }()
+    
+    lazy var contentTextField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "PlaceHolder"
+        textField.font = UIFont(name: "EF_Diary", size: 17)
+        textField.returnKeyType = .done
+        textField.becomeFirstResponder()
+        textField.delegate = self
+        return textField
     }()
     
     private lazy var stateTitle: UILabel = {
@@ -103,23 +118,32 @@ class DiaryConfigViewController: UIViewController {
     
     @objc func doneButtonPressed(_ sender: UIButton) {
         
-        let parentNavigationController: UINavigationController = self.presentingViewController as! UINavigationController
-		// MARK: 칼리가 수정 예정
-        let MyDiaryPagesVC = MyDiaryPagesViewController(diaryData: Diary(diaryUUID: "", diaryName: "", diaryLocation: Location(locationName: "", locationAddress: "", locationCoordinate: []), diaryStartDate: "", diaryEndDate: "", diaryCover: ""))
-        
-        presentingViewController?.dismiss(animated: true) {
-            switch self.configState {
-            case .create:
-                // TODO: createAction 추가
-                parentNavigationController.isNavigationBarHidden = false
-                parentNavigationController.pushViewController(MyDiaryPagesVC, animated: true)
-            case .modify:
-                // TODO: modify Action 추가
-                return
+        if viewModel.checkAvailable() {
+           
+            let parentNavigationController: UINavigationController = self.presentingViewController as! UINavigationController
+            presentingViewController?.dismiss(animated: true) {
+                switch self.configState {
+                case .create:
+                    self.viewModel.addDiary()
+                    
+                    let MyDiaryPagesVC = MyDiaryPagesViewController(diaryData: self.viewModel.diary!)
+                    parentNavigationController.isNavigationBarHidden = false
+                    parentNavigationController.pushViewController(MyDiaryPagesVC, animated: true)
+                    
+                case .modify:
+                    self.viewModel.updateDiary()
+                    
+                    // let MyDiaryPagesVC = MyDiaryPagesViewController(diaryData: self.viewModel.diary!)
+                    
+                }
             }
-            // TODO: 저장 Action 추가
+        } else {
+            let ac = UIAlertController(title: "입력해 주세요", message: "빈 칸을 채워주세요!", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+            self.present(ac, animated: true)
         }
     }
+    
     
 // MARK: - Setup methods
     private func titleSetup() {
@@ -141,6 +165,15 @@ class DiaryConfigViewController: UIViewController {
             $0.right.equalToSuperview().inset(device.diaryConfigDoneButtonRightInset)
             $0.height.equalTo(stateTitle)
             $0.top.equalTo(stateTitle)
+        }
+    }
+    
+    private func textFieldSetup() {
+        view.addSubview(contentTextField)
+        contentTextField.snp.makeConstraints {
+            $0.leading.equalToSuperview().inset(20)
+            $0.height.equalTo(44)
+            $0.top.equalTo(diaryConfigCollectionView.snp.top).inset(64)
         }
     }
     
@@ -171,7 +204,7 @@ extension DiaryConfigViewController: UICollectionViewDataSource {
         case .create:
             cell.setContent(indexPath: indexPath, diary: nil)
         case .modify:
-            cell.setContent(indexPath: indexPath, diary: nil)
+            cell.setContent(indexPath: indexPath, diary: diaryToConfig)
         }
         
         cell.contentButton?.tag = indexPath.row
@@ -184,13 +217,20 @@ extension DiaryConfigViewController: UICollectionViewDataSource {
         
         switch configContentType {
         case .diaryName:
-            print("TextField for Diary name Configuration")
+            sender.setTitle("", for: .normal)
+            textFieldSetup()
             
         case .location:
             let mapSearchViewController = MapSearchViewController()
             mapSearchViewController.completion = { mapItem in
                 UIView.performWithoutAnimation {
-                    sender.setTitle(mapItem.name, for: .normal)
+                    let locationName = mapItem.name
+                    let locationAddress = mapItem.placemark.countryCode
+                    let locationCoordinate = mapItem.placemark.location?.coordinate
+                    
+                    self.viewModel.location = Location(locationName: locationName ?? "", locationAddress: locationAddress ?? "", locationCoordinate: [Double(locationCoordinate?.latitude ?? 0.0), Double(locationCoordinate?.longitude ?? 0.0)])
+                    
+                    sender.setTitle(locationName, for: .normal)
                     sender.tintColor = .black
                     sender.layoutIfNeeded()
                 }
@@ -198,13 +238,16 @@ extension DiaryConfigViewController: UICollectionViewDataSource {
             self.present(mapSearchViewController, animated: true)
             
         case .diaryDate:
-            let pickerController = CalendarPickerViewController(
-                baseDate: self.dummyDataStartDate,
-                selectedDateChanged: { [weak sender] date in
+            let pickerController = CalendarPickerViewController(startBaseDate: Date(), selectedDateChanged: { [self, weak sender] date in
                     guard let sender = sender else { return }
-                    self.dummyDataStartDate = date
                     UIView.performWithoutAnimation {
-                        sender.setTitle(date.customFormat(), for: .normal)
+                        let startDate = date[0]
+                        let endDate = date[1]
+                        
+                        self.viewModel.startDate = startDate.customFormat()
+                        self.viewModel.endDate = endDate.customFormat()
+                        
+                        sender.setTitle("\(startDate.customFormat()) \(startDate.dayOfTheWeek())  - \(endDate.customFormat()) \(endDate.dayOfTheWeek())", for: .normal)
                         sender.tintColor = .black
                         sender.layoutIfNeeded()
                     }
@@ -228,5 +271,15 @@ extension DiaryConfigViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: device.diaryConfigCollectionViewCellInset, left: 0, bottom: device.diaryConfigCollectionViewCellInset, right: 0)
+    }
+}
+
+extension DiaryConfigViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.endEditing(true)
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        viewModel.title = textField.text
     }
 }

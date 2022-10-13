@@ -19,7 +19,7 @@ class SignInViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
         
         if Auth.auth().currentUser != nil {
             showMainView()
@@ -37,7 +37,7 @@ class SignInViewController: UIViewController {
         button.setImage(UIImage(systemName: "applelogo"), for: .normal)
         button.setPreferredSymbolConfiguration(.init(pointSize: device.logInButtonImagePointSize),forImageIn: .normal)
         button.setTitle("  Apple로 로그인", for: .normal)
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: device.logInButtonFontSize)
+        button.titleLabel?.font = device.loginButtonFont
         button.addTarget(self, action: #selector(appleLoginButtonPressed), for: .touchUpInside)
         button.layer.cornerRadius = 4
         return button

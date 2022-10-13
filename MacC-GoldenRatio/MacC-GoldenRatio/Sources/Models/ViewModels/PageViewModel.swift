@@ -10,8 +10,10 @@ import UIKit
 class PageViewModel {
     var selectedDay: Int = 0
     var currentPageIndex: Int = 0
-    var stickerArray: [[StickerView]] = []
+    var oldPageIndex: Int = 0
     var diary: Diary!
+    var oldDiary: Diary!
+    var stickerArray: [[StickerView]] = []
 
 //    var diary = Diary(diaryUUID: "diaryUUID2", diaryName: "포항항", diaryLocation: Location(locationName: "포항영일대", locationAddress: "포항영일대주소", locationCoordinate: [36.020107332983, 129.32530987999]), diaryStartDate: "2022년 10월 4일", diaryEndDate: "2022년 10월 4일",  userUIDs: ["testUser"], diaryPages: [
 //        Pages(pages:
@@ -24,8 +26,18 @@ class PageViewModel {
         // TODO: 선행 뷰에게서 diary 받아와서 init 하기
         Task{
             diary = try! await (FirebaseClient().fetchMyDiaries(uid: "testUser")?.first)!
-            setStickerArray()
+            setStickerArray(isSubviewHidden: true)
         }
+    }
+    
+    func saveOldData() {
+        oldPageIndex = currentPageIndex
+        oldDiary = diary
+    }
+    
+    func restoreOldData() {
+        currentPageIndex = oldPageIndex
+        diary = oldDiary
     }
     
     func addNewPage() {
@@ -35,27 +47,12 @@ class PageViewModel {
         
         stickerArray.append([])
     }
-
-    func setStickerArray() {
-        DispatchQueue.main.async {
-            self.diary.diaryPages[self.selectedDay].pages.forEach{
-                let stickerViews: [StickerView] = $0.items.map {
-                    switch $0.itemType {
-                    case .text:
-                        return TextStickerView(item: $0)
-                    case .image:
-                        return ImageStickerView(item: $0)
-                    case .sticker:
-                        return StickerStickerView(item: $0)
-                    case .location:
-                        return MapStickerView(item: $0)
-                    }
-                }
-                self.stickerArray.append(stickerViews)
-            }
-        }
-    }
     
+    func deletePage() {
+        diary.diaryPages[selectedDay].pages.remove(at: currentPageIndex)
+        stickerArray.remove(at: currentPageIndex)
+    }
+
     func appendSticker(_ sticker: StickerView) {
         stickerArray[currentPageIndex].append(sticker)
     }
@@ -65,7 +62,7 @@ class PageViewModel {
         stickerArray[currentPageIndex].remove(at: index)
     }
     
-    func stickerSubviewHidden(_ value: Bool) {
+    func hideStickerSubview(_ value: Bool) {
         stickerArray.forEach{
             $0.forEach{
                 $0.subviewIsHidden = value
@@ -77,19 +74,40 @@ class PageViewModel {
         guard let index = stickerArray[currentPageIndex].firstIndex(of: sticker) else { return }
         stickerArray[currentPageIndex].remove(at: index)
         stickerArray[currentPageIndex].append(sticker)
-        debugPrint(stickerArray)
     }
     
-    func upLoadImage(image: UIImage, _ completion: @escaping () -> Void) {
-        FirebaseStorageManager.uploadImage(image: image, pathRoot: diary.diaryUUID + "/thumbnail") { url in
-            guard let url = url else { return }
-            self.diary.pageThumbnails[self.selectedDay] = url.description
-            completion()
+    func setStickerArray(isSubviewHidden: Bool) {
+        DispatchQueue.main.async {
+            self.stickerArray = self.diary.diaryPages[self.selectedDay].pages.map{
+                let stickerViews: [StickerView] = $0.items.map {
+                    var stickerView: StickerView!
+                    switch $0.itemType {
+                    case .text:
+                        stickerView = TextStickerView(item: $0, isSubviewHidden: isSubviewHidden)
+                    case .image:
+                        stickerView = ImageStickerView(item: $0, isSubviewHidden: isSubviewHidden)
+                    case .sticker:
+                        stickerView = StickerStickerView(item: $0, isSubviewHidden: isSubviewHidden)
+                    case .location:
+                        stickerView = MapStickerView(item: $0, isSubviewHidden: isSubviewHidden)
+                    }
+                    return stickerView
+                }
+                return stickerViews
+            }
         }
     }
     
     func updatePageThumbnail() {
         FirebaseClient().updatePageThumbnail(diary: diary)
+    }
+    
+    func upLoadThumbnail(image: UIImage, _ completion: @escaping () -> Void) {
+        FirebaseStorageManager.uploadImage(image: image, pathRoot: diary.diaryUUID + "/thumbnail") { url in
+            guard let url = url else { return }
+            self.diary.pageThumbnails[self.selectedDay] = url.description
+            completion()
+        }
     }
     
     func updateDBPages() {

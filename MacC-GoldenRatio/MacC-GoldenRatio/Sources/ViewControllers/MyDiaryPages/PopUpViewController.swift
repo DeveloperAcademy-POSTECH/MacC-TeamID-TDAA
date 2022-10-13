@@ -16,6 +16,7 @@ class PopUpViewController: UIViewController {
     
     enum PopUpPosition {
         case bottom
+        case bottom2 // PageViewController
         case top
     }
     
@@ -50,6 +51,8 @@ class PopUpViewController: UIViewController {
         case .top:
             view.transform = CGAffineTransform(a: 0.5, b: 0, c: 0, d: 0.5, tx: 50.0, ty: -30.0)
         case .bottom:
+            view.transform = CGAffineTransform(a: 0.5, b: 0, c: 0, d: 0.5, tx: 50.0, ty: 30.0)
+        case .bottom2:
             view.transform = CGAffineTransform(a: 0.5, b: 0, c: 0, d: 0.5, tx: 50.0, ty: 30.0)
         default:
             return view
@@ -100,6 +103,11 @@ class PopUpViewController: UIViewController {
             containerView.snp.makeConstraints {
                 $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(device.MyDiariesViewAddDiaryButtonPadding + 130)
                 $0.trailing.equalTo(view.safeAreaLayoutGuide).inset(device.MyDiariesViewAddDiaryButtonPadding)
+            }
+        case .bottom2:
+            containerView.snp.makeConstraints {
+                $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(2*device.pagePadding + device.pageToolButtonSize.height)
+                $0.trailing.equalTo(view.safeAreaLayoutGuide).inset(device.pagePadding)
             }
             
         case .top:

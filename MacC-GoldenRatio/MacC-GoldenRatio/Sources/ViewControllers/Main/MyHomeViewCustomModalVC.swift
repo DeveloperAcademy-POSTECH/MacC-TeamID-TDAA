@@ -92,4 +92,12 @@ class MyHomeViewCustomModalVC: UIViewController {
 		delegate?.tapGestureHandler()
 		dismiss(animated: true, completion: nil)
 	}
+    
+    @objc func onTapAddPageToLastMenu() {
+        self.delegate?.createDiaryButtonTapped()
+    }
+
+    @objc func onTapDeletePageMenu() {
+        self.delegate?.joinDiaryButtonTapped()
+    }
 }

@@ -13,6 +13,7 @@ class DiaryCollectionViewCell: UICollectionViewCell {
 	private let myDevice = UIScreen.getDevice()
 	private lazy var titleLabel: UILabel = {
 		let label =  UILabel()
+		label.textAlignment = .center
 		label.font = myDevice.diaryCollectionViewCellTitleLabelFont
 		label.textColor = .black
 		
@@ -37,6 +38,7 @@ class DiaryCollectionViewCell: UICollectionViewCell {
 		titleLabel.snp.makeConstraints {
 			$0.centerX.equalToSuperview()
 			$0.top.equalToSuperview().inset(myDevice.diaryCollectionViewCellTitleLabelTop)
+			$0.leading.trailing.equalToSuperview().inset(20)
 		}
 
 		var trailing = myDevice.diaryContributerImageViewTrailing

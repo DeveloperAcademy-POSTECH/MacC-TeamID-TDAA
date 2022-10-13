@@ -36,6 +36,7 @@ class MyPlaceViewController: UIViewController, MKMapViewDelegate, CLLocationMana
 		// Do any additional setup after loading the view.
 		setup()
 		setupSubView()
+		setupRegister()
 		setupViewModel()
 	}
 	
@@ -53,10 +54,15 @@ class MyPlaceViewController: UIViewController, MKMapViewDelegate, CLLocationMana
 			$0.leading.equalToSuperview().inset(myDevice.TabBarTitleLabelLeading)
 		}
 	}
+	
+	private func setupRegister() {
+		mapView.map.register(CustomAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
+		mapView.map.register(CustomClusterAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultClusterAnnotationViewReuseIdentifier)
+	}
 
 	private func addCustomPin(_ mapData: [MapData]) {
 		mapData.forEach { data in
-			let pin = CustomAnnotation(diaryTitle: data.diaryName, stampName: data.diaryCover, coordinate: CLLocationCoordinate2D(latitude: 37.51818789942772, longitude: 126.88541765534976))
+			let pin = CustomAnnotation(diaryTitle: data.diaryName, stampName: data.diaryCover, coordinate: CLLocationCoordinate2D(latitude: data.location.locationCoordinate[0], longitude: data.location.locationCoordinate[1]))
 			mapView.map.addAnnotation(pin)
 		}
 	}
@@ -72,7 +78,6 @@ class MyPlaceViewController: UIViewController, MKMapViewDelegate, CLLocationMana
 			annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: CustomAnnotationView.identifier)
 			annotationView?.canShowCallout = false
 			annotationView?.contentMode = .scaleAspectFit
-			
 		} else {
 			annotationView?.annotation = annotation
 		}
@@ -101,6 +106,8 @@ class MyPlaceViewController: UIViewController, MKMapViewDelegate, CLLocationMana
 		annotationView?.layer.cornerRadius = 5
 		annotationView?.layer.borderWidth = 1
 		annotationView?.layer.borderColor = UIColor.white.cgColor
+		
+		annotationView?.clusteringIdentifier = "diary"
 		
 		return annotationView
 	}

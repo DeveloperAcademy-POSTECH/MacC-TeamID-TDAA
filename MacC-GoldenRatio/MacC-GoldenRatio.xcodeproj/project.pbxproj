@@ -62,6 +62,7 @@
 		E2B025C728EC163500B73891 /* FirestoreClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B025C628EC163500B73891 /* FirestoreClient.swift */; };
 		E2BEFA9628E882BA00EF0254 /* MyHomeViewCustomModalVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEFA9528E882BA00EF0254 /* MyHomeViewCustomModalVC.swift */; };
 		E2CCF30128F74450008A12F9 /* CustomAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CCF30028F74450008A12F9 /* CustomAnnotationView.swift */; };
+		E2CCF30328F7534E008A12F9 /* CustomClusterAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CCF30228F7534E008A12F9 /* CustomClusterAnnotationView.swift */; };
 		E2EA7F0628E56C0900AC1C49 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EA7F0528E56C0900AC1C49 /* TabBarController.swift */; };
 		E2EA7F0828E56CF600AC1C49 /* MyPlaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EA7F0728E56CF600AC1C49 /* MyPlaceViewController.swift */; };
 		E2EA7F0A28E56CFE00AC1C49 /* MyAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EA7F0928E56CFE00AC1C49 /* MyAlbumViewController.swift */; };
@@ -171,6 +172,7 @@
 		E2B025C628EC163500B73891 /* FirestoreClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreClient.swift; sourceTree = "<group>"; };
 		E2BEFA9528E882BA00EF0254 /* MyHomeViewCustomModalVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyHomeViewCustomModalVC.swift; sourceTree = "<group>"; };
 		E2CCF30028F74450008A12F9 /* CustomAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotationView.swift; sourceTree = "<group>"; };
+		E2CCF30228F7534E008A12F9 /* CustomClusterAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomClusterAnnotationView.swift; sourceTree = "<group>"; };
 		E2EA7F0528E56C0900AC1C49 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		E2EA7F0728E56CF600AC1C49 /* MyPlaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPlaceViewController.swift; sourceTree = "<group>"; };
 		E2EA7F0928E56CFE00AC1C49 /* MyAlbumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAlbumViewController.swift; sourceTree = "<group>"; };
@@ -481,6 +483,7 @@
 			children = (
 				E2FA41AF28F6A89900BBA354 /* MapView.swift */,
 				E2CCF30028F74450008A12F9 /* CustomAnnotationView.swift */,
+				E2CCF30228F7534E008A12F9 /* CustomClusterAnnotationView.swift */,
 			);
 			path = Place;
 			sourceTree = "<group>";
@@ -674,6 +677,7 @@
 				E28F080228E4655100832F4A /* AppDelegate.swift in Sources */,
 				E276B91C28E46AE900163833 /* User.swift in Sources */,
 				E276B91C28E46AE900163833 /* User.swift in Sources */,
+				E2CCF30328F7534E008A12F9 /* CustomClusterAnnotationView.swift in Sources */,
 				0AE27F2528F442B100D79208 /* FirebaseStorage.swift in Sources */,
 				E276B91C28E46AE900163833 /* User.swift in Sources */,
 				0AAB2AE228EDA55D009FBD96 /* StickerStickerView.swift in Sources */,

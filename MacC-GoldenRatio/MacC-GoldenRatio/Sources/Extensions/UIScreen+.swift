@@ -211,6 +211,30 @@ extension UIScreen {
 			default: return UIFont(name: "EF_Diary", size: 10) ?? UIFont.systemFont(ofSize: 10)
 			}
 		}
+		
+		var ClusterAnnotationLabelFont: UIFont {
+			switch self {
+			default: return UIFont(name: "EF_Diary", size: 13) ?? UIFont.systemFont(ofSize: 13)
+			}
+		}
+		
+		var ClusterAnnotationSize: CGSize {
+			switch self {
+			default: return CGSize(width: AnnotationSize.width+12, height: AnnotationSize.height+12)
+			}
+		}
+		
+		var ClusterAnnotationImageFrame: CGRect {
+			switch self {
+			default: return CGRect(x: 0, y: 12, width: AnnotationSize.width, height: AnnotationSize.height)
+			}
+		}
+		
+		var ClusterAnnotationLabelFrame: CGRect {
+			switch self {
+			default: return CGRect(x: AnnotationSize.width-15, y: 0, width: 25, height: 25)
+			}
+		}
         
 
 // MARK: - Sign In

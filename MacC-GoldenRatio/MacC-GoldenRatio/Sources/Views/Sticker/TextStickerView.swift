@@ -19,7 +19,7 @@ class TextStickerView: StickerView {
     let textView: UITextView = {
         let textView = UITextView(frame: .init(origin: .zero, size: .init(width: 27.3, height: 40)))
         textView.backgroundColor = .clear
-        textView.font = .systemFont(ofSize: 20)
+        textView.font = .navigationTitleFont
         textView.isScrollEnabled = false
         textView.isUserInteractionEnabled = false
         

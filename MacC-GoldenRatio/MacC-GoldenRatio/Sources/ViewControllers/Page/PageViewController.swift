@@ -98,32 +98,6 @@ class PageViewController: UIViewController {
         return button
     }()
     
-    private var addPageToLastButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("페이지 추가", for: .normal)
-        button.setTitleColor(UIColor.black, for: .normal)
-        button.addTarget(self, action: #selector(MyDiariesViewCustomModalVC.onTapAddPageToLastMenu), for: .touchUpInside)
-        
-        button.snp.makeConstraints {
-            $0.height.equalTo(UIScreen.getDevice().MyDiariesViewCustomModalViewButtonHeight)
-        }
-        
-        return button
-    }()
-    
-    private var deletePageButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("페이지 삭제", for: .normal)
-        button.setTitleColor(UIColor.black, for: .normal)
-        button.addTarget(self, action: #selector(MyDiariesViewCustomModalVC.onTapDeletePageMenu), for: .touchUpInside)
-        
-        button.snp.makeConstraints {
-            $0.height.equalTo(UIScreen.getDevice().MyDiariesViewCustomModalViewButtonHeight)
-        }
-        
-        return button
-    }()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -319,15 +293,10 @@ extension PageViewController {
 // MARK: 페이지 편집 처리
 extension PageViewController {
     @objc private func onTapDocsButton() {
-        let CustomMenuModalVC = MyDiariesViewCustomModalVC.instance()
-        CustomMenuModalVC.delegate = self
-        addMenuView()
-        CustomMenuModalVC.stackView.addArrangedSubview(addPageToLastButton)
-        CustomMenuModalVC.stackView.addArrangedSubview(deletePageButton)
-        CustomMenuModalVC.stackViewBottom = myDevice.MyDiariesViewCustomModalViewStackBottom
-        CustomMenuModalVC.stackViewTrailing = myDevice.MyDiariesViewCustomModalViewStackTrailing
-        CustomMenuModalVC.stackViewSize = CGSize(width: myDevice.MyDiariesViewCustomModalViewStackWidth, height: myDevice.MyDiariesViewCustomModalViewButtonHeight * CustomMenuModalVC.stackView.arrangedSubviews.count)
-        present(CustomMenuModalVC, animated: true, completion: nil)
+        let popUp = PopUpViewController(popUpPosition: .bottom)
+        popUp.addButton(buttonTitle: "페이지 추가", action: onTapAddPageToLastMenu)
+        popUp.addButton(buttonTitle: "페이지 삭제", action: onTapDeletePageMenu)
+        present(popUp, animated: false)
     }
     
     private func onTapAddPageToLastMenu() {
@@ -481,40 +450,5 @@ extension PageViewController: UIGestureRecognizerDelegate {
             return true
         }
         return false
-    }
-}
-// MARK: Custom modal View delegate
-extension PageViewController: MyDiariesViewCustomModalDelegate {
-    private func addMenuView() {
-        view.addSubview(myDiariesViewModalBackgroundView)
-        myDiariesViewModalBackgroundView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
-        
-        DispatchQueue.main.async { [weak self] in
-            self?.myDiariesViewModalBackgroundView.backgroundColor = .black
-            self?.myDiariesViewModalBackgroundView.alpha = 0.5
-        }
-    }
-    
-    private func removeMenuView() {
-        DispatchQueue.main.async { [weak self] in
-            self?.myDiariesViewModalBackgroundView.removeFromSuperview()
-            self?.dismiss(animated: false)
-        }
-    }
-    
-    func createDiaryButtonTapped() {
-        self.removeMenuView()
-        self.onTapAddPageToLastMenu()
-    }
-    
-    func joinDiaryButtonTapped() {
-        self.removeMenuView()
-        self.onTapDeletePageMenu()
-    }
-    
-    func tapGestureHandler() {
-        self.removeMenuView()
     }
 }

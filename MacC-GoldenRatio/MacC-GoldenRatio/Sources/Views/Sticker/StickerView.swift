@@ -96,7 +96,7 @@ class StickerView: UIView {
         deleteController = StickerControllerView(image: deleteControlImage, gestureRecognizer: singleTap)
         addSubview(deleteController)
 
-        let resizingControlImage = UIImage(systemName: "arrow.clockwise")
+        let resizingControlImage = UIImage(systemName: "crop.rotate")
         let panResizeGesture = UIPanGestureRecognizer(target: self, action: #selector(resizeTranslate(_:)))
         resizingController = StickerControllerView(image: resizingControlImage, gestureRecognizer: panResizeGesture)
         addSubview(resizingController)

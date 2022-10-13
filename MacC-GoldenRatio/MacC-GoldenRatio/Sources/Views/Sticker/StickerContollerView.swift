@@ -15,12 +15,13 @@ class StickerControllerView: UIImageView {
     init(image: UIImage?, gestureRecognizer: UIGestureRecognizer) {
         super.init(image: image)
 
-        self.tintColor = .black
-        self.addGestureRecognizer(gestureRecognizer)
-        self.frame = CGRect(origin: .zero, size: myDevice.stickerControllerSize)
+        tintColor = .buttonColor
+        addGestureRecognizer(gestureRecognizer)
+        frame = CGRect(origin: .zero, size: myDevice.stickerControllerSize)
 
         layer.cornerRadius = frame.width / 2
         isUserInteractionEnabled = true
+        contentMode = .scaleAspectFit
     }
 
     required init?(coder aDecoder: NSCoder) {

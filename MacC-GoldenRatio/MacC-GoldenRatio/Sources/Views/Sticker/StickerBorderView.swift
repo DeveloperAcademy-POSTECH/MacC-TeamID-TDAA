@@ -26,7 +26,7 @@ class StickerBorderView: UIView {
     private func setupView() {
         backgroundColor = UIColor.clear
         layer.borderWidth = myDevice.stickerBorderWidth
-        layer.borderColor = UIColor.black.cgColor
+        layer.borderColor = UIColor.buttonColor.cgColor
     }
 
 }

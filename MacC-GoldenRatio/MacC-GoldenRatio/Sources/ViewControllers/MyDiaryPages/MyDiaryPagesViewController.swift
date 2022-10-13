@@ -112,13 +112,13 @@ class MyDiaryPagesViewController: UIViewController {
         
         super.viewDidLoad()
         view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
-        self.navigationController?.isNavigationBarHidden = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
         // Full Modal dismiss 이후 호출, 업데이트된 다이어리 정보 반영
         super.viewWillAppear(animated)
-        
+        self.navigationController?.isNavigationBarHidden = true
+
         // TODO: - modal completion handler 필요?
         Task {
             do {
@@ -261,7 +261,12 @@ extension MyDiaryPagesViewController: UICollectionViewDataSource {
         
         if diaryData.pageThumbnails[indexPath.row] != "NoURL" {
             // TODO: 이미지 로드 해서 cell에 할당
-            cell.previewImageView.image = UIImage(systemName: "applelogo") ?? UIImage()
+            Task {
+                let imageURL = diaryData.pageThumbnails[indexPath.row]
+                FirebaseStorageManager.downloadImage(urlString: imageURL) { image in
+                    cell.previewImageView.image = image
+                }
+            }
         }
         
         return cell
@@ -279,6 +284,7 @@ extension MyDiaryPagesViewController: UICollectionViewDelegate {
         debugPrint(diaryData)
         print(selectedDay)
         self.navigationController?.pushViewController(pageViewController, animated: false)
+        self.navigationController?.isNavigationBarHidden = false
     }
 
 }

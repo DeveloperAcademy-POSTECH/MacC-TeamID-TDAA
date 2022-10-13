@@ -48,6 +48,7 @@ class DiaryConfigViewModel {
     }
     
     func updateDiary() {
+        
         if checkAvailable() {
             guard let diaryUUID = self.diaryUUID, let title = self.title, let location = self.location, let startDate = self.startDate, let endDate = self.endDate, let diaryCover = self.diaryCover, let userUIDs = self.userUIDs else { return print("Upload Error") }
             
@@ -91,7 +92,7 @@ class DiaryConfigViewModel {
         let count: Int
         
         if let startDate = startDate?.toDate(), let endDate = endDate?.toDate() {
-            count = Int((endDate).timeIntervalSince(startDate)) / 86400
+            count = Int((endDate).timeIntervalSince(startDate)) / 86400 + 1
         } else {
             count = 1
         }

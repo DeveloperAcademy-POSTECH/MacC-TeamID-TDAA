@@ -38,6 +38,7 @@
 		CC65515828F544ED00E637A2 /* PopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC65515728F544ED00E637A2 /* PopUpViewController.swift */; };
 		CC6BD74428EBFA80001ED665 /* DiaryConfigViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6BD74328EBFA80001ED665 /* DiaryConfigViewController.swift */; };
 		CC6BD74628EC18B8001ED665 /* DiaryConfigCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6BD74528EC18B8001ED665 /* DiaryConfigCollectionViewCell.swift */; };
+		CC9F969628F7E0B100E4B68A /* MyDiaryPagesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC9F969528F7E0B100E4B68A /* MyDiaryPagesViewModel.swift */; };
 		CCE1806F28E5919B00AF06DB /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE1806E28E5919B00AF06DB /* SignInViewController.swift */; };
 		CCE1807428E6B7C500AF06DB /* SignInTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE1807328E6B7C500AF06DB /* SignInTestViewController.swift */; };
 		E21342D928F6B0660048D9CF /* FirebaseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21342D828F6B0660048D9CF /* FirebaseClient.swift */; };
@@ -147,6 +148,7 @@
 		CC6BD73728E9790C001ED665 /* MacC-GoldenRatio.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "MacC-GoldenRatio.entitlements"; sourceTree = "<group>"; };
 		CC6BD74328EBFA80001ED665 /* DiaryConfigViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryConfigViewController.swift; sourceTree = "<group>"; };
 		CC6BD74528EC18B8001ED665 /* DiaryConfigCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryConfigCollectionViewCell.swift; sourceTree = "<group>"; };
+		CC9F969528F7E0B100E4B68A /* MyDiaryPagesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDiaryPagesViewModel.swift; sourceTree = "<group>"; };
 		CCE1806E28E5919B00AF06DB /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		CCE1807328E6B7C500AF06DB /* SignInTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInTestViewController.swift; sourceTree = "<group>"; };
 		E21342D828F6B0660048D9CF /* FirebaseClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseClient.swift; sourceTree = "<group>"; };
@@ -278,6 +280,7 @@
 			children = (
 				CC65514F28F0874800E637A2 /* MyDiaryPagesViewController.swift */,
 				CC65515128F0877900E637A2 /* MyDiaryPagesViewCollectionViewCell.swift */,
+				CC9F969528F7E0B100E4B68A /* MyDiaryPagesViewModel.swift */,
 				CC65515728F544ED00E637A2 /* PopUpViewController.swift */,
 			);
 			path = MyDiaryPages;
@@ -682,6 +685,7 @@
 				E276B91C28E46AE900163833 /* User.swift in Sources */,
 				0AAB2AE228EDA55D009FBD96 /* StickerStickerView.swift in Sources */,
 				0A5E904828E857E200B381B8 /* StickerView.swift in Sources */,
+				CC9F969628F7E0B100E4B68A /* MyDiaryPagesViewModel.swift in Sources */,
 				CC65514728EEBF7C00E637A2 /* Date+.swift in Sources */,
 				E2BEFA9628E882BA00EF0254 /* MyHomeViewCustomModalVC.swift in Sources */,
 				E2BEFA9628E882BA00EF0254 /* MyHomeViewCustomModalVC.swift in Sources */,

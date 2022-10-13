@@ -5,26 +5,28 @@
 //  Created by DongKyu Kim on 2022/10/08.
 //
 
+import SnapKit
 import UIKit
 
 class MyDiaryPagesViewCollectionViewCell: UICollectionViewCell {
-    private lazy var previewImage: UIImage = {
-        let image = UIImage()
-        return image
+    
+    lazy var previewImageView: UIImageView = {
+        var imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.image = UIImage(named: "diaryInnerTexture") ?? UIImage()
+        return imageView
     }()
     
     
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        contentView.backgroundColor = .clear
+        contentView.addSubview(previewImageView)
+        previewImageView.snp.makeConstraints {
+            $0.size.equalToSuperview()
+            $0.center.equalToSuperview()
+        }
+        
     }
     
-    func setup(imageURL: URL?) {
-        if let _ = imageURL {
-            print("Image Show")
-        } else {
-            previewImage = UIImage(named: "FireSticker") ?? UIImage()
-        }
-    }
 }

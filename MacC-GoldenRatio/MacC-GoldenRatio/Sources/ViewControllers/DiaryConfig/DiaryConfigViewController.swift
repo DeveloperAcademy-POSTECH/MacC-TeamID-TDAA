@@ -36,7 +36,7 @@ class DiaryConfigViewController: UIViewController {
         self.configState = configState
         switch configState {
         case .create:
-            print("Create New Diary")
+            print("New Diary Page")
         case .modify:
             self.diaryToConfig = diary
             self.viewModel.getDiaryData(diary: self.diaryToConfig!)
@@ -120,7 +120,6 @@ class DiaryConfigViewController: UIViewController {
         
         if viewModel.checkAvailable() {
            
-            
             let parentNavigationController: UINavigationController = self.presentingViewController as! UINavigationController
             presentingViewController?.dismiss(animated: true) {
                 switch self.configState {
@@ -130,9 +129,12 @@ class DiaryConfigViewController: UIViewController {
                     let MyDiaryPagesVC = MyDiaryPagesViewController(diaryData: self.viewModel.diary!)
                     parentNavigationController.isNavigationBarHidden = false
                     parentNavigationController.pushViewController(MyDiaryPagesVC, animated: true)
+                    
                 case .modify:
-                    // TODO: 다이어리 수정 메소드
                     self.viewModel.updateDiary()
+                    
+                    // let MyDiaryPagesVC = MyDiaryPagesViewController(diaryData: self.viewModel.diary!)
+                    
                 }
             }
         } else {

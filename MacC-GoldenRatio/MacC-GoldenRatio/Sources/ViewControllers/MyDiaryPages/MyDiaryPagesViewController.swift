@@ -5,13 +5,13 @@
 //  Created by DongKyu Kim on 2022/10/08.
 //
 
-import FirebaseFirestore
 import SnapKit
 import UIKit
 
 class MyDiaryPagesViewController: UIViewController {
     
     private let device = UIScreen.getDevice()
+    private var viewModel = MyDiaryPagesViewModel()
     private let itemSpacing: CGFloat = 20 // TODO: UIScreen+ 추가 예정
     private var previousOffset: CGFloat = 0
     private var currentPage: Int = 1 {
@@ -29,12 +29,8 @@ class MyDiaryPagesViewController: UIViewController {
 
 	init(diaryData: Diary) {
 		self.diaryData = diaryData
+        self.pageCount = diaryData.pageThumbnails.count
         
-        if let startDate = diaryData.diaryStartDate.toDate(), let endDate = diaryData.diaryEndDate.toDate() {
-            self.pageCount = Int((endDate).timeIntervalSince(startDate)) / 86400
-        } else {
-            self.pageCount = 1
-        }
         super.init(nibName: nil, bundle: nil)
 	}
 	
@@ -67,7 +63,7 @@ class MyDiaryPagesViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
+        collectionView.backgroundColor = UIColor(patternImage: UIImage(named: "diaryInnerTexture.png") ?? UIImage())
         collectionView.register(MyDiaryPagesViewCollectionViewCell.self, forCellWithReuseIdentifier: "MyDiaryPagesViewCollectionViewCell")
         collectionView.decelerationRate = .fast
         collectionView.isPagingEnabled = false
@@ -100,8 +96,24 @@ class MyDiaryPagesViewController: UIViewController {
         view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
         
         navigationBarSetup()
-        collectionViewSetup()
-        componentsSetup()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        // Full Modal dismiss 이후 호출, 업데이트된 다이어리 정보 반영
+        super.viewWillAppear(animated)
+        
+        // TODO: - modal completion handler 필요?
+        Task {
+            do {
+                diaryData = try await self.viewModel.getDiaryData(uuid: self.diaryData.diaryUUID) ?? self.diaryData
+            } catch {
+                print(error.localizedDescription)
+            }
+            print(diaryData)
+            self.collectionViewSetup()
+            self.componentsSetup()
+            
+        }
     }
     
     // MARK: - Feature methods
@@ -135,7 +147,7 @@ class MyDiaryPagesViewController: UIViewController {
         let ac = UIAlertController(title: "다이어리를 나가시겠습니까?", message: "다이어리를 나가면 공동편집을 할 수 없습니다.", preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "다이어리 나가기", style: .destructive) { _ in
             print("다이어리 나가기")
-            // TODO: 다이어리 목록에서 삭제
+            self.viewModel.outCurrentDiary(diary: self.diaryData)
             self.backButtonTapped()
         })
         ac.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
@@ -226,9 +238,13 @@ extension MyDiaryPagesViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MyDiaryPagesViewCollectionViewCell", for: indexPath)
-        // TODO: 이미지 로드 해서 cell에 할당
-        cell.backgroundColor = .systemGray
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MyDiaryPagesViewCollectionViewCell", for: indexPath) as? MyDiaryPagesViewCollectionViewCell else { return UICollectionViewCell() }
+        
+        if diaryData.pageThumbnails[indexPath.row] != "NoURL" {
+            // TODO: 이미지 로드 해서 cell에 할당
+            cell.previewImageView.image = UIImage(systemName: "applelogo") ?? UIImage()
+        }
+        
         return cell
     }
     

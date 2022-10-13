@@ -5,6 +5,7 @@
 //  Created by DongKyu Kim on 2022/10/13.
 //
 
+import FirebaseAuth
 import UIKit
 
 class DiaryConfigViewModel {
@@ -15,6 +16,11 @@ class DiaryConfigViewModel {
     var location: Location?
     var startDate: String?
     var endDate: String?
+    var diaryCover: String?
+    var userUIDs: [String]?
+    var thumbnails: [String] = []
+    var myUID = Auth.auth().currentUser?.uid ?? ""
+    
     var diary: Diary?
     
     func addDiary() {
@@ -24,7 +30,11 @@ class DiaryConfigViewModel {
 
         guard let diaryUUID = self.diaryUUID, let title = self.title, let location = self.location, let startDate = self.startDate, let endDate = endDate else { return print("Upload Error") }
         
-        self.diary = Diary(diaryUUID: diaryUUID, diaryName: title, diaryLocation: location, diaryStartDate: startDate, diaryEndDate: endDate, diaryCover: diaryCover)
+        for _ in 1...getPageCount() {
+            thumbnails.append("NoURL")
+        }
+        
+        self.diary = Diary(diaryUUID: diaryUUID, diaryName: title, diaryLocation: location, diaryStartDate: startDate, diaryEndDate: endDate, diaryCover: diaryCover, userUIDs: [myUID], pageThumbnails: thumbnails)
         
         guard let diary = diary else { return }
         
@@ -32,7 +42,16 @@ class DiaryConfigViewModel {
     }
     
     func updateDiary() {
-        print("Update Diary")
+        if checkAvailable() {
+            guard let diaryUUID = self.diaryUUID, let title = self.title, let location = self.location, let startDate = self.startDate, let endDate = self.endDate, let diaryCover = self.diaryCover, let userUIDs = self.userUIDs else { return print("Upload Error") }
+            
+            // TODO: - pageCount 처리
+            self.diary = Diary(diaryUUID: diaryUUID, diaryName: title, diaryLocation: location, diaryStartDate: startDate, diaryEndDate: endDate, diaryCover: diaryCover, userUIDs: userUIDs)
+            
+            guard let diary = diary else { return }
+            
+            firebaseClient.addDiary(diary: diary)
+        }
     }
     
     func getDiaryData(diary: Diary) {
@@ -41,6 +60,15 @@ class DiaryConfigViewModel {
         self.location = diary.diaryLocation
         self.startDate = diary.diaryStartDate
         self.endDate = diary.diaryEndDate
+        self.diaryCover = diary.diaryCover
+        self.userUIDs = diary.userUIDs
+        self.thumbnails = diary.pageThumbnails
+    }
+    
+    func setDiaryData() {
+        guard let diaryUUID = self.diaryUUID, let title = self.title, let location = self.location, let startDate = self.startDate, let endDate = self.endDate, let diaryCover = self.diaryCover, let UIDs = self.userUIDs else { return print("Upload Error") }
+        
+        self.diary = Diary(diaryUUID: diaryUUID, diaryName: title, diaryLocation: location, diaryStartDate: startDate, diaryEndDate: endDate, diaryCover: diaryCover, userUIDs: UIDs, pageThumbnails: self.thumbnails)
     }
     
     func checkAvailable() -> Bool {
@@ -50,5 +78,17 @@ class DiaryConfigViewModel {
             print("ERROR: Incomplete Value")
             return false
         }
+    }
+    
+    private func getPageCount() -> Int {
+        let count: Int
+        
+        if let startDate = startDate?.toDate(), let endDate = endDate?.toDate() {
+            count = Int((endDate).timeIntervalSince(startDate)) / 86400
+        } else {
+            count = 1
+        }
+        
+        return count
     }
 }

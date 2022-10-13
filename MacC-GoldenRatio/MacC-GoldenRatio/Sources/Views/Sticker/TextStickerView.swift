@@ -37,7 +37,7 @@ class TextStickerView: StickerView {
     }
     
     /// DB에서 StickerView를 불러옵니다.
-    init(item: Item, isSubviewHidden: Bool) {
+    init(item: Item) {
         super.init(frame: textView.frame)
 
         DispatchQueue.main.async{
@@ -46,7 +46,6 @@ class TextStickerView: StickerView {
             self.setTextView()
             super.setupContentView(content: self.textView)
             super.setupDefaultAttributes()
-            self.subviewIsHidden =  isSubviewHidden
         }
     }
     

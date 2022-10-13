@@ -22,12 +22,12 @@ class PageViewModel {
 //             )
 //    ])
 
-    init() {
+    init(diary: Diary, selectedDay: Int) {
         // TODO: 선행 뷰에게서 diary 받아와서 init 하기
-        Task{
-            diary = try! await (FirebaseClient().fetchMyDiaries(uid: "testUser")?.first)!
-            setStickerArray(isSubviewHidden: true)
-        }
+//            diary = try! await (FirebaseClient().fetchMyDiaries(uid: "testUser")?.first)!
+            self.diary = diary
+            self.selectedDay = selectedDay
+            setStickerArray()
     }
     
     func saveOldData() {
@@ -76,25 +76,23 @@ class PageViewModel {
         stickerArray[currentPageIndex].append(sticker)
     }
     
-    func setStickerArray(isSubviewHidden: Bool) {
-        DispatchQueue.main.async {
-            self.stickerArray = self.diary.diaryPages[self.selectedDay].pages.map{
-                let stickerViews: [StickerView] = $0.items.map {
-                    var stickerView: StickerView!
-                    switch $0.itemType {
-                    case .text:
-                        stickerView = TextStickerView(item: $0, isSubviewHidden: isSubviewHidden)
-                    case .image:
-                        stickerView = ImageStickerView(item: $0, isSubviewHidden: isSubviewHidden)
-                    case .sticker:
-                        stickerView = StickerStickerView(item: $0, isSubviewHidden: isSubviewHidden)
-                    case .location:
-                        stickerView = MapStickerView(item: $0, isSubviewHidden: isSubviewHidden)
-                    }
-                    return stickerView
+    func setStickerArray() {
+        self.stickerArray = self.diary.diaryPages[self.selectedDay].pages.map{
+            let stickerViews: [StickerView] = $0.items.map {
+                var stickerView: StickerView!
+                switch $0.itemType {
+                case .text:
+                    stickerView = TextStickerView(item: $0)
+                case .image:
+                    stickerView = ImageStickerView(item: $0)
+                case .sticker:
+                    stickerView = StickerStickerView(item: $0)
+                case .location:
+                    stickerView = MapStickerView(item: $0)
                 }
-                return stickerViews
+                return stickerView
             }
+            return stickerViews
         }
     }
     

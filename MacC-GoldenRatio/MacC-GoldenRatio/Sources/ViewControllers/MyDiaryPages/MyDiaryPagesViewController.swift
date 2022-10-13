@@ -251,9 +251,17 @@ extension MyDiaryPagesViewController: UICollectionViewDataSource {
 }
 
 extension MyDiaryPagesViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return true
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let selectedDay = indexPath.item
+        
+        let pageViewController = PageViewController(diary: diaryData, selectedDay: selectedDay)
+        
+        debugPrint(diaryData)
+        print(selectedDay)
+        self.navigationController?.pushViewController(pageViewController, animated: false)
     }
+
 }
 
 extension MyDiaryPagesViewController: UIScrollViewDelegate {

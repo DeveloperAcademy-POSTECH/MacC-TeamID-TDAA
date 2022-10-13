@@ -270,7 +270,7 @@ class PageViewController: UIViewController {
     }
     
     @objc func onTapImageButton() {
-        imagePicker.modalPresentationStyle = .fullScreen
+        imagePicker.modalPresentationStyle = .overCurrentContext
         
         self.present(self.imagePicker, animated: true)
     }

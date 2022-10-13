@@ -11,10 +11,9 @@ class PageViewModel {
     var selectedDay: Int = 0
     var currentPageIndex: Int = 0
     var oldPageIndex: Int = 0
-    var stickerArray: [[StickerView]] = []
-    var oldStickerArray: [[StickerView]] = []
     var diary: Diary!
     var oldDiary: Diary!
+    var stickerArray: [[StickerView]] = []
 
 //    var diary = Diary(diaryUUID: "diaryUUID2", diaryName: "포항항", diaryLocation: Location(locationName: "포항영일대", locationAddress: "포항영일대주소", locationCoordinate: [36.020107332983, 129.32530987999]), diaryStartDate: "2022년 10월 4일", diaryEndDate: "2022년 10월 4일",  userUIDs: ["testUser"], diaryPages: [
 //        Pages(pages:
@@ -32,13 +31,11 @@ class PageViewModel {
     }
     
     func saveOldData() {
-        oldStickerArray = stickerArray
         oldPageIndex = currentPageIndex
         oldDiary = diary
     }
     
     func restoreOldData() {
-        stickerArray = oldStickerArray
         currentPageIndex = oldPageIndex
         diary = oldDiary
     }
@@ -81,8 +78,7 @@ class PageViewModel {
     
     func setStickerArray(isSubviewHidden: Bool) {
         DispatchQueue.main.async {
-            self.stickerArray = []
-            self.diary.diaryPages[self.selectedDay].pages.forEach{
+            self.stickerArray = self.diary.diaryPages[self.selectedDay].pages.map{
                 let stickerViews: [StickerView] = $0.items.map {
                     var stickerView: StickerView!
                     switch $0.itemType {
@@ -97,7 +93,7 @@ class PageViewModel {
                     }
                     return stickerView
                 }
-                self.stickerArray.append(stickerViews)
+                return stickerViews
             }
         }
     }
@@ -106,7 +102,7 @@ class PageViewModel {
         FirebaseClient().updatePageThumbnail(diary: diary)
     }
     
-    func upLoadImage(image: UIImage, _ completion: @escaping () -> Void) {
+    func upLoadThumbnail(image: UIImage, _ completion: @escaping () -> Void) {
         FirebaseStorageManager.uploadImage(image: image, pathRoot: diary.diaryUUID + "/thumbnail") { url in
             guard let url = url else { return }
             self.diary.pageThumbnails[self.selectedDay] = url.description

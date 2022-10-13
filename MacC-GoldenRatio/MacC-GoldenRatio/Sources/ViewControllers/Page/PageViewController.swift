@@ -368,7 +368,7 @@ extension PageViewController {
 
         if pageViewModel.currentPageIndex == 0 {
             guard let thumbnailImage = self.backgroundImageView.transformToImage() else { return }
-            pageViewModel.upLoadImage(image: thumbnailImage) {
+            pageViewModel.upLoadThumbnail(image: thumbnailImage) {
                 self.pageViewModel.updatePageThumbnail()
                 self.pageViewModel.updateDBPages()
             }

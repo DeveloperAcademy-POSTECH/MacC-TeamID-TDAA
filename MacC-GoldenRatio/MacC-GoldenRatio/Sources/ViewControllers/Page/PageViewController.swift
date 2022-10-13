@@ -293,7 +293,7 @@ extension PageViewController {
 // MARK: 페이지 편집 처리
 extension PageViewController {
     @objc private func onTapDocsButton() {
-        let popUp = PopUpViewController(popUpPosition: .bottom)
+        let popUp = PopUpViewController(popUpPosition: .bottom2)
         popUp.addButton(buttonTitle: "페이지 추가", action: onTapAddPageToLastMenu)
         popUp.addButton(buttonTitle: "페이지 삭제", action: onTapDeletePageMenu)
         present(popUp, animated: false)

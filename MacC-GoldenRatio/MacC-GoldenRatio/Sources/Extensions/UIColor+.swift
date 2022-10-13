@@ -9,7 +9,12 @@ import UIKit
 
 extension UIColor {
     static var navigationbarColor: UIColor {
-        var color = UIColor(named: "navigationbarColor")!
+        let color = UIColor(named: "navigationbarColor")!
+        return color
+    }
+    
+    static var buttonColor: UIColor {
+        let color = UIColor(named: "buttonColor")!
         return color
     }
     

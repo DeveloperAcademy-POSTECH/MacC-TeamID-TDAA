@@ -264,6 +264,7 @@ class PageViewController: UIViewController {
 
 // MARK: 스티커 로딩 처리
 extension PageViewController {
+    
     private func reloadStickers() {
         DispatchQueue.main.async {
             self.backgroundImageView.subviews.forEach{
@@ -272,6 +273,7 @@ extension PageViewController {
             self.loadStickerViews(pageIndex: self.pageViewModel.currentPageIndex)
         }
     }
+    
     private func loadStickerViews(pageIndex: Int) {
         DispatchQueue.main.async {
             self.pageViewModel.stickerArray[pageIndex].forEach{
@@ -365,7 +367,7 @@ extension PageViewController {
     @objc private func onTapNavigationComplete() {
         self.isEditMode = false
         pageViewModel.hideStickerSubview(true)
-
+        
         if pageViewModel.currentPageIndex == 0 {
             guard let thumbnailImage = self.backgroundImageView.transformToImage() else { return }
             pageViewModel.upLoadThumbnail(image: thumbnailImage) {

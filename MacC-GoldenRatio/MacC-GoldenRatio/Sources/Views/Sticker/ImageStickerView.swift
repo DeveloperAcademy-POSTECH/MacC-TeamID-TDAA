@@ -34,21 +34,36 @@ class ImageStickerView: StickerView {
         DispatchQueue.main.async{
             self.stickerViewData = StickerViewData(item: item)
             self.configureStickerViewData()
-            self.downLoadImage()
+            self.configureImageView()
             super.setupContentView(content: self.imageView)
             super.setupDefaultAttributes()
             self.subviewIsHidden = isSubviewHidden
         }
     }
     
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func downLoadImage() {
-        guard let imageURL = super.stickerViewData.item.contents.first else { return }
-        FirebaseStorageManager.downloadImage(urlString: imageURL) { image in
+    private func configureImageView() {
+        guard let imageUrl = super.stickerViewData.item.contents.first else { return }
+        
+        let image = ImageManager.shared.searchImage(url: imageUrl)
+        
+        switch image {
+        case nil:
+            downLoadImage(imageUrl: imageUrl)
+            return
+        default:
+            self.imageView.image = image
+            return
+        }
+    }
+    
+    private func downLoadImage(imageUrl: String) {
+        FirebaseStorageManager.downloadImage(urlString: imageUrl) { image in
+            guard let image = image else { return }
+            ImageManager.shared.cacheImage(url: imageUrl, image: image)
             self.imageView.image = image
         }
     }
@@ -56,7 +71,8 @@ class ImageStickerView: StickerView {
     private func upLoadImage(image: UIImage, diaryUUID: String) {
         FirebaseStorageManager.uploadImage(image: image, pathRoot: diaryUUID) { url in
             self.imageView.image = image
-            guard let url = url else {return}
+            guard let url = url else { return }
+            ImageManager.shared.cacheImage(url: url.absoluteString, image: image)
             self.stickerViewData.updateContents(contents: [url.absoluteString])
         }
     }

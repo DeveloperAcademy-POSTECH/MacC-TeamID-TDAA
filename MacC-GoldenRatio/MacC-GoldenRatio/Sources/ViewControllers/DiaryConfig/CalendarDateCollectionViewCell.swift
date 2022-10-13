@@ -9,22 +9,22 @@ import SnapKit
 import UIKit
 
 class CalendarDateCollectionViewCell: UICollectionViewCell {
-    private lazy var selectionBackgroundView: UIView = {
+    lazy var selectionBackgroundView: UIView = {
         let view = UIView()
         view.clipsToBounds = true
-        view.backgroundColor = .systemRed
+        view.backgroundColor = .blue
         return view
     }()
     
-    private lazy var numberLabel: UILabel = {
+    lazy var numberLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+        label.font = UIFont.systemFont(ofSize: 20, weight: .regular)
         label.textColor = .label
         return label
     }()
     
-    private lazy var accessibilityDateFormatter: DateFormatter = {
+    lazy var accessibilityDateFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
         dateFormatter.calendar = Calendar(identifier: .gregorian)
         dateFormatter.setLocalizedDateFormatFromTemplate("EEEE, MMMM d")
@@ -85,7 +85,7 @@ class CalendarDateCollectionViewCell: UICollectionViewCell {
 }
 
 // MARK: - Appearance
-private extension CalendarDateCollectionViewCell {
+extension CalendarDateCollectionViewCell {
     func updateSelectionStatus() {
         guard let day = day else { return }
         

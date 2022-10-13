@@ -11,7 +11,7 @@ import UIKit
 class CalendarPickerHeaderView: UIView {
     lazy var monthLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 26, weight: .bold)
+        label.font = .systemFont(ofSize: 20, weight: .bold)
         label.text = "Month"
         label.accessibilityTraits = .header
         label.isAccessibilityElement = true
@@ -121,25 +121,24 @@ class CalendarPickerHeaderView: UIView {
         super.layoutSubviews()
         
         monthLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(15)
-            $0.leading.equalToSuperview().inset(15)
+            $0.top.equalToSuperview().inset(16)
+            $0.leading.equalToSuperview().inset(16)
         }
         
         previousMonthButton.snp.makeConstraints {
             $0.centerY.equalTo(monthLabel)
-            $0.trailing.equalTo(nextMonthButton.snp.leading).offset(-20)
+            $0.trailing.equalTo(nextMonthButton.snp.leading).offset(-16)
         }
         
         nextMonthButton.snp.makeConstraints {
             $0.centerY.equalTo(monthLabel)
             $0.size.equalTo(CGSize(width: 28, height: 28))
-            $0.trailing.equalToSuperview().inset(15)
+            $0.trailing.equalToSuperview().inset(16)
         }
         
         dayOfWeekStackView.snp.makeConstraints {
-            $0.leading.equalToSuperview()
-            $0.trailing.equalToSuperview()
-            $0.bottom.equalToSuperview().inset(5)
+            $0.leading.trailing.equalToSuperview().inset(6)
+            $0.bottom.equalToSuperview().inset(10)
         }
     }
     

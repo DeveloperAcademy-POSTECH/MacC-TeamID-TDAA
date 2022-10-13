@@ -10,6 +10,6 @@ import Foundation
 struct Day {
   let date: Date
   let number: String
-  let isSelected: Bool
+  var isSelected: Bool
   let isWithinDisplayedMonth: Bool
 }

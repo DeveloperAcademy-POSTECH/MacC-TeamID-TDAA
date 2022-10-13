@@ -30,7 +30,7 @@ class DiaryConfigViewController: UIViewController {
     private var configState: ConfigState
     private var viewModel = DiaryConfigViewModel()
     private var diaryToConfig: Diary?
-    
+    private var dateInterval: [Date] = []
     
     init(mode configState: ConfigState, diary: Diary?) {
         self.configState = configState
@@ -238,12 +238,13 @@ extension DiaryConfigViewController: UICollectionViewDataSource {
             self.present(mapSearchViewController, animated: true)
             
         case .diaryDate:
-            let pickerController = CalendarPickerViewController(startBaseDate: Date(), selectedDateChanged: { [self, weak sender] date in
+            let pickerController = CalendarPickerViewController(dateArray: dateInterval, selectedDateChanged: { [self, weak sender] date in
                     guard let sender = sender else { return }
                     UIView.performWithoutAnimation {
                         let startDate = date[0]
                         let endDate = date[1]
                         
+                        dateInterval = [startDate, endDate]
                         self.viewModel.startDate = startDate.customFormat()
                         self.viewModel.endDate = endDate.customFormat()
                         

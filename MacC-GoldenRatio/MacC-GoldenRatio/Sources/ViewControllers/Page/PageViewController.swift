@@ -11,10 +11,10 @@ import UIKit
 
 class PageViewController: UIViewController {
     private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
-    private let pageViewModel = PageViewModel()
     private let imagePicker = UIImagePickerController()
     private var myDiariesViewModalBackgroundView = UIView()
-
+    private var pageViewModel: PageViewModel!
+    
     private var isEditMode = false {
         willSet{
             switch newValue {
@@ -97,6 +97,15 @@ class PageViewController: UIViewController {
 
         return button
     }()
+    
+    init(diary: Diary, selectedDay: Int) {
+        super.init(nibName: nil, bundle: nil)
+        self.pageViewModel = PageViewModel(diary: diary, selectedDay: selectedDay)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -345,6 +354,7 @@ extension PageViewController {
     }
     
     @objc private func onTapNavigationBack() {
+        self.navigationController?.popViewController(animated: false)
         self.dismiss(animated: false)
     }
     
@@ -357,7 +367,7 @@ extension PageViewController {
         DispatchQueue.main.async {
             self.isEditMode = false
             self.pageViewModel.restoreOldData()
-            self.pageViewModel.setStickerArray(isSubviewHidden: true)
+            self.pageViewModel.setStickerArray()
             self.reloadStickers()
             self.reloadPageDescriptionLabel()
         }

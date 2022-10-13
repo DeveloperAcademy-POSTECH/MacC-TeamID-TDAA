@@ -39,6 +39,7 @@ class StickerView: UIView {
             }
             if newValue {
                 enableTranslucency(state: !newValue)
+                guard let stickerViewData else { return }
                 stickerViewData.updateItem(sticker: self)
             }
         }

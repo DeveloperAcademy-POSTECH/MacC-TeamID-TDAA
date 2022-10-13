@@ -141,7 +141,7 @@ extension UIScreen {
 		
 		var diaryCollectionViewCellTop: CGFloat {
 			switch self {
-			default: return 20
+			default: return 30
 			}
 		}
 		
@@ -200,39 +200,46 @@ extension UIScreen {
 			}
 		}
 		
-		var AnnotationSize: CGSize {
+		var annotationSize: CGSize {
 			switch self {
 			default: return CGSize(width: 52, height: 60)
 			}
 		}
 		
-		var AnnotationTitleFont: UIFont {
+		var annotationTitleFont: UIFont {
 			switch self {
 			default: return UIFont(name: "EF_Diary", size: 10) ?? UIFont.systemFont(ofSize: 10)
 			}
 		}
 		
-		var ClusterAnnotationLabelFont: UIFont {
+		var clusterAnnotationLabelFont: UIFont {
 			switch self {
 			default: return UIFont(name: "EF_Diary", size: 13) ?? UIFont.systemFont(ofSize: 13)
 			}
 		}
 		
-		var ClusterAnnotationSize: CGSize {
+		var clusterAnnotationSize: CGSize {
 			switch self {
-			default: return CGSize(width: AnnotationSize.width+12, height: AnnotationSize.height+12)
+			default: return CGSize(width: annotationSize.width+12, height: annotationSize.height+12)
 			}
 		}
 		
-		var ClusterAnnotationImageFrame: CGRect {
+		var clusterAnnotationImageFrame: CGRect {
 			switch self {
-			default: return CGRect(x: 0, y: 12, width: AnnotationSize.width, height: AnnotationSize.height)
+			default: return CGRect(x: 0, y: 12, width: annotationSize.width, height: annotationSize.height)
 			}
 		}
 		
-		var ClusterAnnotationLabelFrame: CGRect {
+		var clusterAnnotationLabelFrame: CGRect {
 			switch self {
-			default: return CGRect(x: AnnotationSize.width-15, y: 0, width: 25, height: 25)
+			default: return CGRect(x: annotationSize.width-15, y: 0, width: 25, height: 25)
+			}
+		}
+		
+		// MARK: Album
+		var myAlbumPhotoPageLabelFont: UIFont {
+			switch self {
+			default: return UIFont(name: "EF_Diary", size: 17) ?? UIFont.systemFont(ofSize: 17)
 			}
 		}
         

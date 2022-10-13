@@ -20,16 +20,16 @@ class DiaryCollectionViewCell: UICollectionViewCell {
 		return label
 	}()
 	
-	private lazy var cellImage: UIImageView = {
+	private lazy var cellImageView: UIImageView = {
 		let imageView =  UIImageView()
-		imageView.image = UIImage(named: "diaryBlue")
 		
 		return imageView
 	}()
 	
 	func setup(cellData: DiaryCell) {
-		addSubview(cellImage)
-		cellImage.snp.makeConstraints {
+		cellImageView.image = UIImage(named: cellData.diaryCover)
+		addSubview(cellImageView)
+		cellImageView.snp.makeConstraints {
 			$0.edges.equalToSuperview()
 		}
 		

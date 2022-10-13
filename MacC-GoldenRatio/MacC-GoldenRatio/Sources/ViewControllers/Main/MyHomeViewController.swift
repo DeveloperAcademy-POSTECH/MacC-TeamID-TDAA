@@ -19,11 +19,12 @@ final class MyHomeViewController: UIViewController {
 	private lazy var collectionView: UICollectionView = {
 		let layout = UICollectionViewFlowLayout()
 		let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-
+		collectionView.showsVerticalScrollIndicator = false
+		
 		collectionView.delegate = self
 		collectionView.dataSource = self
 
-		collectionView.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
+		collectionView.backgroundColor = UIColor.clear
 		collectionView.register(DiaryCollectionViewCell.self, forCellWithReuseIdentifier: "DiaryCollectionViewCell")
 		collectionView.register(DiaryCollectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "DiaryCollectionHeaderView")
 
@@ -92,7 +93,6 @@ final class MyHomeViewController: UIViewController {
 
 extension MyHomeViewController: UICollectionViewDataSource {
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		// TODO: ViewModel 작업 후 수정 예정
 		if viewModel.diaryCellData.isEmpty {
 			let label = UILabel()
 			label.text = "다이어리를 추가해주세요."
@@ -144,6 +144,10 @@ extension MyHomeViewController: UICollectionViewDelegateFlowLayout {
 
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
 		return UIEdgeInsets(top: myDevice.diaryCollectionViewCellTop, left: myDevice.diaryCollectionViewCellLeading, bottom: myDevice.diaryCollectionViewCellBottom, right: myDevice.diaryCollectionViewCellTrailing)
+	}
+	
+	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+		return CGFloat(UIScreen.getDevice().diaryCollectionViewCellTop)
 	}
 }
 

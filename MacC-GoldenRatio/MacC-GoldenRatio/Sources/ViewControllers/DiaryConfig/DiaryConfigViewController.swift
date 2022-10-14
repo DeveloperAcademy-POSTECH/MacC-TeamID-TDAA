@@ -30,7 +30,7 @@ class DiaryConfigViewController: UIViewController {
     private var configState: ConfigState
     private var viewModel = DiaryConfigViewModel()
     private var diaryToConfig: Diary?
-    
+    private var dateInterval: [Date] = []
     
     init(mode configState: ConfigState, diary: Diary?) {
         self.configState = configState
@@ -52,9 +52,15 @@ class DiaryConfigViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // 자연스러운 TextFiled를 위한 gesture
+        let tapGesture = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
+        view.addGestureRecognizer(tapGesture)
+        
         view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
+        
         titleSetup()
         collectionViewSetup()
+        textFieldSetup()
     }
     
     private lazy var diaryConfigCollectionView: UICollectionView = {
@@ -73,6 +79,7 @@ class DiaryConfigViewController: UIViewController {
     lazy var contentTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "PlaceHolder"
+        textField.text = diaryToConfig?.diaryName ?? nil
         textField.font = UIFont(name: "EF_Diary", size: 17)
         textField.returnKeyType = .done
         textField.becomeFirstResponder()
@@ -132,12 +139,10 @@ class DiaryConfigViewController: UIViewController {
                     
                 case .modify:
                     self.viewModel.updateDiary()
-                    
-                    // let MyDiaryPagesVC = MyDiaryPagesViewController(diaryData: self.viewModel.diary!)
-                    
                 }
             }
         } else {
+            // TODO: Toast Message로 수정
             let ac = UIAlertController(title: "입력해 주세요", message: "빈 칸을 채워주세요!", preferredStyle: .alert)
             ac.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
             self.present(ac, animated: true)
@@ -172,8 +177,9 @@ class DiaryConfigViewController: UIViewController {
         view.addSubview(contentTextField)
         contentTextField.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(20)
+            $0.trailing.equalToSuperview().inset(50)
             $0.height.equalTo(44)
-            $0.top.equalTo(diaryConfigCollectionView.snp.top).inset(64)
+            $0.top.equalTo(diaryConfigCollectionView.snp.top).inset(62)
         }
     }
     
@@ -197,6 +203,7 @@ extension DiaryConfigViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
         guard let cell = diaryConfigCollectionView.dequeueReusableCell(withReuseIdentifier: "DiaryConfigCollectionViewCell", for: indexPath) as? DiaryConfigCollectionViewCell else { return UICollectionViewCell() }
         
         
@@ -207,8 +214,11 @@ extension DiaryConfigViewController: UICollectionViewDataSource {
             cell.setContent(indexPath: indexPath, diary: diaryToConfig)
         }
         
-        cell.contentButton?.tag = indexPath.row
-        cell.contentButton?.addTarget(self, action: #selector(contentButtonTapped), for: .touchUpInside)
+        cell.contentButton.tag = indexPath.row
+        cell.clearButton.tag = indexPath.row
+        
+        cell.contentButton.addTarget(self, action: #selector(contentButtonTapped), for: .touchUpInside)
+        cell.clearButton.addTarget(self, action: #selector(clearButtonTapped), for: .touchUpInside)
         return cell
     }
     
@@ -221,6 +231,8 @@ extension DiaryConfigViewController: UICollectionViewDataSource {
             textFieldSetup()
             
         case .location:
+            self.contentTextField.endEditing(true)
+            
             let mapSearchViewController = MapSearchViewController()
             mapSearchViewController.completion = { mapItem in
                 UIView.performWithoutAnimation {
@@ -238,12 +250,15 @@ extension DiaryConfigViewController: UICollectionViewDataSource {
             self.present(mapSearchViewController, animated: true)
             
         case .diaryDate:
-            let pickerController = CalendarPickerViewController(startBaseDate: Date(), selectedDateChanged: { [self, weak sender] date in
+            self.contentTextField.endEditing(true)
+            
+            let pickerController = CalendarPickerViewController(dateArray: dateInterval, selectedDateChanged: { [self, weak sender] date in
                     guard let sender = sender else { return }
                     UIView.performWithoutAnimation {
                         let startDate = date[0]
                         let endDate = date[1]
                         
+                        dateInterval = [startDate, endDate]
                         self.viewModel.startDate = startDate.customFormat()
                         self.viewModel.endDate = endDate.customFormat()
                         
@@ -254,6 +269,23 @@ extension DiaryConfigViewController: UICollectionViewDataSource {
                 })
             
             present(pickerController, animated: true, completion: nil)
+        }
+    }
+    
+    @objc func clearButtonTapped(_ sender: UIButton) {
+        let configContentType = ConfigContentType.allCases[sender.tag]
+        
+        switch configContentType {
+        case .diaryName:
+            self.contentTextField.text = nil
+        case .location, .diaryDate:
+            self.contentTextField.endEditing(true)
+            
+            UIView.performWithoutAnimation {
+                let contentButton = self.diaryConfigCollectionView.viewWithTag(sender.tag) as? UIButton ?? UIButton()
+                contentButton.setTitle("PlaceHolder", for: .normal)
+                contentButton.tintColor = .placeholderText
+            }
         }
     }
 }

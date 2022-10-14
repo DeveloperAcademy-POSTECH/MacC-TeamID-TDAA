@@ -9,7 +9,7 @@ import SnapKit
 import UIKit
 
 class CalendarPickerViewController: UIViewController {
-    var dateInterval: [Date] = []
+    var dateInterval: [Date]
     
     // MARK: Views
     private lazy var dimmedBackgroundView: UIView = {
@@ -20,7 +20,7 @@ class CalendarPickerViewController: UIViewController {
         return view
     }()
     
-    private lazy var collectionView: UICollectionView = {
+    lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 0
         layout.minimumInteritemSpacing = 0
@@ -42,24 +42,31 @@ class CalendarPickerViewController: UIViewController {
             self.startBaseDate = self.calendar.date(byAdding: .month, value: 1, to: self.startBaseDate) ?? self.startBaseDate
         })
     
-    lazy var footerView = CalendarPickerFooterView(
-        selectButtonCompletionHanlder: { [weak self] in
+    lazy var footerView = CalendarPickerFooterView(timeInterval: dateInterval, selectButtonCompletionHanlder: { [weak self] in
             guard let self = self else { return }
-            
             
             self.selectedDateChanged(self.dateInterval)
             self.dismissCalendar()
         })
     
+    private lazy var closeButton: UIButton = {
+        let button = UIButton()
+        let configuration = UIImage.SymbolConfiguration(pointSize: 50)
+        button.setImage(UIImage(systemName: "xmark.circle.fill", withConfiguration: configuration), for: .normal)
+        button.tintColor = .white
+        button.addTarget(self, action: #selector(dismissCalendar), for: .touchUpInside)
+        return button
+    }()
+    
     // MARK: Calendar Data Values
     
     private let selectedStartDate: Date
+    
     private var startBaseDate: Date {
         didSet {
             days = generateDaysInMonth(for: startBaseDate)
             collectionView.reloadData()
             headerView.baseDate = startBaseDate
-            
         }
     }
     private var endBaseDate: Date? {
@@ -86,11 +93,18 @@ class CalendarPickerViewController: UIViewController {
     
     // MARK: Initializers
     
-    init(startBaseDate: Date, selectedDateChanged: @escaping (([Date]) -> Void)) {
-        self.selectedStartDate = startBaseDate
-        self.startBaseDate = startBaseDate
-        self.selectedDateChanged = selectedDateChanged
+    init(dateArray: [Date], selectedDateChanged: @escaping (([Date]) -> Void)) {
+        self.dateInterval = dateArray
         
+        if dateArray.isEmpty {
+            self.selectedStartDate = Date()
+            self.startBaseDate = Date()
+        } else {
+            self.selectedStartDate = dateArray[0]
+            self.startBaseDate = dateArray[0]
+        }
+        self.selectedDateChanged = selectedDateChanged
+
         super.init(nibName: nil, bundle: nil)
         
         modalPresentationStyle = .overCurrentContext
@@ -108,7 +122,7 @@ class CalendarPickerViewController: UIViewController {
         super.viewDidLoad()
         collectionView.backgroundColor = .systemGroupedBackground
         
-        [dimmedBackgroundView, collectionView, headerView, footerView].forEach {
+        [dimmedBackgroundView, collectionView, headerView, footerView, closeButton].forEach {
             view.addSubview($0)
         }
         
@@ -117,7 +131,7 @@ class CalendarPickerViewController: UIViewController {
         }
         
         collectionView.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.leading.trailing.equalToSuperview().inset(21)
             $0.centerY.equalToSuperview()
             $0.height.equalToSuperview().multipliedBy(0.35)
         }
@@ -131,13 +145,20 @@ class CalendarPickerViewController: UIViewController {
         footerView.snp.makeConstraints {
             $0.leading.trailing.equalTo(collectionView)
             $0.top.equalTo(collectionView.snp.bottom)
-            $0.height.equalTo(55)
+            $0.height.equalTo(45)
+        }
+        
+        closeButton.snp.makeConstraints {
+            $0.top.equalTo(footerView.snp.bottom).offset(30)
+            $0.centerX.equalToSuperview()
+            $0.size.equalTo(CGSize(width: 50, height: 50))
         }
         
         collectionView.register(CalendarDateCollectionViewCell.self, forCellWithReuseIdentifier: CalendarDateCollectionViewCell.reuseIdentifier)
         
         collectionView.dataSource = self
         collectionView.delegate = self
+        
         headerView.baseDate = startBaseDate
     }
     
@@ -191,7 +212,7 @@ private extension CalendarPickerViewController {
     func generateDay(offsetBy dayOffset: Int, for startBaseDate: Date, isWithinDisplayedMonth: Bool) -> Day {
         let date = calendar.date(byAdding: .day, value: dayOffset, to: startBaseDate) ?? startBaseDate
         
-        return Day(date: date, number: dateFormatter.string(from: date), isSelected: calendar.isDate(date, inSameDayAs: selectedStartDate), isWithinDisplayedMonth: isWithinDisplayedMonth)
+        return Day(date: date, number: dateFormatter.string(from: date), isSelected: false, isInTerm: false, isWithinDisplayedMonth: isWithinDisplayedMonth)
     }
     
     func generateStartOfNextMonth(
@@ -231,6 +252,19 @@ extension CalendarPickerViewController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CalendarDateCollectionViewCell.reuseIdentifier, for: indexPath) as! CalendarDateCollectionViewCell
         
         cell.day = day
+        guard let date = cell.day?.date else { return cell }
+        
+        if !dateInterval.isEmpty {
+            let startDate = dateInterval[0]
+            let endDate = dateInterval.last ?? dateInterval[0]
+            let allDate = Date.dates(from: startDate, to: endDate)
+            if allDate.contains(date) && dateInterval.contains(date) {
+                cell.day?.isSelected = true
+            } else if allDate.contains(date) {
+                cell.day?.isInTerm = true
+            }
+        }
+        
         return cell
     }
 }
@@ -240,15 +274,15 @@ extension CalendarPickerViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let day = days[indexPath.row]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CalendarDateCollectionViewCell.reuseIdentifier, for: indexPath) as! CalendarDateCollectionViewCell
-        
         cell.day = day
+        cell.updateSelectionStatus()
         collectionView.reloadData()
         updateFooterButtonLabel(day: day)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = Int(collectionView.frame.width / 7)
-        let height = Int(collectionView.frame.height) / numberOfWeeksInBaseDate
+        let width = Int((collectionView.frame.width) / 7)
+        let height = Int(collectionView.frame.height - 10) / numberOfWeeksInBaseDate
         return CGSize(width: width, height: height)
     }
     
@@ -260,9 +294,11 @@ extension CalendarPickerViewController: UICollectionViewDelegateFlowLayout {
         
         switch dateInterval.count {
         case 1:
+            self.footerView.selectButton.isEnabled = false
             let startDate = dateInterval[0]
             self.footerView.buttonLabel = "\(startDate.customFormat()) \(startDate.dayOfTheWeek()) 부터"
         case 2:
+            self.footerView.selectButton.isEnabled = true
             let startDate = dateInterval[0]
             let endDate = dateInterval[1]
             let timeInterval = Int(endDate.timeIntervalSince(startDate)) / 86400
@@ -273,6 +309,7 @@ extension CalendarPickerViewController: UICollectionViewDelegateFlowLayout {
                 self.footerView.buttonLabel = "\(startDate.customFormat()) \(startDate.dayOfTheWeek()) ~ \(endDate.customFormat()) \(endDate.dayOfTheWeek()) ∙ \(timeInterval)박"
             }
         default:
+            self.footerView.selectButton.isEnabled = false
             self.footerView.buttonLabel = "날짜를 선택하세요"
         }
     }

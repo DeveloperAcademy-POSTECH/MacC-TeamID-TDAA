@@ -9,22 +9,28 @@ import SnapKit
 import UIKit
 
 class CalendarDateCollectionViewCell: UICollectionViewCell {
-    private lazy var selectionBackgroundView: UIView = {
+    lazy var selectionBackgroundView: UIView = {
         let view = UIView()
         view.clipsToBounds = true
-        view.backgroundColor = .systemRed
+        view.backgroundColor = UIColor(red: 0.608, green: 0.533, blue: 0.486, alpha: 1.0)
         return view
     }()
     
-    private lazy var numberLabel: UILabel = {
+    lazy var termBackgroundView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(red: 0.945, green: 0.914, blue: 0.875, alpha: 0.4)
+        return view
+    }()
+    
+    lazy var numberLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
-        label.textColor = .label
+        label.font = UIFont.systemFont(ofSize: 20, weight: .regular)
+        label.textColor = UIColor(red: 0.816, green: 0.765, blue: 0.702, alpha: 1.0)
         return label
     }()
     
-    private lazy var accessibilityDateFormatter: DateFormatter = {
+    lazy var accessibilityDateFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
         dateFormatter.calendar = Calendar(identifier: .gregorian)
         dateFormatter.setLocalizedDateFormatFromTemplate("EEEE, MMMM d")
@@ -49,7 +55,7 @@ class CalendarDateCollectionViewCell: UICollectionViewCell {
         isAccessibilityElement = true
         accessibilityTraits = .button
         
-        [selectionBackgroundView, numberLabel].forEach {
+        [selectionBackgroundView, termBackgroundView, numberLabel].forEach {
             contentView.addSubview($0)
         }
     }
@@ -74,6 +80,12 @@ class CalendarDateCollectionViewCell: UICollectionViewCell {
             $0.size.equalTo(CGSize(width: size, height: size))
         }
         
+        termBackgroundView.snp.makeConstraints {
+            $0.center.equalTo(numberLabel)
+            $0.width.equalTo(contentView.snp.width)
+            $0.height.equalTo(size)
+        }
+        
         selectionBackgroundView.layer.cornerRadius = size / 2
     }
     
@@ -85,7 +97,7 @@ class CalendarDateCollectionViewCell: UICollectionViewCell {
 }
 
 // MARK: - Appearance
-private extension CalendarDateCollectionViewCell {
+extension CalendarDateCollectionViewCell {
     func updateSelectionStatus() {
         guard let day = day else { return }
         
@@ -93,6 +105,10 @@ private extension CalendarDateCollectionViewCell {
             applySelectedStyle()
         } else {
             applyDefaultStyle(isWithinDisplayedMonth: day.isWithinDisplayedMonth)
+        }
+        
+        if day.isInTerm {
+            applyInTermStyle()
         }
     }
 
@@ -112,12 +128,20 @@ private extension CalendarDateCollectionViewCell {
         selectionBackgroundView.isHidden = isSmallScreenSize
     }
     
+    func applyInTermStyle() {
+        accessibilityTraits.insert(.selected)
+        accessibilityHint = nil
+        
+        termBackgroundView.isHidden = isSmallScreenSize
+    }
+    
     func applyDefaultStyle(isWithinDisplayedMonth: Bool) {
         accessibilityTraits.remove(.selected)
         accessibilityHint = "Tap to select"
         
-        numberLabel.textColor = isWithinDisplayedMonth ? .label : .secondaryLabel
+        numberLabel.textColor = isWithinDisplayedMonth ? .label : UIColor(red: 0.816, green: 0.765, blue: 0.702, alpha: 1.0)
         selectionBackgroundView.isHidden = true
+        termBackgroundView.isHidden = true
     }
 }
 

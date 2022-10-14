@@ -8,16 +8,18 @@ import SnapKit
 import UIKit
 
 class CalendarPickerFooterView: UIView {
+    private var timeInterval: [Date] = []
     var buttonLabel: String = "날짜를 선택하세요" {
         didSet {
             self.selectButton.setTitle(buttonLabel, for: .normal)
         }
     }
     
-    private lazy var selectButton: UIButton = {
+    lazy var selectButton: UIButton = {
         let button = UIButton()
-        button.setTitle("날짜를 선택하세요", for: .normal)
-        button.backgroundColor = .systemGray
+        button.setTitle(buttonLabel, for: .normal)
+        button.titleLabel?.font = UIFont(name: "EF_Diary", size: 14) ?? UIFont.systemFont(ofSize: 14)
+        button.backgroundColor = UIColor(red: 0.608, green: 0.533, blue: 0.486, alpha: 1.0)
         button.layer.cornerRadius = 5
         button.addTarget(self, action: #selector(selectButtonTapped), for: .touchUpInside)
         return button
@@ -25,8 +27,17 @@ class CalendarPickerFooterView: UIView {
     
     let selectButtonCompletionHanlder: (() -> Void)
     
-    init(selectButtonCompletionHanlder: @escaping (() -> Void)) {
+    init(timeInterval: [Date], selectButtonCompletionHanlder: @escaping (() -> Void)) {
+        self.timeInterval = timeInterval
         self.selectButtonCompletionHanlder = selectButtonCompletionHanlder
+        
+        if timeInterval.isEmpty {
+            self.buttonLabel = "날짜를 선택하세요"
+        } else {
+            let startDate = timeInterval[0]
+            let endDate = timeInterval[1]
+            self.buttonLabel = "\(startDate.customFormat()) \(startDate.dayOfTheWeek())  - \(endDate.customFormat()) \(endDate.dayOfTheWeek())"
+        }
         
         super.init(frame: CGRect.zero)
         
@@ -54,8 +65,8 @@ class CalendarPickerFooterView: UIView {
         selectButton.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(16)
             $0.trailing.equalToSuperview().inset(16)
-            $0.center.equalToSuperview()
-            $0.height.equalToSuperview().multipliedBy(0.65)
+            $0.bottom.equalToSuperview().inset(12)
+            $0.height.equalTo(40)
         }
     }
     

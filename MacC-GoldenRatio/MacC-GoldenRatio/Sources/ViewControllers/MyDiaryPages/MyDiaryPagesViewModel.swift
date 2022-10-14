@@ -44,8 +44,4 @@ class MyDiaryPagesViewModel {
         }
 
     }
-    
-    func getThumbnailImages() {
-        
-    }
 }

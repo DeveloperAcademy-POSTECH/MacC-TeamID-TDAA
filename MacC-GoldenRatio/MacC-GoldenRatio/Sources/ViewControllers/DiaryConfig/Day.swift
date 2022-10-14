@@ -8,8 +8,9 @@
 import Foundation
 
 struct Day {
-  let date: Date
-  let number: String
-  let isSelected: Bool
-  let isWithinDisplayedMonth: Bool
+    let date: Date
+    let number: String
+    var isSelected: Bool
+    var isInTerm: Bool
+    let isWithinDisplayedMonth: Bool
 }

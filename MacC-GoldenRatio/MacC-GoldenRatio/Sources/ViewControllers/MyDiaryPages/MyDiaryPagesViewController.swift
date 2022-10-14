@@ -38,6 +38,24 @@ class MyDiaryPagesViewController: UIViewController {
 		fatalError("init(coder:) has not been implemented")
 	}
     
+    private lazy var backButton: UIButton = {
+        let button = UIButton()
+        let configuration = UIImage.SymbolConfiguration(pointSize: 24, weight: .semibold, scale: .medium)
+        button.tintColor = .black
+        button.setImage(UIImage(systemName: "chevron.left", withConfiguration: configuration), for: .normal)
+        button.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var menuButton: UIButton = {
+        let button = UIButton()
+        let configuration = UIImage.SymbolConfiguration(pointSize: 24, weight: .semibold, scale: .medium)
+        button.tintColor = .black
+        button.setImage(UIImage(systemName: "ellipsis", withConfiguration: configuration), for: .normal)
+        button.addTarget(self, action: #selector(menuButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = diaryData.diaryName
@@ -94,14 +112,13 @@ class MyDiaryPagesViewController: UIViewController {
         
         super.viewDidLoad()
         view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
-        
-        navigationBarSetup()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         // Full Modal dismiss 이후 호출, 업데이트된 다이어리 정보 반영
         super.viewWillAppear(animated)
-        
+        self.navigationController?.isNavigationBarHidden = true
+
         // TODO: - modal completion handler 필요?
         Task {
             do {
@@ -110,6 +127,7 @@ class MyDiaryPagesViewController: UIViewController {
                 print(error.localizedDescription)
             }
             print(diaryData)
+            
             self.collectionViewSetup()
             self.componentsSetup()
             
@@ -118,6 +136,7 @@ class MyDiaryPagesViewController: UIViewController {
     
     // MARK: - Feature methods
     @objc private func backButtonTapped() {
+        self.navigationController?.isNavigationBarHidden = true
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -179,16 +198,6 @@ class MyDiaryPagesViewController: UIViewController {
     }
     
     // MARK: - Setup methods
-    private func navigationBarSetup() {
-        let configuration = UIImage.SymbolConfiguration(pointSize: 24, weight: .semibold, scale: .medium)
-        let menuButton = UIBarButtonItem(image: UIImage(systemName: "ellipsis", withConfiguration: configuration), style: .plain, target: self, action: #selector(menuButtonTapped))
-        
-        navigationItem.hidesBackButton = true
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left", withConfiguration: configuration), style: .plain, target: self, action: #selector(backButtonTapped))
-        navigationItem.rightBarButtonItem = menuButton
-        navigationItem.leftBarButtonItem?.tintColor = .black
-        navigationItem.rightBarButtonItem?.tintColor = .black
-    }
     
     private func collectionViewSetup() {
         
@@ -201,7 +210,7 @@ class MyDiaryPagesViewController: UIViewController {
     }
     
     private func componentsSetup() {
-        [titleLabel, dayLabel, previousButton, nextButton].forEach {
+        [titleLabel, dayLabel, backButton, menuButton, previousButton, nextButton].forEach {
             view.addSubview($0)
         }
         
@@ -213,6 +222,16 @@ class MyDiaryPagesViewController: UIViewController {
         dayLabel.snp.makeConstraints {
             $0.leading.equalTo(myPagesCollectionView)
             $0.bottom.equalTo(myPagesCollectionView.snp.top).offset(-30)
+        }
+        
+        backButton.snp.makeConstraints {
+            $0.leading.equalToSuperview().inset(20)
+            $0.top.equalTo(view.safeAreaLayoutGuide).inset(13)
+        }
+        
+        menuButton.snp.makeConstraints {
+            $0.trailing.equalToSuperview().inset(20)
+            $0.top.equalTo(view.safeAreaLayoutGuide).inset(13)
         }
         
         previousButton.snp.makeConstraints {
@@ -242,7 +261,12 @@ extension MyDiaryPagesViewController: UICollectionViewDataSource {
         
         if diaryData.pageThumbnails[indexPath.row] != "NoURL" {
             // TODO: 이미지 로드 해서 cell에 할당
-            cell.previewImageView.image = UIImage(systemName: "applelogo") ?? UIImage()
+            Task {
+                let imageURL = diaryData.pageThumbnails[indexPath.row]
+                FirebaseStorageManager.downloadImage(urlString: imageURL) { image in
+                    cell.previewImageView.image = image
+                }
+            }
         }
         
         return cell
@@ -260,6 +284,7 @@ extension MyDiaryPagesViewController: UICollectionViewDelegate {
         debugPrint(diaryData)
         print(selectedDay)
         self.navigationController?.pushViewController(pageViewController, animated: false)
+        self.navigationController?.isNavigationBarHidden = false
     }
 
 }

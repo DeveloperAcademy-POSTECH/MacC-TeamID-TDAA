@@ -136,7 +136,7 @@ class PopUpViewController: UIViewController {
     public func addButton(buttonTitle: String, action: (() -> Void)? = nil) {
         let button = UIButton()
         button.setTitle(buttonTitle, for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 17, weight: .light)
+        button.titleLabel?.font = device.popUpModalFont
         button.setTitleColor(.black, for: .normal)
         button.isUserInteractionEnabled = true
         button.addAction(for: .touchUpInside) { _ in

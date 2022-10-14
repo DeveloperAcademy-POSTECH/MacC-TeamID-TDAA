@@ -9,16 +9,16 @@ import SnapKit
 import UIKit
 
 class CalendarDateCollectionViewCell: UICollectionViewCell {
+    
     lazy var selectionBackgroundView: UIView = {
         let view = UIView()
         view.clipsToBounds = true
-        view.backgroundColor = UIColor(red: 0.608, green: 0.533, blue: 0.486, alpha: 1.0)
         return view
     }()
     
     lazy var termBackgroundView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(red: 0.945, green: 0.914, blue: 0.875, alpha: 0.4)
+        view.backgroundColor = UIColor(named: "calendarTermColor")
         return view
     }()
     
@@ -26,8 +26,14 @@ class CalendarDateCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 20, weight: .regular)
-        label.textColor = UIColor(red: 0.816, green: 0.765, blue: 0.702, alpha: 1.0)
         return label
+    }()
+    
+    lazy var marker: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(named: "calendarTermColor")
+        view.clipsToBounds = true
+        return view
     }()
     
     lazy var accessibilityDateFormatter: DateFormatter = {
@@ -55,7 +61,7 @@ class CalendarDateCollectionViewCell: UICollectionViewCell {
         isAccessibilityElement = true
         accessibilityTraits = .button
         
-        [selectionBackgroundView, termBackgroundView, numberLabel].forEach {
+        [marker, termBackgroundView, selectionBackgroundView, numberLabel].forEach {
             contentView.addSubview($0)
         }
     }
@@ -65,9 +71,13 @@ class CalendarDateCollectionViewCell: UICollectionViewCell {
     }
     
     override func layoutSubviews() {
+        guard let day = day else { return }
+        
         super.layoutSubviews()
         selectionBackgroundView.snp.removeConstraints()
-
+        termBackgroundView.snp.removeConstraints()
+        marker.snp.removeConstraints()
+        
         let size = traitCollection.horizontalSizeClass == .compact ?
         min(min(frame.width, frame.height) - 10, 60) : 45
         
@@ -80,12 +90,41 @@ class CalendarDateCollectionViewCell: UICollectionViewCell {
             $0.size.equalTo(CGSize(width: size, height: size))
         }
         
-        termBackgroundView.snp.makeConstraints {
-            $0.center.equalTo(numberLabel)
-            $0.width.equalTo(contentView.snp.width)
-            $0.height.equalTo(size)
+        if day.date.dayOfTheWeek() == "일" {
+            marker.snp.makeConstraints {
+                $0.center.equalTo(numberLabel)
+                $0.size.equalTo(CGSize(width: size, height: size))
+            }
+            
+            termBackgroundView.snp.makeConstraints {
+                $0.leading.equalTo(numberLabel.snp.centerX)
+                $0.top.equalTo(selectionBackgroundView.snp.top)
+                $0.width.equalTo(contentView.snp.width).dividedBy(1.8)
+                $0.height.equalTo(selectionBackgroundView.snp.height)
+            }
+        } else if day.date.dayOfTheWeek() == "토"{
+            marker.snp.makeConstraints {
+                $0.center.equalTo(numberLabel)
+                $0.size.equalTo(CGSize(width: size, height: size))
+            }
+            
+            termBackgroundView.snp.makeConstraints {
+                $0.trailing.equalTo(numberLabel.snp.centerX)
+                $0.top.equalTo(selectionBackgroundView.snp.top)
+                $0.width.equalTo(contentView.snp.width).dividedBy(1.8)
+                $0.height.equalTo(selectionBackgroundView.snp.height)
+            }
+        } else {
+            termBackgroundView.snp.makeConstraints {
+                $0.center.equalTo(numberLabel)
+                $0.width.equalTo(contentView.snp.width).multipliedBy(1.1)
+                $0.height.equalTo(selectionBackgroundView.snp.height)
+            }
         }
         
+        
+        
+        marker.layer.cornerRadius = size / 2
         selectionBackgroundView.layer.cornerRadius = size / 2
     }
     
@@ -132,6 +171,7 @@ extension CalendarDateCollectionViewCell {
         accessibilityTraits.insert(.selected)
         accessibilityHint = nil
         
+        marker.isHidden = isSmallScreenSize
         termBackgroundView.isHidden = isSmallScreenSize
     }
     
@@ -139,7 +179,9 @@ extension CalendarDateCollectionViewCell {
         accessibilityTraits.remove(.selected)
         accessibilityHint = "Tap to select"
         
-        numberLabel.textColor = isWithinDisplayedMonth ? .label : UIColor(red: 0.816, green: 0.765, blue: 0.702, alpha: 1.0)
+        numberLabel.textColor = isWithinDisplayedMonth ? UIColor(named: "calendarTextColor") : UIColor(named: "calendarSubTextColor")
+        
+        marker.isHidden = true
         selectionBackgroundView.isHidden = true
         termBackgroundView.isHidden = true
     }

@@ -258,9 +258,14 @@ extension CalendarPickerViewController: UICollectionViewDataSource {
             let startDate = dateInterval[0]
             let endDate = dateInterval.last ?? dateInterval[0]
             let allDate = Date.dates(from: startDate, to: endDate)
-            if allDate.contains(date) && dateInterval.contains(date) {
+            
+            if dateInterval.contains(date) {
                 cell.day?.isSelected = true
-            } else if allDate.contains(date) {
+                cell.selectionBackgroundView.backgroundColor = (cell.day?.date == startDate ? UIColor(named: "startDateColor") : UIColor(named: "endDateColor"))
+                
+            }
+            
+            if allDate.contains(date) {
                 cell.day?.isInTerm = true
             }
         }

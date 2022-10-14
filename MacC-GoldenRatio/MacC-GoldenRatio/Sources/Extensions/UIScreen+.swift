@@ -431,12 +431,18 @@ extension UIScreen {
         }
         
 // MARK: - My Diary Pages
+        var myDiaryPagesItemSpacing: CGFloat {
+            switch self {
+            default: return 20
+            }
+        }
 // MARK: - PopUp Modal View
         var popUpModalFont: UIFont {
             switch self {
             default: return UIFont(name: "EF_Diary", size: 17) ?? UIFont.systemFont(ofSize: 17)
             }
         }
+// MARK: - Calendar View
 	}
 
 }

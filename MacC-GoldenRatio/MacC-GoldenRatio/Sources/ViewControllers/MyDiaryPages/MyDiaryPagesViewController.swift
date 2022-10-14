@@ -130,7 +130,7 @@ class MyDiaryPagesViewController: UIViewController {
             
             self.collectionViewSetup()
             self.componentsSetup()
-            
+            self.myPagesCollectionView.reloadData()
         }
     }
     
@@ -267,11 +267,9 @@ extension MyDiaryPagesViewController: UICollectionViewDataSource {
                     FirebaseStorageManager.downloadImage(urlString: imageURL) { image in
                         ImageManager.shared.cacheImage(url: imageURL, image: image ?? UIImage())
                         cell.previewImageView.image = image
-                        print("network")
                     }
                     return
                 }
-                print("cache")
                 cell.previewImageView.image = image
             }
         }

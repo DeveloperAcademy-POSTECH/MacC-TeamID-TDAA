@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0A3ED14128F98956000D55D8 /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3ED14028F98956000D55D8 /* MyPageViewModel.swift */; };
+		0A3ED14428F99F11000D55D8 /* TravelsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3ED14328F99F11000D55D8 /* TravelsCollectionViewCell.swift */; };
+		0A3ED14628F99FBF000D55D8 /* SetProfileImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3ED14528F99FBF000D55D8 /* SetProfileImageViewController.swift */; };
 		0A5235B028F8510C00AC77AC /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5235AF28F8510C00AC77AC /* UIFont+.swift */; };
 		0A5235B228F854C200AC77AC /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5235B128F854C200AC77AC /* UIColor+.swift */; };
 		0A5DC37B28F7F65B00AABED1 /* ImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5DC37A28F7F65B00AABED1 /* ImageManager.swift */; };
@@ -123,6 +125,8 @@
 
 /* Begin PBXFileReference section */
 		0A3ED14028F98956000D55D8 /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
+		0A3ED14328F99F11000D55D8 /* TravelsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelsCollectionViewCell.swift; sourceTree = "<group>"; };
+		0A3ED14528F99FBF000D55D8 /* SetProfileImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetProfileImageViewController.swift; sourceTree = "<group>"; };
 		0A5235AF28F8510C00AC77AC /* UIFont+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+.swift"; sourceTree = "<group>"; };
 		0A5235B128F854C200AC77AC /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		0A5DC37A28F7F65B00AABED1 /* ImageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageManager.swift; sourceTree = "<group>"; };
@@ -240,8 +244,17 @@
 			isa = PBXGroup;
 			children = (
 				E2EA7F0B28E56DF600AC1C49 /* MyPageViewController.swift */,
+				0A3ED14528F99FBF000D55D8 /* SetProfileImageViewController.swift */,
 			);
 			path = MyPageViewControllers;
+			sourceTree = "<group>";
+		};
+		0A3ED14228F99EEF000D55D8 /* MyPage */ = {
+			isa = PBXGroup;
+			children = (
+				0A3ED14328F99F11000D55D8 /* TravelsCollectionViewCell.swift */,
+			);
+			path = MyPage;
 			sourceTree = "<group>";
 		};
 		0A5E904328E8575C00B381B8 /* Page */ = {
@@ -386,6 +399,7 @@
 		E276B91728E4692B00163833 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				0A3ED14228F99EEF000D55D8 /* MyPage */,
 				E25753BC28ED8E3B00023619 /* MyHome */,
 				0AAB2AD828EC8C69009FBD96 /* Page */,
 				CC6BD74528EC18B8001ED665 /* DiaryConfigCollectionViewCell.swift */,
@@ -725,8 +739,10 @@
 				E2B025BC28EB326C00B73891 /* MyHomeViewModel.swift in Sources */,
 				E2CCF30128F74450008A12F9 /* CustomAnnotationView.swift in Sources */,
 				0A5E904828E857E200B381B8 /* StickerView.swift in Sources */,
+				0A3ED14628F99FBF000D55D8 /* SetProfileImageViewController.swift in Sources */,
 				0AAB2ACF28EAFF52009FBD96 /* TableView+.swift in Sources */,
 				CC40BC1C28EEAEB200DF48E1 /* Day.swift in Sources */,
+				0A3ED14428F99F11000D55D8 /* TravelsCollectionViewCell.swift in Sources */,
 				E2FA41B028F6A89900BBA354 /* MapView.swift in Sources */,
 				0AAB2ADA28EC8C8D009FBD96 /* StickerPickerCollectionViewCell.swift in Sources */,
 				0A5DC37B28F7F65B00AABED1 /* ImageManager.swift in Sources */,

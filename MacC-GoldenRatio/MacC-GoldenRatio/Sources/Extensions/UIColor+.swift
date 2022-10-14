@@ -29,4 +29,9 @@ extension UIColor {
         let color = UIColor(patternImage: image)
         return color
     }
+    
+    static var endDateColor: UIColor {
+        let color = UIColor(named: "endDateColor")!
+        return color
+    }
 }

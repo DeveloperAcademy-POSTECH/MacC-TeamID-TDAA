@@ -8,6 +8,7 @@ import FirebaseAuth
 import UIKit
 
 class MyPageViewModel {
+    static let shared = MyPageViewModel()
     private var myUID: String = Auth.auth().currentUser?.uid ?? ""
     @Published var myUser: User = User(userUID: "", userName: "", userImageURL: "", diaryUUIDs: [""])
     @Published var myProfileImage: UIImage = UIImage()
@@ -23,9 +24,10 @@ class MyPageViewModel {
             }
         }
     }
+
     private func fetchImage() async throws {
         let url = myUser.userImageURL
-        guard var image = ImageManager.shared.searchImage(url: url) else {
+        guard let image = ImageManager.shared.searchImage(url: url) else {
             FirebaseStorageManager.downloadImage(urlString: url) { result in
                 self.myProfileImage = result ?? UIImage()
                 ImageManager.shared.cacheImage(url: url, image: self.myProfileImage)
@@ -33,5 +35,23 @@ class MyPageViewModel {
             return
         }
         myProfileImage = image
+    }
+    
+    func setUserData() {
+        FirestoreClient().setMyUser(myUser: myUser)
+    }
+    
+    func setNickName(string: String) {
+        self.myUser.userName = string
+    }
+    
+    func setProfileImage(image: UIImage, completion: @escaping () -> Void) {
+        FirebaseStorageManager.uploadImage(image: image, pathRoot: "User/" + self.myUser.userUID.description) { url in
+            guard let urlString = url?.absoluteString else { return }
+            self.myUser.userImageURL = urlString
+            self.myProfileImage = image
+            ImageManager.shared.cacheImage(url: urlString, image: image)
+            completion()
+        }
     }
 }

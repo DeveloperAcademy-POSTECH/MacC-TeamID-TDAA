@@ -70,4 +70,12 @@ class FirestoreClient {
         
         return user
     }
+    
+    func setMyUser(myUser: User) {
+        do {
+            try db.collection("User").document(myUser.userUID).setData(from: myUser)
+        } catch {
+            print(error)
+        }
+    }
 }

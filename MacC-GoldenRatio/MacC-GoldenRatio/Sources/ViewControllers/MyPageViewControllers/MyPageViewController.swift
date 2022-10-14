@@ -12,7 +12,7 @@ import UIKit
 class MyPageViewController: UIViewController {
     private var cancelBag = Set<AnyCancellable>()
     private let myDevice = UIScreen.getDevice()
-    private let viewModel = MyPageViewModel()
+    private let viewModel = MyPageViewModel.shared
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
@@ -156,7 +156,9 @@ class MyPageViewController: UIViewController {
     }
     
     @objc private func onTapProfileSetting() {
-        
+        let viewController = SetProfileImageViewController()
+        viewController.modalPresentationStyle = .fullScreen
+        self.present(viewController, animated: true)
     }
 }
 
@@ -201,36 +203,6 @@ extension MyPageViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
-class TravelsCollectionViewCell: UICollectionViewCell {
-    private let imageView: UIImageView = {
-        let imageView = UIImageView()
-        return imageView
-    }()
-    
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        backgroundColor = .clear
-        contentView.addSubview(imageView)
-        imageView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-    }
-    
-    func setUI(image: UIImage) {
-        imageView.image = image
-    }
-}
 private extension MyPageViewController {
     func setupViewModel() {
         viewModel.$myUser

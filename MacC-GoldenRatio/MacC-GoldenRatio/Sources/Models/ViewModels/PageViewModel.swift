@@ -93,7 +93,7 @@ class PageViewModel {
     }
     
     func upLoadThumbnail(image: UIImage, _ completion: @escaping () -> Void) {
-        FirebaseStorageManager.uploadImage(image: image, pathRoot: diary.diaryUUID + "/thumbnail") { url in
+        FirebaseStorageManager.uploadImage(image: image, pathRoot: "Diary/" + diary.diaryUUID.description + "/thumbnail") { url in
             guard let url = url else { return }
             self.diary.pageThumbnails[self.selectedDay] = url.description
             completion()

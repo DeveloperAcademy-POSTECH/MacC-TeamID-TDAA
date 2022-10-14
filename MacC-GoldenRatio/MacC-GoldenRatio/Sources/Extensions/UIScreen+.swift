@@ -499,6 +499,12 @@ extension UIScreen {
             default: return 245
             }
         }
+        /// 150*150
+        var setProfileProfileImageSize: CGSize {
+            switch self {
+            default: return CGSize(width: 150, height: 150)
+            }
+        }
 	}
 
 }

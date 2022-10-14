@@ -16,12 +16,11 @@ class MyAlbumCollectionViewCell: UICollectionViewCell {
 		return imageView
 	}()
 	
-	func setup(imageURL: String) {
+	func setup(image: UIImage) {
 		self.addSubview(imageView)
-		imageView.setImage(with: imageURL)
+		imageView.image = image
 		imageView.snp.makeConstraints {
 			$0.edges.equalToSuperview()
 		}
-		
 	}
 }

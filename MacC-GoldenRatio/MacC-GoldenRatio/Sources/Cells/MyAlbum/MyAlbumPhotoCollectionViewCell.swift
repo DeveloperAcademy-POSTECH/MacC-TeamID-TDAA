@@ -5,6 +5,7 @@
 //  Created by woo0 on 2022/10/13.
 //
 
+import SnapKit
 import UIKit
 
 class MyAlbumPhotoCollectionViewCell: UICollectionViewCell {
@@ -15,10 +16,10 @@ class MyAlbumPhotoCollectionViewCell: UICollectionViewCell {
 		return imageView
 	}()
 	
-	func setup(imageURL: String) {
+	func setup(image: UIImage) {
 		self.addSubview(imageView)
 		imageView.contentMode = .scaleAspectFit
-		imageView.setImage(with: imageURL)
+		imageView.image = image
 		imageView.snp.makeConstraints {
 			$0.edges.equalToSuperview()
 		}

@@ -74,7 +74,7 @@ class FirestoreClient {
 					}
 				}
 			}
-			albumDatas.append(AlbumData(diaryUUID: diary.diaryUUID, diaryName: diary.diaryName, imageURLs: imageURLs))
+			albumDatas.append(AlbumData(diaryUUID: diary.diaryUUID, diaryName: diary.diaryName, imageURLs: imageURLs, images: nil))
 			imageURLs.removeAll()
 		}
 		return albumDatas

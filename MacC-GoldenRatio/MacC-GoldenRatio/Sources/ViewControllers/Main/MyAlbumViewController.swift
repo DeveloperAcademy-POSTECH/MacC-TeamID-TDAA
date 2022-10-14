@@ -29,7 +29,7 @@ class MyAlbumViewController: UIViewController {
 		let layout = UICollectionViewFlowLayout()
 		layout.scrollDirection = .horizontal
 		let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-		
+		collectionView.showsHorizontalScrollIndicator = false
 		collectionView.frame = CGRect(x: self.view.center.x, y: 0, width: self.view.bounds.width, height: 25)
 
 		collectionView.delegate = self
@@ -98,7 +98,7 @@ extension MyAlbumViewController: UICollectionViewDataSource {
 				collectionView.backgroundView = nil
 			}
 		} else if collectionView == albumCollectionView {
-			if viewModel.albumDatas[selectedAlbum].imageURLs.isEmpty {
+			if viewModel.albumDatas[selectedAlbum].images?.count == 0 {
 				let label = UILabel()
 				label.text = "추가하신 사진이 없어요."
 				label.textAlignment = .center
@@ -108,7 +108,7 @@ extension MyAlbumViewController: UICollectionViewDataSource {
 			}
 		}
 		
-		return collectionView == titleCollectionView ? viewModel.albumDatas.count : viewModel.albumDatas[selectedAlbum].imageURLs.count
+		return collectionView == titleCollectionView ? viewModel.albumDatas.count : viewModel.albumDatas[selectedAlbum].images?.count ?? 0
 	}
 
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -116,7 +116,7 @@ extension MyAlbumViewController: UICollectionViewDataSource {
 			cell.setup(cellData: viewModel.albumDatas[indexPath.item])
 			return cell
 		} else if collectionView == albumCollectionView, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MyAlbumCollectionViewCell", for: indexPath) as? MyAlbumCollectionViewCell {
-			cell.setup(imageURL: viewModel.albumDatas[selectedAlbum].imageURLs[indexPath.item])
+			cell.setup(image: viewModel.albumDatas[selectedAlbum].images?[indexPath.item] ?? UIImage())
 			return cell
 		}
 		
@@ -131,7 +131,7 @@ extension MyAlbumViewController: UICollectionViewDelegate {
 			albumCollectionView.reloadData()
 		} else if collectionView == albumCollectionView {
 			selectedPhoto = indexPath.item
-			let vc = MyAlbumPhotoViewController(photoPage: selectedPhoto, totalCount: viewModel.albumDatas[selectedAlbum].imageURLs.count, albumData: viewModel.albumDatas[selectedAlbum])
+			let vc = MyAlbumPhotoViewController(photoPage: selectedPhoto, totalCount: viewModel.albumDatas[selectedAlbum].images?.count ?? 0, albumData: viewModel.albumDatas[selectedAlbum])
 			vc.modalPresentationStyle = .fullScreen
 			self.present(vc, animated: true)
 		}

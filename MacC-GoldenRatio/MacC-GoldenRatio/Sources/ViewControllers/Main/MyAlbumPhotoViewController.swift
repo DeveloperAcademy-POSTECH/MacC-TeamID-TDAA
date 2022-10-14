@@ -125,7 +125,10 @@ final class MyAlbumPhotoViewController: UIViewController {
 	
 	@objc private func menuButtonTapped() {
 		let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-		let downloadAction = UIAlertAction(title: "저장하기", style: .default)
+		let downloadAction = UIAlertAction(title: "저장하기", style: .default) { (action) in
+			print("@")
+			UIImageWriteToSavedPhotosAlbum(self.albumData.images?[self.photoPage] ?? UIImage(), self, nil, nil)
+		}
 		let cancelAction = UIAlertAction(title: "취소", style: .cancel)
 		alert.addAction(downloadAction)
 		alert.addAction(cancelAction)
@@ -148,12 +151,12 @@ extension MyAlbumPhotoViewController: UICollectionViewDataSource {
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		return albumData.imageURLs.count
+		return albumData.images?.count ?? 0
 	}
 
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 		if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MyAlbumPhotoCollectionViewCell", for: indexPath) as? MyAlbumPhotoCollectionViewCell {
-			cell.setup(imageURL: albumData.imageURLs[indexPath.item])
+			cell.setup(image: albumData.images?[indexPath.item] ?? UIImage())
 			return cell
 		}
 		return UICollectionViewCell()

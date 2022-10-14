@@ -5,6 +5,7 @@
 //  Created by 김상현 on 2022/10/01.
 //
 
+import Combine
 import MapKit
 import SnapKit
 import UIKit
@@ -15,6 +16,7 @@ enum pageViewMode {
 }
 
 class PageViewController: UIViewController {
+//    private var cancelBag = Set<AnyCancellable>()
     private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
     private let imagePicker = UIImagePickerController()
     private var myDiariesViewModalBackgroundView = UIView()
@@ -118,6 +120,7 @@ class PageViewController: UIViewController {
         super.viewDidLoad()
         DispatchQueue.main.async {
             self.view.backgroundColor = .backgroundTexture
+//            self.setupViewModel()
             self.configureImagePicker()
             self.reloadPageDescriptionLabel()
             self.addSubviews()
@@ -489,3 +492,35 @@ extension PageViewController: UIGestureRecognizerDelegate {
         return false
     }
 }
+//// MARK: Combine
+//private extension PageViewController {
+//    func setupViewModel() {
+//        pageViewModel.$currentPageIndex
+//            .receive(on: DispatchQueue.main)
+//            .sink { [weak self] _ in
+//
+//            }
+//            .store(in: &cancelBag)
+//
+//        pageViewModel.$selectedDay
+//            .receive(on: DispatchQueue.main)
+//            .sink { [weak self] _ in
+//
+//            }
+//            .store(in: &cancelBag)
+//
+//        pageViewModel.$diary
+//            .receive(on: DispatchQueue.main)
+//            .sink { [weak self] _ in
+//
+//            }
+//            .store(in: &cancelBag)
+//
+//        pageViewModel.$stickerArray
+//            .receive(on: DispatchQueue.main)
+//            .sink { [weak self] _ in
+//                self?.reloadStickers()
+//            }
+//            .store(in: &cancelBag)
+//    }
+//}

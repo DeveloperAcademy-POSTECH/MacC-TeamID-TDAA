@@ -235,14 +235,14 @@ private extension MyPageViewController {
     func setupViewModel() {
         viewModel.$myUser
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] diaryCell in
+            .sink { [weak self] _ in
                 self?.configureUserData()
             }
             .store(in: &cancelBag)
         
         viewModel.$myProfileImage
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] diaryCell in
+            .sink { [weak self] _ in
                 self?.configureUserData()
             }
             .store(in: &cancelBag)

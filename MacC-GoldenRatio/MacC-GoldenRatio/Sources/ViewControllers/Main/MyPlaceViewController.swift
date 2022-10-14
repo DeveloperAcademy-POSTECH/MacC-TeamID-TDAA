@@ -84,7 +84,7 @@ class MyPlaceViewController: UIViewController, MKMapViewDelegate, CLLocationMana
 		
 		let diaryTitle = UILabel()
 		diaryTitle.text = annotation.diaryTitle
-		diaryTitle.font = myDevice.AnnotationTitleFont
+		diaryTitle.font = myDevice.annotationTitleFont
 		diaryTitle.textAlignment = .center
 		
 		annotationView?.addSubview(diaryTitle)
@@ -95,7 +95,7 @@ class MyPlaceViewController: UIViewController, MKMapViewDelegate, CLLocationMana
 		}
 		
 		let stampName = UIImage(named: annotation.stampName) ?? UIImage()
-		let size = myDevice.AnnotationSize
+		let size = myDevice.annotationSize
 		UIGraphicsBeginImageContext(size)
 		
 		stampName.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))

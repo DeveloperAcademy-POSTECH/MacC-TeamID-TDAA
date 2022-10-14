@@ -234,6 +234,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0A3ED13F28F937EB000D55D8 /* MyPageViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				E2EA7F0B28E56DF600AC1C49 /* MyPageViewController.swift */,
+			);
+			path = MyPageViewControllers;
+			sourceTree = "<group>";
+		};
 		0A5E904328E8575C00B381B8 /* Page */ = {
 			isa = PBXGroup;
 			children = (
@@ -413,6 +421,7 @@
 		E276B91A28E4697E00163833 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				0A3ED13F28F937EB000D55D8 /* MyPageViewControllers */,
 				CC65514E28F086D900E637A2 /* MyDiaryPages */,
 				CC6BD74228EBFA6C001ED665 /* DiaryConfig */,
 				0A5E904328E8575C00B381B8 /* Page */,
@@ -480,7 +489,6 @@
 				E2EA7F0528E56C0900AC1C49 /* TabBarController.swift */,
 				E2EA7F0728E56CF600AC1C49 /* MyPlaceViewController.swift */,
 				E2EA7F0928E56CFE00AC1C49 /* MyAlbumViewController.swift */,
-				E2EA7F0B28E56DF600AC1C49 /* MyPageViewController.swift */,
 				E2BEFA9528E882BA00EF0254 /* MyHomeViewCustomModalVC.swift */,
 			);
 			path = Main;

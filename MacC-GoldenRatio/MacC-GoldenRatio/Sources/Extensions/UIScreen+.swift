@@ -437,6 +437,69 @@ extension UIScreen {
             default: return UIFont(name: "EF_Diary", size: 17) ?? UIFont.systemFont(ofSize: 17)
             }
         }
+        
+        // MARK: My Page
+        /// 20
+        var myPageHorizontalPadding: CGFloat {
+            switch self {
+            default: return 20
+            }
+        }
+        /// 10
+        var myPageHorizontalSpacing: CGFloat {
+            switch self {
+            default: return 10
+            }
+        }
+        /// 20
+        var myPageHorizontalSpacing2: CGFloat {
+            switch self {
+            default: return 20
+            }
+        }
+        /// 20
+        var myPageVerticalPadding: CGFloat {
+            switch self {
+            default: return 20
+            }
+        }
+        /// 10
+        var myPageVerticalSpacing: CGFloat {
+            switch self {
+            default: return 10
+            }
+        }
+        /// 15
+        var myPageVerticalSpacing2: CGFloat {
+            switch self {
+            default: return 15
+            }
+        }
+        /// 50
+        var myPageVerticalSpacing3: CGFloat {
+            switch self {
+            default: return 50
+            }
+        }
+        /// 62*62
+        var myPageProfileImageSize: CGSize {
+            switch self {
+            default: return CGSize(width: 62, height: 62)
+            }
+        }
+        /// 50*50
+        var myPageStickerImageSize: CGSize {
+            switch self {
+            default: return CGSize(width: 50, height: 50)
+            }
+        }
+        /// 266
+        var myPageMenuTableViewHeight: CGFloat {
+            switch self {
+            default: return 266
+            }
+        }
 	}
 
 }
+

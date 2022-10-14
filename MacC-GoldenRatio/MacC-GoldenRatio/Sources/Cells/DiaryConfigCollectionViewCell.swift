@@ -44,10 +44,9 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
         return button
     }()
     
-    private lazy var clearButton: UIButton = {
+    lazy var clearButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "xmark.circle.fill"), for: .normal)
-        button.addTarget(self, action: #selector(clearButtonTapped), for: .touchUpInside)
         button.tintColor = .systemGray
         return button
     }()
@@ -70,8 +69,7 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
             
             switch contentType {
             case .diaryName:
-                // contentTextField?.text = diary.diaryName
-                contentButton.setTitle(diary.diaryName, for: .normal)
+                contentButton.setTitle(nil, for: .normal)
             case .location:
                 contentButton.setTitle(diary.diaryLocation.locationName, for: .normal)
             case .diaryDate:
@@ -81,8 +79,15 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
                 contentButton.setTitle("PlaceHolder", for: .normal)
             }
         } else {
-            contentButton.tintColor = .placeholderText
-            contentButton.setTitle("PlaceHolder", for: .normal)
+            switch contentType {
+            case .diaryName:
+                contentButton.setTitle(nil, for: .normal)
+            case .location, .diaryDate:
+                contentButton.tintColor = .placeholderText
+                contentButton.setTitle("PlaceHolder", for: .normal)
+            default:
+                contentButton.setTitle(nil, for: .normal)
+            }
         }
     }
     
@@ -91,7 +96,7 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
         
         contentView.backgroundColor = .clear
         
-        [contentTitle, clearButton, dividerView, contentButton].forEach {
+        [contentTitle, contentButton, dividerView, clearButton].forEach {
             contentView.addSubview($0)
         }
         
@@ -117,14 +122,6 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
             $0.trailing.equalToSuperview().inset(50)
             $0.height.equalTo(44)
             $0.bottom.equalToSuperview()
-        }
-    }
-    
-    @objc func clearButtonTapped() {
-        UIView.performWithoutAnimation {
-            // contentTextField?.text = nil
-            contentButton.setTitle("PlaceHolder", for: .normal)
-            contentButton.tintColor = .placeholderText
         }
     }
 }

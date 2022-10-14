@@ -21,6 +21,7 @@ class MyAlbumViewController: UIViewController {
 		let label = UILabel()
 		label.text = "앨범"
 		label.font = myDevice.TabBarTitleFont
+		label.textColor = UIColor.buttonColor
 		
 		return label
 	}()
@@ -84,36 +85,52 @@ class MyAlbumViewController: UIViewController {
 			$0.bottom.equalTo(view.safeAreaLayoutGuide)
 		}
 	}
+	
+	private func isIndicator() {
+		if viewModel.isInitializing {
+			self.view.isUserInteractionEnabled = false
+		} else {
+			self.view.isUserInteractionEnabled = true
+		}
+	}
 }
 
 extension MyAlbumViewController: UICollectionViewDataSource {
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		if collectionView == titleCollectionView {
+		if collectionView == albumCollectionView {
 			if viewModel.albumDatas.isEmpty {
-				let label = UILabel()
-				label.text = "다이어리를 추가해주세요."
-				label.textAlignment = .center
-				collectionView.backgroundView = label
+				if !viewModel.isInitializing {
+					let label = UILabel()
+					label.text = "추가하신 다이어리가 없어요."
+					label.font = myDevice.collectionBackgoundViewFont
+					label.textColor = UIColor.buttonColor
+					label.textAlignment = .center
+					collectionView.backgroundView = label
+				} else {
+					collectionView.backgroundView = nil
+				}
 			} else {
-				collectionView.backgroundView = nil
-			}
-		} else if collectionView == albumCollectionView {
-			if viewModel.albumDatas[selectedAlbum].images?.count == 0 {
-				let label = UILabel()
-				label.text = "추가하신 사진이 없어요."
-				label.textAlignment = .center
-				collectionView.backgroundView = label
-			} else {
-				collectionView.backgroundView = nil
+				if !viewModel.isInitializing && viewModel.albumDatas[selectedAlbum].images?.count == 0 {
+					let label = UILabel()
+					label.text = "추가하신 사진이 없어요."
+					label.font = myDevice.collectionBackgoundViewFont
+					label.textColor = UIColor.buttonColor
+					label.textAlignment = .center
+					collectionView.backgroundView = label
+				} else {
+					collectionView.backgroundView = nil
+				}
 			}
 		}
 		
-		return collectionView == titleCollectionView ? viewModel.albumDatas.count : viewModel.albumDatas[selectedAlbum].images?.count ?? 0
+		return collectionView == titleCollectionView ? viewModel.albumDatas.count : viewModel.albumDatas.isEmpty ? 0 : viewModel.albumDatas[selectedAlbum].imageURLs?.count ?? 0
 	}
 
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 		if collectionView == titleCollectionView, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MyAlbumTitleCollectionViewCell", for: indexPath) as? MyAlbumTitleCollectionViewCell {
-			cell.setup(cellData: viewModel.albumDatas[indexPath.item])
+			cell.setup(title: viewModel.albumDatas[indexPath.item].diaryName)
+			cell.layer.borderColor = UIColor.red.cgColor
+			cell.layer.borderWidth = 1
 			return cell
 		} else if collectionView == albumCollectionView, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MyAlbumCollectionViewCell", for: indexPath) as? MyAlbumCollectionViewCell {
 			cell.setup(image: viewModel.albumDatas[selectedAlbum].images?[indexPath.item] ?? UIImage())
@@ -140,7 +157,11 @@ extension MyAlbumViewController: UICollectionViewDelegate {
 
 extension MyAlbumViewController: UICollectionViewDelegateFlowLayout {
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-		return collectionView == titleCollectionView ? CGSize(width: 100, height: 50) : CGSize(width: 110, height: 110)
+		var width = 0
+		if !viewModel.albumDatas.isEmpty {
+			width = viewModel.albumDatas[indexPath.item].diaryName.count
+		}
+		return collectionView == titleCollectionView ? CGSize(width: width*20, height: 50) : CGSize(width: 110, height: 110)
 	}
 }
 
@@ -151,6 +172,7 @@ private extension MyAlbumViewController {
 			.sink { [weak self] data in
 				self?.titleCollectionView.reloadData()
 				self?.albumCollectionView.reloadData()
+				self?.isIndicator()
 			}
 			.store(in: &cancelBag)
 	}

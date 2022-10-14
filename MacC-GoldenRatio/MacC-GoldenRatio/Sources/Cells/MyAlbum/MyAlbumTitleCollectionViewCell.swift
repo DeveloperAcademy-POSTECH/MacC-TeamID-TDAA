@@ -17,9 +17,9 @@ class MyAlbumTitleCollectionViewCell: UICollectionViewCell {
 		return label
 	}()
 	
-	func setup(cellData: AlbumData) {
+	func setup(title: String) {
 		self.addSubview(titleLabel)
-		titleLabel.text = cellData.diaryName
+		titleLabel.text = title
 		titleLabel.snp.makeConstraints {
 			$0.centerX.equalToSuperview()
 			$0.top.equalToSuperview().inset(myDevice.diaryCollectionViewCellTitleLabelTop)

@@ -58,6 +58,14 @@ final class MyHomeViewController: UIViewController {
 		}
 	}
 	
+	private func isIndicator() {
+		if viewModel.isInitializing {
+			self.view.isUserInteractionEnabled = false
+		} else {
+			self.view.isUserInteractionEnabled = true
+		}
+	}
+	
 	@objc private func menuButtonTapped() {
 		let popUp = PopUpViewController(popUpPosition: .bottom)
 		popUp.addButton(buttonTitle: "다이어리 생성", action: createButtonTapped)
@@ -93,9 +101,11 @@ final class MyHomeViewController: UIViewController {
 
 extension MyHomeViewController: UICollectionViewDataSource {
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		if viewModel.diaryCellData.isEmpty {
+		if !viewModel.isInitializing && viewModel.diaryCellData.isEmpty {
 			let label = UILabel()
 			label.text = "다이어리를 추가해주세요."
+			label.font = myDevice.collectionBackgoundViewFont
+			label.textColor = UIColor.buttonColor
 			label.textAlignment = .center
 			collectionView.backgroundView = label
 		} else {
@@ -156,6 +166,7 @@ private extension MyHomeViewController {
 			.receive(on: DispatchQueue.main)
 			.sink { [weak self] diaryCell in
 				self?.collectionView.reloadData()
+				self?.isIndicator()
 			}
 			.store(in: &cancelBag)
 	}

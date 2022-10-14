@@ -13,6 +13,16 @@ import UIKit
 class MyHomeViewModel {
 	@Published var diaryData = [Diary]()
 	@Published var diaryCellData = [DiaryCell]()
+	@Published var isInitializing = true {
+		didSet {
+			if isInitializing {
+				LoadingIndicator.showLoading(loadingText: "다이어리를 불러오는 중입니다.")
+			} else {
+				LoadingIndicator.hideLoading()
+			}
+		}
+	}
+	
 	private let client = FirestoreClient()
 	private let db = Firestore.firestore()
 	private var myUID = Auth.auth().currentUser?.uid ?? ""
@@ -24,8 +34,10 @@ class MyHomeViewModel {
 	func fetchLoadData() {
 		Task {
 			do {
+				self.isInitializing = true
 				self.diaryData = try await client.fetchMyDiaries(myUID)
 				self.diaryCellData = try await convertDiaryToCellData(diaryData)
+				self.isInitializing = false
 			} catch {
 				print(error)
 			}

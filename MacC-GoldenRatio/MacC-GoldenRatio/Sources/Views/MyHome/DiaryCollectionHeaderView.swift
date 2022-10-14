@@ -15,7 +15,7 @@ final class DiaryCollectionHeaderView: UICollectionReusableView {
 		let label =  UILabel()
 		label.text = "다이어리"
 		label.font = myDevice.TabBarTitleFont
-		label.textColor = .label
+		label.textColor = UIColor.buttonColor
 		
 		return label
 	}()

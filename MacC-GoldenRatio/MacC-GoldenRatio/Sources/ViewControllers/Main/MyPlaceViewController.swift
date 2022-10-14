@@ -23,6 +23,7 @@ class MyPlaceViewController: UIViewController, MKMapViewDelegate, CLLocationMana
 		let label = UILabel()
 		label.text = "지도"
 		label.font = myDevice.TabBarTitleFont
+		label.textColor = UIColor.buttonColor
 		
 		return label
 	}()

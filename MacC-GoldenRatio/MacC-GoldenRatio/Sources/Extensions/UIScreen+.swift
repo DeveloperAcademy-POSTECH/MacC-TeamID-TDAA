@@ -493,10 +493,10 @@ extension UIScreen {
             default: return CGSize(width: 50, height: 50)
             }
         }
-        /// 266
+        /// 245
         var myPageMenuTableViewHeight: CGFloat {
             switch self {
-            default: return 266
+            default: return 245
             }
         }
 	}

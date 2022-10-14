@@ -34,7 +34,6 @@ class StickerPickerViewController: UIViewController {
     }()
     
     private lazy var stickerPickerCollectionView: UICollectionView = {
-        let layout = UICollectionViewLayout()
         let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout.init())
         collectionView.register(StickerPickerCollectionViewCell.classForCoder(), forCellWithReuseIdentifier: StickerPickerCollectionViewCell.identifier)
         

@@ -53,4 +53,21 @@ class FirestoreClient {
 
 		return mapDatas
 	}
+    
+    func fetchMyUser(_ uid: String) async throws -> User {
+        var user: User!
+        
+        let query = db.collection("User").whereField("userUID", isEqualTo: uid)
+        let querySnapshot = try await query.getDocuments()
+        
+        querySnapshot.documents.forEach { document in
+            do {
+                user = try document.data(as: User.self)
+            } catch {
+                print(error)
+            }
+        }
+        
+        return user
+    }
 }

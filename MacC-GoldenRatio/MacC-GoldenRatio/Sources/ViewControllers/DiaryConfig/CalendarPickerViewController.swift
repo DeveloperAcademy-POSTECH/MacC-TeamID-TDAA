@@ -9,14 +9,13 @@ import SnapKit
 import UIKit
 
 class CalendarPickerViewController: UIViewController {
+    private let device: UIScreen.DeviceSize = UIScreen.getDevice()
     var dateInterval: [Date]
     
     // MARK: Views
     private lazy var dimmedBackgroundView: UIView = {
         let view = UIView()
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissCalendar))
         view.backgroundColor = UIColor.black.withAlphaComponent(0.3)
-        view.addGestureRecognizer(tapGestureRecognizer)
         return view
     }()
     
@@ -131,27 +130,27 @@ class CalendarPickerViewController: UIViewController {
         }
         
         collectionView.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview().inset(21)
+            $0.leading.trailing.equalToSuperview().inset(device.calendarCollectionViewInset)
             $0.centerY.equalToSuperview()
-            $0.height.equalToSuperview().multipliedBy(0.35)
+            $0.height.equalToSuperview().multipliedBy(device.calendarCollectionViewMultiplier)
         }
         
         headerView.snp.makeConstraints {
             $0.leading.trailing.equalTo(collectionView)
             $0.bottom.equalTo(collectionView.snp.top)
-            $0.height.equalTo(80)
+            $0.height.equalTo(device.calendarHeaderHeight)
         }
         
         footerView.snp.makeConstraints {
             $0.leading.trailing.equalTo(collectionView)
             $0.top.equalTo(collectionView.snp.bottom)
-            $0.height.equalTo(45)
+            $0.height.equalTo(device.calendarFooterHeight)
         }
         
         closeButton.snp.makeConstraints {
-            $0.top.equalTo(footerView.snp.bottom).offset(30)
+            $0.top.equalTo(footerView.snp.bottom).offset(device.calendarCloseButtonTop)
             $0.centerX.equalToSuperview()
-            $0.size.equalTo(CGSize(width: 50, height: 50))
+            $0.size.equalTo(device.calendarCloseButtonSize)
         }
         
         collectionView.register(CalendarDateCollectionViewCell.self, forCellWithReuseIdentifier: CalendarDateCollectionViewCell.reuseIdentifier)
@@ -302,9 +301,13 @@ extension CalendarPickerViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = Int((collectionView.frame.width) / 7)
+        let width = Int((collectionView.frame.width - 50) / 7)
         let height = Int(collectionView.frame.height - 10) / numberOfWeeksInBaseDate
         return CGSize(width: width, height: height)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
     }
     
     private func updateFooterButtonLabel(day: Day) {

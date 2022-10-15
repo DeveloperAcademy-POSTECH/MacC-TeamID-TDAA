@@ -13,6 +13,7 @@ enum DateOption {
 }
 
 class CalendarDateCollectionViewCell: UICollectionViewCell {
+    private let device: UIScreen.DeviceSize = UIScreen.getDevice()
     var dateOption: DateOption = .normal
     
     lazy var selectionBackgroundView: UIView = {
@@ -23,20 +24,20 @@ class CalendarDateCollectionViewCell: UICollectionViewCell {
     
     lazy var termBackgroundView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(named: "calendarTermColor")
+        view.backgroundColor = device.calendarTermColor
         return view
     }()
     
     lazy var numberLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.font = UIFont.systemFont(ofSize: 20, weight: .regular)
+        label.font = device.numberLabelFont
         return label
     }()
     
     lazy var marker: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(named: "calendarTermColor")
+        view.backgroundColor = device.calendarTermColor
         view.clipsToBounds = true
         return view
     }()
@@ -104,7 +105,7 @@ class CalendarDateCollectionViewCell: UICollectionViewCell {
             termBackgroundView.snp.makeConstraints {
                 $0.leading.equalTo(numberLabel.snp.centerX)
                 $0.top.equalTo(selectionBackgroundView.snp.top)
-                $0.width.equalTo(contentView.snp.width).dividedBy(1.8)
+                $0.width.equalTo(contentView.snp.width).dividedBy(device.calendarCellDivider)
                 $0.height.equalTo(selectionBackgroundView.snp.height)
             }
         } else if day.date.dayOfTheWeek() == "토" || dateOption == .end {
@@ -116,7 +117,7 @@ class CalendarDateCollectionViewCell: UICollectionViewCell {
             termBackgroundView.snp.makeConstraints {
                 $0.trailing.equalTo(numberLabel.snp.centerX)
                 $0.top.equalTo(selectionBackgroundView.snp.top)
-                $0.width.equalTo(contentView.snp.width).dividedBy(1.8)
+                $0.width.equalTo(contentView.snp.width).dividedBy(device.calendarCellDivider)
                 $0.height.equalTo(selectionBackgroundView.snp.height)
             }
         } else if dateOption == .single {
@@ -124,7 +125,7 @@ class CalendarDateCollectionViewCell: UICollectionViewCell {
         } else {
             termBackgroundView.snp.makeConstraints {
                 $0.center.equalTo(numberLabel)
-                $0.width.equalTo(contentView.snp.width).multipliedBy(1.1)
+                $0.width.equalTo(contentView.snp.width).multipliedBy(device.calendarCellMultiplier)
                 $0.height.equalTo(selectionBackgroundView.snp.height)
             }
         }
@@ -184,7 +185,7 @@ extension CalendarDateCollectionViewCell {
         accessibilityTraits.remove(.selected)
         accessibilityHint = "Tap to select"
         
-        numberLabel.textColor = isWithinDisplayedMonth ? UIColor(named: "calendarTextColor") : UIColor(named: "calendarSubTextColor")
+        numberLabel.textColor = isWithinDisplayedMonth ? device.numberLabelColor : device.numberSubLabelColor
         
         marker.isHidden = true
         selectionBackgroundView.isHidden = true

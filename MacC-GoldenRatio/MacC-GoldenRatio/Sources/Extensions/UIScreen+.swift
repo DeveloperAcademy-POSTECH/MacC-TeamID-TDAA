@@ -344,7 +344,7 @@ extension UIScreen {
             }
         }
         
-// MARK: - Diary Config
+        // MARK: - Diary Config
         var diaryConfigTitleFont: UIFont {
             switch self {
             default: return UIFont(name: "EF_Diary", size: 17) ?? UIFont.boldSystemFont(ofSize: 17)
@@ -393,7 +393,7 @@ extension UIScreen {
             }
         }
         
-// MARK: - Diary Config Cell
+        // MARK: - Diary Config Cell
         var diaryConfigCellTitleFont: UIFont {
             switch self {
             default: return UIFont(name: "EF_Diary", size: 17) ?? UIFont.systemFont(ofSize: 17)
@@ -430,19 +430,91 @@ extension UIScreen {
             }
         }
         
-// MARK: - My Diary Pages
+        // MARK: - My Diary Pages
         var myDiaryPagesItemSpacing: CGFloat {
             switch self {
             default: return 20
             }
         }
-// MARK: - PopUp Modal View
+        // MARK: - PopUp Modal View
         var popUpModalFont: UIFont {
             switch self {
             default: return UIFont(name: "EF_Diary", size: 17) ?? UIFont.systemFont(ofSize: 17)
             }
         }
-// MARK: - Calendar View
+        
+        // MARK: - Calendar View
+        var calendarCollectionViewInset: CGFloat {
+            switch self {
+            default: return 21
+            }
+        }
+        
+        var calendarCollectionViewMultiplier: CGFloat {
+            switch self {
+            default: return 0.32
+            }
+        }
+        
+        var calendarHeaderHeight: CGFloat {
+            switch self {
+            default: return 80
+            }
+        }
+        
+        var calendarFooterHeight: CGFloat {
+            switch self {
+            default: return 45
+            }
+        }
+        
+        var calendarCloseButtonTop: CGFloat {
+            switch self {
+            default: return 30
+            }
+        }
+        
+        var calendarCloseButtonSize: CGSize {
+            switch self {
+            default: return CGSize(width: 50, height: 50)
+            }
+        }
+        
+        // MARK: - Calendar View Cell
+        var calendarCellMultiplier: CGFloat {
+            switch self {
+            default: return 1.2
+            }
+        }
+        
+        var calendarCellDivider: CGFloat {
+            switch self {
+            default: return 1.8
+            }
+        }
+        
+        var numberLabelFont: UIFont {
+            switch self {
+            default: return UIFont.systemFont(ofSize: 20, weight: .regular)
+            }
+        }
+        
+        var calendarTermColor: UIColor {
+            switch self {
+            default: return UIColor(named: "calendarTermColor") ?? .systemGray5
+            }
+        }
+        
+        var numberLabelColor: UIColor {
+            switch self {
+            default: return UIColor(named: "calendarTextColor") ?? .black
+            }
+        }
+        
+        var numberSubLabelColor: UIColor {
+            switch self {
+            default: return UIColor(named: "calendarSubTextColor") ?? .systemGray3
+            }
+        }
 	}
-
 }

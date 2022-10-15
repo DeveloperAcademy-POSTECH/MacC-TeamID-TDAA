@@ -194,7 +194,7 @@ private extension MyAlbumViewController {
 	func setEmptyView(_ text: String) -> UIView {
 		let emptyView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height))
 		
-		let label = UILabel(frame: CGRect(x: self.view.bounds.midX, y: -100, width: self.view.bounds.width, height: 100))
+		let label = UILabel()
 		label.text = text
 		label.font = myDevice.collectionBackgoundViewFont
 		label.textColor = UIColor.buttonColor

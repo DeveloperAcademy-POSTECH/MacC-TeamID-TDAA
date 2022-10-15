@@ -94,6 +94,7 @@ class MyPlaceViewController: UIViewController, MKMapViewDelegate, CLLocationMana
 		let diaryTitle = UILabel()
 		diaryTitle.text = annotation.diaryTitle
 		diaryTitle.font = myDevice.annotationTitleFont
+		diaryTitle.textColor = .black
 		diaryTitle.textAlignment = .center
 		
 		annotationView?.addSubview(diaryTitle)

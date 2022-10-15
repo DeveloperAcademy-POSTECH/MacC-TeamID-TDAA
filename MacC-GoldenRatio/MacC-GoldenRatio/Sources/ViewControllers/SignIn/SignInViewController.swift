@@ -16,19 +16,30 @@ class SignInViewController: UIViewController {
     private let device: UIScreen.DeviceSize = UIScreen.getDevice()
     private var currentNonce: String?
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
-        
-        if Auth.auth().currentUser != nil {
-            showMainView()
-        }
-        
-        setup()
-    }
-    
     // MARK: - properties
+    
+    private lazy var appLogo: UIImageView = {
+        let imageView = UIImageView(image: UIImage(named: "signInLogo"))
+        return imageView
+    }()
+    
+    private lazy var appTitle: UILabel = {
+        let label = UILabel()
+        
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = .center
+        
+        var multipleAttributes: [NSAttributedString.Key : Any] = [:]
+        multipleAttributes[NSAttributedString.Key.paragraphStyle] = paragraphStyle
+        multipleAttributes[NSAttributedString.Key.foregroundColor] = UIColor(named: "signInTitleColor")
+        multipleAttributes[NSAttributedString.Key.font] = UIFont(name: "EF_Diary", size: 30) ?? UIFont.systemFont(ofSize: 30)
+        multipleAttributes[NSAttributedString.Key.kern] = 10
+        
+        let attributedString = NSMutableAttributedString(string: "Travel Diary", attributes: multipleAttributes)
+        
+        label.attributedText = attributedString
+        return label
+    }()
     
     private lazy var appleLoginButton: UIButton = {
         let button = UIButton(type: .system)
@@ -57,9 +68,33 @@ class SignInViewController: UIViewController {
     
     // MARK: - setup
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
+        
+        if Auth.auth().currentUser != nil {
+            showMainView()
+        }
+        
+        setup()
+    }
+    
     private func setup() {
-        view.addSubview(appleLoginButton)
+        [appLogo, appTitle, appleLoginButton].forEach {
+            view.addSubview($0)
+        }
         navigationController?.isNavigationBarHidden = true
+        
+        appLogo.snp.makeConstraints {
+            $0.bottom.equalTo(appTitle.snp.top).offset(-70)
+            $0.centerX.equalToSuperview()
+        }
+        
+        appTitle.snp.makeConstraints {
+            $0.center.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview().inset(44)
+        }
         
         appleLoginButton.snp.makeConstraints {
             $0.size.equalTo(device.logInButtonSize)

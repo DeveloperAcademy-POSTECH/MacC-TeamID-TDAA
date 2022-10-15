@@ -45,7 +45,7 @@ class TabBarController: UITabBarController {
 	}()
 	
 	private lazy var myPageViewController: UIViewController = {
-        let viewController = UINavigationController(rootViewController: UIViewController())
+        let viewController = SignInTestViewController()
 		let pressImage = UIImage(named: "pressProfile")?.withRenderingMode(.alwaysOriginal)
 		let notPressImage = UIImage(named: "notPressProfile")?.withRenderingMode(.alwaysOriginal)
 

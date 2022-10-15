@@ -17,6 +17,16 @@ class MyAlbumViewController: UIViewController {
 	private var selectedAlbum = 0
 	private var selectedPhoto = 0
 	
+	private var isInitializing = false {
+		didSet {
+			if isInitializing {
+				LoadingIndicator.showLoading(loadingText: "앨범을 불러오는 중입니다.")
+			} else {
+				LoadingIndicator.hideLoading()
+			}
+		}
+	}
+	
 	private lazy var titleLabel: UILabel = {
 		let label = UILabel()
 		label.text = "앨범"
@@ -64,11 +74,12 @@ class MyAlbumViewController: UIViewController {
 		setupViewModel()
     }
 	
-//	override func viewWillAppear(_ animated: Bool) {
-//		super.viewWillAppear(animated)
-//		viewModel.fetchLoadData()
-//		setupViewModel()
-//	}
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		isInitializing = true
+		viewModel.fetchLoadData()
+		setupViewModel()
+	}
 	
 	private func setup() {
 		self.view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
@@ -93,7 +104,7 @@ class MyAlbumViewController: UIViewController {
 	}
 	
 	private func isIndicator() {
-		if viewModel.isInitializing {
+		if self.isInitializing {
 			self.view.isUserInteractionEnabled = false
 		} else {
 			self.view.isUserInteractionEnabled = true
@@ -105,7 +116,7 @@ extension MyAlbumViewController: UICollectionViewDataSource {
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 		if collectionView == albumCollectionView {
 			if viewModel.albumDatas.isEmpty {
-				if !viewModel.isInitializing {
+				if !self.isInitializing {
 					let label = UILabel()
 					label.text = "추가하신 다이어리가 없어요."
 					label.font = myDevice.collectionBackgoundViewFont
@@ -116,7 +127,8 @@ extension MyAlbumViewController: UICollectionViewDataSource {
 					collectionView.backgroundView = nil
 				}
 			} else {
-				if !viewModel.isInitializing && viewModel.albumDatas[selectedAlbum].images?.count == 0 {
+				self.isInitializing = false
+				if viewModel.albumDatas[selectedAlbum].images?.count == 0 {
 					let label = UILabel()
 					label.text = "추가하신 사진이 없어요."
 					label.font = myDevice.collectionBackgoundViewFont

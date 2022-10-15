@@ -43,7 +43,6 @@ class MyPlaceViewController: UIViewController, MKMapViewDelegate, CLLocationMana
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		viewModel.fetchLoadData()
 		setupViewModel()
 	}
 	
@@ -126,6 +125,7 @@ class MyPlaceViewController: UIViewController, MKMapViewDelegate, CLLocationMana
 
 private extension MyPlaceViewController {
 	func setupViewModel() {
+		viewModel.fetchLoadData()
 		viewModel.$mapDatas
 			.receive(on: DispatchQueue.main)
 			.sink { [weak self] data in

@@ -47,7 +47,6 @@ final class MyHomeViewController: UIViewController {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		viewModel.fetchLoadData()
 		setupViewModel()
 	}
 	
@@ -168,6 +167,7 @@ extension MyHomeViewController: UICollectionViewDelegateFlowLayout {
 
 private extension MyHomeViewController {
 	func setupViewModel() {
+		viewModel.fetchLoadData()
 		viewModel.$diaryCellData
 			.receive(on: DispatchQueue.main)
 			.sink { [weak self] diaryCell in

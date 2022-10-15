@@ -11,18 +11,10 @@ import UIKit
 
 class MyAlbumViewModel {
 	@Published var albumDatas = [AlbumData]()
-	@Published var isInitializing = true {
-		didSet {
-			if isInitializing {
-				LoadingIndicator.showLoading(loadingText: "다이어리를 불러오는 중입니다.")
-			} else {
-				LoadingIndicator.hideLoading()
-			}
-		}
-	}
 	
 	private let client = FirestoreClient()
 	private var myUID = Auth.auth().currentUser?.uid ?? ""
+	private var isFirstLoad = true
 	
 	init() {
 		fetchLoadData()
@@ -31,7 +23,6 @@ class MyAlbumViewModel {
 	func fetchLoadData() {
 		Task {
 			do {
-				self.isInitializing = true
 				albumDatas.removeAll()
 				let datas = try await client.fetchDiaryAlbumData(myUID)
 				for data in datas {
@@ -41,7 +32,6 @@ class MyAlbumViewModel {
 					}
 					albumDatas.append(AlbumData(diaryUUID: data.diaryUUID, diaryName: data.diaryName, imageURLs: data.imageURLs, images: images))
 				}
-				self.isInitializing = false
 			} catch {
 				print(error)
 			}

@@ -128,9 +128,12 @@ extension MyAlbumViewController: UICollectionViewDataSource {
 
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 		if collectionView == titleCollectionView, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MyAlbumTitleCollectionViewCell", for: indexPath) as? MyAlbumTitleCollectionViewCell {
+			if indexPath.row == 0 {
+				cell.isFirstCell = true
+			} else {
+				cell.isFirstCell = false
+			}
 			cell.setup(title: viewModel.albumDatas[indexPath.item].diaryName)
-			cell.layer.borderColor = UIColor.red.cgColor
-			cell.layer.borderWidth = 1
 			return cell
 		} else if collectionView == albumCollectionView, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MyAlbumCollectionViewCell", for: indexPath) as? MyAlbumCollectionViewCell {
 			cell.setup(image: viewModel.albumDatas[selectedAlbum].images?[indexPath.item] ?? UIImage())
@@ -144,6 +147,7 @@ extension MyAlbumViewController: UICollectionViewDataSource {
 extension MyAlbumViewController: UICollectionViewDelegate {
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 		if collectionView == titleCollectionView {
+			self.titleCollectionView.cellForItem(at: IndexPath(row: 0, section: 0))?.isSelected = false
 			selectedAlbum = indexPath.item
 			albumCollectionView.reloadData()
 		} else if collectionView == albumCollectionView {

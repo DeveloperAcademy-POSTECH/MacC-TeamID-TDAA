@@ -243,6 +243,12 @@ extension UIScreen {
 			}
 		}
 		
+		var myAlbumBackgroundLabelBottom: CGFloat {
+			switch self {
+			default: return 330
+			}
+		}
+		
 		// All
 		var collectionBackgoundViewFont: UIFont {
 			switch self {

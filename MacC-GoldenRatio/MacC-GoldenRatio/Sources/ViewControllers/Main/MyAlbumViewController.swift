@@ -115,26 +115,16 @@ class MyAlbumViewController: UIViewController {
 extension MyAlbumViewController: UICollectionViewDataSource {
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 		if collectionView == albumCollectionView {
+			self.isInitializing = false
 			if viewModel.albumDatas.isEmpty {
 				if !self.isInitializing {
-					let label = UILabel()
-					label.text = "추가하신 다이어리가 없어요."
-					label.font = myDevice.collectionBackgoundViewFont
-					label.textColor = UIColor.buttonColor
-					label.textAlignment = .center
-					collectionView.backgroundView = label
+					collectionView.backgroundView = setEmptyView("추가하신 다이어리가 없어요.")
 				} else {
 					collectionView.backgroundView = nil
 				}
 			} else {
-				self.isInitializing = false
 				if viewModel.albumDatas[selectedAlbum].images?.count == 0 {
-					let label = UILabel()
-					label.text = "추가하신 사진이 없어요."
-					label.font = myDevice.collectionBackgoundViewFont
-					label.textColor = UIColor.buttonColor
-					label.textAlignment = .center
-					collectionView.backgroundView = label
+					collectionView.backgroundView = setEmptyView("추가하신 사진이 없어요.")
 				} else {
 					collectionView.backgroundView = nil
 				}
@@ -197,5 +187,25 @@ private extension MyAlbumViewController {
 				self?.isIndicator()
 			}
 			.store(in: &cancelBag)
+	}
+}
+
+private extension MyAlbumViewController {
+	func setEmptyView(_ text: String) -> UIView {
+		let emptyView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height))
+		
+		let label = UILabel(frame: CGRect(x: self.view.bounds.midX, y: -100, width: self.view.bounds.width, height: 100))
+		label.text = text
+		label.font = myDevice.collectionBackgoundViewFont
+		label.textColor = UIColor.buttonColor
+		label.textAlignment = .center
+		
+		emptyView.addSubview(label)
+		label.snp.makeConstraints {
+			$0.centerX.equalToSuperview()
+			$0.bottom.equalToSuperview().inset(myDevice.myAlbumBackgroundLabelBottom)
+		}
+		
+		return emptyView
 	}
 }

@@ -28,14 +28,61 @@ class FirestoreClient {
 		
 		return diaries
 	}
-	
+    
+//    func fetchDiaryLocationData(_ diaryUids: [String], completion: @escaping ([Location]) -> Void) {
+//
+//        do{
+//            self.decodeData(fetchData:
+//            diaryUids.map{
+//                var fetchData: Any?
+//                let docRef = db.collection("Diary").document($0)
+//
+//                docRef.getDocument() { (document, error) in
+//                    if let document = document {
+//                        let property = document.get("diaryLocation")
+//
+//                    } else {
+//                        print("Document does not exist in cache")
+//                    }
+//                }
+//                return fetchData
+//            })
+//
+//            }catch{
+//                print(error)
+//            }
+//
+//    }
+    
+    func fetchDiaryLocationData(_ uid: String) async throws -> [Location] {
+        var diaries = [Diary]()
+        var locations = [Location]()
+        
+        let query = db.collection("Diary").whereField("userUIDs", arrayContains: uid)
+        
+        let querySnapshot = try await query.getDocuments()
+        
+        querySnapshot.documents.forEach { document in
+            do {
+                diaries.append(try document.data(as: Diary.self))
+            } catch {
+                print(error)
+            }
+        }
+
+        for diary in diaries {
+            locations.append(diary.diaryLocation)
+        }
+
+        return locations
+    }
+    
 	func fetchDiaryMapData(_ uid: String) async throws -> [MapData] {
 		var diaries = [Diary]()
-		var userImageURL = [String]()
 		
 		var mapDatas = [MapData]()
 		
-		var query = db.collection("Diary").whereField("userUIDs", arrayContains: uid)
+        let query = db.collection("Diary").whereField("userUIDs", arrayContains: uid)
 		
 		let querySnapshot = try await query.getDocuments()
 		

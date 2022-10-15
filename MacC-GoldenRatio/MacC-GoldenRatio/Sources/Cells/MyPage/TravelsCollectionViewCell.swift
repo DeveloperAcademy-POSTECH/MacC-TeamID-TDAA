@@ -13,12 +13,25 @@ class TravelsCollectionViewCell: UICollectionViewCell {
         return imageView
     }()
     
+    private let locationLabel: UILabel = {
+        let label = UILabel()
+        label.font = .labelSubTitleFont2
+        label.textColor = .buttonColor
+        
+        return label
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .clear
         contentView.addSubview(imageView)
+        imageView.addSubview(locationLabel)
+        
         imageView.snp.makeConstraints {
             $0.edges.equalToSuperview()
+        }
+        locationLabel.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(10)
         }
     }
     
@@ -35,7 +48,8 @@ class TravelsCollectionViewCell: UICollectionViewCell {
         
     }
     
-    func setUI(image: UIImage) {
+    func setUI(image: UIImage, location: String) {
         imageView.image = image
+        locationLabel.text = location
     }
 }

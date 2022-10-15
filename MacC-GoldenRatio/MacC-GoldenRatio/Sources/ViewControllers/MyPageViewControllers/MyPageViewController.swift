@@ -102,7 +102,9 @@ class MyPageViewController: UIViewController {
             self.view.backgroundColor = .backgroundTexture
             self.setupViewModel()
             self.configureViews()
-            self.configureUserData()
+            self.configureNickName()
+            self.configureProfileImage()
+            self.configureTravelLocations()
             self.profileImageView.layer.cornerRadius = self.myDevice.myPageProfileImageSize.width * 0.5
         }
     }
@@ -150,9 +152,16 @@ class MyPageViewController: UIViewController {
         }
     }
     
-    private func configureUserData() {
-        self.profileImageView.image = self.viewModel.myProfileImage
+    private func configureNickName() {
         self.nickNameLabel.text = self.viewModel.myUser.userName
+    }
+    
+    private func configureTravelLocations() {
+        self.travelsCollectionView.reloadData()
+    }
+    
+    private func configureProfileImage() {
+        self.profileImageView.image = self.viewModel.myProfileImage
     }
     
     @objc private func onTapProfileSetting() {
@@ -167,15 +176,16 @@ extension MyPageViewController: UICollectionViewDataSource, UICollectionViewDele
     func numberOfSections(in collectionView: UICollectionView) -> Int { 1 }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 8
+        return viewModel.myTravelLocations.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TravelsCollectionViewCell.identifier, for: indexPath) as? TravelsCollectionViewCell else {
             return UICollectionViewCell()
         }
-        guard let image = UIImage(named: "plusButton") else { return UICollectionViewCell() }
-        cell.setUI(image: image)
+        guard let image = UIImage(named: "stampLayout") else { return UICollectionViewCell() }
+        let travelLocation = viewModel.myTravelLocations[indexPath.item]
+        cell.setUI(image: image, location: travelLocation)
         
         return cell
     }
@@ -208,14 +218,21 @@ private extension MyPageViewController {
         viewModel.$myUser
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                self?.configureUserData()
+                self?.configureNickName()
+            }
+            .store(in: &cancelBag)
+        
+        viewModel.$myTravelLocations
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.configureTravelLocations()
             }
             .store(in: &cancelBag)
         
         viewModel.$myProfileImage
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                self?.configureUserData()
+                self?.configureProfileImage()
             }
             .store(in: &cancelBag)
     }

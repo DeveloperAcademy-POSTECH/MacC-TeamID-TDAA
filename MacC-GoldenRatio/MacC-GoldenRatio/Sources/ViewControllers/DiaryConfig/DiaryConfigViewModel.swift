@@ -77,7 +77,11 @@ class DiaryConfigViewModel {
     }
     
     func checkAvailable() -> Bool {
-        if let _ = self.title, let _ = self.location, let _ = self.startDate, let _ = self.endDate {
+        if let title = self.title, let _ = self.location, let _ = self.startDate, let _ = self.endDate {
+            print("title: \(title)")
+            if title.isEmpty {
+                return false
+            }
             return true
         } else {
             print("ERROR: Incomplete Value")

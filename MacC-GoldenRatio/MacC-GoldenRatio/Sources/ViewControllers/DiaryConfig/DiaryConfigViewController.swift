@@ -41,7 +41,6 @@ class DiaryConfigViewController: UIViewController {
             self.diaryToConfig = diary
             self.viewModel.getDiaryData(diary: self.diaryToConfig!)
         }
-
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -101,6 +100,7 @@ class DiaryConfigViewController: UIViewController {
         button.setTitle("취소", for: .normal)
         button.titleLabel?.font = device.diaryConfigButtonFont
         button.addTarget(self, action: #selector(cancelButtonPressed), for: .touchUpInside)
+        button.tintColor = UIColor(named: "navigationbarColor")
         return button
     }()
     
@@ -109,11 +109,12 @@ class DiaryConfigViewController: UIViewController {
         button.setTitle("완료", for: .normal)
         button.titleLabel?.font = device.diaryConfigButtonFont
         button.addTarget(self, action: #selector(doneButtonPressed), for: .touchUpInside)
+        button.tintColor = UIColor(named: "navigationbarColor")
         return button
     }()
     
     
-// MARK: - Feature methods
+    // MARK: - Feature methods
     @objc func cancelButtonPressed(_ sender: UIButton) {
         let ac = UIAlertController(title: nil, message: "변경사항은 저장되지 않습니다. 정말 취소하시겠습니까?", preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "취소", style: .cancel))
@@ -124,9 +125,10 @@ class DiaryConfigViewController: UIViewController {
     }
     
     @objc func doneButtonPressed(_ sender: UIButton) {
+        self.contentTextField.endEditing(true)
         
         if viewModel.checkAvailable() {
-           
+            
             if let parentNavigationController: UINavigationController = self.presentingViewController as? UINavigationController {
                 presentingViewController?.dismiss(animated: true) {
                     switch self.configState {
@@ -151,7 +153,7 @@ class DiaryConfigViewController: UIViewController {
     }
     
     
-// MARK: - Setup methods
+    // MARK: - Setup methods
     private func titleSetup() {
         view.addSubview(stateTitle)
         stateTitle.snp.makeConstraints {
@@ -259,20 +261,20 @@ extension DiaryConfigViewController: UICollectionViewDataSource {
             self.contentTextField.endEditing(true)
             
             let pickerController = CalendarPickerViewController(dateArray: dateInterval, selectedDateChanged: { [self, weak sender] date in
-                    guard let sender = sender else { return }
-                    UIView.performWithoutAnimation {
-                        let startDate = date[0]
-                        let endDate = date[1]
-                        
-                        dateInterval = [startDate, endDate]
-                        self.viewModel.startDate = startDate.customFormat()
-                        self.viewModel.endDate = endDate.customFormat()
-                        
-                        sender.setTitle("\(startDate.customFormat()) \(startDate.dayOfTheWeek())  - \(endDate.customFormat()) \(endDate.dayOfTheWeek())", for: .normal)
-                        sender.tintColor = .black
-                        sender.layoutIfNeeded()
-                    }
-                })
+                guard let sender = sender else { return }
+                UIView.performWithoutAnimation {
+                    let startDate = date[0]
+                    let endDate = date[1]
+                    
+                    dateInterval = [startDate, endDate]
+                    self.viewModel.startDate = startDate.customFormat()
+                    self.viewModel.endDate = endDate.customFormat()
+                    
+                    sender.setTitle("\(startDate.customFormat()) \(startDate.dayOfTheWeek())  - \(endDate.customFormat()) \(endDate.dayOfTheWeek())", for: .normal)
+                    sender.tintColor = .black
+                    sender.layoutIfNeeded()
+                }
+            })
             
             present(pickerController, animated: true, completion: nil)
         }
@@ -284,6 +286,7 @@ extension DiaryConfigViewController: UICollectionViewDataSource {
         switch configContentType {
         case .diaryName:
             self.contentTextField.text = nil
+            self.contentTextField.endEditing(true)
         case .location, .diaryDate:
             self.contentTextField.endEditing(true)
             

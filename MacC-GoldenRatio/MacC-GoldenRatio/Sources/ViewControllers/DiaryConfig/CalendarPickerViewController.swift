@@ -331,9 +331,9 @@ extension CalendarPickerViewController: UICollectionViewDelegateFlowLayout {
                 return
             } else {
                 if startDate == endDate {
-                    self.footerView.buttonLabel = "\(startDate.customFormat()) \(startDate.dayOfTheWeek()) 당일치기"
+                    self.footerView.buttonLabel = "\(startDate.customFormat()) (\(startDate.dayOfTheWeek())) 당일치기"
                 } else {
-                    self.footerView.buttonLabel = "\(startDate.customFormat()) \(startDate.dayOfTheWeek()) ~ \(endDate.customFormat()) \(endDate.dayOfTheWeek()) ∙ \(timeInterval)박"
+                    self.footerView.buttonLabel = "\(startDate.customFormat()) (\(startDate.dayOfTheWeek())) ~ \(endDate.customFormat()) (\(endDate.dayOfTheWeek())) ∙ \(timeInterval)박"
                 }
             }
         default:

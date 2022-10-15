@@ -19,9 +19,7 @@ final class MyAlbumPhotoViewController: UIViewController {
 	private var previousOffset: CGFloat = 0
 	var photoPage: Int {
 		didSet {
-			if photoPage == 0 {
-				photoPage = 1
-			} else if photoPage > totalCount {
+			if photoPage > totalCount {
 				photoPage = totalCount
 			}
 			self.titleLabel.text = "\(photoPage+1)/\(totalCount)"
@@ -61,6 +59,7 @@ final class MyAlbumPhotoViewController: UIViewController {
 	private lazy var titleLabel: UILabel = {
 		let label = UILabel()
 		label.font = myDevice.myAlbumPhotoPageLabelFont
+		label.textColor = .black
 		
 		return label
 	}()
@@ -193,38 +192,15 @@ extension MyAlbumPhotoViewController: UICollectionViewDelegateFlowLayout {
 extension MyAlbumPhotoViewController: UIScrollViewDelegate {
 	func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
 		let cellWidthIncludeSpacing = self.view.bounds.width + 10
-		
+
 		var offset = targetContentOffset.pointee
-		
-		// TODO: 기기 대응 시 수정 예정
-		if (Int(offset.x)%400) > 200 {
-			self.targetContentOffset(scrollView, withVelocity: velocity)
-		}
-		
 		let index = (offset.x + scrollView.contentInset.left) / cellWidthIncludeSpacing
 		let roundedIndex: CGFloat = round(index)
 		
+		photoPage = Int(roundedIndex)
+
 		offset = CGPoint(x: roundedIndex * cellWidthIncludeSpacing - scrollView.contentInset.left, y: scrollView.contentInset.top)
 		targetContentOffset.pointee = offset
-	}
-	
-	func targetContentOffset(_ scrollView: UIScrollView, withVelocity velocity: CGPoint) -> CGPoint {
-		guard let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return .zero }
-
-		// Offset 변화, slide 제스처 비교 후 이동 방향 결정
-		if previousOffset > collectionView.contentOffset.x && velocity.x < 0 {
-			photoPage = photoPage - 1
-		} else if previousOffset < collectionView.contentOffset.x && velocity.x > 0 {
-			photoPage = photoPage + 1
-		}
-
-		let additional = (flowLayout.itemSize.width + flowLayout.minimumLineSpacing)
-
-		let updatedOffset = (flowLayout.itemSize.width + flowLayout.minimumLineSpacing) * CGFloat(photoPage) - additional
-
-		previousOffset = updatedOffset
-
-		return CGPoint(x: updatedOffset, y: 0)
 	}
 }
 

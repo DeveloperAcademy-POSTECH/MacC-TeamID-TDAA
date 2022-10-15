@@ -64,11 +64,11 @@ class MyAlbumViewController: UIViewController {
 		setupViewModel()
     }
 	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		print("@")
-		setupViewModel()
-	}
+//	override func viewWillAppear(_ animated: Bool) {
+//		super.viewWillAppear(animated)
+//		viewModel.fetchLoadData()
+//		setupViewModel()
+//	}
 	
 	private func setup() {
 		self.view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
@@ -168,7 +168,7 @@ extension MyAlbumViewController: UICollectionViewDelegate {
 extension MyAlbumViewController: UICollectionViewDelegateFlowLayout {
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 		var width = 0
-		if !viewModel.albumDatas.isEmpty {
+		if !viewModel.albumDatas.isEmpty && viewModel.albumDatas.count > indexPath.item {
 			width = viewModel.albumDatas[indexPath.item].diaryName.count
 		}
 		return collectionView == titleCollectionView ? CGSize(width: width*20, height: 50) : CGSize(width: 110, height: 110)
@@ -177,7 +177,6 @@ extension MyAlbumViewController: UICollectionViewDelegateFlowLayout {
 
 private extension MyAlbumViewController {
 	func setupViewModel() {
-		viewModel.fetchLoadData()
 		viewModel.$albumDatas
 			.receive(on: DispatchQueue.main)
 			.sink { [weak self] data in

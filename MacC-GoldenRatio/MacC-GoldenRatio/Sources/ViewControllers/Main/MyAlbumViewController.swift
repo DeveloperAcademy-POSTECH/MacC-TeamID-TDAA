@@ -64,6 +64,12 @@ class MyAlbumViewController: UIViewController {
 		setupViewModel()
     }
 	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		print("@")
+		setupViewModel()
+	}
+	
 	private func setup() {
 		self.view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
 	}
@@ -171,6 +177,7 @@ extension MyAlbumViewController: UICollectionViewDelegateFlowLayout {
 
 private extension MyAlbumViewController {
 	func setupViewModel() {
+		viewModel.fetchLoadData()
 		viewModel.$albumDatas
 			.receive(on: DispatchQueue.main)
 			.sink { [weak self] data in

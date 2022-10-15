@@ -41,6 +41,12 @@ class MyPlaceViewController: UIViewController, MKMapViewDelegate, CLLocationMana
 		setupViewModel()
 	}
 	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		viewModel.fetchLoadData()
+		setupViewModel()
+	}
+	
 	private func setup() {
 		locationManager.requestWhenInUseAuthorization()
 		locationManager.delegate = self
@@ -62,6 +68,8 @@ class MyPlaceViewController: UIViewController, MKMapViewDelegate, CLLocationMana
 	}
 
 	private func addCustomPin(_ mapData: [MapData]) {
+		let allAnnotations = self.mapView.map.annotations
+		self.mapView.map.removeAnnotations(allAnnotations)
 		mapData.forEach { data in
 			let pin = CustomAnnotation(diaryTitle: data.diaryName, stampName: data.diaryCover, coordinate: CLLocationCoordinate2D(latitude: data.location.locationCoordinate[0], longitude: data.location.locationCoordinate[1]))
 			mapView.map.addAnnotation(pin)
@@ -120,6 +128,7 @@ private extension MyPlaceViewController {
 		viewModel.$mapDatas
 			.receive(on: DispatchQueue.main)
 			.sink { [weak self] data in
+				print(data)
 				self?.addCustomPin(data)
 			}
 			.store(in: &cancelBag)

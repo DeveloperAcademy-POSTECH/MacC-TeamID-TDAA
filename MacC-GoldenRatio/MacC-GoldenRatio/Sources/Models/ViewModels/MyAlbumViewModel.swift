@@ -32,6 +32,7 @@ class MyAlbumViewModel {
 		Task {
 			do {
 				self.isInitializing = true
+				albumDatas.removeAll()
 				let datas = try await client.fetchDiaryAlbumData(myUID)
 				for data in datas {
 					var images = [UIImage]()

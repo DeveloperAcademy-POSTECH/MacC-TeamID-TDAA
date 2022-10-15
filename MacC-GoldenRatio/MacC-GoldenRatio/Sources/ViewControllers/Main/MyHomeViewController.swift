@@ -45,6 +45,11 @@ final class MyHomeViewController: UIViewController {
 		setupViewModel()
     }
 	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		setupViewModel()
+	}
+	
 	private func setupSubViews() {
 		self.view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
 		
@@ -162,6 +167,7 @@ extension MyHomeViewController: UICollectionViewDelegateFlowLayout {
 
 private extension MyHomeViewController {
 	func setupViewModel() {
+		viewModel.fetchLoadData()
 		viewModel.$diaryCellData
 			.receive(on: DispatchQueue.main)
 			.sink { [weak self] diaryCell in

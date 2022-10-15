@@ -35,6 +35,7 @@ class MyHomeViewModel {
 		Task {
 			do {
 				self.isInitializing = true
+				diaryData.removeAll()
 				self.diaryData = try await client.fetchMyDiaries(myUID)
 				self.diaryCellData = try await convertDiaryToCellData(diaryData)
 				self.isInitializing = false

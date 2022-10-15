@@ -129,7 +129,6 @@ private extension MyPlaceViewController {
 		viewModel.$mapDatas
 			.receive(on: DispatchQueue.main)
 			.sink { [weak self] data in
-				print(data)
 				self?.addCustomPin(data)
 			}
 			.store(in: &cancelBag)

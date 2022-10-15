@@ -96,37 +96,60 @@ class CalendarDateCollectionViewCell: UICollectionViewCell {
             $0.size.equalTo(CGSize(width: size, height: size))
         }
         
-        if day.date.dayOfTheWeek() == "일" || dateOption == .start {
-            marker.snp.makeConstraints {
-                $0.center.equalTo(numberLabel)
-                $0.size.equalTo(CGSize(width: size, height: size))
-            }
-            
-            termBackgroundView.snp.makeConstraints {
-                $0.leading.equalTo(numberLabel.snp.centerX)
-                $0.top.equalTo(selectionBackgroundView.snp.top)
-                $0.width.equalTo(contentView.snp.width).dividedBy(device.calendarCellDivider)
-                $0.height.equalTo(selectionBackgroundView.snp.height)
-            }
-        } else if day.date.dayOfTheWeek() == "토" || dateOption == .end {
-            marker.snp.makeConstraints {
-                $0.center.equalTo(numberLabel)
-                $0.size.equalTo(CGSize(width: size, height: size))
-            }
-            
-            termBackgroundView.snp.makeConstraints {
-                $0.trailing.equalTo(numberLabel.snp.centerX)
-                $0.top.equalTo(selectionBackgroundView.snp.top)
-                $0.width.equalTo(contentView.snp.width).dividedBy(device.calendarCellDivider)
-                $0.height.equalTo(selectionBackgroundView.snp.height)
-            }
-        } else if dateOption == .single {
+        switch dateOption {
+        case .single: // 날짜 1개 선택한 경우
             termBackgroundView.snp.removeConstraints()
-        } else {
-            termBackgroundView.snp.makeConstraints {
+            
+        case .start: // 시작일 선택
+            if day.date.dayOfTheWeek() == "토" {
+                termBackgroundView.snp.removeConstraints()
+            } else {
+                termBackgroundView.snp.makeConstraints {
+                    $0.leading.equalTo(numberLabel.snp.centerX).offset(2)
+                    $0.top.equalTo(selectionBackgroundView.snp.top)
+                    $0.width.equalTo(contentView.snp.width).dividedBy(device.calendarCellDivider)
+                    $0.height.equalTo(selectionBackgroundView.snp.height)
+                }
+            }
+            
+        case .end: // 종료일 선택
+            if day.date.dayOfTheWeek() == "일" {
+                termBackgroundView.snp.removeConstraints()
+            } else {
+                termBackgroundView.snp.makeConstraints {
+                    $0.trailing.equalTo(numberLabel.snp.centerX).offset(-2)
+                    $0.top.equalTo(selectionBackgroundView.snp.top)
+                    $0.width.equalTo(contentView.snp.width).dividedBy(device.calendarCellDivider)
+                    $0.height.equalTo(selectionBackgroundView.snp.height)
+                }
+            }
+            
+        case .normal: // 시작일과 종료일을 제외한 중간 기간
+            marker.snp.makeConstraints {
                 $0.center.equalTo(numberLabel)
-                $0.width.equalTo(contentView.snp.width).multipliedBy(device.calendarCellMultiplier)
-                $0.height.equalTo(selectionBackgroundView.snp.height)
+                $0.size.equalTo(CGSize(width: size, height: size))
+            }
+            
+            if day.date.dayOfTheWeek() == "일" {
+                termBackgroundView.snp.makeConstraints {
+                    $0.leading.equalTo(numberLabel.snp.centerX).offset(2)
+                    $0.top.equalTo(selectionBackgroundView.snp.top)
+                    $0.width.equalTo(contentView.snp.width).dividedBy(device.calendarCellDivider)
+                    $0.height.equalTo(selectionBackgroundView.snp.height)
+                }
+            } else if day.date.dayOfTheWeek() == "토" {
+                termBackgroundView.snp.makeConstraints {
+                    $0.trailing.equalTo(numberLabel.snp.centerX).offset(-2)
+                    $0.top.equalTo(selectionBackgroundView.snp.top)
+                    $0.width.equalTo(contentView.snp.width).dividedBy(device.calendarCellDivider)
+                    $0.height.equalTo(selectionBackgroundView.snp.height)
+                }
+            } else {
+                termBackgroundView.snp.makeConstraints {
+                    $0.center.equalTo(numberLabel)
+                    $0.width.equalTo(contentView.snp.width).multipliedBy(device.calendarCellMultiplier)
+                    $0.height.equalTo(selectionBackgroundView.snp.height)
+                }
             }
         }
         

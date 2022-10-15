@@ -8,7 +8,12 @@
 import SnapKit
 import UIKit
 
+enum DateOption {
+    case start, end, single, normal
+}
+
 class CalendarDateCollectionViewCell: UICollectionViewCell {
+    var dateOption: DateOption = .normal
     
     lazy var selectionBackgroundView: UIView = {
         let view = UIView()
@@ -90,7 +95,7 @@ class CalendarDateCollectionViewCell: UICollectionViewCell {
             $0.size.equalTo(CGSize(width: size, height: size))
         }
         
-        if day.date.dayOfTheWeek() == "일" {
+        if day.date.dayOfTheWeek() == "일" || dateOption == .start {
             marker.snp.makeConstraints {
                 $0.center.equalTo(numberLabel)
                 $0.size.equalTo(CGSize(width: size, height: size))
@@ -102,7 +107,7 @@ class CalendarDateCollectionViewCell: UICollectionViewCell {
                 $0.width.equalTo(contentView.snp.width).dividedBy(1.8)
                 $0.height.equalTo(selectionBackgroundView.snp.height)
             }
-        } else if day.date.dayOfTheWeek() == "토"{
+        } else if day.date.dayOfTheWeek() == "토" || dateOption == .end {
             marker.snp.makeConstraints {
                 $0.center.equalTo(numberLabel)
                 $0.size.equalTo(CGSize(width: size, height: size))
@@ -114,6 +119,8 @@ class CalendarDateCollectionViewCell: UICollectionViewCell {
                 $0.width.equalTo(contentView.snp.width).dividedBy(1.8)
                 $0.height.equalTo(selectionBackgroundView.snp.height)
             }
+        } else if dateOption == .single {
+            termBackgroundView.snp.removeConstraints()
         } else {
             termBackgroundView.snp.makeConstraints {
                 $0.center.equalTo(numberLabel)
@@ -121,8 +128,6 @@ class CalendarDateCollectionViewCell: UICollectionViewCell {
                 $0.height.equalTo(selectionBackgroundView.snp.height)
             }
         }
-        
-        
         
         marker.layer.cornerRadius = size / 2
         selectionBackgroundView.layer.cornerRadius = size / 2

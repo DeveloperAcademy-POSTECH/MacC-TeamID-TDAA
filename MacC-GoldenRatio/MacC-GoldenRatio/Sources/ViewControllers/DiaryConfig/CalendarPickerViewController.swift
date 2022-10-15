@@ -252,6 +252,7 @@ extension CalendarPickerViewController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CalendarDateCollectionViewCell.reuseIdentifier, for: indexPath) as! CalendarDateCollectionViewCell
         
         cell.day = day
+        cell.dateOption = .normal
         guard let date = cell.day?.date else { return cell }
         
         if !dateInterval.isEmpty {
@@ -259,14 +260,29 @@ extension CalendarPickerViewController: UICollectionViewDataSource {
             let endDate = dateInterval.last ?? dateInterval[0]
             let allDate = Date.dates(from: startDate, to: endDate)
             
+            // 시작일, 종료일
             if dateInterval.contains(date) {
                 cell.day?.isSelected = true
                 cell.selectionBackgroundView.backgroundColor = (cell.day?.date == startDate ? UIColor(named: "startDateColor") : UIColor(named: "endDateColor"))
-                
             }
             
+            // 시작일과 종료일을 포함한 기간
             if allDate.contains(date) {
                 cell.day?.isInTerm = true
+            }
+            
+            // 종료일 존재 여부에 대한 분기처리
+            if startDate != endDate {
+                switch cell.day?.date {
+                case startDate:
+                    cell.dateOption = .start
+                case endDate:
+                    cell.dateOption = .end
+                default:
+                    cell.dateOption = .normal
+                }
+            } else {
+                cell.dateOption = .single
             }
         }
         

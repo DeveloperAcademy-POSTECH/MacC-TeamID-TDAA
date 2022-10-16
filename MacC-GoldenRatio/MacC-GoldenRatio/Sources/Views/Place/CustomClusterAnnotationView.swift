@@ -53,7 +53,7 @@ class CustomClusterAnnotationView: MKAnnotationView {
 		label.font = myDevice.clusterAnnotationLabelFont
 		label.clipsToBounds = true
 		label.layer.cornerRadius = 12
-		label.backgroundColor = UIColor.black
+		label.backgroundColor = UIColor(named: "sandbrownColor") ?? UIColor.black
 		label.textColor = UIColor.white
 		label.textAlignment = .center
 		label.text = text

@@ -31,7 +31,7 @@ class MyAlbumViewController: UIViewController {
 		let label = UILabel()
 		label.text = "앨범"
 		label.font = myDevice.TabBarTitleFont
-		label.textColor = UIColor.buttonColor
+		label.textColor = UIColor(named: "darkgrayColor") ?? UIColor.black
 		
 		return label
 	}()

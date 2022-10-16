@@ -23,7 +23,7 @@ class MyPlaceViewController: UIViewController, MKMapViewDelegate, CLLocationMana
 		let label = UILabel()
 		label.text = "지도"
 		label.font = myDevice.TabBarTitleFont
-		label.textColor = UIColor.buttonColor
+		label.textColor = UIColor(named: "darkgrayColor") ?? UIColor.black
 		
 		return label
 	}()
@@ -70,7 +70,7 @@ class MyPlaceViewController: UIViewController, MKMapViewDelegate, CLLocationMana
 		let allAnnotations = self.mapView.map.annotations
 		self.mapView.map.removeAnnotations(allAnnotations)
 		mapData.forEach { data in
-			let pin = CustomAnnotation(diaryTitle: data.diaryName, stampName: data.diaryCover, coordinate: CLLocationCoordinate2D(latitude: data.location.locationCoordinate[0], longitude: data.location.locationCoordinate[1]))
+			let pin = CustomAnnotation(diaryTitle: data.diaryName, coordinate: CLLocationCoordinate2D(latitude: data.location.locationCoordinate[0], longitude: data.location.locationCoordinate[1]))
 			mapView.map.addAnnotation(pin)
 		}
 	}
@@ -103,7 +103,7 @@ class MyPlaceViewController: UIViewController, MKMapViewDelegate, CLLocationMana
 			$0.top.equalToSuperview().inset(10)
 		}
 		
-		let stampName = UIImage(named: annotation.stampName) ?? UIImage()
+		let stampName = UIImage(named: "stampLayout") ?? UIImage()
 		let size = myDevice.annotationSize
 		UIGraphicsBeginImageContext(size)
 		

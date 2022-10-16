@@ -18,10 +18,10 @@ class MyAlbumViewModel {
 	private var isFirstLoad = true
 	
 	init() {
-		fetchLoadData()
+        fetchLoadData(completion: {})
 	}
 	
-	func fetchLoadData() {
+    func fetchLoadData(completion: (()->Void)?) {
 		Task {
 			do {
 				let datas = try await self.client.fetchDiaryAlbumData(self.myUID)
@@ -48,7 +48,7 @@ class MyAlbumViewModel {
 					}
 				}
 				self.albumDatas = self.fetchDatas
-				print(fetchDatas)
+                (completion ?? {})()
 			} catch {
 				print(error)
 			}

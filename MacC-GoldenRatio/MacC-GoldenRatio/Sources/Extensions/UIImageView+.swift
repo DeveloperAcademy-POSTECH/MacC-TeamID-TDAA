@@ -25,8 +25,8 @@ extension UIImageView {
                 guard let url = url else {
                     return
                 }
-                Task{
-                    self.kf.setImage(with: url)
+                
+                self.kf.setImage(with: url) { kf in
                     ImageManager.shared.cacheImage(url: urlString, image: self.image ?? UIImage())
                 }
             }

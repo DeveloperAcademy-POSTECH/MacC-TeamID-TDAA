@@ -58,11 +58,19 @@ class SignInViewController: UIViewController {
     
     @objc private func appleLoginButtonPressed() {
         print("Sign In completed with Apple ID")
-        startSignInWithAppleFlow()
+        startSignInWithAppleFlow {
+            guard let currentUser = Auth.auth().currentUser else { return }
+            let uid = currentUser.uid
+            let userName = currentUser.displayName ?? ""
+
+            let user = User(userUID: uid, userName: userName, userImageURL: "", diaryUUIDs: [])
+            FirestoreClient().setMyUser(myUser: user, completion: nil)
+        }
     }
     
     private func showMainView() {
         let signInTestVC = TabBarController()
+        self.navigationController?.navigationBar.isHidden = true
         self.navigationController?.pushViewController(signInTestVC, animated: true)
     }
     
@@ -72,14 +80,25 @@ class SignInViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
-        
-        if Auth.auth().currentUser != nil {
-            showMainView()
-        }
-        
-        setup()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+                
+        DispatchQueue.main.async {
+            if let user = Auth.auth().currentUser {
+                FirestoreClient().isExistingUser(user.uid) { value in
+                    if value {
+                        self.showMainView()
+                    }else{
+                        self.setup()
+                    }
+                }
+            } else {
+                self.setup()
+            }
+        }
+    }
     private func setup() {
         [appLogo, appTitle, appleLoginButton].forEach {
             view.addSubview($0)
@@ -121,14 +140,23 @@ extension SignInViewController: ASAuthorizationControllerDelegate {
             }
             
             let credential = OAuthProvider.credential(withProviderID: "apple.com", idToken: idTokenString, rawNonce: nonce)
-            
+
             Auth.auth().signIn(with: credential) { authResult, error in
                 if let error = error {
                     print ("Error Apple sign in: %@", error)
                     return
                 }
-                
-                self.showMainView()
+                guard let currentUser = Auth.auth().currentUser else { return }
+                FirestoreClient().isExistingUser(currentUser.uid,completion: { i in
+                    guard i else {
+                        let user = User(userUID: currentUser.uid, userName: currentUser.displayName ?? "", userImageURL: "", diaryUUIDs: [])
+                        FirestoreClient().setMyUser(myUser: user, completion: {
+                            self.showMainView()
+                        })
+                        return
+                    }
+                    self.showMainView()
+                })
             }
         }
     }
@@ -136,7 +164,7 @@ extension SignInViewController: ASAuthorizationControllerDelegate {
 
 extension SignInViewController {
     // 애플에 인증 값을 요청할 때 리퀘스트를 생성해서 전달 (Nonce를 포함시켜서 Relay 공격 방지, Firebase 무결성 보장)
-    private func startSignInWithAppleFlow() {
+    private func startSignInWithAppleFlow(completion: () -> Void) {
         let nonce = randomNonceString()
         currentNonce = nonce
         let appleIDProvider = ASAuthorizationAppleIDProvider()
@@ -148,6 +176,7 @@ extension SignInViewController {
         authorizationController.delegate = self
         authorizationController.presentationContextProvider = self
         authorizationController.performRequests()
+        completion()
     }
     
     private func sha256(_ input: String) -> String {

@@ -57,7 +57,11 @@ class DiaryCollectionViewCell: UICollectionViewCell {
 				}
 			} else if index <= 3 {
 				let imageView = UIImageView()
-				imageView.setImage(with: url)
+                if url == "" {
+                    imageView.image = UIImage(named: "profileImage")
+                } else {
+                    imageView.setImage(with: url)
+                }
 				imageView.contentMode = .scaleToFill
 				imageView.clipsToBounds = true
 				imageView.layer.cornerRadius = 12.5

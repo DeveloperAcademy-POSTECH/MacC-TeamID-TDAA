@@ -20,3 +20,8 @@
 [태스크] >> 브랜치 명
 
 예시) [추가 모달 뷰 연결] >> addModalView
+
+## Branch Naming Rules
+<작업태그>/<이슈번호>-<뷰 이름>
+
+예시) feat/1-MyDiariesView

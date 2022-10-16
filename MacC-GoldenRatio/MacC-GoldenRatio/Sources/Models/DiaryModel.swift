@@ -7,51 +7,65 @@
 
 import Foundation
 
-struct Diary {
+struct Diary: Codable {
 	let diaryUUID: String
-	let diaryName: String
+	var diaryName: String
 	let diaryLocation: Location
-	let diaryStartDate: Date
-	let diaryEndDate: Date
-	let diaryPages: [[Page]]
-	let userUIDs: [User]
+	let diaryStartDate: String
+	let diaryEndDate: String
+	let diaryCover: String
+	var userUIDs: [String] = []
+    var diaryPages: [Pages] = []
+    var pageThumbnails: [String] = []
 }
 
-struct Location {
+struct Location: Codable {
 	let locationName: String
 	let locationAddress: String
 	let locationCoordinate: [Double]
 }
 
-struct Page {
-	let pageUUID: String
-	let items: [Item]
+struct Pages: Codable {
+    var pages: [Page]
 }
 
-struct Item {
+struct Page: Codable {
+	let pageUUID: String
+	var items: [Item]
+}
+
+struct Item: Codable {
 	let itemUUID: String
 	let itemType: ItemType
-	let contents: Any
-	let itemSize: [Double]
-	let itemPosition: [Double]
-	let itemAngle: Double
+	var contents: [String]
+    // map -> [이름, 주소, 위도, 경도]
+    // image ->
+    // sticker ->
+    // location ->
+    
+    /// 상위 뷰의 좌표 시스템에서 Sticker의 위치 좌표, 그리고 크기를 나타냅니다.
+	var itemFrame: [Double]
+    /// Sticker 자체 좌표 시스템에서의 위치 좌표, 그리고 크기를 나타냅니다.
+    var itemBounds: [Double]
+    /// Sticker의 크기, 회전각을 나타냅니다.
+	var itemTransform: [Double]
 }
 
-struct TextBox {
+struct TextBox: Codable {
 	let text: String
 	let fontName: String
 	let fontColor: String
 }
 
-struct Image {
+struct Image: Codable {
 	let imageURL: String
 }
 
-struct Sticker {
+struct Sticker: Codable {
 	let stickerName: String
 }
 
-enum ItemType {
+enum ItemType: String, Codable {
 	case text
 	case image
 	case sticker

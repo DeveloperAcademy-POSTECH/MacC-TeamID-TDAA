@@ -334,12 +334,12 @@ func authorizationController(controller: ASAuthorizationController, didCompleteW
             if let error = error {
                 print(error)
             }else{
+                self.viewModel.deleteUserDB()
                 user?.delete { error in
                     if let withdrawalError = error {
                         print("ERROR: withdrawal \(withdrawalError.localizedDescription)")
                     } else {
                         print("Withdrawal completed with Apple ID")
-                        self.viewModel.deleteUserDB()
                         self.navigationController?.popToRootViewController(animated: true)
                     }
                 }

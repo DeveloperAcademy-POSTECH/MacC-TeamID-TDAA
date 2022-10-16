@@ -86,37 +86,39 @@ class MyPageViewModel {
     func deleteUserDB() {
         Task {
             do {
-                let userRef = db.collection("User").document(self.myUID)
-                let diaries = try await FirestoreClient().fetchMyDiaries(self.myUID)
-                print("다이어리 목록: \(diaries)")
-                
-                // 사용자 삭제
-                userRef.delete() { err in
-                    if let _ = err {
-                        print("ERROR: 사용자 DB 삭제 실패")
-                    } else {
-                        print("사용자 DB 삭제 완료")
-                    }
-                }
+                let uid = Auth.auth().currentUser?.uid
+                let userRef = db.collection("User").document(uid ?? self.myUID)
+                let diaries = try await FirestoreClient().fetchMyDiaries(uid ?? self.myUID)
                 
                 // 가져온 다이어리 목록에 대해서 다이어리 삭제
                 for diary in diaries {
                     let diaryRef = db.collection("Diary").document(diary.diaryUUID)
-                    let userUIDs = diary.userUIDs.filter(){ $0 != myUID }
+                    let userUIDs = diary.userUIDs.filter(){ $0 != uid }
                     
-                    if userUIDs.isEmpty {
+                    if !userUIDs.isEmpty {
+                        let pagesFieldData = ["userUIDs" : userUIDs]
+                        try await diaryRef.updateData(pagesFieldData)
+                        print(uid)
+                        print(userUIDs)
+                    } else {
                         // 자신밖에 없으면 다이어리 삭제
                         diaryRef.delete() { err in
                             if let _ = err {
                                 print("ERROR: 다이어리 삭제 실패")
                             } else {
+                                // 사용자 삭제
+                                userRef.delete() { err in
+                                    if let _ = err {
+                                        print("ERROR: 사용자 DB 삭제 실패")
+                                    } else {
+                                        print("사용자 DB 삭제 완료")
+                                    }
+                                }
                                 print("다이어리 삭제 완료")
                             }
                         }
-                    } else {
-                        let pagesFieldData = ["userUIDs" : userUIDs]
-                        try await diaryRef.updateData(pagesFieldData)
                     }
+                    
                 }
             } catch {
                 print(error)

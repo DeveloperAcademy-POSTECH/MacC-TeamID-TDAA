@@ -6,6 +6,7 @@
 //
 
 import Combine
+import FirebaseAuth
 import SnapKit
 import UIKit
 
@@ -90,7 +91,8 @@ class MyPageViewController: UIViewController {
         tableView.dataSource = self
         tableView.isScrollEnabled = false
         tableView.backgroundColor = .clear
-
+        tableView.register(MenuTableViewCell.self, forCellReuseIdentifier: MenuTableViewCell.identifier)
+        
         return tableView
     }()
 
@@ -169,6 +171,50 @@ class MyPageViewController: UIViewController {
         viewController.modalPresentationStyle = .fullScreen
         self.present(viewController, animated: true)
     }
+    
+    private func onTapLogOutButtonTapped() {
+        let ac = UIAlertController(title: "로그아웃 하시겠습니까?", message: nil, preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "확인", style: .destructive) { _ in
+            self.authLogout()
+        })
+        ac.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
+        present(ac, animated: true, completion: nil)
+    }
+    
+    private func onTapWithdrawalButtonTapped() {
+        let ac = UIAlertController(title: "회원탈퇴 하시겠습니까?", message: nil, preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "확인", style: .destructive) { _ in
+            self.authWithdrawal()
+        })
+        ac.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
+        present(ac, animated: true, completion: nil)
+    }
+    
+    private func authLogout() {
+        let firebaseAuth = Auth.auth()
+        
+        do{
+            try firebaseAuth.signOut()
+            print("Sign Out completed with Apple ID")
+            self.navigationController?.popToRootViewController(animated: true)
+        } catch let signOutError as NSError {
+            print("ERROR: signOut \(signOutError.localizedDescription)")
+        }
+    }
+    
+    private func authWithdrawal() {
+        let user = Auth.auth().currentUser
+        
+        user?.delete { error in
+            if let withdrawalError = error {
+                print("ERROR: withdrawal \(withdrawalError.localizedDescription)")
+            } else {
+                print("Withdrawal completed with Apple ID")
+                self.navigationController?.popToRootViewController(animated: true)
+            }
+        }
+    }
+    
 }
 
 extension MyPageViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -204,12 +250,35 @@ extension MyPageViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
-        cell.textLabel?.text = viewModel.menuArray[indexPath.item]
-        cell.textLabel?.font = .labelTtitleFont2
-        cell.backgroundColor = .clear
+        
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: MenuTableViewCell.identifier, for: indexPath) as? MenuTableViewCell else {
+            return UITableViewCell()
+        }
+        let menuTitle = viewModel.menuArray[indexPath.item]
+        
+        cell.setUI(title: menuTitle.0, subTitle: menuTitle.1)
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 44
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch viewModel.menuArray[indexPath.item].0 {
+        case "오픈소스":
+            break
+        case "앱 평가하기":
+            break
+        case "로그아웃":
+            self.onTapLogOutButtonTapped()
+            break
+        case "회원탈퇴":
+            self.onTapWithdrawalButtonTapped()
+            break
+        default: break
+        }
     }
 }
 
@@ -235,5 +304,57 @@ private extension MyPageViewController {
                 self?.configureProfileImage()
             }
             .store(in: &cancelBag)
+    }
+}
+
+class MenuTableViewCell: UITableViewCell {
+    private let menuLabel: UILabel = {
+        let label = UILabel()
+        label.font = .labelTtitleFont2
+        label.textColor = .black
+        
+        return label
+    }()
+    
+    private let subTitleLabel: UILabel = {
+        let label = UILabel()
+        label.font = .labelSubTitleFont2
+        label.textColor = .buttonColor
+
+        return label
+    }()
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        layout()
+    }
+   
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func layout() {
+        selectionStyle = .none
+        backgroundColor = .clear
+        contentView.addSubview(menuLabel)
+        contentView.addSubview(subTitleLabel)
+
+        menuLabel.snp.makeConstraints {
+            $0.verticalEdges.equalToSuperview()
+            $0.leading.equalToSuperview().offset(10)
+        }
+        
+        subTitleLabel.snp.makeConstraints {
+            $0.verticalEdges.equalToSuperview()
+            $0.trailing.equalToSuperview().offset(-20)
+        }
+
+    }
+    
+    func setUI(title: String, subTitle: String?){
+        self.menuLabel.text = title
+        guard let subTitle = subTitle else { return }
+        self.subTitleLabel.text = subTitle
     }
 }

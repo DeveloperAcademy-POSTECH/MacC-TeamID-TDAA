@@ -231,7 +231,7 @@ extension MyPageViewController: UICollectionViewDataSource, UICollectionViewDele
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TravelsCollectionViewCell.identifier, for: indexPath) as? TravelsCollectionViewCell else {
             return UICollectionViewCell()
         }
-        guard let image = UIImage(named: "stampLayout") else { return UICollectionViewCell() }
+        guard let image = UIImage(named: "stamp") else { return UICollectionViewCell() }
         let travelLocation = viewModel.myTravelLocations[indexPath.item]
         cell.setUI(image: image, location: travelLocation)
         

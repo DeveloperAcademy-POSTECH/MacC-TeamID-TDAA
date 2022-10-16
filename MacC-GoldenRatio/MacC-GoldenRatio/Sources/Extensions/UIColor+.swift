@@ -9,12 +9,12 @@ import UIKit
 
 extension UIColor {
     static var navigationbarColor: UIColor {
-        let color = UIColor(named: "navigationbarColor")!
+        let color = UIColor(named: "sandbrownColor")!
         return color
     }
     
     static var buttonColor: UIColor {
-        let color = UIColor(named: "buttonColor")!
+        let color = UIColor(named: "darkgrayColor")!
         return color
     }
     
@@ -31,7 +31,7 @@ extension UIColor {
     }
     
     static var endDateColor: UIColor {
-        let color = UIColor(named: "endDateColor")!
+        let color = UIColor(named: "sandbrownColor")!
         return color
     }
 }

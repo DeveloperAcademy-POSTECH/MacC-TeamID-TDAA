@@ -145,7 +145,7 @@ class DiaryConfigViewController: UIViewController {
                 }
             }
         } else {
-            self.showToastMessage("작성이 완료되지 않았습니다.")
+            self.view.showToastMessage("작성이 완료되지 않았습니다.")
         }
     }
     
@@ -190,27 +190,6 @@ class DiaryConfigViewController: UIViewController {
             $0.bottom.equalTo(view.safeAreaLayoutGuide)
             $0.leading.equalTo(view.safeAreaLayoutGuide)
             $0.trailing.equalTo(view.safeAreaLayoutGuide)
-        }
-    }
-    
-    private func showToastMessage(_ message: String, font: UIFont = UIFont.systemFont(ofSize: 12, weight: .light)) {
-        let toastLabel = UILabel(frame: CGRect(x: view.frame.width / 2 - 150, y: view.frame.height - 120, width: 300, height: 50))
-        
-        toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.7)
-        toastLabel.textColor = UIColor.white
-        toastLabel.numberOfLines = 2
-        toastLabel.font = font
-        toastLabel.text = message
-        toastLabel.textAlignment = .center
-        toastLabel.layer.cornerRadius = 10
-        toastLabel.clipsToBounds = true
-        
-        self.view.addSubview(toastLabel)
-
-        UIView.animate(withDuration: 1.5, delay: 0.7, options: .curveEaseOut) {
-            toastLabel.alpha = 0.0
-        } completion: { _ in
-            toastLabel.removeFromSuperview()
         }
     }
 }

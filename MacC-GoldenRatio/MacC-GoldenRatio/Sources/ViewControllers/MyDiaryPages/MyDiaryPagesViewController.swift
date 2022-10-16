@@ -152,7 +152,7 @@ class MyDiaryPagesViewController: UIViewController {
     }
     
     @objc func copyButtonTapped() {
-        self.showToastMessage("초대코드가 복사되었습니다.")
+        self.view.showToastMessage("초대코드가 복사되었습니다.")
     }
     
     @objc func modifyButtonTapped() {
@@ -193,27 +193,6 @@ class MyDiaryPagesViewController: UIViewController {
                 let newXPoint = CGFloat(self.currentPage-1) * (self.myPagesCollectionView.frame.width + self.itemSpacing)
                 self.myPagesCollectionView.setContentOffset(CGPoint(x: newXPoint, y: 0), animated: true)
             }, completion: nil)
-        }
-    }
-    
-    private func showToastMessage(_ message: String, font: UIFont = UIFont.systemFont(ofSize: 12, weight: .light)) {
-        let toastLabel = UILabel(frame: CGRect(x: view.frame.width / 2 - 150, y: view.frame.height - 120, width: 300, height: 50))
-        
-        toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.7)
-        toastLabel.textColor = UIColor.white
-        toastLabel.numberOfLines = 2
-        toastLabel.font = font
-        toastLabel.text = message
-        toastLabel.textAlignment = .center
-        toastLabel.layer.cornerRadius = 10
-        toastLabel.clipsToBounds = true
-        
-        self.view.addSubview(toastLabel)
-
-        UIView.animate(withDuration: 1.5, delay: 0.7, options: .curveEaseOut) {
-            toastLabel.alpha = 0.0
-        } completion: { _ in
-            toastLabel.removeFromSuperview()
         }
     }
     

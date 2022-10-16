@@ -143,7 +143,7 @@ class FirestoreClient {
 	
 	func isDiaryCodeEqualTo(_ diaryUUID: String) async throws -> Bool {
 		var isResult = false
-		let query = db.collection("Diary").whereField("diaryUUID", arrayContains: diaryUUID)
+		let query = db.collection("Diary").whereField("diaryUUID", isEqualTo: diaryUUID)
 		let querySnapshot = try await query.getDocuments()
 		querySnapshot.documents.forEach { document in
 			isResult = true

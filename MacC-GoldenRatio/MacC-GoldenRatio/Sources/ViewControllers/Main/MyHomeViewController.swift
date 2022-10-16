@@ -66,12 +66,8 @@ final class MyHomeViewController: UIViewController {
 	private func isIndicator() {
 		if viewModel.isInitializing {
 			self.view.isUserInteractionEnabled = false
-			self.tabBarController?.tabBar.isUserInteractionEnabled = false
 		} else {
 			self.view.isUserInteractionEnabled = true
-			DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-				self.tabBarController?.tabBar.isUserInteractionEnabled = true
-			}
 		}
 	}
 	

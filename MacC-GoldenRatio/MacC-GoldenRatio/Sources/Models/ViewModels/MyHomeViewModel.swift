@@ -51,7 +51,6 @@ class MyHomeViewModel {
 		Task {
 			do {
 				self.isEqual = try await client.isDiaryCodeEqualTo(diaryUUID)
-				print("1")
 			} catch {
 				print(error)
 			}

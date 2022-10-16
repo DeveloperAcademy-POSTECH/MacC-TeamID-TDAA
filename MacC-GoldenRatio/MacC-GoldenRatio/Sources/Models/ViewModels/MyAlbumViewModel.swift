@@ -22,7 +22,6 @@ class MyAlbumViewModel {
 	}
 	
 	func fetchLoadData() {
-		self.fetchDatas.removeAll()
 		Task {
 			do {
 				let datas = try await self.client.fetchDiaryAlbumData(self.myUID)
@@ -31,12 +30,22 @@ class MyAlbumViewModel {
 					for url in data.imageURLs ?? [] {
 						try await images.append(FirebaseStorageManager.downloadImage(urlString: url))
 					}
-					self.fetchDatas.append(AlbumData(diaryUUID: data.diaryUUID, diaryName: data.diaryName, imageURLs: data.imageURLs, images: images))
+					var isEqual = false
+					fetchDatas.forEach { album in
+						if album.diaryUUID == data.diaryUUID {
+							isEqual = true
+						}
+					}
+					if !isEqual {
+						fetchDatas.append(AlbumData(diaryUUID: data.diaryUUID, diaryName: data.diaryName, imageURLs: data.imageURLs, images: images))
+					}
 				}
-				albumDatas = fetchDatas
+				self.albumDatas = self.fetchDatas
+				print(fetchDatas)
 			} catch {
 				print(error)
 			}
 		}
+		self.fetchDatas.removeAll()
 	}
 }

@@ -126,7 +126,10 @@ final class MyAlbumPhotoViewController: UIViewController {
 		let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 		let downloadAction = UIAlertAction(title: "저장하기", style: .default) { (action) in
 			UIImageWriteToSavedPhotosAlbum(self.albumData.images?[self.photoPage] ?? UIImage(), self, nil, nil)
-			
+			let saveAlert = UIAlertController(title: "사진 저장", message: "사진을 앨범에 저장했습니다.", preferredStyle: .alert)
+			let action = UIAlertAction(title: "확인", style: .default)
+			saveAlert.addAction(action)
+			self.present(saveAlert, animated: true)
 		}
 		let cancelAction = UIAlertAction(title: "취소", style: .cancel)
 		alert.addAction(downloadAction)

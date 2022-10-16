@@ -208,7 +208,7 @@ extension CalendarDateCollectionViewCell {
         accessibilityTraits.remove(.selected)
         accessibilityHint = "Tap to select"
         
-        numberLabel.textColor = isWithinDisplayedMonth ? device.numberLabelColor : device.numberSubLabelColor
+        numberLabel.textColor = isWithinDisplayedMonth ? .darkgrayColor : device.numberSubLabelColor
         
         marker.isHidden = true
         selectionBackgroundView.isHidden = true

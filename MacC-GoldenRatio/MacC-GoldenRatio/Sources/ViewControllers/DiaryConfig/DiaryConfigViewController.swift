@@ -100,7 +100,7 @@ class DiaryConfigViewController: UIViewController {
         button.setTitle("취소", for: .normal)
         button.titleLabel?.font = device.diaryConfigButtonFont
         button.addTarget(self, action: #selector(cancelButtonPressed), for: .touchUpInside)
-        button.tintColor = UIColor(named: "navigationbarColor")
+        button.tintColor = .navigationbarColor
         return button
     }()
     
@@ -109,7 +109,7 @@ class DiaryConfigViewController: UIViewController {
         button.setTitle("완료", for: .normal)
         button.titleLabel?.font = device.diaryConfigButtonFont
         button.addTarget(self, action: #selector(doneButtonPressed), for: .touchUpInside)
-        button.tintColor = UIColor(named: "navigationbarColor")
+        button.tintColor = .navigationbarColor
         return button
     }()
     
@@ -145,10 +145,7 @@ class DiaryConfigViewController: UIViewController {
                 }
             }
         } else {
-            // TODO: Toast Message로 수정
-            let ac = UIAlertController(title: "입력해 주세요", message: "빈 칸을 채워주세요!", preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
-            self.present(ac, animated: true)
+            self.showToastMessage("작성이 완료되지 않았습니다.")
         }
     }
     
@@ -193,6 +190,27 @@ class DiaryConfigViewController: UIViewController {
             $0.bottom.equalTo(view.safeAreaLayoutGuide)
             $0.leading.equalTo(view.safeAreaLayoutGuide)
             $0.trailing.equalTo(view.safeAreaLayoutGuide)
+        }
+    }
+    
+    private func showToastMessage(_ message: String, font: UIFont = UIFont.systemFont(ofSize: 12, weight: .light)) {
+        let toastLabel = UILabel(frame: CGRect(x: view.frame.width / 2 - 150, y: view.frame.height - 120, width: 300, height: 50))
+        
+        toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.7)
+        toastLabel.textColor = UIColor.white
+        toastLabel.numberOfLines = 2
+        toastLabel.font = font
+        toastLabel.text = message
+        toastLabel.textAlignment = .center
+        toastLabel.layer.cornerRadius = 10
+        toastLabel.clipsToBounds = true
+        
+        self.view.addSubview(toastLabel)
+
+        UIView.animate(withDuration: 1.5, delay: 0.7, options: .curveEaseOut) {
+            toastLabel.alpha = 0.0
+        } completion: { _ in
+            toastLabel.removeFromSuperview()
         }
     }
 }

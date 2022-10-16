@@ -30,8 +30,23 @@ extension UIColor {
         return color
     }
     
+    static var startDateColor: UIColor {
+        let color = UIColor(named: "startDateColor")!
+        return color
+    }
+    
     static var endDateColor: UIColor {
         let color = UIColor(named: "sandbrownColor")!
+        return color
+    }
+    
+    static var sandbrownColor: UIColor {
+        let color = UIColor(named: "sandbrownColor")!
+        return color
+    }
+    
+    static var darkgrayColor: UIColor {
+        let color = UIColor(named: "darkgrayColor")!
         return color
     }
 }

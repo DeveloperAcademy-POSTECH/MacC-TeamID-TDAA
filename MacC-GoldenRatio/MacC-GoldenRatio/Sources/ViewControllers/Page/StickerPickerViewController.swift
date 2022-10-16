@@ -11,7 +11,7 @@ import UIKit
 class StickerPickerViewController: UIViewController {
     var completion: (_ sticker: String) -> Void = { sticker in }
     private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
-    private let stickerArray: [String] = ["fireSticker", "fireSticker", "fireSticker", "fireSticker", "hamburgerSticker", "pizzaSticker", "dumplingSticker", "waffleSticker"]
+    private let stickerArray: [String] = ["manLong", "manShort", "womanLong", "womanShort", "passport", "hamburgerSticker" ,"pizzaSticker", "fireSticker"]
     
     private lazy var xMarkButton: UIButton = {
         let button = UIButton()
@@ -19,16 +19,6 @@ class StickerPickerViewController: UIViewController {
         button.setImage(image, for: .normal)
         button.tintColor = .black
         button.addTarget(self, action: #selector(onTapXMarkButton), for: .touchUpInside)
-
-        return button
-    }()
-    
-    private lazy var checkMarkButton: UIButton = {
-        let button = UIButton()
-        let image = UIImage(systemName: "checkmark")
-        button.setImage(image, for: .normal)
-        button.tintColor = .black
-        button.addTarget(self, action: #selector(onTapCheckMarkButton), for: .touchUpInside)
 
         return button
     }()
@@ -54,7 +44,7 @@ class StickerPickerViewController: UIViewController {
     }
     
     private func addSubviews() {
-        [xMarkButton, checkMarkButton, stickerPickerCollectionView].forEach{
+        [xMarkButton, stickerPickerCollectionView].forEach{
             view.addSubview($0)
         }
     }
@@ -65,11 +55,6 @@ class StickerPickerViewController: UIViewController {
             make.size.equalTo(myDevice.stickerPickerButtonFrameSize)
         }
         
-        checkMarkButton.snp.makeConstraints { make in
-            make.top.trailing.equalToSuperview().inset(myDevice.stickerPickerPadding)
-            make.size.equalTo(myDevice.stickerPickerButtonFrameSize)
-        }
-        
         stickerPickerCollectionView.snp.makeConstraints { make in
             make.top.equalTo(xMarkButton.snp.bottom)
             make.leading.trailing.bottom.equalToSuperview().inset(myDevice.stickerPickerPadding)
@@ -77,7 +62,7 @@ class StickerPickerViewController: UIViewController {
     }
     
     private func configureButtonSize() {
-        [xMarkButton, checkMarkButton].forEach{
+        [xMarkButton].forEach{
             
             let imageConfig = UIImage.SymbolConfiguration(pointSize: myDevice.stickerPickerButtonPointSize)
             if #available(iOS 15.0, *) {
@@ -92,10 +77,6 @@ class StickerPickerViewController: UIViewController {
     }
     // MARK: Actions
     @objc private func onTapXMarkButton() {
-        self.dismiss(animated: true)
-    }
-    
-    @objc private func onTapCheckMarkButton() {
         self.dismiss(animated: true)
     }
 }

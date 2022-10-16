@@ -4,8 +4,10 @@
 //
 //  Created by 김상현 on 2022/10/14.
 //
+
 import FirebaseAuth
 import FirebaseFirestore
+import FirebaseFirestoreSwift
 import UIKit
 
 class MyPageViewModel {
@@ -82,11 +84,20 @@ class MyPageViewModel {
     }
     
     func deleteUserDB() {
-        let userRef = db.collection("User").document(self.myUID)
-        
         Task {
             do {
-                guard let diaries = FirebaseClient().fetchMyDiaries(uid: self.myUID) else { return }
+                let userRef = db.collection("User").document(self.myUID)
+                let diaries = try await FirestoreClient().fetchMyDiaries(self.myUID)
+                print("다이어리 목록: \(diaries)")
+                
+                // 사용자 삭제
+                userRef.delete() { err in
+                    if let _ = err {
+                        print("ERROR: 사용자 DB 삭제 실패")
+                    } else {
+                        print("사용자 DB 삭제 완료")
+                    }
+                }
                 
                 // 가져온 다이어리 목록에 대해서 다이어리 삭제
                 for diary in diaries {
@@ -104,21 +115,11 @@ class MyPageViewModel {
                         }
                     } else {
                         let pagesFieldData = ["userUIDs" : userUIDs]
-                        diaryRef.updateData(pagesFieldData)
+                        try await diaryRef.updateData(pagesFieldData)
                     }
                 }
             } catch {
                 print(error)
-            }
-        }
-        
-        
-        // 사용자 삭제
-        userRef.delete() { err in
-            if let _ = err {
-                print("ERROR: 사용자 DB 삭제 실패")
-            } else {
-                print("사용자 DB 삭제 완료")
             }
         }
     }

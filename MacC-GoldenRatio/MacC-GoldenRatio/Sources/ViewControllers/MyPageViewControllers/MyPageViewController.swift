@@ -195,7 +195,6 @@ class MyPageViewController: UIViewController {
         let ac = UIAlertController(title: "회원탈퇴 하시겠습니까?", message: nil, preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "확인", style: .destructive) { _ in
             self.authWithdrawal()
-            self.viewModel.deleteUserDB()
         })
         ac.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
         present(ac, animated: true, completion: nil)
@@ -340,6 +339,7 @@ func authorizationController(controller: ASAuthorizationController, didCompleteW
                         print("ERROR: withdrawal \(withdrawalError.localizedDescription)")
                     } else {
                         print("Withdrawal completed with Apple ID")
+                        self.viewModel.deleteUserDB()
                         self.navigationController?.popToRootViewController(animated: true)
                     }
                 }

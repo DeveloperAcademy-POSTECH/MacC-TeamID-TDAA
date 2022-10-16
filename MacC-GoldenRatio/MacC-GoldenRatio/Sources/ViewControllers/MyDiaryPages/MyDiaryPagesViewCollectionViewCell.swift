@@ -17,6 +17,9 @@ class MyDiaryPagesViewCollectionViewCell: UICollectionViewCell {
         return imageView
     }()
     
+    override func prepareForReuse() {
+        self.previewImageView.image = UIImage(named: "diaryInnerTexture")
+    }
     
     override func layoutSubviews() {
         super.layoutSubviews()

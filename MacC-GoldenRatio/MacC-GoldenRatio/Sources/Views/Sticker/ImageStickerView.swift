@@ -19,7 +19,7 @@ class ImageStickerView: StickerView {
     init(image: UIImage, diaryUUID: String) {
         super.init(frame: imageView.frame)
 
-        upLoadImage(image: image, diaryUUID:diaryUUID)
+        upLoadImage(image: image, path: "Diary/" + diaryUUID.description)
         DispatchQueue.main.async {
             self.initializeStickerViewData(itemType: .image)
             super.setupContentView(content: self.imageView)
@@ -67,8 +67,8 @@ class ImageStickerView: StickerView {
         }
     }
     
-    private func upLoadImage(image: UIImage, diaryUUID: String) {
-        FirebaseStorageManager.uploadImage(image: image, pathRoot: diaryUUID) { url in
+    private func upLoadImage(image: UIImage, path: String) {
+        FirebaseStorageManager.uploadImage(image: image, pathRoot: path) { url in
             self.imageView.image = image
             guard let url = url else { return }
             ImageManager.shared.cacheImage(url: url.absoluteString, image: image)

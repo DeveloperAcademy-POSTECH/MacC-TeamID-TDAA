@@ -222,7 +222,6 @@ class StickerView: UIView {
             previousPoint = sender.location(in: self)
             setNeedsDisplay()
         } else if sender.state == .changed {
-            debugPrint(transform)
             transform = CGAffineTransformRotate(oldTransform, sender.rotation)
         } else if sender.state == .ended {
             oldTransform = transform

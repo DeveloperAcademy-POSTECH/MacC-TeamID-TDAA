@@ -75,16 +75,11 @@ class FirestoreClient {
 	}
     
     func isExistingUser(_ uid: String, completion: @escaping ((Bool)->Void)){
-//        var returnVal: Bool!
         let query = db.collection("User").whereField("userUID", isEqualTo: uid)
         query.getDocuments { querySnapshot, error in
             if querySnapshot?.documents == [] {
-                print(querySnapshot?.documents)
-                print(123)
                 completion(false)
             }else{
-                print(querySnapshot?.documents)
-                print(456)
                 completion(true)
             }
         }

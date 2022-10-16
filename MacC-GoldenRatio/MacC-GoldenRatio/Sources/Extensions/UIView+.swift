@@ -24,4 +24,25 @@ extension UIView {
         imageView.frame = self.frame
         return imageView
     }
+	
+	func showToastMessage(_ message: String, font: UIFont = UIFont(name: "EF_Diary", size: 12) ?? UIFont.systemFont(ofSize: 12)) {
+		let toastLabel = UILabel(frame: CGRect(x: self.bounds.midX-90, y: self.frame.height - 150, width: 180, height: 30))
+		
+		toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+		toastLabel.textColor = UIColor.white
+		toastLabel.numberOfLines = 2
+		toastLabel.font = font
+		toastLabel.text = message
+		toastLabel.textAlignment = .center
+		toastLabel.layer.cornerRadius = 15
+		toastLabel.clipsToBounds = true
+		
+		self.addSubview(toastLabel)
+
+		UIView.animate(withDuration: 1.5, delay: 1.0, options: .curveEaseOut) {
+			toastLabel.alpha = 0.0
+		} completion: { _ in
+			toastLabel.removeFromSuperview()
+		}
+	}
 }

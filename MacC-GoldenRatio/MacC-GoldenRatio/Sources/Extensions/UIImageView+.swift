@@ -16,6 +16,9 @@ extension UIImageView {
 				print("An error has occured: \(error.localizedDescription)")
 				return
 			}
+			if urlString == "" {
+				return
+			}
 			guard let url = url else {
 				return
 			}

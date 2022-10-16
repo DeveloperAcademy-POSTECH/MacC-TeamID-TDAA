@@ -27,6 +27,8 @@ class MyHomeViewModel {
 	private let db = Firestore.firestore()
 	private var myUID = Auth.auth().currentUser?.uid ?? ""
 	
+	var isEqual = false
+	
 	init() {
 		fetchLoadData()
 	}
@@ -39,6 +41,17 @@ class MyHomeViewModel {
 				self.diaryData = try await client.fetchMyDiaries(myUID)
 				self.diaryCellData = try await convertDiaryToCellData(diaryData)
 				self.isInitializing = false
+			} catch {
+				print(error)
+			}
+		}
+	}
+	
+	func isDiaryCodeEqualTo(_ diaryUUID: String) {
+		Task {
+			do {
+				self.isEqual = try await client.isDiaryCodeEqualTo(diaryUUID)
+				print("1")
 			} catch {
 				print(error)
 			}

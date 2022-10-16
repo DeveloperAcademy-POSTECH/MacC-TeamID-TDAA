@@ -32,7 +32,7 @@ class FirestoreClient {
 		var diaries = [Diary]()
 		var mapDatas = [MapData]()
 		
-		var query = db.collection("Diary").whereField("userUIDs", arrayContains: uid)
+		let query = db.collection("Diary").whereField("userUIDs", arrayContains: uid)
 		let querySnapshot = try await query.getDocuments()
 		querySnapshot.documents.forEach { document in
 			do {
@@ -54,7 +54,7 @@ class FirestoreClient {
 		var albumDatas = [AlbumData]()
 		var imageURLs = [String]()
 		
-		var query = db.collection("Diary").whereField("userUIDs", arrayContains: uid)
+		let query = db.collection("Diary").whereField("userUIDs", arrayContains: uid)
 		let querySnapshot = try await query.getDocuments()
 		querySnapshot.documents.forEach { document in
 			do {
@@ -78,5 +78,16 @@ class FirestoreClient {
 			imageURLs.removeAll()
 		}
 		return albumDatas
+	}
+	
+	func isDiaryCodeEqualTo(_ diaryUUID: String) async throws -> Bool {
+		var isResult = false
+		let query = db.collection("Diary").whereField("diaryUUID", arrayContains: diaryUUID)
+		let querySnapshot = try await query.getDocuments()
+		querySnapshot.documents.forEach { document in
+			isResult = true
+		}
+		
+		return isResult
 	}
 }

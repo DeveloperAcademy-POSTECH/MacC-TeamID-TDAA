@@ -10,19 +10,27 @@ import UIKit
 
 extension UIImageView {
 	func setImage(with urlString: String) {
-		let storage = Storage.storage()
-		storage.reference(forURL: urlString).downloadURL { (url, error) in
-			if let error = error {
-				print("An error has occured: \(error.localizedDescription)")
-				return
-			}
-			if urlString == "" {
-				return
-			}
-			guard let url = url else {
-				return
-			}
-			self.kf.setImage(with: url)
-		}
+        if let image = ImageManager.shared.searchImage(url: urlString){
+            self.image = image
+        }else{
+            let storage = Storage.storage()
+            storage.reference(forURL: urlString).downloadURL { (url, error) in
+                if let error = error {
+                    print("An error has occured: \(error.localizedDescription)")
+                    return
+                }
+                if urlString == "" {
+                    return
+                }
+                guard let url = url else {
+                    return
+                }
+                
+                self.kf.setImage(with: url) { kf in
+                    ImageManager.shared.cacheImage(url: urlString, image: self.image ?? UIImage())
+                }
+            }
+        }
+		
 	}
 }

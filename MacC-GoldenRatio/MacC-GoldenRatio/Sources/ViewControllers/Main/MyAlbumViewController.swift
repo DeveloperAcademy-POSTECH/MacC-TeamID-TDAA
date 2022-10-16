@@ -20,9 +20,16 @@ class MyAlbumViewController: UIViewController {
 	private var isInitializing = false {
 		didSet {
 			if isInitializing {
-				LoadingIndicator.showLoading(loadingText: "앨범을 불러오는 중입니다.")
+                DispatchQueue.main.async {
+                    LoadingIndicator.hideLoading()
+                    LoadingIndicator.showLoading(loadingText: "앨범을 불러오는 중입니다.")
+                    self.view.isUserInteractionEnabled = false
+                }
 			} else {
-				LoadingIndicator.hideLoading()
+                DispatchQueue.main.async {
+                    LoadingIndicator.hideLoading()
+                    self.view.isUserInteractionEnabled = true
+                }
 			}
 		}
 	}
@@ -77,7 +84,7 @@ class MyAlbumViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		isInitializing = true
-		viewModel.fetchLoadData()
+        viewModel.fetchLoadData(completion: {self.isInitializing = false})
 		setupViewModel()
 	}
 	
@@ -115,7 +122,7 @@ class MyAlbumViewController: UIViewController {
 extension MyAlbumViewController: UICollectionViewDataSource {
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 		if collectionView == albumCollectionView {
-			self.isInitializing = false
+//			self.isInitializing = false
 			if viewModel.albumDatas.isEmpty {
 				if !self.isInitializing {
 					collectionView.backgroundView = setEmptyView("추가하신 다이어리가 없어요.")
@@ -180,7 +187,6 @@ private extension MyAlbumViewController {
 			.sink { [weak self] data in
 				self?.titleCollectionView.reloadData()
 				self?.albumCollectionView.reloadData()
-				self?.isIndicator()
 			}
 			.store(in: &cancelBag)
 	}

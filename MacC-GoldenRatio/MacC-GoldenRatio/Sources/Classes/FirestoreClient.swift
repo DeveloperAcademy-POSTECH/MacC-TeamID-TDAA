@@ -29,31 +29,6 @@ class FirestoreClient {
 		return diaries
 	}
     
-//    func fetchDiaryLocationData(_ diaryUids: [String], completion: @escaping ([Location]) -> Void) {
-//
-//        do{
-//            self.decodeData(fetchData:
-//            diaryUids.map{
-//                var fetchData: Any?
-//                let docRef = db.collection("Diary").document($0)
-//
-//                docRef.getDocument() { (document, error) in
-//                    if let document = document {
-//                        let property = document.get("diaryLocation")
-//
-//                    } else {
-//                        print("Document does not exist in cache")
-//                    }
-//                }
-//                return fetchData
-//            })
-//
-//            }catch{
-//                print(error)
-//            }
-//
-//    }
-    
     func fetchDiaryLocationData(_ uid: String) async throws -> [Location] {
         var diaries = [Diary]()
         var locations = [Location]()

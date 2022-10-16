@@ -45,7 +45,7 @@ class TabBarController: UITabBarController {
 	}()
 	
 	private lazy var myPageViewController: UIViewController = {
-        let viewController = UINavigationController(rootViewController: UIViewController())
+        let viewController = UINavigationController(rootViewController: MyPageViewController())
 		let pressImage = UIImage(named: "pressProfile")?.withRenderingMode(.alwaysOriginal)
 		let notPressImage = UIImage(named: "notPressProfile")?.withRenderingMode(.alwaysOriginal)
 
@@ -59,6 +59,7 @@ class TabBarController: UITabBarController {
 		super.viewDidLoad()
 		self.view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
 		self.tabBar.tintColor = UIColor.clear
+        UITabBar.appearance().barTintColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
 		self.tabBar.unselectedItemTintColor = UIColor.clear
 		viewControllers = [myDiariesViewController, myPlacesViewController, myAlbumsViewController, myPageViewController]
 	}

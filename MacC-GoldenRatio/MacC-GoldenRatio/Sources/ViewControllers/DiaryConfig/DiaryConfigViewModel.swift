@@ -50,10 +50,7 @@ class DiaryConfigViewModel {
     func updateDiary() {
         
         if checkAvailable() {
-            guard let diaryUUID = self.diaryUUID, let title = self.title, let location = self.location, let startDate = self.startDate, let endDate = self.endDate, let diaryCover = self.diaryCover, let userUIDs = self.userUIDs else { return print("Upload Error") }
-            
-            // TODO: - pageCount 처리
-            self.diary = Diary(diaryUUID: diaryUUID, diaryName: title, diaryLocation: location, diaryStartDate: startDate, diaryEndDate: endDate, diaryCover: diaryCover, userUIDs: userUIDs)
+            setDiaryData()
             
             guard let diary = diary else { return }
             
@@ -80,7 +77,10 @@ class DiaryConfigViewModel {
     }
     
     func checkAvailable() -> Bool {
-        if let _ = self.title, let _ = self.location, let _ = self.startDate, let _ = self.endDate {
+        if let title = self.title, let _ = self.location, let _ = self.startDate, let _ = self.endDate {
+            if title.isEmpty {
+                return false
+            }
             return true
         } else {
             print("ERROR: Incomplete Value")

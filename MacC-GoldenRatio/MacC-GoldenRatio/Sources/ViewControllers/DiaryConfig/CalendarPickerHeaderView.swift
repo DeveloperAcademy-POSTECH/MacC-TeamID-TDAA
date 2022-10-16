@@ -9,32 +9,34 @@ import SnapKit
 import UIKit
 
 class CalendarPickerHeaderView: UIView {
+    private let device = UIScreen.getDevice()
+    
     lazy var monthLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 20, weight: .bold)
+        label.font = .systemFont(ofSize: 22, weight: .bold)
         label.text = "Month"
         label.accessibilityTraits = .header
         label.isAccessibilityElement = true
-        label.textColor = UIColor(red: 0.608, green: 0.533, blue: 0.486, alpha: 1.0)
+        label.textColor = device.calendarButtonColor
         return label
     }()
     
     lazy var previousMonthButton: UIButton = {
         let button = UIButton()
+        let imageConfig = UIImage.SymbolConfiguration(pointSize: 22, weight: .semibold, scale: .default)
         
-        button.setImage(UIImage(systemName: "chevron.left"), for: .normal)
-        button.tintColor = UIColor(red: 0.608, green: 0.533, blue: 0.486, alpha: 1.0)
-        
+        button.setImage(UIImage(systemName: "chevron.left", withConfiguration: imageConfig), for: .normal)
+        button.tintColor = device.calendarButtonColor
         button.addTarget(self, action: #selector(didTapPreviousMonthButton), for: .touchUpInside)
         return button
     }()
     
     lazy var nextMonthButton: UIButton = {
         let button = UIButton()
+        let imageConfig = UIImage.SymbolConfiguration(pointSize: 22, weight: .semibold, scale: .default)
         
-        button.setImage(UIImage(systemName: "chevron.right"), for: .normal)
-        button.tintColor = UIColor(red: 0.608, green: 0.533, blue: 0.486, alpha: 1.0)
-        
+        button.setImage(UIImage(systemName: "chevron.right", withConfiguration: imageConfig), for: .normal)
+        button.tintColor = device.calendarButtonColor
         button.addTarget(self, action: #selector(didTapNextMonthButton), for: .touchUpInside)
         return button
     }()

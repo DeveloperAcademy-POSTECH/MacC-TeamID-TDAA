@@ -34,6 +34,7 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
     private lazy var contentTitle: UILabel = {
         let title = UILabel()
         title.font = device.diaryConfigCellTitleFont
+        title.textColor = .black
         return title
     }()
     

@@ -56,7 +56,7 @@ class MyHomeViewModel {
 
 				documents.documents.forEach { querySnapshot in
 					let data = querySnapshot.data()
-					userImageURL.append(data["userImageURL"] as? String ?? "")
+					userImageURL.append(data["userImageURL"] as? String ?? "profileImage")
 				}
 			}
 			diaryCellData.append(DiaryCell(diaryUUID: diary.diaryUUID, diaryName: diary.diaryName, diaryCover: diary.diaryCover, userImageURLs: userImageURL))

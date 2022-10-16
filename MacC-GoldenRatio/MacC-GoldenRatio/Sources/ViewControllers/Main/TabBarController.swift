@@ -59,6 +59,7 @@ class TabBarController: UITabBarController {
 		super.viewDidLoad()
 		self.view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
 		self.tabBar.tintColor = UIColor.clear
+        UITabBar.appearance().barTintColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
 		self.tabBar.unselectedItemTintColor = UIColor.clear
 		viewControllers = [myDiariesViewController, myPlacesViewController, myAlbumsViewController, myPageViewController]
 	}

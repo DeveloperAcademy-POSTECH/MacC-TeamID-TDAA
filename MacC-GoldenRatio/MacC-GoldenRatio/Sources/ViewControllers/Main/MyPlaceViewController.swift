@@ -23,6 +23,7 @@ class MyPlaceViewController: UIViewController, MKMapViewDelegate, CLLocationMana
 		let label = UILabel()
 		label.text = "지도"
 		label.font = myDevice.TabBarTitleFont
+		label.textColor = UIColor.buttonColor
 		
 		return label
 	}()
@@ -37,6 +38,11 @@ class MyPlaceViewController: UIViewController, MKMapViewDelegate, CLLocationMana
 		setup()
 		setupSubView()
 		setupRegister()
+		setupViewModel()
+	}
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
 		setupViewModel()
 	}
 	
@@ -61,6 +67,8 @@ class MyPlaceViewController: UIViewController, MKMapViewDelegate, CLLocationMana
 	}
 
 	private func addCustomPin(_ mapData: [MapData]) {
+		let allAnnotations = self.mapView.map.annotations
+		self.mapView.map.removeAnnotations(allAnnotations)
 		mapData.forEach { data in
 			let pin = CustomAnnotation(diaryTitle: data.diaryName, stampName: data.diaryCover, coordinate: CLLocationCoordinate2D(latitude: data.location.locationCoordinate[0], longitude: data.location.locationCoordinate[1]))
 			mapView.map.addAnnotation(pin)
@@ -85,6 +93,7 @@ class MyPlaceViewController: UIViewController, MKMapViewDelegate, CLLocationMana
 		let diaryTitle = UILabel()
 		diaryTitle.text = annotation.diaryTitle
 		diaryTitle.font = myDevice.annotationTitleFont
+		diaryTitle.textColor = .black
 		diaryTitle.textAlignment = .center
 		
 		annotationView?.addSubview(diaryTitle)
@@ -116,6 +125,7 @@ class MyPlaceViewController: UIViewController, MKMapViewDelegate, CLLocationMana
 
 private extension MyPlaceViewController {
 	func setupViewModel() {
+		viewModel.fetchLoadData()
 		viewModel.$mapDatas
 			.receive(on: DispatchQueue.main)
 			.sink { [weak self] data in

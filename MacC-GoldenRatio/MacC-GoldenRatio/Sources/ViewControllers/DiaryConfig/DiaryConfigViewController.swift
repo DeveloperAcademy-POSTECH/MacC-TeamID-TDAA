@@ -41,7 +41,6 @@ class DiaryConfigViewController: UIViewController {
             self.diaryToConfig = diary
             self.viewModel.getDiaryData(diary: self.diaryToConfig!)
         }
-
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -101,6 +100,7 @@ class DiaryConfigViewController: UIViewController {
         button.setTitle("취소", for: .normal)
         button.titleLabel?.font = device.diaryConfigButtonFont
         button.addTarget(self, action: #selector(cancelButtonPressed), for: .touchUpInside)
+        button.tintColor = UIColor(named: "navigationbarColor")
         return button
     }()
     
@@ -109,11 +109,12 @@ class DiaryConfigViewController: UIViewController {
         button.setTitle("완료", for: .normal)
         button.titleLabel?.font = device.diaryConfigButtonFont
         button.addTarget(self, action: #selector(doneButtonPressed), for: .touchUpInside)
+        button.tintColor = UIColor(named: "navigationbarColor")
         return button
     }()
     
     
-// MARK: - Feature methods
+    // MARK: - Feature methods
     @objc func cancelButtonPressed(_ sender: UIButton) {
         let ac = UIAlertController(title: nil, message: "변경사항은 저장되지 않습니다. 정말 취소하시겠습니까?", preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "취소", style: .cancel))
@@ -124,21 +125,23 @@ class DiaryConfigViewController: UIViewController {
     }
     
     @objc func doneButtonPressed(_ sender: UIButton) {
+        self.contentTextField.endEditing(true)
         
         if viewModel.checkAvailable() {
-           
-            let parentNavigationController: UINavigationController = self.presentingViewController as! UINavigationController
-            presentingViewController?.dismiss(animated: true) {
-                switch self.configState {
-                case .create:
-                    self.viewModel.addDiary()
-                    
-                    let MyDiaryPagesVC = MyDiaryPagesViewController(diaryData: self.viewModel.diary!)
-                    parentNavigationController.isNavigationBarHidden = false
-                    parentNavigationController.pushViewController(MyDiaryPagesVC, animated: true)
-                    
-                case .modify:
-                    self.viewModel.updateDiary()
+            
+            if let parentNavigationController: UINavigationController = self.presentingViewController as? UINavigationController {
+                presentingViewController?.dismiss(animated: true) {
+                    switch self.configState {
+                    case .create:
+                        self.viewModel.addDiary()
+                        
+                        let myDiaryPagesVC = MyDiaryPagesViewController(diaryData: self.viewModel.diary!)
+                        parentNavigationController.isNavigationBarHidden = false
+                        parentNavigationController.pushViewController(myDiaryPagesVC, animated: true)
+                        
+                    case .modify:
+                        self.viewModel.updateDiary()
+                    }
                 }
             }
         } else {
@@ -150,7 +153,7 @@ class DiaryConfigViewController: UIViewController {
     }
     
     
-// MARK: - Setup methods
+    // MARK: - Setup methods
     private func titleSetup() {
         view.addSubview(stateTitle)
         stateTitle.snp.makeConstraints {
@@ -198,8 +201,13 @@ class DiaryConfigViewController: UIViewController {
 // MARK: - extensions
 extension DiaryConfigViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let contentsCount = ConfigContentType.allCases.count
-        return contentsCount
+        
+        switch configState {
+        case .create:
+            return ConfigContentType.allCases.count
+        case .modify:
+            return ConfigContentType.allCases.count - 1
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -253,20 +261,20 @@ extension DiaryConfigViewController: UICollectionViewDataSource {
             self.contentTextField.endEditing(true)
             
             let pickerController = CalendarPickerViewController(dateArray: dateInterval, selectedDateChanged: { [self, weak sender] date in
-                    guard let sender = sender else { return }
-                    UIView.performWithoutAnimation {
-                        let startDate = date[0]
-                        let endDate = date[1]
-                        
-                        dateInterval = [startDate, endDate]
-                        self.viewModel.startDate = startDate.customFormat()
-                        self.viewModel.endDate = endDate.customFormat()
-                        
-                        sender.setTitle("\(startDate.customFormat()) \(startDate.dayOfTheWeek())  - \(endDate.customFormat()) \(endDate.dayOfTheWeek())", for: .normal)
-                        sender.tintColor = .black
-                        sender.layoutIfNeeded()
-                    }
-                })
+                guard let sender = sender else { return }
+                UIView.performWithoutAnimation {
+                    let startDate = date[0]
+                    let endDate = date[1]
+                    
+                    dateInterval = [startDate, endDate]
+                    self.viewModel.startDate = startDate.customFormat()
+                    self.viewModel.endDate = endDate.customFormat()
+                    
+                    sender.setTitle("\(startDate.customFormat()) \(startDate.dayOfTheWeek())  - \(endDate.customFormat()) \(endDate.dayOfTheWeek())", for: .normal)
+                    sender.tintColor = .black
+                    sender.layoutIfNeeded()
+                }
+            })
             
             present(pickerController, animated: true, completion: nil)
         }
@@ -278,6 +286,7 @@ extension DiaryConfigViewController: UICollectionViewDataSource {
         switch configContentType {
         case .diaryName:
             self.contentTextField.text = nil
+            self.contentTextField.endEditing(true)
         case .location, .diaryDate:
             self.contentTextField.endEditing(true)
             
@@ -287,12 +296,6 @@ extension DiaryConfigViewController: UICollectionViewDataSource {
                 contentButton.tintColor = .placeholderText
             }
         }
-    }
-}
-
-extension DiaryConfigViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return true
     }
 }
 
@@ -312,6 +315,6 @@ extension DiaryConfigViewController: UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        viewModel.title = textField.text
+        self.viewModel.title = textField.text
     }
 }

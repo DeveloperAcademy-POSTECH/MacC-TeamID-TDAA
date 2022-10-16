@@ -22,6 +22,7 @@ class MyPlaceViewModel {
 	func fetchLoadData() {
 		Task {
 			do {
+				mapDatas.removeAll()
 				self.mapDatas = try await client.fetchDiaryMapData(myUID)
 			} catch {
 				print(error)

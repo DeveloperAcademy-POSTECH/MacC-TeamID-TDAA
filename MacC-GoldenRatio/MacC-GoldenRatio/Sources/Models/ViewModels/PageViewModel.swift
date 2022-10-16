@@ -8,12 +8,12 @@
 import UIKit
 
 class PageViewModel {
-    var selectedDay: Int = 0
-    var currentPageIndex: Int = 0
+    @Published var selectedDay: Int = 0
+    @Published var currentPageIndex: Int = 0
+    @Published var diary: Diary = Diary(diaryUUID: "", diaryName: "", diaryLocation: Location(locationName: "", locationAddress: "", locationCoordinate: []), diaryStartDate: "", diaryEndDate: "", diaryCover: "")
+    @Published var stickerArray: [[StickerView]] = []
     var oldPageIndex: Int = 0
-    var diary: Diary!
     var oldDiary: Diary!
-    var stickerArray: [[StickerView]] = []
 
     init(diary: Diary, selectedDay: Int) {
         // TODO: 선행 뷰에게서 diary 받아와서 init 하기
@@ -23,17 +23,13 @@ class PageViewModel {
     }
     
     func saveOldData() {
-        print("saveOldDataStart")
         oldPageIndex = currentPageIndex
         oldDiary = diary
-        print("saveOldDataEnd")
     }
     
     func restoreOldData() {
-        print("restoreOldDataStart")
         currentPageIndex = oldPageIndex
         diary = oldDiary
-        print("restoreOldDataEnd")
     }
     
     func addNewPage() {
@@ -59,13 +55,11 @@ class PageViewModel {
     }
     
     func hideStickerSubview(_ value: Bool) {
-        print("hideStickerSubviewStart")
         stickerArray.forEach{
             $0.forEach{
                 $0.subviewIsHidden = value
             }
         }
-        print("hideStickerSubviewEnd")
     }
     
     func bringStickerToFront(_ sticker: StickerView) {
@@ -99,7 +93,7 @@ class PageViewModel {
     }
     
     func upLoadThumbnail(image: UIImage, _ completion: @escaping () -> Void) {
-        FirebaseStorageManager.uploadImage(image: image, pathRoot: diary.diaryUUID + "/thumbnail") { url in
+        FirebaseStorageManager.uploadImage(image: image, pathRoot: "Diary/" + diary.diaryUUID.description + "/thumbnail") { url in
             guard let url = url else { return }
             self.diary.pageThumbnails[self.selectedDay] = url.description
             completion()

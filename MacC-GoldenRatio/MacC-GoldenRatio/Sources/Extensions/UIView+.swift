@@ -24,4 +24,13 @@ extension UIView {
         imageView.frame = self.frame
         return imageView
     }
+    func setUnderLine(width: CGFloat) {
+        let view = UIView()
+        view.backgroundColor = .buttonColor
+        self.addSubview(view)
+        view.snp.makeConstraints { make in
+            make.bottom.horizontalEdges.equalToSuperview()
+            make.height.equalTo(width)
+        }
+    }
 }

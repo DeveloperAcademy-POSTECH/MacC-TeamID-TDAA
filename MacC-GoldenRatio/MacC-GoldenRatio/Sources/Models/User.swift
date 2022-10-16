@@ -7,7 +7,7 @@
 
 struct User: Codable {
 	let userUID: String
-	let userName: String
-	let userImageURL: String
-	let diaryUUIDs: [String]
+	var userName: String
+	var userImageURL: String
+	var diaryUUIDs: [String]
 }

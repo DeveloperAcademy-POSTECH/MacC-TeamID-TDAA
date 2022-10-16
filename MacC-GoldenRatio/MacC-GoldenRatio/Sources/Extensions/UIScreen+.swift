@@ -8,256 +8,256 @@
 import UIKit
 
 extension UIScreen {
-	static func getDevice() -> DeviceSize {
-		if UIScreen.main.bounds.size.width == 428 {
-			return DeviceSize.iPhone13ProMax
-		} else if UIScreen.main.bounds.size.width == 390 {
-			return DeviceSize.iPhone13
-		} else if UIScreen.main.bounds.size.width == 375 {
-			return DeviceSize.iPhoneMini
-		} else if UIScreen.main.bounds.size.width == 414 {
-			return DeviceSize.iPhone11ProMax
-		} else if UIScreen.main.bounds.size.width == 375 {
-			return DeviceSize.iPhone11
-		} else if UIScreen.main.bounds.size.width == 320 {
-			return DeviceSize.iPhoneSE
-		} else if UIScreen.main.bounds.size.width == 414 {
-			return DeviceSize.iPhone8Plus
-		} else if UIScreen.main.bounds.size.width == 375 {
-			return DeviceSize.iPhone8
-		} else {
-			return DeviceSize.iPhone13
-		}
-	}
-	
-	enum DeviceSize {
-		case iPhone13
-		case iPhone13ProMax
-		case iPhoneMini
-		case iPhone11ProMax
-		case iPhone11
-		case iPhone8Plus
-		case iPhone8
-		case iPhoneSE
-		
-		// MARK: MyDiariesView
-		var TabBarTitleLabelLeading: Int {
-			switch self {
-			default: return 20
-			}
-		}
-		
-		var TabBarTitleLabelTop: Int {
-			switch self {
-			default: return 30
-			}
-		}
-		
-		var TabBarTitleFont: UIFont {
-			switch self {
-			default: return UIFont(name: "EF_Diary", size: 28) ?? UIFont.systemFont(ofSize: 28)
-			}
-		}
-		
-		var MyDiariesViewAddDiaryButtonSize: CGFloat {
-			switch self {
-			default: return 50
-			}
-		}
-		
-		var MyDiariesViewAddDiaryButtonPadding: Int {
-			switch self {
-			default: return 20
-			}
-		}
-		
-		// MARK: MyDiariesViewCustomModalView
-		var MyDiariesViewCustomModalViewButtonHeight: Int {
-			switch self {
-			default: return 50
-			}
-		}
-		
-		var MyDiariesViewCustomModalViewStackWidth: Int {
-			switch self {
-			default: return 150
-			}
-		}
-		
-		var MyDiariesViewCustomModalViewStackTrailing: Int {
-			switch self {
-			default: return 20
-			}
-		}
-		
-		var MyDiariesViewCustomModalViewStackBottom: Int {
-			switch self {
-			default: return 140
-			}
-		}
-		
-		// MARK: DiaryCollectionView
-		var diaryContributerImageViewSize: Int {
-			switch self {
-			default: return 25
-			}
-		}
-		
-		var diaryContributerImageViewTrailing: Int {
-			switch self {
-			default: return 13
-			}
-		}
-		
-		var diaryContributerImageViewBottom: Int {
-			switch self {
-			default: return 10
-			}
-		}
-
-		var diaryCollectionViewCellSize: CGSize {
-			switch self {
-			default: return CGSize(width: 165, height: 207)
-			}
-		}
-		
-		var diaryCollectionViewCellHeaderWidthPadding: CGFloat {
-			switch self {
-			default: return 40
-			}
-		}
-		
-		var diaryCollectionViewCellHeaderHeight: CGFloat {
-			switch self {
-			default: return 30
-			}
-		}
-		
-		var diaryCollectionViewCellHeaderTop: CGFloat {
-			switch self {
-			default: return 30
-			}
-		}
-		
-		var diaryCollectionViewCellTop: CGFloat {
-			switch self {
-			default: return 30
-			}
-		}
-		
-		var diaryCollectionViewCellLeading: CGFloat {
-			switch self {
-			default: return 20
-			}
-		}
-		
-		var diaryCollectionViewCellTrailing: CGFloat {
-			switch self {
-			default: return 20
-			}
-		}
-		
-		var diaryCollectionViewCellBottom: CGFloat {
-			switch self {
-			default: return 20
-			}
-		}
-		
-		var diaryCollectionViewCellTitleLabelLeading: CGFloat {
-			switch self {
-			default: return 20
-			}
-		}
-		
-		var diaryCollectionViewCellTitleLabelTrailing: CGFloat {
-			switch self {
-			default: return 20
-			}
-		}
-		
-		var diaryCollectionViewCellTitleLabelTop: CGFloat {
-			switch self {
-			default: return 20
-			}
-		}
-		
-		var diaryCollectionViewCellTitleLabelFont: UIFont {
-			switch self {
-			default: return UIFont(name: "EF_Diary", size: 24) ?? UIFont.systemFont(ofSize: 24)
-			}
-		}
-		
-		// MARK: MyPlaceView
-		var mapViewTop: Int {
-			switch self {
-			default: return 145
-			}
-		}
-		
-		var mapViewBottom: Int {
-			switch self {
-			default: return 30
-			}
-		}
-		
-		var annotationSize: CGSize {
-			switch self {
-			default: return CGSize(width: 52, height: 60)
-			}
-		}
-		
-		var annotationTitleFont: UIFont {
-			switch self {
-			default: return UIFont(name: "EF_Diary", size: 10) ?? UIFont.systemFont(ofSize: 10)
-			}
-		}
-		
-		var clusterAnnotationLabelFont: UIFont {
-			switch self {
-			default: return UIFont(name: "EF_Diary", size: 13) ?? UIFont.systemFont(ofSize: 13)
-			}
-		}
-		
-		var clusterAnnotationSize: CGSize {
-			switch self {
-			default: return CGSize(width: annotationSize.width+12, height: annotationSize.height+12)
-			}
-		}
-		
-		var clusterAnnotationImageFrame: CGRect {
-			switch self {
-			default: return CGRect(x: 0, y: 12, width: annotationSize.width, height: annotationSize.height)
-			}
-		}
-		
-		var clusterAnnotationLabelFrame: CGRect {
-			switch self {
-			default: return CGRect(x: annotationSize.width-15, y: 0, width: 25, height: 25)
-			}
-		}
-		
-		// MARK: Album
-		var myAlbumPhotoPageLabelFont: UIFont {
-			switch self {
-			default: return UIFont(name: "EF_Diary", size: 17) ?? UIFont.systemFont(ofSize: 17)
-			}
-		}
-		
-		var myAlbumBackgroundLabelBottom: CGFloat {
-			switch self {
-			default: return 330
-			}
-		}
-		
-		// All
-		var collectionBackgoundViewFont: UIFont {
-			switch self {
-			default: return UIFont(name: "EF_Diary", size: 17) ?? UIFont.systemFont(ofSize: 17)
-			}
-		}
+    static func getDevice() -> DeviceSize {
+        if UIScreen.main.bounds.size.width == 428 {
+            return DeviceSize.iPhone13ProMax
+        } else if UIScreen.main.bounds.size.width == 390 {
+            return DeviceSize.iPhone13
+        } else if UIScreen.main.bounds.size.width == 375 {
+            return DeviceSize.iPhoneMini
+        } else if UIScreen.main.bounds.size.width == 414 {
+            return DeviceSize.iPhone11ProMax
+        } else if UIScreen.main.bounds.size.width == 375 {
+            return DeviceSize.iPhone11
+        } else if UIScreen.main.bounds.size.width == 320 {
+            return DeviceSize.iPhoneSE
+        } else if UIScreen.main.bounds.size.width == 414 {
+            return DeviceSize.iPhone8Plus
+        } else if UIScreen.main.bounds.size.width == 375 {
+            return DeviceSize.iPhone8
+        } else {
+            return DeviceSize.iPhone13
+        }
+    }
+    
+    enum DeviceSize {
+        case iPhone13
+        case iPhone13ProMax
+        case iPhoneMini
+        case iPhone11ProMax
+        case iPhone11
+        case iPhone8Plus
+        case iPhone8
+        case iPhoneSE
         
-
-// MARK: - Sign In
+        // MARK: MyDiariesView
+        var TabBarTitleLabelLeading: Int {
+            switch self {
+            default: return 20
+            }
+        }
+        
+        var TabBarTitleLabelTop: Int {
+            switch self {
+            default: return 30
+            }
+        }
+        
+        var TabBarTitleFont: UIFont {
+            switch self {
+            default: return UIFont(name: "EF_Diary", size: 28) ?? UIFont.systemFont(ofSize: 28)
+            }
+        }
+        
+        var MyDiariesViewAddDiaryButtonSize: CGFloat {
+            switch self {
+            default: return 50
+            }
+        }
+        
+        var MyDiariesViewAddDiaryButtonPadding: Int {
+            switch self {
+            default: return 20
+            }
+        }
+        
+        // MARK: MyDiariesViewCustomModalView
+        var MyDiariesViewCustomModalViewButtonHeight: Int {
+            switch self {
+            default: return 50
+            }
+        }
+        
+        var MyDiariesViewCustomModalViewStackWidth: Int {
+            switch self {
+            default: return 150
+            }
+        }
+        
+        var MyDiariesViewCustomModalViewStackTrailing: Int {
+            switch self {
+            default: return 20
+            }
+        }
+        
+        var MyDiariesViewCustomModalViewStackBottom: Int {
+            switch self {
+            default: return 140
+            }
+        }
+        
+        // MARK: DiaryCollectionView
+        var diaryContributerImageViewSize: Int {
+            switch self {
+            default: return 25
+            }
+        }
+        
+        var diaryContributerImageViewTrailing: Int {
+            switch self {
+            default: return 13
+            }
+        }
+        
+        var diaryContributerImageViewBottom: Int {
+            switch self {
+            default: return 10
+            }
+        }
+        
+        var diaryCollectionViewCellSize: CGSize {
+            switch self {
+            default: return CGSize(width: 165, height: 207)
+            }
+        }
+        
+        var diaryCollectionViewCellHeaderWidthPadding: CGFloat {
+            switch self {
+            default: return 40
+            }
+        }
+        
+        var diaryCollectionViewCellHeaderHeight: CGFloat {
+            switch self {
+            default: return 30
+            }
+        }
+        
+        var diaryCollectionViewCellHeaderTop: CGFloat {
+            switch self {
+            default: return 30
+            }
+        }
+        
+        var diaryCollectionViewCellTop: CGFloat {
+            switch self {
+            default: return 30
+            }
+        }
+        
+        var diaryCollectionViewCellLeading: CGFloat {
+            switch self {
+            default: return 20
+            }
+        }
+        
+        var diaryCollectionViewCellTrailing: CGFloat {
+            switch self {
+            default: return 20
+            }
+        }
+        
+        var diaryCollectionViewCellBottom: CGFloat {
+            switch self {
+            default: return 20
+            }
+        }
+        
+        var diaryCollectionViewCellTitleLabelLeading: CGFloat {
+            switch self {
+            default: return 20
+            }
+        }
+        
+        var diaryCollectionViewCellTitleLabelTrailing: CGFloat {
+            switch self {
+            default: return 20
+            }
+        }
+        
+        var diaryCollectionViewCellTitleLabelTop: CGFloat {
+            switch self {
+            default: return 20
+            }
+        }
+        
+        var diaryCollectionViewCellTitleLabelFont: UIFont {
+            switch self {
+            default: return UIFont(name: "EF_Diary", size: 24) ?? UIFont.systemFont(ofSize: 24)
+            }
+        }
+        
+        // MARK: MyPlaceView
+        var mapViewTop: Int {
+            switch self {
+            default: return 145
+            }
+        }
+        
+        var mapViewBottom: Int {
+            switch self {
+            default: return 30
+            }
+        }
+        
+        var annotationSize: CGSize {
+            switch self {
+            default: return CGSize(width: 52, height: 60)
+            }
+        }
+        
+        var annotationTitleFont: UIFont {
+            switch self {
+            default: return UIFont(name: "EF_Diary", size: 10) ?? UIFont.systemFont(ofSize: 10)
+            }
+        }
+        
+        var clusterAnnotationLabelFont: UIFont {
+            switch self {
+            default: return UIFont(name: "EF_Diary", size: 13) ?? UIFont.systemFont(ofSize: 13)
+            }
+        }
+        
+        var clusterAnnotationSize: CGSize {
+            switch self {
+            default: return CGSize(width: annotationSize.width+12, height: annotationSize.height+12)
+            }
+        }
+        
+        var clusterAnnotationImageFrame: CGRect {
+            switch self {
+            default: return CGRect(x: 0, y: 12, width: annotationSize.width, height: annotationSize.height)
+            }
+        }
+        
+        var clusterAnnotationLabelFrame: CGRect {
+            switch self {
+            default: return CGRect(x: annotationSize.width-15, y: 0, width: 25, height: 25)
+            }
+        }
+        
+        // MARK: Album
+        var myAlbumPhotoPageLabelFont: UIFont {
+            switch self {
+            default: return UIFont(name: "EF_Diary", size: 17) ?? UIFont.systemFont(ofSize: 17)
+            }
+        }
+        
+        var myAlbumBackgroundLabelBottom: CGFloat {
+            switch self {
+            default: return 330
+            }
+        }
+        
+        // All
+        var collectionBackgoundViewFont: UIFont {
+            switch self {
+            default: return UIFont(name: "EF_Diary", size: 17) ?? UIFont.systemFont(ofSize: 17)
+            }
+        }
+        
+        
+        // MARK: - Sign In
         var logInButtonSize: CGSize {
             switch self {
             default: return CGSize(width: 268, height: 50)
@@ -294,7 +294,7 @@ extension UIScreen {
             default: return CGFloat(10)
             }
         }
-
+        
         var pageDescriptionLabelFont: UIFont {
             switch self {
             default: return UIFont.systemFont(ofSize: 17, weight: .regular)
@@ -360,7 +360,7 @@ extension UIScreen {
         var stickerBorderInset: CGFloat {
             switch self {
             default: return CGFloat(5)
-
+                
             }
         }
         
@@ -463,6 +463,73 @@ extension UIScreen {
             }
         }
         
+        // MARK: My Page
+        /// 20
+        var myPageHorizontalPadding: CGFloat {
+            switch self {
+            default: return 20
+            }
+        }
+        /// 10
+        var myPageHorizontalSpacing: CGFloat {
+            switch self {
+            default: return 10
+            }
+        }
+        /// 20
+        var myPageHorizontalSpacing2: CGFloat {
+            switch self {
+            default: return 20
+            }
+        }
+        /// 20
+        var myPageVerticalPadding: CGFloat {
+            switch self {
+            default: return 20
+            }
+        }
+        /// 10
+        var myPageVerticalSpacing: CGFloat {
+            switch self {
+            default: return 10
+            }
+        }
+        /// 15
+        var myPageVerticalSpacing2: CGFloat {
+            switch self {
+            default: return 15
+            }
+        }
+        /// 50
+        var myPageVerticalSpacing3: CGFloat {
+            switch self {
+            default: return 50
+            }
+        }
+        /// 62*62
+        var myPageProfileImageSize: CGSize {
+            switch self {
+            default: return CGSize(width: 62, height: 62)
+            }
+        }
+        /// 50*50
+        var myPageStickerImageSize: CGSize {
+            switch self {
+            default: return CGSize(width: 50, height: 50)
+            }
+        }
+        /// 245
+        var myPageMenuTableViewHeight: CGFloat {
+            switch self {
+            default: return 245
+            }
+        }
+        /// 150*150
+        var setProfileProfileImageSize: CGSize {
+            switch self {
+            default: return CGSize(width: 150, height: 150)
+            }
+        }
         // MARK: - Calendar View
         var calendarCollectionViewInset: CGFloat {
             switch self {
@@ -542,5 +609,5 @@ extension UIScreen {
             default: return UIColor(named: "calendarCheckColor") ?? .systemGray
             }
         }
-	}
+    }
 }

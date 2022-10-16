@@ -9,7 +9,7 @@ import Foundation
 
 struct Diary: Codable {
 	let diaryUUID: String
-	let diaryName: String
+	var diaryName: String
 	let diaryLocation: Location
 	let diaryStartDate: String
 	let diaryEndDate: String

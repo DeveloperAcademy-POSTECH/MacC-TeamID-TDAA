@@ -12,8 +12,7 @@ class MyDiaryPagesViewCollectionViewCell: UICollectionViewCell {
     
     lazy var previewImageView: UIImageView = {
         var imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
-        imageView.image = UIImage(named: "diaryInnerTexture") ?? UIImage()
+        imageView.backgroundColor = UIColor(patternImage: UIImage(named: "diaryInnerTexture.png") ?? UIImage())
         return imageView
     }()
     
@@ -26,8 +25,7 @@ class MyDiaryPagesViewCollectionViewCell: UICollectionViewCell {
         
         contentView.addSubview(previewImageView)
         previewImageView.snp.makeConstraints {
-            $0.size.equalToSuperview()
-            $0.center.equalToSuperview()
+            $0.edges.equalToSuperview()
         }
         
     }

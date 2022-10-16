@@ -38,4 +38,9 @@ extension UIFont {
         let font = UIFont(name: "EF_Diary", size: 28)!
         return font
     }
+    ///12
+    static var toastMessageFont: UIFont {
+        let font = UIFont(name: "EF_Diary", size: 12)!
+        return font
+    }
 }

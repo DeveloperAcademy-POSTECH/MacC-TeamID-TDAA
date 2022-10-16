@@ -31,7 +31,7 @@ class SignInViewController: UIViewController {
         
         var multipleAttributes: [NSAttributedString.Key : Any] = [:]
         multipleAttributes[NSAttributedString.Key.paragraphStyle] = paragraphStyle
-        multipleAttributes[NSAttributedString.Key.foregroundColor] = UIColor(named: "signInTitleColor")
+        multipleAttributes[NSAttributedString.Key.foregroundColor] = UIColor(named: "sandbrownColor")
         multipleAttributes[NSAttributedString.Key.font] = UIFont(name: "EF_Diary", size: 30) ?? UIFont.systemFont(ofSize: 30)
         multipleAttributes[NSAttributedString.Key.kern] = 10
         
@@ -106,6 +106,8 @@ class SignInViewController: UIViewController {
         navigationController?.isNavigationBarHidden = true
         
         appLogo.snp.makeConstraints {
+            $0.width.equalToSuperview().dividedBy(3.9)
+            $0.height.equalTo(appLogo.snp.width).multipliedBy(0.8)
             $0.bottom.equalTo(appTitle.snp.top).offset(-70)
             $0.centerX.equalToSuperview()
         }

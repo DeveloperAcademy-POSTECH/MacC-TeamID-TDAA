@@ -100,7 +100,7 @@ class DiaryConfigViewController: UIViewController {
         button.setTitle("취소", for: .normal)
         button.titleLabel?.font = device.diaryConfigButtonFont
         button.addTarget(self, action: #selector(cancelButtonPressed), for: .touchUpInside)
-        button.tintColor = UIColor(named: "navigationbarColor")
+        button.tintColor = .navigationbarColor
         return button
     }()
     
@@ -109,7 +109,7 @@ class DiaryConfigViewController: UIViewController {
         button.setTitle("완료", for: .normal)
         button.titleLabel?.font = device.diaryConfigButtonFont
         button.addTarget(self, action: #selector(doneButtonPressed), for: .touchUpInside)
-        button.tintColor = UIColor(named: "navigationbarColor")
+        button.tintColor = .navigationbarColor
         return button
     }()
     
@@ -145,10 +145,7 @@ class DiaryConfigViewController: UIViewController {
                 }
             }
         } else {
-            // TODO: Toast Message로 수정
-            let ac = UIAlertController(title: "입력해 주세요", message: "빈 칸을 채워주세요!", preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
-            self.present(ac, animated: true)
+            self.view.showToastMessage("작성이 완료되지 않았습니다.")
         }
     }
     

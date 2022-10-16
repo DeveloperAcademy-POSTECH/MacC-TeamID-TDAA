@@ -132,6 +132,7 @@ class MyDiaryPagesViewController: UIViewController {
    
             if let diaryConfigVC = self.presentedViewController as? DiaryConfigViewController {
                 self.titleLabel.text = diaryConfigVC.contentTextField.text
+                self.diaryData.diaryName = self.titleLabel.text ?? self.diaryData.diaryName
             }
         }
     }
@@ -151,11 +152,7 @@ class MyDiaryPagesViewController: UIViewController {
     }
     
     @objc func copyButtonTapped() {
-        UIPasteboard.general.string = diaryData.diaryUUID
-        
-        let ac = UIAlertController(title: "초대코드 복사 완료!", message: "", preferredStyle: .alert)
-        ac.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
-        present(ac, animated: true, completion: nil)
+        self.view.showToastMessage("초대코드가 복사되었습니다.")
     }
     
     @objc func modifyButtonTapped() {
@@ -190,10 +187,10 @@ class MyDiaryPagesViewController: UIViewController {
     }
     
     private func updatePageOffset() {
-        let newXPoint = CGFloat(self.currentPage-1) * (self.myPagesCollectionView.frame.width + self.itemSpacing)
         
         DispatchQueue.main.async {
-            UIView.animate(withDuration: 0.2, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.5, options: .allowUserInteraction, animations: {
+            UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.5, options: .allowUserInteraction, animations: {
+                let newXPoint = CGFloat(self.currentPage-1) * (self.myPagesCollectionView.frame.width + self.itemSpacing)
                 self.myPagesCollectionView.setContentOffset(CGPoint(x: newXPoint, y: 0), animated: true)
             }, completion: nil)
         }
@@ -301,7 +298,7 @@ extension MyDiaryPagesViewController: UIScrollViewDelegate {
         let point = self.targetContentOffset(scrollView, withVelocity: velocity)
         targetContentOffset.pointee = point
         
-        UIView.animate(withDuration: 0.2, delay: 0.2, usingSpringWithDamping: 0, initialSpringVelocity: velocity.x, options: .allowUserInteraction, animations: {
+        UIView.animate(withDuration: 0.2, delay: 0.0, usingSpringWithDamping: 0, initialSpringVelocity: velocity.x, options: .allowUserInteraction, animations: {
             self.myPagesCollectionView.setContentOffset(point, animated: true)
         }, completion: nil)
     }

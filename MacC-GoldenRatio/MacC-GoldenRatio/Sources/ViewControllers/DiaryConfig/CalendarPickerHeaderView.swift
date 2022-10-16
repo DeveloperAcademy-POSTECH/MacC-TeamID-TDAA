@@ -17,7 +17,7 @@ class CalendarPickerHeaderView: UIView {
         label.text = "Month"
         label.accessibilityTraits = .header
         label.isAccessibilityElement = true
-        label.textColor = device.calendarButtonColor
+        label.textColor = .sandbrownColor
         return label
     }()
     
@@ -26,7 +26,7 @@ class CalendarPickerHeaderView: UIView {
         let imageConfig = UIImage.SymbolConfiguration(pointSize: 22, weight: .semibold, scale: .default)
         
         button.setImage(UIImage(systemName: "chevron.left", withConfiguration: imageConfig), for: .normal)
-        button.tintColor = device.calendarButtonColor
+        button.tintColor = .sandbrownColor
         button.addTarget(self, action: #selector(didTapPreviousMonthButton), for: .touchUpInside)
         return button
     }()
@@ -36,7 +36,7 @@ class CalendarPickerHeaderView: UIView {
         let imageConfig = UIImage.SymbolConfiguration(pointSize: 22, weight: .semibold, scale: .default)
         
         button.setImage(UIImage(systemName: "chevron.right", withConfiguration: imageConfig), for: .normal)
-        button.tintColor = device.calendarButtonColor
+        button.tintColor = .sandbrownColor
         button.addTarget(self, action: #selector(didTapNextMonthButton), for: .touchUpInside)
         return button
     }()

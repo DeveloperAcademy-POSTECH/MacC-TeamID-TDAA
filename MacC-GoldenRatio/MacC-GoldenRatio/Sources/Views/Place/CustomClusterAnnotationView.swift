@@ -27,30 +27,30 @@ class CustomClusterAnnotationView: MKAnnotationView {
 			let totalDiary = cluster.memberAnnotations.count
 			if totalDiary > 0 {
 				let stampName = UIImage(named: "diaryBlue") ?? UIImage()
-				let size = UIScreen.getDevice().AnnotationSize
+				let size = UIScreen.getDevice().annotationSize
 				UIGraphicsBeginImageContext(size)
 
 				stampName.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
 				let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
 				
-				image = createImageWithLabelOverlay(text: "\(totalDiary)", imageSize: UIScreen.getDevice().AnnotationSize, image: resizedImage ?? UIImage()) ?? UIImage()
+				image = createImageWithLabelOverlay(text: "\(totalDiary)", imageSize: UIScreen.getDevice().annotationSize, image: resizedImage ?? UIImage()) ?? UIImage()
 				displayPriority = .defaultLow
 			}
 		}
 	}
 	
 	func createImageWithLabelOverlay(text: String, imageSize: CGSize, image: UIImage) -> UIImage? {
-		UIGraphicsBeginImageContextWithOptions(myDevice.ClusterAnnotationSize, false, 2.0)
-		let currentView = UIView.init(frame: CGRect(x: 0, y: 0, width: myDevice.ClusterAnnotationSize.width, height: myDevice.ClusterAnnotationSize.height))
+		UIGraphicsBeginImageContextWithOptions(myDevice.clusterAnnotationSize, false, 2.0)
+		let currentView = UIView.init(frame: CGRect(x: 0, y: 0, width: myDevice.clusterAnnotationSize.width, height: myDevice.clusterAnnotationSize.height))
 		
 		let currentImage = UIImageView.init(image: image)
-		currentImage.frame = myDevice.ClusterAnnotationImageFrame
+		currentImage.frame = myDevice.clusterAnnotationImageFrame
 		currentImage.layer.borderWidth = 1
 		currentImage.layer.borderColor = UIColor.white.cgColor
 		currentView.addSubview(currentImage)
 		
-		let label = UILabel(frame: myDevice.ClusterAnnotationLabelFrame)
-		label.font = myDevice.ClusterAnnotationLabelFont
+		let label = UILabel(frame: myDevice.clusterAnnotationLabelFrame)
+		label.font = myDevice.clusterAnnotationLabelFont
 		label.clipsToBounds = true
 		label.layer.cornerRadius = 12
 		label.backgroundColor = UIColor.black

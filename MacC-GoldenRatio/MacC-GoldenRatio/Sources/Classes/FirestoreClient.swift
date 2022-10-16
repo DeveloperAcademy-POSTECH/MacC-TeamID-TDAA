@@ -17,7 +17,6 @@ class FirestoreClient {
 		
 		let query = db.collection("Diary").whereField("userUIDs", arrayContains: uid)
 		let querySnapshot = try await query.getDocuments()
-		
 		querySnapshot.documents.forEach { document in
 			do {
 				diaries.append(try document.data(as: Diary.self))
@@ -57,10 +56,9 @@ class FirestoreClient {
 		
 		var mapDatas = [MapData]()
 		
-        let query = db.collection("Diary").whereField("userUIDs", arrayContains: uid)
+    let query = db.collection("Diary").whereField("userUIDs", arrayContains: uid)
 		
 		let querySnapshot = try await query.getDocuments()
-		
 		querySnapshot.documents.forEach { document in
 			do {
 				diaries.append(try document.data(as: Diary.self))
@@ -100,4 +98,35 @@ class FirestoreClient {
             print(error)
         }
     }
+	
+	func fetchDiaryAlbumData(_ uid: String) async throws -> [AlbumData] {
+		var diaries = [Diary]()
+		var albumDatas = [AlbumData]()
+		var imageURLs = [String]()
+		
+		var query = db.collection("Diary").whereField("userUIDs", arrayContains: uid)
+		let querySnapshot = try await query.getDocuments()
+		querySnapshot.documents.forEach { document in
+			do {
+				diaries.append(try document.data(as: Diary.self))
+			} catch {
+				print(error)
+			}
+		}
+
+		for diary in diaries {
+			for pages in diary.diaryPages {
+				for page in pages.pages {
+					for item in page.items {
+						if item.itemType == .image {
+							imageURLs.append(item.contents.first ?? "")
+						}
+					}
+				}
+			}
+			albumDatas.append(AlbumData(diaryUUID: diary.diaryUUID, diaryName: diary.diaryName, imageURLs: imageURLs, images: nil))
+			imageURLs.removeAll()
+		}
+		return albumDatas
+	}
 }

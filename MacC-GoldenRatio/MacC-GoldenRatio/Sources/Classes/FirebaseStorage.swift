@@ -23,7 +23,7 @@ class FirebaseStorageManager {
             }
         }
     }
-
+	
     static func downloadImage(urlString: String, completion: @escaping (UIImage?) -> Void) {
         let storageReference = Storage.storage().reference(forURL: urlString)
         let megaByte = Int64(1 * 1024 * 1024)
@@ -36,4 +36,13 @@ class FirebaseStorageManager {
             completion(UIImage(data: imageData))
         }
     }
+	
+	static func downloadImage(urlString: String) async throws -> UIImage {
+		let storageReference = Storage.storage().reference(forURL: urlString)
+		let megaByte = Int64(1 * 1024 * 1024)
+		
+		let data = try await storageReference.data(maxSize: megaByte)
+		
+		return UIImage(data: data) ?? UIImage(systemName: "circle")!
+	}
 }

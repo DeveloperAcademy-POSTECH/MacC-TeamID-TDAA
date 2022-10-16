@@ -13,7 +13,7 @@ import UIKit
 
 final class MyHomeViewController: UIViewController {
 	private var cancelBag = Set<AnyCancellable>()
-	var viewModel = MyHomeViewModel()
+	private let viewModel = MyHomeViewModel()
 	private let myDevice = UIScreen.getDevice()
 	
 	private lazy var collectionView: UICollectionView = {

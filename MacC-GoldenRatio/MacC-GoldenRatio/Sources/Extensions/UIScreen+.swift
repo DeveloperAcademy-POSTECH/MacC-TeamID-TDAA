@@ -516,5 +516,11 @@ extension UIScreen {
             default: return UIColor(named: "calendarSubTextColor") ?? .systemGray3
             }
         }
+        
+        var calendarButtonColor: UIColor {
+            switch self {
+            default: return UIColor(named: "calendarCheckColor") ?? .systemGray
+            }
+        }
 	}
 }

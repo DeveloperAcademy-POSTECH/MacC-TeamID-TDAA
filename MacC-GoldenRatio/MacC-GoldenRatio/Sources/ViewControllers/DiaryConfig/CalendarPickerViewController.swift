@@ -252,6 +252,9 @@ extension CalendarPickerViewController: UICollectionViewDataSource {
         
         cell.day = day
         cell.dateOption = .normal
+        cell.day?.isInTerm = false
+        cell.day?.isSelected = false
+        
         guard let date = cell.day?.date else { return cell }
         
         if !dateInterval.isEmpty {

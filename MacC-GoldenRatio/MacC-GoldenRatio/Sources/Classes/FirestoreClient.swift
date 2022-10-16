@@ -74,6 +74,22 @@ class FirestoreClient {
 		return mapDatas
 	}
     
+    func isExistingUser(_ uid: String, completion: @escaping ((Bool)->Void)){
+//        var returnVal: Bool!
+        let query = db.collection("User").whereField("userUID", isEqualTo: uid)
+        query.getDocuments { querySnapshot, error in
+            if querySnapshot?.documents == [] {
+                print(querySnapshot?.documents)
+                print(123)
+                completion(false)
+            }else{
+                print(querySnapshot?.documents)
+                print(456)
+                completion(true)
+            }
+        }
+    }
+    
     func fetchMyUser(_ uid: String) async throws -> User {
         var user: User!
         
@@ -87,13 +103,13 @@ class FirestoreClient {
                 print(error)
             }
         }
-        
         return user
     }
     
-    func setMyUser(myUser: User) {
+    func setMyUser(myUser: User, completion: (() -> Void)?) {
         do {
             try db.collection("User").document(myUser.userUID).setData(from: myUser)
+            (completion ?? {})()
         } catch {
             print(error)
         }

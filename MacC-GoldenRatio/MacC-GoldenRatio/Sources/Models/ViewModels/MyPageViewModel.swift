@@ -29,6 +29,12 @@ class MyPageViewModel {
 
     private func fetchProfileImage() async throws {
         let url = myUser.userImageURL
+        
+        if url == "" {
+            self.myProfileImage = UIImage(named: "profileImage")!
+            return
+        }
+        
         guard let image = ImageManager.shared.searchImage(url: url) else {
             FirebaseStorageManager.downloadImage(urlString: url) { result in
                 self.myProfileImage = result ?? UIImage()
@@ -56,7 +62,7 @@ class MyPageViewModel {
     }
     
     func setUserData() {
-        FirestoreClient().setMyUser(myUser: myUser)
+        FirestoreClient().setMyUser(myUser: myUser, completion: nil)
     }
     
     func setNickName(string: String) {

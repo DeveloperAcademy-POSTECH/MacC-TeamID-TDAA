@@ -29,13 +29,9 @@ class CustomAnnotationView: MKAnnotationView {
 
 
 class CustomAnnotation: NSObject, MKAnnotation {
-	let diaryTitle: String
-	let stampName: String
 	let coordinate: CLLocationCoordinate2D
 	
-	init(diaryTitle: String, stampName: String, coordinate: CLLocationCoordinate2D) {
-		self.diaryTitle = diaryTitle
-		self.stampName = stampName
+	init(coordinate: CLLocationCoordinate2D) {
 		self.coordinate = coordinate
 		
 		super.init()

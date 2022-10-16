@@ -270,6 +270,8 @@ extension MyPageViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch viewModel.menuArray[indexPath.item].0 {
         case "오픈소스":
+            let viewController = LicenseViewController()
+            self.present(viewController, animated: true)
             break
         case "앱 평가하기":
             self.onTapRateApp()

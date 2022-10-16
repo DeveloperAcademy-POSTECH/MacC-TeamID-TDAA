@@ -126,7 +126,10 @@ final class MyAlbumPhotoViewController: UIViewController {
 		let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 		let downloadAction = UIAlertAction(title: "저장하기", style: .default) { (action) in
 			UIImageWriteToSavedPhotosAlbum(self.albumData.images?[self.photoPage] ?? UIImage(), self, nil, nil)
-			self.showToastMessage("사진을 앨범에 저장했습니다.")
+			let saveAlert = UIAlertController(title: "사진 저장", message: "사진을 앨범에 저장했습니다.", preferredStyle: .alert)
+			let action = UIAlertAction(title: "확인", style: .default)
+			saveAlert.addAction(action)
+			self.present(saveAlert, animated: true)
 		}
 		let cancelAction = UIAlertAction(title: "취소", style: .cancel)
 		alert.addAction(downloadAction)
@@ -140,27 +143,6 @@ final class MyAlbumPhotoViewController: UIViewController {
 			UIView.animate(withDuration: 0.2, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.5, options: .allowUserInteraction, animations: {
 				self.collectionView.setContentOffset(CGPoint(x: newXPoint, y: 0), animated: false)
 			}, completion: nil)
-		}
-	}
-	
-	func showToastMessage(_ message: String, font: UIFont = UIFont.systemFont(ofSize: 12, weight: .light)) {
-		let toastLabel = UILabel(frame: CGRect(x: view.frame.width / 2 - 150, y: view.frame.height - 120, width: 300, height: 50))
-		
-		toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.7)
-		toastLabel.textColor = UIColor.white
-		toastLabel.numberOfLines = 2
-		toastLabel.font = font
-		toastLabel.text = message
-		toastLabel.textAlignment = .center
-		toastLabel.layer.cornerRadius = 10
-		toastLabel.clipsToBounds = true
-		
-		self.view.addSubview(toastLabel)
-
-		UIView.animate(withDuration: 1.5, delay: 0.7, options: .curveEaseOut) {
-			toastLabel.alpha = 0.0
-		} completion: { _ in
-			toastLabel.removeFromSuperview()
 		}
 	}
 }

@@ -9,7 +9,6 @@ import SnapKit
 import UIKit
 
 class MyAlbumTitleCollectionViewCell: UICollectionViewCell {
-	var isFirstCell = false
 	private let myDevice = UIScreen.getDevice()
 	private lazy var titleLabel: UILabel = {
 		let label =  UILabel()
@@ -35,7 +34,7 @@ class MyAlbumTitleCollectionViewCell: UICollectionViewCell {
 		}
 	}
 	
-	func setup(title: String) {
+	func setup(title: String, isFirstCell: Bool) {
 		[titleLabel, lineView].forEach { self.addSubview($0) }
 		if isFirstCell {
 			lineView.isHidden = false

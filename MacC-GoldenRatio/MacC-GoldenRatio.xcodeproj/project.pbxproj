@@ -69,7 +69,7 @@
 		E2BEC45E28F806C40056E755 /* MyAlbumViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEC45D28F806C40056E755 /* MyAlbumViewModel.swift */; };
 		E2BEC46028F806F80056E755 /* AlbumData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEC45F28F806F80056E755 /* AlbumData.swift */; };
 		E2BEC46328F82DC30056E755 /* MyAlbumTitleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEC46228F82DC30056E755 /* MyAlbumTitleCollectionViewCell.swift */; };
-		E2BEFA9628E882BA00EF0254 /* MyHomeViewCustomModalVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEFA9528E882BA00EF0254 /* MyHomeViewCustomModalVC.swift */; };
+		E2C2A76C28F97DB900D48F8F /* LoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C2A76B28F97DB900D48F8F /* LoadingIndicator.swift */; };
 		E2CCF30128F74450008A12F9 /* CustomAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CCF30028F74450008A12F9 /* CustomAnnotationView.swift */; };
 		E2CCF30328F7534E008A12F9 /* CustomClusterAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CCF30228F7534E008A12F9 /* CustomClusterAnnotationView.swift */; };
 		E2DA8F6028F842310098DD94 /* MyAlbumCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DA8F5F28F842310098DD94 /* MyAlbumCollectionViewCell.swift */; };
@@ -191,7 +191,7 @@
 		E2BEC45D28F806C40056E755 /* MyAlbumViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAlbumViewModel.swift; sourceTree = "<group>"; };
 		E2BEC45F28F806F80056E755 /* AlbumData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumData.swift; sourceTree = "<group>"; };
 		E2BEC46228F82DC30056E755 /* MyAlbumTitleCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAlbumTitleCollectionViewCell.swift; sourceTree = "<group>"; };
-		E2BEFA9528E882BA00EF0254 /* MyHomeViewCustomModalVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyHomeViewCustomModalVC.swift; sourceTree = "<group>"; };
+		E2C2A76B28F97DB900D48F8F /* LoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingIndicator.swift; sourceTree = "<group>"; };
 		E2CCF30028F74450008A12F9 /* CustomAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotationView.swift; sourceTree = "<group>"; };
 		E2CCF30228F7534E008A12F9 /* CustomClusterAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomClusterAnnotationView.swift; sourceTree = "<group>"; };
 		E2DA8F5F28F842310098DD94 /* MyAlbumCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAlbumCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -381,6 +381,7 @@
 				0AE27F2428F442B100D79208 /* FirebaseStorage.swift */,
 				E21342DC28F6B2740048D9CF /* HalfModalPresentationController.swift */,
 				0A5DC37A28F7F65B00AABED1 /* ImageManager.swift */,
+				E2C2A76B28F97DB900D48F8F /* LoadingIndicator.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -506,7 +507,6 @@
 				E2EA7F0728E56CF600AC1C49 /* MyPlaceViewController.swift */,
 				E2EA7F0928E56CFE00AC1C49 /* MyAlbumViewController.swift */,
 				E2EA7F0B28E56DF600AC1C49 /* MyPageViewController.swift */,
-				E2BEFA9528E882BA00EF0254 /* MyHomeViewCustomModalVC.swift */,
 				E2DA8F6128F856A10098DD94 /* MyAlbumPhotoViewController.swift */,
 			);
 			path = Main;
@@ -735,12 +735,11 @@
 				CC9F969628F7E0B100E4B68A /* MyDiaryPagesViewModel.swift in Sources */,
 				0A5235B228F854C200AC77AC /* UIColor+.swift in Sources */,
 				CC65514728EEBF7C00E637A2 /* Date+.swift in Sources */,
-				E2BEFA9628E882BA00EF0254 /* MyHomeViewCustomModalVC.swift in Sources */,
-				E2BEFA9628E882BA00EF0254 /* MyHomeViewCustomModalVC.swift in Sources */,
 				E21342DD28F6B2740048D9CF /* HalfModalPresentationController.swift in Sources */,
 				E2EA7F1628E5711E00AC1C49 /* DiaryCollectionHeaderView.swift in Sources */,
 				B93EC22928F7BC8000BB89C5 /* String+.swift in Sources */,
 				E2B025BC28EB326C00B73891 /* MyHomeViewModel.swift in Sources */,
+				E2C2A76C28F97DB900D48F8F /* LoadingIndicator.swift in Sources */,
 				E2DA8F6428F857D80098DD94 /* MyAlbumPhotoCollectionViewCell.swift in Sources */,
 				E2CCF30128F74450008A12F9 /* CustomAnnotationView.swift in Sources */,
 				0A5E904828E857E200B381B8 /* StickerView.swift in Sources */,

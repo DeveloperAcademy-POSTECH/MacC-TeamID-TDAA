@@ -11,8 +11,10 @@ import UIKit
 
 class MyAlbumViewModel {
 	@Published var albumDatas = [AlbumData]()
+	
 	private let client = FirestoreClient()
 	private var myUID = Auth.auth().currentUser?.uid ?? ""
+	private var isFirstLoad = true
 	
 	init() {
 		fetchLoadData()
@@ -21,6 +23,7 @@ class MyAlbumViewModel {
 	func fetchLoadData() {
 		Task {
 			do {
+				albumDatas.removeAll()
 				let datas = try await client.fetchDiaryAlbumData(myUID)
 				for data in datas {
 					var images = [UIImage]()

@@ -45,6 +45,11 @@ final class MyHomeViewController: UIViewController {
 		setupViewModel()
     }
 	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		setupViewModel()
+	}
+	
 	private func setupSubViews() {
 		self.view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
 		
@@ -55,6 +60,14 @@ final class MyHomeViewController: UIViewController {
 		}
 		addDiaryButton.snp.makeConstraints {
 			$0.bottom.trailing.equalTo(view.safeAreaLayoutGuide).inset(myDevice.MyDiariesViewAddDiaryButtonPadding)
+		}
+	}
+	
+	private func isIndicator() {
+		if viewModel.isInitializing {
+			self.view.isUserInteractionEnabled = false
+		} else {
+			self.view.isUserInteractionEnabled = true
 		}
 	}
 	
@@ -75,8 +88,9 @@ final class MyHomeViewController: UIViewController {
 		let joinDiaryAlert = UIAlertController(title: "초대코드 입력", message: "받은 초대코드를 입력해주세요.", preferredStyle: .alert)
 		let joinAction = UIAlertAction(title: "확인", style: .default) { action in
 			if let textField = joinDiaryAlert.textFields?.first {
-				// TODO: 초대 코드 복사 로직 추가 예정
 				self.viewModel.updateJoinDiary(textField.text ?? "")
+				self.viewModel.fetchLoadData()
+				self.showToastMessage("다이어리가 추가되었습니다.")
 				self.viewModel.fetchLoadData()
 				self.dismiss(animated: true, completion: nil)
 			}
@@ -89,13 +103,36 @@ final class MyHomeViewController: UIViewController {
 		joinDiaryAlert.addAction(cancelAction)
 		self.present(joinDiaryAlert, animated: true)
 	}
+	
+	func showToastMessage(_ message: String, font: UIFont = UIFont.systemFont(ofSize: 12, weight: .light)) {
+		let toastLabel = UILabel(frame: CGRect(x: view.frame.width / 2 - 150, y: view.frame.height - 120, width: 300, height: 50))
+		
+		toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.7)
+		toastLabel.textColor = UIColor.white
+		toastLabel.numberOfLines = 2
+		toastLabel.font = font
+		toastLabel.text = message
+		toastLabel.textAlignment = .center
+		toastLabel.layer.cornerRadius = 10
+		toastLabel.clipsToBounds = true
+		
+		self.view.addSubview(toastLabel)
+
+		UIView.animate(withDuration: 1.5, delay: 0.7, options: .curveEaseOut) {
+			toastLabel.alpha = 0.0
+		} completion: { _ in
+			toastLabel.removeFromSuperview()
+		}
+	}
 }
 
 extension MyHomeViewController: UICollectionViewDataSource {
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		if viewModel.diaryCellData.isEmpty {
+		if !viewModel.isInitializing && viewModel.diaryCellData.isEmpty {
 			let label = UILabel()
 			label.text = "다이어리를 추가해주세요."
+			label.font = myDevice.collectionBackgoundViewFont
+			label.textColor = UIColor.buttonColor
 			label.textAlignment = .center
 			collectionView.backgroundView = label
 		} else {
@@ -152,10 +189,12 @@ extension MyHomeViewController: UICollectionViewDelegateFlowLayout {
 
 private extension MyHomeViewController {
 	func setupViewModel() {
+		viewModel.fetchLoadData()
 		viewModel.$diaryCellData
 			.receive(on: DispatchQueue.main)
 			.sink { [weak self] diaryCell in
 				self?.collectionView.reloadData()
+				self?.isIndicator()
 			}
 			.store(in: &cancelBag)
 	}

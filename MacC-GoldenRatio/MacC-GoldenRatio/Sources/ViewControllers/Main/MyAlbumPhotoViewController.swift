@@ -19,9 +19,7 @@ final class MyAlbumPhotoViewController: UIViewController {
 	private var previousOffset: CGFloat = 0
 	var photoPage: Int {
 		didSet {
-			if photoPage == 0 {
-				photoPage = 1
-			} else if photoPage > totalCount {
+			if photoPage > totalCount {
 				photoPage = totalCount
 			}
 			self.titleLabel.text = "\(photoPage+1)/\(totalCount)"
@@ -61,6 +59,7 @@ final class MyAlbumPhotoViewController: UIViewController {
 	private lazy var titleLabel: UILabel = {
 		let label = UILabel()
 		label.font = myDevice.myAlbumPhotoPageLabelFont
+		label.textColor = .black
 		
 		return label
 	}()
@@ -126,8 +125,8 @@ final class MyAlbumPhotoViewController: UIViewController {
 	@objc private func menuButtonTapped() {
 		let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 		let downloadAction = UIAlertAction(title: "저장하기", style: .default) { (action) in
-			print("@")
 			UIImageWriteToSavedPhotosAlbum(self.albumData.images?[self.photoPage] ?? UIImage(), self, nil, nil)
+			self.showToastMessage("사진을 앨범에 저장했습니다.")
 		}
 		let cancelAction = UIAlertAction(title: "취소", style: .cancel)
 		alert.addAction(downloadAction)
@@ -141,6 +140,27 @@ final class MyAlbumPhotoViewController: UIViewController {
 			UIView.animate(withDuration: 0.2, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.5, options: .allowUserInteraction, animations: {
 				self.collectionView.setContentOffset(CGPoint(x: newXPoint, y: 0), animated: false)
 			}, completion: nil)
+		}
+	}
+	
+	func showToastMessage(_ message: String, font: UIFont = UIFont.systemFont(ofSize: 12, weight: .light)) {
+		let toastLabel = UILabel(frame: CGRect(x: view.frame.width / 2 - 150, y: view.frame.height - 120, width: 300, height: 50))
+		
+		toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.7)
+		toastLabel.textColor = UIColor.white
+		toastLabel.numberOfLines = 2
+		toastLabel.font = font
+		toastLabel.text = message
+		toastLabel.textAlignment = .center
+		toastLabel.layer.cornerRadius = 10
+		toastLabel.clipsToBounds = true
+		
+		self.view.addSubview(toastLabel)
+
+		UIView.animate(withDuration: 1.5, delay: 0.7, options: .curveEaseOut) {
+			toastLabel.alpha = 0.0
+		} completion: { _ in
+			toastLabel.removeFromSuperview()
 		}
 	}
 }
@@ -172,38 +192,15 @@ extension MyAlbumPhotoViewController: UICollectionViewDelegateFlowLayout {
 extension MyAlbumPhotoViewController: UIScrollViewDelegate {
 	func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
 		let cellWidthIncludeSpacing = self.view.bounds.width + 10
-		
+
 		var offset = targetContentOffset.pointee
-		
-		// TODO: 기기 대응 시 수정 예정
-		if (Int(offset.x)%400) > 200 {
-			self.targetContentOffset(scrollView, withVelocity: velocity)
-		}
-		
 		let index = (offset.x + scrollView.contentInset.left) / cellWidthIncludeSpacing
 		let roundedIndex: CGFloat = round(index)
 		
+		photoPage = Int(roundedIndex)
+
 		offset = CGPoint(x: roundedIndex * cellWidthIncludeSpacing - scrollView.contentInset.left, y: scrollView.contentInset.top)
 		targetContentOffset.pointee = offset
-	}
-	
-	func targetContentOffset(_ scrollView: UIScrollView, withVelocity velocity: CGPoint) -> CGPoint {
-		guard let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return .zero }
-
-		// Offset 변화, slide 제스처 비교 후 이동 방향 결정
-		if previousOffset > collectionView.contentOffset.x && velocity.x < 0 {
-			photoPage = photoPage - 1
-		} else if previousOffset < collectionView.contentOffset.x && velocity.x > 0 {
-			photoPage = photoPage + 1
-		}
-
-		let additional = (flowLayout.itemSize.width + flowLayout.minimumLineSpacing)
-
-		let updatedOffset = (flowLayout.itemSize.width + flowLayout.minimumLineSpacing) * CGFloat(photoPage) - additional
-
-		previousOffset = updatedOffset
-
-		return CGPoint(x: updatedOffset, y: 0)
 	}
 }
 

@@ -242,6 +242,19 @@ extension UIScreen {
 			default: return UIFont(name: "EF_Diary", size: 17) ?? UIFont.systemFont(ofSize: 17)
 			}
 		}
+		
+		var myAlbumBackgroundLabelBottom: CGFloat {
+			switch self {
+			default: return 330
+			}
+		}
+		
+		// All
+		var collectionBackgoundViewFont: UIFont {
+			switch self {
+			default: return UIFont(name: "EF_Diary", size: 17) ?? UIFont.systemFont(ofSize: 17)
+			}
+		}
         
 
 // MARK: - Sign In

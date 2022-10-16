@@ -28,7 +28,14 @@ class MyAlbumViewModel {
 				for data in datas {
 					var images = [UIImage]()
 					for url in data.imageURLs ?? [] {
-						try await images.append(FirebaseStorageManager.downloadImage(urlString: url))
+                        
+                        if let image = ImageManager.shared.searchImage(url: url){
+                            images.append(image)
+                        } else {
+                            let image = try await FirebaseStorageManager.downloadImage(urlString: url)
+                            ImageManager.shared.cacheImage(url: url, image: image)
+                            images.append(image)
+                        }
 					}
 					var isEqual = false
 					fetchDatas.forEach { album in

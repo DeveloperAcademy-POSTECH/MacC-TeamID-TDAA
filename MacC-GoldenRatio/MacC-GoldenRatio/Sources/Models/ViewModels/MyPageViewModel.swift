@@ -5,9 +5,11 @@
 //  Created by 김상현 on 2022/10/14.
 //
 import FirebaseAuth
+import FirebaseFirestore
 import UIKit
 
 class MyPageViewModel {
+    private var db = Firestore.firestore()
     static let shared = MyPageViewModel()
     private var myUID: String = Auth.auth().currentUser?.uid ?? ""
     @Published var myUser: User = User(userUID: "", userName: "", userImageURL: "", diaryUUIDs: [""])
@@ -76,6 +78,48 @@ class MyPageViewModel {
             self.myProfileImage = image
             ImageManager.shared.cacheImage(url: urlString, image: image)
             completion()
+        }
+    }
+    
+    func deleteUserDB() {
+        let userRef = db.collection("User").document(self.myUID)
+        
+        Task {
+            do {
+                guard let diaries = FirebaseClient().fetchMyDiaries(uid: self.myUID) else { return }
+                
+                // 가져온 다이어리 목록에 대해서 다이어리 삭제
+                for diary in diaries {
+                    let diaryRef = db.collection("Diary").document(diary.diaryUUID)
+                    let userUIDs = diary.userUIDs.filter(){ $0 != myUID }
+                    
+                    if userUIDs.isEmpty {
+                        // 자신밖에 없으면 다이어리 삭제
+                        diaryRef.delete() { err in
+                            if let _ = err {
+                                print("ERROR: 다이어리 삭제 실패")
+                            } else {
+                                print("다이어리 삭제 완료")
+                            }
+                        }
+                    } else {
+                        let pagesFieldData = ["userUIDs" : userUIDs]
+                        diaryRef.updateData(pagesFieldData)
+                    }
+                }
+            } catch {
+                print(error)
+            }
+        }
+        
+        
+        // 사용자 삭제
+        userRef.delete() { err in
+            if let _ = err {
+                print("ERROR: 사용자 DB 삭제 실패")
+            } else {
+                print("사용자 DB 삭제 완료")
+            }
         }
     }
 }

@@ -202,7 +202,7 @@ extension UIScreen {
         
         var annotationSize: CGSize {
             switch self {
-            default: return CGSize(width: 52, height: 60)
+            default: return CGSize(width: 80, height: 90)
             }
         }
         
@@ -220,7 +220,7 @@ extension UIScreen {
         
         var clusterAnnotationSize: CGSize {
             switch self {
-            default: return CGSize(width: annotationSize.width+12, height: annotationSize.height+12)
+            default: return CGSize(width: 80, height: 100)
             }
         }
         
@@ -232,7 +232,7 @@ extension UIScreen {
         
         var clusterAnnotationLabelFrame: CGRect {
             switch self {
-            default: return CGRect(x: annotationSize.width-15, y: 0, width: 25, height: 25)
+            default: return CGRect(x: annotationSize.width-26, y: 3, width: 25, height: 25)
             }
         }
         

@@ -23,7 +23,7 @@ class MyPlaceViewController: UIViewController, MKMapViewDelegate, CLLocationMana
 		let label = UILabel()
 		label.text = "지도"
 		label.font = myDevice.TabBarTitleFont
-		label.textColor = UIColor(named: "darkgrayColor") ?? UIColor.black
+		label.textColor = UIColor.buttonColor
 		
 		return label
 	}()
@@ -70,7 +70,7 @@ class MyPlaceViewController: UIViewController, MKMapViewDelegate, CLLocationMana
 		let allAnnotations = self.mapView.map.annotations
 		self.mapView.map.removeAnnotations(allAnnotations)
 		mapData.forEach { data in
-			let pin = CustomAnnotation(diaryTitle: data.diaryName, coordinate: CLLocationCoordinate2D(latitude: data.location.locationCoordinate[0], longitude: data.location.locationCoordinate[1]))
+			let pin = CustomAnnotation(coordinate: CLLocationCoordinate2D(latitude: data.location.locationCoordinate[0], longitude: data.location.locationCoordinate[1]))
 			mapView.map.addAnnotation(pin)
 		}
 	}
@@ -90,19 +90,6 @@ class MyPlaceViewController: UIViewController, MKMapViewDelegate, CLLocationMana
 			annotationView?.annotation = annotation
 		}
 		
-		let diaryTitle = UILabel()
-		diaryTitle.text = annotation.diaryTitle
-		diaryTitle.font = myDevice.annotationTitleFont
-		diaryTitle.textColor = .black
-		diaryTitle.textAlignment = .center
-		
-		annotationView?.addSubview(diaryTitle)
-		
-		diaryTitle.snp.makeConstraints {
-			$0.leading.trailing.equalToSuperview()
-			$0.top.equalToSuperview().inset(10)
-		}
-		
 		let stampName = UIImage(named: "stampLayout") ?? UIImage()
 		let size = myDevice.annotationSize
 		UIGraphicsBeginImageContext(size)
@@ -110,11 +97,6 @@ class MyPlaceViewController: UIViewController, MKMapViewDelegate, CLLocationMana
 		stampName.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
 		let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
 		annotationView?.image = resizedImage
-		
-		annotationView?.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMaxXMinYCorner]
-		annotationView?.layer.cornerRadius = 5
-		annotationView?.layer.borderWidth = 1
-		annotationView?.layer.borderColor = UIColor.white.cgColor
 		
 		annotationView?.clusteringIdentifier = "diary"
 		

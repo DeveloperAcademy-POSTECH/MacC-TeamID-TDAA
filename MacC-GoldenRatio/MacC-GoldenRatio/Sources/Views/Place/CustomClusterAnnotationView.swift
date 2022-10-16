@@ -26,7 +26,7 @@ class CustomClusterAnnotationView: MKAnnotationView {
 		if let cluster = annotation as? MKClusterAnnotation {
 			let totalDiary = cluster.memberAnnotations.count
 			if totalDiary > 0 {
-				let stampName = UIImage(named: "diaryBlue") ?? UIImage()
+				let stampName = UIImage(named: "stampLayout") ?? UIImage()
 				let size = UIScreen.getDevice().annotationSize
 				UIGraphicsBeginImageContext(size)
 
@@ -45,15 +45,13 @@ class CustomClusterAnnotationView: MKAnnotationView {
 		
 		let currentImage = UIImageView.init(image: image)
 		currentImage.frame = myDevice.clusterAnnotationImageFrame
-		currentImage.layer.borderWidth = 1
-		currentImage.layer.borderColor = UIColor.white.cgColor
 		currentView.addSubview(currentImage)
 		
 		let label = UILabel(frame: myDevice.clusterAnnotationLabelFrame)
 		label.font = myDevice.clusterAnnotationLabelFont
 		label.clipsToBounds = true
 		label.layer.cornerRadius = 12
-		label.backgroundColor = UIColor.black
+		label.backgroundColor = UIColor(named: "sandbrownColor") ?? UIColor.black
 		label.textColor = UIColor.white
 		label.textAlignment = .center
 		label.text = text

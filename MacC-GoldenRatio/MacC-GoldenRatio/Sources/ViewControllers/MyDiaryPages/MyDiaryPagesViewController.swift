@@ -126,11 +126,13 @@ class MyDiaryPagesViewController: UIViewController {
             } catch {
                 print(error.localizedDescription)
             }
-            print(diaryData)
             
             self.collectionViewSetup()
             self.componentsSetup()
             
+            if let diaryConfigVC = self.presentedViewController as? DiaryConfigViewController {
+                self.titleLabel.text = diaryConfigVC.contentTextField.text
+            }
         }
     }
     

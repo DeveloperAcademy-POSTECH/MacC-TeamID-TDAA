@@ -152,6 +152,7 @@ class MyDiaryPagesViewController: UIViewController {
     }
     
     @objc func copyButtonTapped() {
+        UIPasteboard.general.string = diaryData.diaryUUID
         self.view.showToastMessage("초대코드가 복사되었습니다.")
     }
     

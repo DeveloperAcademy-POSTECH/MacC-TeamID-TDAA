@@ -29,6 +29,7 @@ class MapSearchViewController: UIViewController {
         let tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.register(MapSearchResultTableViewCell.self, forCellReuseIdentifier: MapSearchResultTableViewCell.identifier)
         
         return tableView
     }()
@@ -101,16 +102,20 @@ extension MapSearchViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: MapSearchResultTableViewCell.identifier, for: indexPath) as? MapSearchResultTableViewCell else { return UITableViewCell()}
+        
         let searchResult = searchResults[indexPath.row]
-        cell.textLabel?.text = searchResult.title
+        cell.setUI(mapSearchResult: searchResult)
+        
         return cell
     }
-    
 }
 
 extension MapSearchViewController: UITableViewDelegate {
-  // 선택된 위치의 정보 가져오기
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return myDevice.mapSearchTableViewCellHeight
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedResult = searchResults[indexPath.row]
         let searchRequest = MKLocalSearch.Request(completion: selectedResult)

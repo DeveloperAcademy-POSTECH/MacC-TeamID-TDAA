@@ -31,7 +31,7 @@ class ImageManager {
         if fileManager.fileExists(atPath: imageFilePathURL.path) {
             guard let imageData = try? Data(contentsOf: imageFilePathURL) else { return nil }
             guard let image = UIImage(data: imageData) else { return nil }
-            print(Date().timeIntervalSince1970)
+
             cacheImages.setObject(image, forKey: nsString)
             return image
         }

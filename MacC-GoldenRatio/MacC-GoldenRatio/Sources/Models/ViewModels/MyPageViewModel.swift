@@ -39,10 +39,10 @@ class MyPageViewModel {
             return
         }
         
-        guard let image = ImageManager.shared.searchImage(url: url) else {
+        guard let image = ImageManager.shared.searchImage(urlString: url) else {
             FirebaseStorageManager.downloadImage(urlString: url) { result in
                 self.myProfileImage = result ?? UIImage()
-                ImageManager.shared.cacheImage(url: url, image: self.myProfileImage)
+                ImageManager.shared.cacheImage(urlString: url, image: self.myProfileImage)
             }
             return
         }
@@ -78,7 +78,7 @@ class MyPageViewModel {
             guard let urlString = url?.absoluteString else { return }
             self.myUser.userImageURL = urlString
             self.myProfileImage = image
-            ImageManager.shared.cacheImage(url: urlString, image: image)
+            ImageManager.shared.cacheImage(urlString: urlString, image: image)
             completion()
         }
     }

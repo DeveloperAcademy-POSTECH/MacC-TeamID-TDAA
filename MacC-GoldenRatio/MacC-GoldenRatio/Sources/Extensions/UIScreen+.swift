@@ -609,5 +609,25 @@ extension UIScreen {
             default: return UIColor(named: "calendarCheckColor") ?? .systemGray
             }
         }
+        
+        // MARK: - MapSearch Table View Cell
+        /// 80
+        var mapSearchTableViewCellHeight: CGFloat {
+            switch self {
+            default: return CGFloat(80)
+            }
+        }
+        /// 10
+        var mapSearchTableViewCellVerticalPadding: CGFloat {
+            switch self {
+            default: return CGFloat(10)
+            }
+        }
+        /// 20
+        var mapSearchTableViewCellHorizontalPadding: CGFloat {
+            switch self {
+            default: return CGFloat(20)
+            }
+        }
     }
 }

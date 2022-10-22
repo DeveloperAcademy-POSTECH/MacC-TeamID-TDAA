@@ -32,6 +32,7 @@
 		0AAB2ADE28EDA511009FBD96 /* MapStickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2ADD28EDA510009FBD96 /* MapStickerView.swift */; };
 		0AAB2AE028EDA553009FBD96 /* ImageStickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2ADF28EDA553009FBD96 /* ImageStickerView.swift */; };
 		0AAB2AE228EDA55D009FBD96 /* StickerStickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2AE128EDA55D009FBD96 /* StickerStickerView.swift */; };
+		0AD6FD7E2903054D00939F3D /* MapSearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD6FD7D2903054D00939F3D /* MapSearchResultTableViewCell.swift */; };
 		0AE27F2528F442B100D79208 /* FirebaseStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE27F2428F442B100D79208 /* FirebaseStorage.swift */; };
 		0AEC53EC28EF211D001B0169 /* StickerViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEC53EB28EF211D001B0169 /* StickerViewData.swift */; };
 		B93EC22928F7BC8000BB89C5 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93EC22828F7BC8000BB89C5 /* String+.swift */; };
@@ -158,6 +159,7 @@
 		0AAB2ADD28EDA510009FBD96 /* MapStickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapStickerView.swift; sourceTree = "<group>"; };
 		0AAB2ADF28EDA553009FBD96 /* ImageStickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageStickerView.swift; sourceTree = "<group>"; };
 		0AAB2AE128EDA55D009FBD96 /* StickerStickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerStickerView.swift; sourceTree = "<group>"; };
+		0AD6FD7D2903054D00939F3D /* MapSearchResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapSearchResultTableViewCell.swift; sourceTree = "<group>"; };
 		0AE27F2428F442B100D79208 /* FirebaseStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseStorage.swift; sourceTree = "<group>"; };
 		0AEC53EB28EF211D001B0169 /* StickerViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerViewData.swift; sourceTree = "<group>"; };
 		B93EC22828F7BC8000BB89C5 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
@@ -318,6 +320,7 @@
 			isa = PBXGroup;
 			children = (
 				0AAB2AD928EC8C8D009FBD96 /* StickerPickerCollectionViewCell.swift */,
+				0AD6FD7D2903054D00939F3D /* MapSearchResultTableViewCell.swift */,
 			);
 			path = Page;
 			sourceTree = "<group>";
@@ -755,6 +758,7 @@
 				CC40BC1A28EEAE2400DF48E1 /* CalendarDateCollectionViewCell.swift in Sources */,
 				E2EA7F0A28E56CFE00AC1C49 /* MyAlbumViewController.swift in Sources */,
 				E21342DF28F6B31D0048D9CF /* MyHomeViewController.swift in Sources */,
+				0AD6FD7E2903054D00939F3D /* MapSearchResultTableViewCell.swift in Sources */,
 				CC6BD74628EC18B8001ED665 /* DiaryConfigCollectionViewCell.swift in Sources */,
 				0A5E904A28E858C000B381B8 /* StickerContollerView.swift in Sources */,
 				E276B91E28E46B3700163833 /* DiaryModel.swift in Sources */,

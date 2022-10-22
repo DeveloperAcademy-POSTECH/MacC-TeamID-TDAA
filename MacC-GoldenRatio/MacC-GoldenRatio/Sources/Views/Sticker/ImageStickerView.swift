@@ -47,7 +47,7 @@ class ImageStickerView: StickerView {
     private func configureImageView() {
         guard let imageUrl = super.stickerViewData.item.contents.first else { return }
         
-        let image = ImageManager.shared.searchImage(url: imageUrl)
+        let image = ImageManager.shared.searchImage(urlString: imageUrl)
         
         switch image {
         case nil:
@@ -62,7 +62,7 @@ class ImageStickerView: StickerView {
     private func downLoadImage(imageUrl: String) {
         FirebaseStorageManager.downloadImage(urlString: imageUrl) { image in
             guard let image = image else { return }
-            ImageManager.shared.cacheImage(url: imageUrl, image: image)
+            ImageManager.shared.cacheImage(urlString: imageUrl, image: image)
             self.imageView.image = image
         }
     }
@@ -71,7 +71,7 @@ class ImageStickerView: StickerView {
         FirebaseStorageManager.uploadImage(image: image, pathRoot: path) { url in
             self.imageView.image = image
             guard let url = url else { return }
-            ImageManager.shared.cacheImage(url: url.absoluteString, image: image)
+            ImageManager.shared.cacheImage(urlString: url.absoluteString, image: image)
             self.stickerViewData.updateContents(contents: [url.absoluteString])
         }
     }

@@ -263,9 +263,9 @@ extension MyDiaryPagesViewController: UICollectionViewDataSource {
             // TODO: 이미지 로드 해서 cell에 할당
             Task {
                 let imageURL = diaryData.pageThumbnails[indexPath.row]
-                guard let image = ImageManager.shared.searchImage(url: imageURL) else {
+                guard let image = ImageManager.shared.searchImage(urlString: imageURL) else {
                     FirebaseStorageManager.downloadImage(urlString: imageURL) { image in
-                        ImageManager.shared.cacheImage(url: imageURL, image: image ?? UIImage())
+                        ImageManager.shared.cacheImage(urlString: imageURL, image: image ?? UIImage())
                         cell.previewImageView.image = image
                     }
                     return

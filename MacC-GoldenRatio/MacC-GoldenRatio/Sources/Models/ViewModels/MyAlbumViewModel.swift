@@ -29,11 +29,11 @@ class MyAlbumViewModel {
 					var images = [UIImage]()
 					for url in data.imageURLs ?? [] {
                         
-                        if let image = ImageManager.shared.searchImage(url: url){
+                        if let image = ImageManager.shared.searchImage(urlString: url){
                             images.append(image)
                         } else {
                             let image = try await FirebaseStorageManager.downloadImage(urlString: url)
-                            ImageManager.shared.cacheImage(url: url, image: image)
+                            ImageManager.shared.cacheImage(urlString: url, image: image)
                             images.append(image)
                         }
 					}

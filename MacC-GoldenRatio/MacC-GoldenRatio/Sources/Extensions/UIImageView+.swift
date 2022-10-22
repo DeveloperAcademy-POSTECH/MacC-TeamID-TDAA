@@ -10,7 +10,7 @@ import UIKit
 
 extension UIImageView {
 	func setImage(with urlString: String) {
-        if let image = ImageManager.shared.searchImage(url: urlString){
+        if let image = ImageManager.shared.searchImage(urlString: urlString){
             self.image = image
         }else{
             let storage = Storage.storage()
@@ -27,7 +27,7 @@ extension UIImageView {
                 }
                 
                 self.kf.setImage(with: url) { kf in
-                    ImageManager.shared.cacheImage(url: urlString, image: self.image ?? UIImage())
+                    ImageManager.shared.cacheImage(urlString: urlString, image: self.image ?? UIImage())
                 }
             }
         }

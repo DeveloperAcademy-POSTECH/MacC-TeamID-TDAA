@@ -176,7 +176,7 @@ class MyPageViewController: UIViewController {
     }
     
     private func onTapRateApp() {
-        guard let reviewURL = URL(string: "itms-apps://itunes.apple.com/app/itunes-u/idC643325Z95.com.San.MacC-GoldenRatio?ls=1&mt=8&action=write-review") else { return }
+        guard let reviewURL = URL(string: "itms-apps://itunes.apple.com/app/itunes-u/id6443840961?ls=1&mt=8&action=write-review") else { return }
         if UIApplication.shared.canOpenURL(reviewURL) {
             UIApplication.shared.open(reviewURL, options: [:], completionHandler: nil)
         }

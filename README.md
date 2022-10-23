@@ -1,4 +1,4 @@
-# MacC-GoldenRatio
+# MacC-TeamID-TDAA
 
 # Git
 

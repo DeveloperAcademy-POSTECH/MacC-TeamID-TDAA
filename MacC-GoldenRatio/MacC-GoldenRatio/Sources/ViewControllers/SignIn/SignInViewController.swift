@@ -115,7 +115,6 @@ class SignInViewController: UIViewController {
         
         appTitle.snp.makeConstraints {
             $0.center.equalToSuperview()
-            $0.horizontalEdges.equalToSuperview().inset(44)
         }
         
         appleLoginButton.snp.makeConstraints {

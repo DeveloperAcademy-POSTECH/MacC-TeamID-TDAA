@@ -72,6 +72,7 @@ class SignInViewController: UIViewController {
         let signInTestVC = TabBarController()
         self.navigationController?.navigationBar.isHidden = true
         self.navigationController?.pushViewController(signInTestVC, animated: true)
+        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
     }
     
     // MARK: - setup

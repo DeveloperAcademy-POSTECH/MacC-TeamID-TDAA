@@ -16,7 +16,7 @@ enum pageViewMode {
 }
 
 class PageViewController: UIViewController {
-//    private var cancelBag = Set<AnyCancellable>()
+    private var cancelBag = Set<AnyCancellable>()
     private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
     private let imagePicker = UIImagePickerController()
     private var myDiariesViewModalBackgroundView = UIView()
@@ -120,14 +120,14 @@ class PageViewController: UIViewController {
         super.viewDidLoad()
         DispatchQueue.main.async {
             self.view.backgroundColor = .backgroundTexture
-//            self.setupViewModel()
+            self.setupViewModel()
             self.configureImagePicker()
             self.reloadPageDescriptionLabel()
             self.addSubviews()
             self.configureGestureRecognizer()
             self.configureToolButton()
             self.configureConstraints()
-            self.loadStickerViews(pageIndex: self.pageViewModel.currentPageIndex)
+            self.loadStickerViews(pageIndex: self.pageViewModel.currentPageIndex, isSubviewHidden: true)
             self.setStickerSubviewHidden()
         }
     }
@@ -335,15 +335,16 @@ extension PageViewController {
             self.backgroundImageView.subviews.forEach{
                 $0.removeFromSuperview()
             }
-            self.loadStickerViews(pageIndex: self.pageViewModel.currentPageIndex)
-            self.pageViewModel.hideStickerSubview(true)
+            self.loadStickerViews(pageIndex: self.pageViewModel.currentPageIndex, isSubviewHidden: true)
+//            self.pageViewModel.hideStickerSubview(true)
         }
     }
     
-    private func loadStickerViews(pageIndex: Int) {
+    private func loadStickerViews(pageIndex: Int, isSubviewHidden: Bool) {
         DispatchQueue.main.async {
             self.pageViewModel.stickerArray[pageIndex].forEach{
                 $0.delegate = self
+                $0.subviewIsHidden = isSubviewHidden
                 self.backgroundImageView.addSubview($0)
             }
         }
@@ -492,35 +493,19 @@ extension PageViewController: UIGestureRecognizerDelegate {
         return false
     }
 }
-//// MARK: Combine
-//private extension PageViewController {
-//    func setupViewModel() {
-//        pageViewModel.$currentPageIndex
-//            .receive(on: DispatchQueue.main)
-//            .sink { [weak self] _ in
-//
-//            }
-//            .store(in: &cancelBag)
-//
-//        pageViewModel.$selectedDay
-//            .receive(on: DispatchQueue.main)
-//            .sink { [weak self] _ in
-//
-//            }
-//            .store(in: &cancelBag)
-//
-//        pageViewModel.$diary
-//            .receive(on: DispatchQueue.main)
-//            .sink { [weak self] _ in
-//
-//            }
-//            .store(in: &cancelBag)
-//
-//        pageViewModel.$stickerArray
-//            .receive(on: DispatchQueue.main)
-//            .sink { [weak self] _ in
-//                self?.reloadStickers()
-//            }
-//            .store(in: &cancelBag)
-//    }
-//}
+// MARK: Combine
+private extension PageViewController {
+    func setupViewModel() {
+        pageViewModel.$stickerArray
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                print("stickerArrayHasChanged")
+                guard let isStickerArrayOutdated = self?.pageViewModel.isStickerArrayOutdated else { return }
+                guard isStickerArrayOutdated else { return }
+                self?.reloadStickers()
+                self?.reloadPageDescriptionLabel()
+                self?.pageViewModel.isStickerArrayOutdated = false
+            }
+            .store(in: &cancelBag)
+    }
+}

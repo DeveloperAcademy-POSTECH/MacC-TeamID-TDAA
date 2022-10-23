@@ -58,4 +58,16 @@ class FirebaseClient {
         diaryRef.updateData(pagesFieldData)
     }
 
+    
+    func bindSnapshotListner(diaryUUID: String, completion: @escaping (DocumentSnapshot) -> Void ) {
+        
+        db.collection("Diary").document(diaryUUID)
+            .addSnapshotListener { documentSnapshot, error in
+              guard let document = documentSnapshot else {
+                print("Error fetching document: \(error!)")
+                return
+              }
+                completion(document)
+            }
+    }
 }

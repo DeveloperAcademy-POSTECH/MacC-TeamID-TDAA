@@ -8,18 +8,19 @@
 import UIKit
 
 class PageViewModel {
-    @Published var selectedDay: Int = 0
-    @Published var currentPageIndex: Int = 0
+    var selectedDay: Int = 0
+    var currentPageIndex: Int = 0
     @Published var diary: Diary = Diary(diaryUUID: "", diaryName: "", diaryLocation: Location(locationName: "", locationAddress: "", locationCoordinate: []), diaryStartDate: "", diaryEndDate: "", diaryCover: "")
     @Published var stickerArray: [[StickerView]] = []
+    var isStickerArrayOutdated: Bool = false
     var oldPageIndex: Int = 0
     var oldDiary: Diary!
 
     init(diary: Diary, selectedDay: Int) {
         // TODO: 선행 뷰에게서 diary 받아와서 init 하기
-            self.diary = diary
-            self.selectedDay = selectedDay
-            setStickerArray()
+        self.diary = diary
+        self.selectedDay = selectedDay
+        bindDiarySnapshotListner()
     }
     
     func saveOldData() {
@@ -66,6 +67,21 @@ class PageViewModel {
         guard let index = stickerArray[currentPageIndex].firstIndex(of: sticker) else { return }
         stickerArray[currentPageIndex].remove(at: index)
         stickerArray[currentPageIndex].append(sticker)
+    }
+    
+    func bindDiarySnapshotListner() {
+        FirebaseClient().bindSnapshotListner(diaryUUID: diary.diaryUUID) { snapShot in
+            do {
+                print("start")
+                let diary = try snapShot.data(as: Diary.self)
+                self.diary = diary
+                self.setStickerArray()
+                self.isStickerArrayOutdated = true
+                print("stop")
+            } catch {
+                print(error)
+            }
+        }
     }
     
     func setStickerArray() {

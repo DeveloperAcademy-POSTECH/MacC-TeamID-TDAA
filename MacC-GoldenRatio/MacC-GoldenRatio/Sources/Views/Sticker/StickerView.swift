@@ -12,6 +12,7 @@ import UIKit
 protocol StickerViewDelegate {
     func removeSticker(sticker: StickerView)
     func bringToFront(sticker: StickerView)
+    func doneEditing()
 }
 
 class StickerView: UIView {
@@ -39,8 +40,6 @@ class StickerView: UIView {
             }
             if newValue {
                 enableTranslucency(state: !newValue)
-                guard let stickerViewData else { return }
-                stickerViewData.updateItem(sticker: self)
             }
         }
     }
@@ -66,9 +65,10 @@ class StickerView: UIView {
 
     /// StickerViewData 를 현재 View의 프로퍼티들에게 적용합니다.
     internal func configureStickerViewData() {
-        self.frame = self.stickerViewData.fetchFrame()
-        self.bounds = self.stickerViewData.fetchBounds()
-        self.transform = self.stickerViewData.fetchTransform()
+        guard let stickerViewData = self.stickerViewData else { return }
+        self.frame = stickerViewData.fetchFrame()
+        self.bounds = stickerViewData.fetchBounds()
+        self.transform = stickerViewData.fetchTransform()
     }
     
     internal func setupContentView(content: UIView) {
@@ -133,7 +133,9 @@ class StickerView: UIView {
     @objc private func singleTap(_ sender: UIPanGestureRecognizer) {
         let close = sender.view
         if let _ = close {
-            self.delegate.removeSticker(sticker: self)
+            guard let delegate = self.delegate else {return}
+            delegate.removeSticker(sticker: self)
+            delegate.doneEditing()
         }
     }
 
@@ -234,7 +236,8 @@ class StickerView: UIView {
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard subviewIsHidden == false else { return }
-        self.delegate.bringToFront(sticker: self)
+        guard let delegate = self.delegate else {return}
+        delegate.bringToFront(sticker: self)
         enableTranslucency(state: true)
 
         let touch = touches.first
@@ -274,6 +277,10 @@ class StickerView: UIView {
                 self.alpha = 0.65
             } else {
                 self.alpha = 1
+                guard let stickerViewData = self.stickerViewData else { return }
+                stickerViewData.updateItem(sticker: self)
+                guard let delegate = self.delegate else {return}
+                delegate.doneEditing()
             }
         }
     }

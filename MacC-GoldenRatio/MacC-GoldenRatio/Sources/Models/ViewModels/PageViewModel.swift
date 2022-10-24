@@ -7,6 +7,19 @@
 
 import UIKit
 
+enum EditType {
+    case add
+    case remove
+    case modify
+}
+
+struct EditPage {
+    var pageIndex: Int
+    var sticker: StickerView
+    var editType: EditType
+    
+}
+
 class PageViewModel {
     var selectedDay: Int = 0
     var currentPageIndex: Int = 0
@@ -15,6 +28,7 @@ class PageViewModel {
     var isStickerArrayOutdated: Bool = false
     var oldPageIndex: Int = 0
     var oldDiary: Diary!
+//    var editStack
 
     init(diary: Diary, selectedDay: Int) {
         // TODO: 선행 뷰에게서 diary 받아와서 init 하기

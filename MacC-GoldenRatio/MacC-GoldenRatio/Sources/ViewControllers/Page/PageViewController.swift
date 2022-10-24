@@ -128,19 +128,19 @@ class PageViewController: UIViewController {
             self.configureToolButton()
             self.configureConstraints()
             self.loadStickerViews(pageIndex: self.pageViewModel.currentPageIndex, isSubviewHidden: true)
-            self.setStickerSubviewHidden()
+//            self.pageViewModel.hideStickerSubview(true)
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.backgroundImageView.isUserInteractionEnabled = false
-        self.configureNavigation()
+        self.configureNavigationItem()
     }
     
     //MARK: view 세팅 관련
     private func configureGestureRecognizer() {
-        let backgroundImageViewSingleTap = UITapGestureRecognizer(target: self, action: #selector(self.setStickerSubviewHidden))
+        let backgroundImageViewSingleTap = UITapGestureRecognizer(target: self, action: #selector(self.onTapBackgroundWhileEditing))
         self.backgroundImageView.addGestureRecognizer(backgroundImageViewSingleTap)
         
         let directions: [UISwipeGestureRecognizer.Direction] = [.right, .left]
@@ -173,7 +173,7 @@ class PageViewController: UIViewController {
         self.imagePicker.delegate = self
     }
     
-    private func configureNavigation() {
+    private func configureNavigationItem() {
         let leftBarButtonItem = UIBarButtonItem(title: "이전", style: .plain, target: self, action: #selector(onTapNavigationBack))
         let rightBarButtonItem = UIBarButtonItem(title: "편집", style: .plain, target: self, action: #selector(onTapNavigationEdit))
         leftBarButtonItem.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.navigationTitleFont, NSAttributedString.Key.foregroundColor:UIColor.navigationbarColor], for: .normal)
@@ -262,7 +262,7 @@ class PageViewController: UIViewController {
     }
     
     // MARK: Actions
-    @objc private func setStickerSubviewHidden() {
+    @objc private func onTapBackgroundWhileEditing() {
         self.pageViewModel.hideStickerSubview(true)
     }
     
@@ -458,6 +458,10 @@ extension PageViewController: StickerViewDelegate {
     func bringToFront(sticker: StickerView) {
         backgroundImageView.bringSubviewToFront(sticker)
         pageViewModel.bringStickerToFront(sticker)
+    }
+    
+    func doneEditing() {
+        pageViewModel.updateDBPages()
     }
 }
 

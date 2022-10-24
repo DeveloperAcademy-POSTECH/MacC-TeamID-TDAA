@@ -34,7 +34,7 @@ struct Page: Codable {
 	var items: [Item]
 }
 
-struct Item: Codable {
+struct Item: Codable, Equatable {
 	let itemUUID: String
 	let itemType: ItemType
 	var contents: [String]
@@ -49,6 +49,13 @@ struct Item: Codable {
     var itemBounds: [Double]
     /// Sticker의 크기, 회전각을 나타냅니다.
 	var itemTransform: [Double]
+    
+    static func == (lhs: Item, rhs: Item) -> Bool {
+        if lhs.itemUUID != rhs.itemUUID { return false }
+        if lhs.itemType != rhs.itemType { return false }
+        if lhs.contents != rhs.contents { return false }
+        return true
+    }
 }
 
 struct TextBox: Codable {

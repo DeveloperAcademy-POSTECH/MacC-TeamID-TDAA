@@ -72,6 +72,7 @@ class SignInViewController: UIViewController {
         let signInTestVC = TabBarController()
         self.navigationController?.navigationBar.isHidden = true
         self.navigationController?.pushViewController(signInTestVC, animated: true)
+        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
     }
     
     // MARK: - setup
@@ -114,7 +115,6 @@ class SignInViewController: UIViewController {
         
         appTitle.snp.makeConstraints {
             $0.center.equalToSuperview()
-            $0.horizontalEdges.equalToSuperview().inset(44)
         }
         
         appleLoginButton.snp.makeConstraints {

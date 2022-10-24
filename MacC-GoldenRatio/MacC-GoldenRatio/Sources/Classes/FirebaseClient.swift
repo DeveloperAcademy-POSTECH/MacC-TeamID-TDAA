@@ -63,13 +63,16 @@ class FirebaseClient {
         
         db.collection("Diary").document(diaryUUID)
             .addSnapshotListener { documentSnapshot, error in
+
                 guard let document = documentSnapshot else {
                     print("Error fetching document: \(error!)")
                     return
                 }
+
                 guard !document.metadata.hasPendingWrites else {
                     print("document has pending writes")
-                    return }
+                    return
+                }
                 completion(document)
             }
         

@@ -127,8 +127,6 @@ class PageViewController: UIViewController {
             self.configureGestureRecognizer()
             self.configureToolButton()
             self.configureConstraints()
-            self.loadStickerViews(pageIndex: self.pageViewModel.currentPageIndex, isSubviewHidden: true)
-//            self.pageViewModel.hideStickerSubview(true)
         }
     }
     
@@ -136,6 +134,7 @@ class PageViewController: UIViewController {
         super.viewWillAppear(animated)
         self.backgroundImageView.isUserInteractionEnabled = false
         self.configureNavigationItem()
+        self.loadStickerViews(pageIndex: self.pageViewModel.currentPageIndex, isSubviewHidden: true)
     }
     
     //MARK: view 세팅 관련
@@ -336,7 +335,6 @@ extension PageViewController {
                 $0.removeFromSuperview()
             }
             self.loadStickerViews(pageIndex: self.pageViewModel.currentPageIndex, isSubviewHidden: true)
-//            self.pageViewModel.hideStickerSubview(true)
         }
     }
     

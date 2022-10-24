@@ -130,6 +130,7 @@ class StickerView: UIView {
     }
     
     // MARK: control버튼 제스처 관련 메서드
+    // 삭제 버튼 액션
     @objc private func singleTap(_ sender: UIPanGestureRecognizer) {
         let close = sender.view
         if let _ = close {
@@ -139,6 +140,7 @@ class StickerView: UIView {
         }
     }
 
+    // crop 버튼 액션
     @objc private func resizeTranslate(_ sender: UIPanGestureRecognizer) {
         if sender.state == .began {
             enableTranslucency(state: true)
@@ -153,6 +155,7 @@ class StickerView: UIView {
             enableTranslucency(state: false)
             previousPoint = sender.location(in: self)
             setNeedsDisplay()
+            updateEdits()
         }
         updateControlsPosition()
     }
@@ -211,6 +214,7 @@ class StickerView: UIView {
             enableTranslucency(state: false)
             previousPoint = sender.location(in: self)
             setNeedsDisplay()
+            updateEdits()
         }
         updateControlsPosition()
     }
@@ -230,6 +234,7 @@ class StickerView: UIView {
             enableTranslucency(state: false)
             previousPoint = sender.location(in: self)
             setNeedsDisplay()
+            updateEdits()
         }
         updateControlsPosition()
     }
@@ -263,6 +268,7 @@ class StickerView: UIView {
         guard subviewIsHidden == false else { return }
 
         enableTranslucency(state: false)
+        updateEdits()
     }
 
     private func translateUsingTouchLocation(touchPoint: CGPoint) {
@@ -277,13 +283,17 @@ class StickerView: UIView {
                 self.alpha = 0.65
             } else {
                 self.alpha = 1
-                guard let stickerViewData = self.stickerViewData else { return }
-                stickerViewData.updateItem(sticker: self)
-                guard let delegate = self.delegate else {return}
-                delegate.doneEditing()
             }
         }
     }
+    
+    private func updateEdits() {
+        guard let stickerViewData = self.stickerViewData else { return }
+        stickerViewData.updateItem(sticker: self)
+        guard let delegate = self.delegate else { return }
+        delegate.doneEditing()
+    }
+    
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         if resizingController.frame.contains(point) || deleteController.frame.contains(point) || bounds.contains(point) {
 

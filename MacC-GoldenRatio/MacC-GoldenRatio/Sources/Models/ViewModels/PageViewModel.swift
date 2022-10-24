@@ -45,6 +45,23 @@ class PageViewModel {
     func restoreOldData() {
         currentPageIndex = oldPageIndex
         diary = oldDiary
+
+//        var oldItemDic: [String:Item] = [:]
+//        oldDiary.diaryPages[selectedDay].pages.forEach{ page in
+//            page.items.forEach{ item in
+//                oldItemDic[item.itemUUID] = item
+//            }
+//        }
+//
+//        diary.diaryPages[selectedDay].pages.enumerated().forEach{ (index, page) in
+//            let newItems = page.items.map { item in
+//                if let oldItem = oldItemDic[item.itemUUID] {
+//                    return oldItem
+//                }
+//                return item
+//            }
+//            diary.diaryPages[selectedDay].pages[index].items = newItems
+//        }
     }
     
     func addNewPage() {
@@ -93,6 +110,7 @@ class PageViewModel {
                 self.isStickerArrayOutdated = true
                 print("stop")
             } catch {
+                self.setStickerArray()
                 print(error)
             }
         }

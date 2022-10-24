@@ -287,7 +287,7 @@ class StickerView: UIView {
         }
     }
     
-    private func updateEdits() {
+    internal func updateEdits() {
         guard let stickerViewData = self.stickerViewData else { return }
         stickerViewData.updateItem(sticker: self)
         guard let delegate = self.delegate else { return }

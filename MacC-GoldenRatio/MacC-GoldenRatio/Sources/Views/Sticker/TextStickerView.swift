@@ -88,4 +88,7 @@ extension TextStickerView: UITextViewDelegate {
         updateControlsPosition()
     }
     
+    func textViewDidEndEditing(_ textView: UITextView) {
+        updateEdits()
+    }
 }

@@ -72,7 +72,7 @@ class MyDiaryPagesViewController: UIViewController {
     
     private lazy var myPagesCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.minimumLineSpacing = itemSpacing
+        layout.minimumLineSpacing = self.itemSpacing
         layout.scrollDirection = .horizontal
         layout.itemSize = CGSize(width: view.frame.width - 100, height: view.frame.height / 1.61)
         
@@ -189,9 +189,10 @@ class MyDiaryPagesViewController: UIViewController {
     
     private func updatePageOffset() {
         
+        let newXPoint = CGFloat(self.currentPage-1) * (self.myPagesCollectionView.frame.width + self.itemSpacing)
+        
         DispatchQueue.main.async {
             UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.5, options: .allowUserInteraction, animations: {
-                let newXPoint = CGFloat(self.currentPage-1) * (self.myPagesCollectionView.frame.width + self.itemSpacing)
                 self.myPagesCollectionView.setContentOffset(CGPoint(x: newXPoint, y: 0), animated: true)
             }, completion: nil)
         }
@@ -296,32 +297,15 @@ extension MyDiaryPagesViewController: UICollectionViewDelegate {
 
 extension MyDiaryPagesViewController: UIScrollViewDelegate {
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        let point = self.targetContentOffset(scrollView, withVelocity: velocity)
-        targetContentOffset.pointee = point
+        let cellWidth = self.myPagesCollectionView.frame.width + self.itemSpacing
         
-        UIView.animate(withDuration: 0.2, delay: 0.0, usingSpringWithDamping: 0, initialSpringVelocity: velocity.x, options: .allowUserInteraction, animations: {
-            self.myPagesCollectionView.setContentOffset(point, animated: true)
-        }, completion: nil)
-    }
-    
-    func targetContentOffset(_ scrollView: UIScrollView, withVelocity velocity: CGPoint) -> CGPoint {
+        var offset = targetContentOffset.pointee
+        let index = (offset.x + scrollView.contentInset.left) / cellWidth
+        let roundedIndex: CGFloat = round(index)
         
-        guard let flowLayout = myPagesCollectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return .zero }
+        offset = CGPoint(x: roundedIndex * cellWidth - scrollView.contentInset.left, y: scrollView.contentInset.top)
+        targetContentOffset.pointee = offset
         
-        // Offset 변화, slide 제스처 비교 후 이동 방향 결정
-        if previousOffset > myPagesCollectionView.contentOffset.x && velocity.x < 0 {
-            currentPage = currentPage - 1
-        } else if previousOffset < myPagesCollectionView.contentOffset.x && velocity.x > 0 {
-            currentPage = currentPage + 1
-        }
-        
-        let additional = (flowLayout.itemSize.width + flowLayout.minimumLineSpacing)
-        
-        let updatedOffset = (flowLayout.itemSize.width + flowLayout.minimumLineSpacing) * CGFloat(currentPage) - additional
-        
-        previousOffset = updatedOffset
-        
-        return CGPoint(x: updatedOffset, y: 0)
+        currentPage = Int(roundedIndex) + 1
     }
 }
-

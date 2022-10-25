@@ -28,7 +28,7 @@ final class MyHomeViewController: UIViewController {
 		return collectionView
 	}()
 	
-	private lazy var addDiaryButton: UIButton = {
+	lazy var addDiaryButton: UIButton = {
 		let button = UIButton()
 		button.setImage(UIImage(named: "plusButton"), for: .normal)
 		button.addTarget(self, action: #selector(menuButtonTapped), for: .touchUpInside)
@@ -43,7 +43,8 @@ final class MyHomeViewController: UIViewController {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		setupViewModel()
+		print("!")
+		addDiaryButton.setImage(UIImage(named: "plusButton"), for: .normal)
 	}
 	
 	override func viewWillDisappear(_ animated: Bool) {
@@ -73,6 +74,7 @@ final class MyHomeViewController: UIViewController {
 	}
 	
 	@objc private func menuButtonTapped() {
+		addDiaryButton.setImage(UIImage(named: "closeButton"), for: .normal)
 		let popUp = PopUpViewController(popUpPosition: .bottom)
 		popUp.addButton(buttonTitle: "다이어리 생성", action: createButtonTapped)
 		popUp.addButton(buttonTitle: "초대코드로 참가", action: joinButtonTapped)

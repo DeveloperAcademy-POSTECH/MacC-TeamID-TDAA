@@ -71,7 +71,9 @@ class PopUpViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+		if popUpPosition == .bottom {
+			presentingViewController?.viewWillDisappear(true)
+		}
         // curveEaseOut: 시작은 천천히, 끝날 땐 빠르게
         UIView.animate(withDuration: 0.1, delay: 0.0, options: .curveEaseOut) { [weak self] in
             self?.containerView.transform = .identity
@@ -86,6 +88,13 @@ class PopUpViewController: UIViewController {
         setupViews()
         makeConstraints()
     }
+	
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		if popUpPosition == .bottom {
+			presentingViewController?.viewWillAppear(true)
+		}
+	}
 
     private func setupViews() {
         view.addSubview(backgroundView)

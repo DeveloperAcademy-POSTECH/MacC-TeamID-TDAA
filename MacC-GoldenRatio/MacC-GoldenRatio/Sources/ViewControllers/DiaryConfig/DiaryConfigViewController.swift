@@ -134,7 +134,7 @@ class DiaryConfigViewController: UIViewController {
                     switch self.configState {
                     case .create:
                         self.viewModel.addDiary()
-                        
+                        // TODO: MyHomeViewModel fetchLoadData 호출 필요할듯 (추후 의논 후 결정)
                         let myDiaryPagesVC = MyDiaryPagesViewController(diaryData: self.viewModel.diary!)
                         parentNavigationController.isNavigationBarHidden = false
                         parentNavigationController.pushViewController(myDiaryPagesVC, animated: true)

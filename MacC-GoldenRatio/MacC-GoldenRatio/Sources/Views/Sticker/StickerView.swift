@@ -8,11 +8,12 @@
 import MapKit
 import SnapKit
 import UIKit
+import FirebaseAuth
 
 protocol StickerViewDelegate {
     func removeSticker(sticker: StickerView)
     func bringToFront(sticker: StickerView)
-    func doneEditing()
+    func updateStickerToDB()
 }
 
 class StickerView: UIView {
@@ -30,8 +31,9 @@ class StickerView: UIView {
 
     private var oldBounds: CGRect!
     private var oldTransform: CGAffineTransform!
-
-    var subviewIsHidden = false {
+    
+    var borderMode: BorderMode? = .me
+    var isSubviewHidden = true {
         willSet {
             self.subviews.forEach{
                 if $0 is StickerControllerView || $0 is StickerBorderView {
@@ -41,6 +43,10 @@ class StickerView: UIView {
             if newValue {
                 enableTranslucency(state: !newValue)
             }
+        }
+        didSet{
+            print("update edits")
+            self.updateEdits()
         }
     }
     
@@ -69,6 +75,13 @@ class StickerView: UIView {
         self.frame = stickerViewData.fetchFrame()
         self.bounds = stickerViewData.fetchBounds()
         self.transform = stickerViewData.fetchTransform()
+        guard let editor = stickerViewData.fetchCurrentEditor() else { return }
+        if editor == Auth.auth().currentUser?.uid ?? "" {
+            self.borderMode = .me
+        } else {
+            self.borderMode = .otherUser
+        }
+        self.isSubviewHidden = false
     }
     
     internal func setupContentView(content: UIView) {
@@ -84,22 +97,38 @@ class StickerView: UIView {
         }
     }
     
+    internal func setBorderAttributes() {
+        guard let borderMode = self.borderMode else { return }
+        borderView.setBorderColor(borderMode: borderMode)
+        switch borderMode {
+        case .otherUser:
+            self.subviews.forEach{
+                $0.isUserInteractionEnabled = false
+            }
+        case .me:
+            break
+        }
+    }
+    
     internal func setupDefaultAttributes() {
         let stickerSingleTap = UITapGestureRecognizer(target: self, action: #selector(stickerViewSingleTap(_:)))
         addGestureRecognizer(stickerSingleTap)
         
         borderView = StickerBorderView(frame: bounds)
         addSubview(borderView)
-        
+        borderView.isHidden = isSubviewHidden
+
         let deleteControlImage = UIImage(systemName: "xmark.circle.fill")
         let singleTap = UITapGestureRecognizer(target: self, action: #selector(singleTap(_:)))
         deleteController = StickerControllerView(image: deleteControlImage, gestureRecognizer: singleTap)
         addSubview(deleteController)
+        deleteController.isHidden = isSubviewHidden
 
         let resizingControlImage = UIImage(systemName: "crop.rotate")
         let panResizeGesture = UIPanGestureRecognizer(target: self, action: #selector(resizeTranslate(_:)))
         resizingController = StickerControllerView(image: resizingControlImage, gestureRecognizer: panResizeGesture)
         addSubview(resizingController)
+        resizingController.isHidden = isSubviewHidden
 
         let pinchResizeGesture = UIPinchGestureRecognizer(target: self, action: #selector(pinch(_:)))
         pinchResizeGesture.delegate = self
@@ -136,7 +165,7 @@ class StickerView: UIView {
         if let _ = close {
             guard let delegate = self.delegate else {return}
             delegate.removeSticker(sticker: self)
-            delegate.doneEditing()
+            delegate.updateStickerToDB()
         }
     }
 
@@ -193,13 +222,17 @@ class StickerView: UIView {
 
     // MARK: 스티커 자체에 입력되는 제스처 관련 메서드
     @objc private func stickerViewSingleTap(_ sender: UITapGestureRecognizer) {
-        if subviewIsHidden == true {
-            self.subviewIsHidden.toggle()
+        guard let borderMode = self.borderMode else { return }
+        guard borderMode == .me else { return }
+        if isSubviewHidden == true {
+            self.isSubviewHidden.toggle()
         }
     }
     
     @objc private func pinch(_ sender: UIPinchGestureRecognizer) {
-        guard subviewIsHidden == false else { return }
+        guard isSubviewHidden == false else { return }
+        guard let borderMode = self.borderMode else { return }
+        guard borderMode == .me else { return }
         
         if sender.state == .began {
             oldBounds = bounds
@@ -220,8 +253,10 @@ class StickerView: UIView {
     }
 
     @objc private func rotate(_ sender: UIRotationGestureRecognizer) {
-        guard subviewIsHidden == false else { return }
-
+        guard isSubviewHidden == false else { return }
+        guard let borderMode = self.borderMode else { return }
+        guard borderMode == .me else { return }
+        
         if sender.state == .began {
             oldTransform = transform
             enableTranslucency(state: true)
@@ -240,7 +275,10 @@ class StickerView: UIView {
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard subviewIsHidden == false else { return }
+        guard isSubviewHidden == false else { return }
+        guard let borderMode = self.borderMode else { return }
+        guard borderMode == .me else { return }
+        
         guard let delegate = self.delegate else {return}
         delegate.bringToFront(sticker: self)
         enableTranslucency(state: true)
@@ -252,8 +290,10 @@ class StickerView: UIView {
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard subviewIsHidden == false else { return }
-
+        guard isSubviewHidden == false else { return }
+        guard let borderMode = self.borderMode else { return }
+        guard borderMode == .me else { return }
+        
         let touchLocation = touches.first?.location(in: self)
         if resizingController.frame.contains(touchLocation!) {
             return
@@ -265,8 +305,10 @@ class StickerView: UIView {
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard subviewIsHidden == false else { return }
-
+        guard isSubviewHidden == false else { return }
+        guard let borderMode = self.borderMode else { return }
+        guard borderMode == .me else { return }
+        
         enableTranslucency(state: false)
         updateEdits()
     }
@@ -289,9 +331,9 @@ class StickerView: UIView {
     
     internal func updateEdits() {
         guard let stickerViewData = self.stickerViewData else { return }
-        stickerViewData.updateItem(sticker: self)
+        guard stickerViewData.updateItem(sticker: self) else { return }
         guard let delegate = self.delegate else { return }
-        delegate.doneEditing()
+        delegate.updateStickerToDB()
     }
     
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {

@@ -24,6 +24,7 @@ class ImageStickerView: StickerView {
             self.initializeStickerViewData(itemType: .image)
             super.setupContentView(content: self.imageView)
             super.setupDefaultAttributes()
+            super.setBorderAttributes()
         }
     }
     
@@ -37,6 +38,7 @@ class ImageStickerView: StickerView {
             self.configureImageView()
             super.setupContentView(content: self.imageView)
             super.setupDefaultAttributes()
+            super.setBorderAttributes()
         }
     }
     

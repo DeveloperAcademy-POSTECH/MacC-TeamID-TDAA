@@ -64,6 +64,7 @@ class MapStickerView: StickerView {
             self.setLocationViewFrame()
             super.setupContentView(content: self.locationView.convertViewToImageView())
             super.setupDefaultAttributes()
+            super.setBorderAttributes()
         }
     }
     
@@ -78,6 +79,7 @@ class MapStickerView: StickerView {
             self.configureStickerViewData()
             super.setupContentView(content: self.locationView.convertViewToImageView())
             super.setupDefaultAttributes()
+            super.setBorderAttributes()
         }
     }
     

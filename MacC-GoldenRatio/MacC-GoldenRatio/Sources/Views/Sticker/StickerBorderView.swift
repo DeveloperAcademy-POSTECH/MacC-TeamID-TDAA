@@ -26,7 +26,22 @@ class StickerBorderView: UIView {
     private func setupView() {
         backgroundColor = UIColor.clear
         layer.borderWidth = myDevice.stickerBorderWidth
-        layer.borderColor = UIColor.buttonColor.cgColor
     }
+    
+    func setBorderColor(borderMode: BorderMode) {
+        switch borderMode {
+        case .me:
+            print("me")
+            layer.borderColor = UIColor.buttonColor.cgColor
+        case .otherUser:
+            print("otherUser")
+            layer.borderColor = UIColor.systemRed.cgColor
+        }
+    }
+}
 
+/// 누가 편집 중이냐??
+enum BorderMode {
+    case me
+    case otherUser
 }

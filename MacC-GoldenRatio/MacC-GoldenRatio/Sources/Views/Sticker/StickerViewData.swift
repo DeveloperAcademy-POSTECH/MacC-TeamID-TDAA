@@ -6,12 +6,17 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class StickerViewData {
     var item: Item
     
     init(item: Item) {
         self.item = item
+    }
+    
+    func fetchCurrentEditor() -> String? {
+        return item.lastEditor
     }
     
     func fetchFrame() -> CGRect {
@@ -47,15 +52,28 @@ class StickerViewData {
         self.item.contents = contents
     }
     
-    func updateItem(sticker: StickerView) {
+    func updateItem(sticker: StickerView) -> Bool {
+        let oldItem = item
+        
         let itemFrame: [Double] = [sticker.frame.minX, sticker.frame.minY, sticker.frame.size.width, sticker.frame.size.height]
         let itemBounds: [Double] = [sticker.bounds.minX, sticker.bounds.minY, sticker.bounds.size.width, sticker.bounds.size.height]
         let itemTrasnform: [Double] = [sticker.transform.a, sticker.transform.b, sticker.transform.c, sticker.transform.d, sticker.transform.tx, sticker.transform.ty]
         let itemContents: [String] = sticker.stickerViewData.item.contents
-        
+        let userUUID: String = Auth.auth().currentUser?.uid ?? ""
+
         item.itemFrame = itemFrame
         item.itemBounds = itemBounds
         item.itemTransform = itemTrasnform
         item.contents = itemContents
+        let isEditing = !sticker.isSubviewHidden
+        if isEditing {
+            if item.lastEditor == nil {
+                item.lastEditor = userUUID
+            }
+        } else {
+            item.lastEditor = nil
+        }
+        
+        return item != oldItem
     }
 }

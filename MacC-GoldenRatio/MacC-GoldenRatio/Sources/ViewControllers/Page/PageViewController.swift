@@ -319,6 +319,7 @@ class PageViewController: UIViewController {
     private func addSticker(stickerView: StickerView) {
         DispatchQueue.main.async {
             stickerView.delegate = self
+            stickerView.isSubviewHidden = false
             stickerView.center = CGPoint(x: self.view.center.x, y: self.view.center.y - 100)
             self.backgroundImageView.addSubview(stickerView)
             self.backgroundImageView.bringSubviewToFront(stickerView)
@@ -342,7 +343,6 @@ extension PageViewController {
         DispatchQueue.main.async {
             self.pageViewModel.stickerArray[pageIndex].forEach{
                 $0.delegate = self
-                $0.subviewIsHidden = isSubviewHidden
                 self.backgroundImageView.addSubview($0)
             }
         }
@@ -458,7 +458,7 @@ extension PageViewController: StickerViewDelegate {
         pageViewModel.bringStickerToFront(sticker)
     }
     
-    func doneEditing() {
+    func updateStickerToDB() {
         pageViewModel.updateDBPages()
     }
 }

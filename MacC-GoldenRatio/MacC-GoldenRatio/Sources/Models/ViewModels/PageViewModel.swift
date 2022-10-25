@@ -89,7 +89,11 @@ class PageViewModel {
     func hideStickerSubview(_ value: Bool) {
         stickerArray.forEach{
             $0.forEach{
-                $0.subviewIsHidden = value
+                if $0.isSubviewHidden != value {
+                    if $0.borderMode == .me {
+                        $0.isSubviewHidden = value
+                    }
+                }
             }
         }
     }
@@ -103,12 +107,10 @@ class PageViewModel {
     func bindDiarySnapshotListner() {
         FirebaseClient().bindSnapshotListner(diaryUUID: diary.diaryUUID) { snapShot in
             do {
-                print("start")
                 let diary = try snapShot.data(as: Diary.self)
                 self.diary = diary
                 self.setStickerArray()
                 self.isStickerArrayOutdated = true
-                print("stop")
             } catch {
                 self.setStickerArray()
                 print(error)

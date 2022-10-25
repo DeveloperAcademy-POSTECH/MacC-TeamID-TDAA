@@ -9,7 +9,7 @@ import SnapKit
 import UIKit
 
 class TextStickerView: StickerView {    
-    override var subviewIsHidden: Bool {
+    override var isSubviewHidden: Bool {
         willSet {
             self.textView.isEditable = !newValue
             self.textView.isUserInteractionEnabled = !newValue
@@ -34,6 +34,7 @@ class TextStickerView: StickerView {
         self.setTextView()
         super.setupContentView(content: textView)
         super.setupDefaultAttributes()
+        super.setBorderAttributes()
     }
     
     /// DB에서 StickerView를 불러옵니다.
@@ -46,6 +47,7 @@ class TextStickerView: StickerView {
             self.setTextView()
             super.setupContentView(content: self.textView)
             super.setupDefaultAttributes()
+            super.setBorderAttributes()
         }
     }
     
@@ -76,6 +78,9 @@ extension TextStickerView {
 }
 
 extension TextStickerView: UITextViewDelegate {
+    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+        return super.borderMode == .me
+    }
     
     func textViewDidChange(_ textView: UITextView) {
         stickerViewData.updateContents(contents: [self.textView.text])

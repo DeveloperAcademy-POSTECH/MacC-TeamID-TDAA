@@ -37,6 +37,7 @@ struct Page: Codable {
 struct Item: Codable, Equatable {
 	let itemUUID: String
 	let itemType: ItemType
+    var lastEditor: String?
 	var contents: [String]
     // map -> [이름, 주소, 위도, 경도]
     // image ->
@@ -53,7 +54,12 @@ struct Item: Codable, Equatable {
     static func == (lhs: Item, rhs: Item) -> Bool {
         if lhs.itemUUID != rhs.itemUUID { return false }
         if lhs.itemType != rhs.itemType { return false }
+        if lhs.lastEditor != rhs.lastEditor { return false }
         if lhs.contents != rhs.contents { return false }
+        if lhs.itemFrame != rhs.itemFrame { return false }
+        if lhs.itemBounds != rhs.itemBounds { return false }
+        if lhs.itemTransform != rhs.itemTransform { return false }
+
         return true
     }
 }

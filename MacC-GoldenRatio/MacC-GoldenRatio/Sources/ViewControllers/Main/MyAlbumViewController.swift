@@ -199,7 +199,7 @@ private extension MyAlbumViewController {
 		let label = UILabel()
 		label.text = text
 		label.font = myDevice.collectionBackgoundViewFont
-		label.textColor = UIColor.buttonColor
+		label.textColor = UIColor.subTextColor
 		label.textAlignment = .center
 		
 		emptyView.addSubview(label)

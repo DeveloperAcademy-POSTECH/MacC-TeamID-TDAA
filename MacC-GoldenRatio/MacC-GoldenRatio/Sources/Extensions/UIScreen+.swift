@@ -177,13 +177,13 @@ extension UIScreen {
         
         var diaryCollectionViewCellTitleLabelTop: CGFloat {
             switch self {
-            default: return 20
+            default: return 15
             }
         }
         
         var diaryCollectionViewCellTitleLabelFont: UIFont {
             switch self {
-            default: return UIFont(name: "EF_Diary", size: 24) ?? UIFont.systemFont(ofSize: 24)
+            default: return UIFont(name: "EF_Diary", size: 20) ?? UIFont.systemFont(ofSize: 20)
             }
         }
         

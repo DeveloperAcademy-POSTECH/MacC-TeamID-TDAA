@@ -20,14 +20,11 @@ final class MyHomeViewController: UIViewController {
 		let layout = UICollectionViewFlowLayout()
 		let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
 		collectionView.showsVerticalScrollIndicator = false
-		
 		collectionView.delegate = self
 		collectionView.dataSource = self
-
 		collectionView.backgroundColor = UIColor.clear
 		collectionView.register(DiaryCollectionViewCell.self, forCellWithReuseIdentifier: "DiaryCollectionViewCell")
 		collectionView.register(DiaryCollectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "DiaryCollectionHeaderView")
-
 		return collectionView
 	}()
 	
@@ -35,7 +32,6 @@ final class MyHomeViewController: UIViewController {
 		let button = UIButton()
 		button.setImage(UIImage(named: "plusButton"), for: .normal)
 		button.addTarget(self, action: #selector(menuButtonTapped), for: .touchUpInside)
-		
 		return button
 	}()
 

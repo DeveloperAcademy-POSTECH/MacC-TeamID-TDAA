@@ -42,6 +42,13 @@ class MyDiaryPagesViewModel {
             let pagesFieldData = ["userUIDs" : userUIDs]
             diaryRef.updateData(pagesFieldData)
         }
-
+    }
+    
+    func makeDateString(diary: Diary, page: Int) -> String {
+        guard let startDate = diary.diaryStartDate.toDate() else { return "" }
+        guard let currentDate = Calendar.current.date(byAdding: .day, value: page - 1, to: startDate) else { return "" }
+        let labelDayOfWeek = currentDate.dayOfTheWeek()
+        
+        return "\(currentDate.customFormat()) (\(labelDayOfWeek))"
     }
 }

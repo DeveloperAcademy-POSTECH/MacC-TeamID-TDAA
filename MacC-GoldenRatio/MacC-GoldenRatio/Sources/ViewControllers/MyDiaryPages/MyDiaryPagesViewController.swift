@@ -22,6 +22,7 @@ class MyDiaryPagesViewController: UIViewController {
                 currentPage = pageCount
             }
             self.dayLabel.text = "\(currentPage)일차"
+            self.dateLabel.text = viewModel.makeDateString(diary: diaryData, page: currentPage)
         }
     }
     var pageCount: Int
@@ -59,14 +60,22 @@ class MyDiaryPagesViewController: UIViewController {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = diaryData.diaryName
-        label.font = UIFont(name: "EF_Diary", size: 24) ?? UIFont.systemFont(ofSize: 24)
+        label.font = UIFont(name: "EF_Diary", size: 17) ?? UIFont.systemFont(ofSize: 17)
         return label
     }()
     
     private lazy var dayLabel: UILabel = {
         let label = UILabel()
         label.text = "1일차"
+        label.font = UIFont(name: "EF_Diary", size: 24) ?? UIFont.systemFont(ofSize: 24)
+        return label
+    }()
+    
+    lazy var dateLabel: UILabel = {
+        let label = UILabel()
+        label.text = viewModel.makeDateString(diary: diaryData, page: 1)
         label.font = UIFont(name: "EF_Diary", size: 20) ?? UIFont.systemFont(ofSize: 20)
+        label.textColor = UIColor(named: "calendarWeeklyGrayColor")
         return label
     }()
     
@@ -119,16 +128,17 @@ class MyDiaryPagesViewController: UIViewController {
         super.viewWillAppear(animated)
         self.navigationController?.isNavigationBarHidden = true
 
-        // TODO: - modal completion handler 필요?
+        // 기본적인 View Setup
+        self.collectionViewSetup()
+        self.componentsSetup()
+        
+        // diary Config VC의 정보를 통한 UI Update
         Task {
             do {
                 diaryData = try await self.viewModel.getDiaryData(uuid: self.diaryData.diaryUUID) ?? self.diaryData
             } catch {
                 print(error.localizedDescription)
             }
-            
-            self.collectionViewSetup()
-            self.componentsSetup()
    
             if let diaryConfigVC = self.presentedViewController as? DiaryConfigViewController {
                 self.titleLabel.text = diaryConfigVC.contentTextField.text
@@ -211,18 +221,23 @@ class MyDiaryPagesViewController: UIViewController {
     }
     
     private func componentsSetup() {
-        [titleLabel, dayLabel, backButton, menuButton, previousButton, nextButton].forEach {
+        [titleLabel, dayLabel, dateLabel, backButton, menuButton, previousButton, nextButton].forEach {
             view.addSubview($0)
         }
         
         titleLabel.snp.makeConstraints {
-            $0.leading.equalTo(myPagesCollectionView)
-            $0.bottom.equalTo(dayLabel.snp.top).offset(-20)
+            $0.centerX.equalToSuperview()
+            $0.centerY.equalTo(backButton)
         }
         
         dayLabel.snp.makeConstraints {
             $0.leading.equalTo(myPagesCollectionView)
-            $0.bottom.equalTo(myPagesCollectionView.snp.top).offset(-30)
+            $0.bottom.equalTo(dateLabel.snp.top).offset(-20)
+        }
+        
+        dateLabel.snp.makeConstraints {
+            $0.leading.equalTo(myPagesCollectionView)
+            $0.bottom.equalTo(myPagesCollectionView.snp.top).offset(-32)
         }
         
         backButton.snp.makeConstraints {
@@ -261,8 +276,11 @@ extension MyDiaryPagesViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MyDiaryPagesViewCollectionViewCell", for: indexPath) as? MyDiaryPagesViewCollectionViewCell else { return UICollectionViewCell() }
         
         if diaryData.pageThumbnails[indexPath.row] != "NoURL" {
-            // TODO: 이미지 로드 해서 cell에 할당
             Task {
+                // case1. 편집 View에서 진입한 경우 (VC의 Thumbnail 데이터를 그대로 전달)
+                // TODO: VC의 Thumbnail 데이터를 그대로 전달
+                
+                // case2. MainView에서 진입한 경우 (Networking)
                 let imageURL = diaryData.pageThumbnails[indexPath.row]
                 guard let image = ImageManager.shared.searchImage(urlString: imageURL) else {
                     FirebaseStorageManager.downloadImage(urlString: imageURL) { image in

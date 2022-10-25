@@ -50,6 +50,11 @@ final class MyHomeViewController: UIViewController {
 		setupViewModel()
 	}
 	
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		viewModel.isInitializing = false
+	}
+	
 	private func setupSubViews() {
 		self.view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
 		

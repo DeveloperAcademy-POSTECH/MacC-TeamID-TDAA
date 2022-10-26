@@ -43,7 +43,6 @@ final class MyHomeViewController: UIViewController {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		print("!")
 		addDiaryButton.setImage(UIImage(named: "plusButton"), for: .normal)
 	}
 	

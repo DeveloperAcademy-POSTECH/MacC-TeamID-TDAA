@@ -274,6 +274,7 @@ class PageViewController: UIViewController {
     // MARK: Actions
     @objc private func onTapBackgroundWhileEditing() {
         self.pageViewModel.hideStickerSubview(true)
+        self.pageViewModel.updateDBPages()
     }
     
     @objc private func onTapMapButton() {
@@ -341,12 +342,34 @@ class PageViewController: UIViewController {
 // MARK: 스티커 로딩 처리
 extension PageViewController {
     
+    private func removeStickers() {
+        self.backgroundImageView.subviews.forEach{
+            $0.removeFromSuperview()
+        }
+    }
+    
     private func reloadStickers() {
         DispatchQueue.main.async {
-            self.backgroundImageView.subviews.forEach{
-                $0.removeFromSuperview()
+            guard self.pageViewModel.stickerArray.count - 1 >= self.pageViewModel.currentPageIndex else { return }
+
+            self.pageViewModel.stickerArray[self.pageViewModel.currentPageIndex].forEach{
+                guard let newStickerViewData = $0.stickerViewData else { return }
+                
+                if self.pageViewModel.oldStickerViewDic[newStickerViewData.item.itemUUID]?.stickerViewData.item != newStickerViewData.item {
+                    self.pageViewModel.oldStickerViewDic[newStickerViewData.item.itemUUID]?.removeFromSuperview()
+                    self.pageViewModel.oldStickerViewDic.removeValue(forKey: newStickerViewData.item.itemUUID)
+                    
+                    $0.delegate = self
+                    self.backgroundImageView.addSubview($0)
+                    print("newInit\($0.stickerViewData.item)")
+                }
+                self.pageViewModel.oldStickerViewDic.removeValue(forKey: newStickerViewData.item.itemUUID)
+                print("reused")
             }
-            self.loadStickerViews(pageIndex: self.pageViewModel.currentPageIndex, isSubviewHidden: true)
+            self.pageViewModel.oldStickerViewDic.forEach{
+                print($1.stickerViewData.item.contents)
+                $1.removeFromSuperview()
+            }
         }
     }
     
@@ -379,10 +402,11 @@ extension PageViewController {
     }
     
     private func onTapAddPageToLastMenu() {
+        pageViewModel.currentPageIndex = pageViewModel.diary.diaryPages[pageViewModel.selectedDay].pages.count
         pageViewModel.addNewPage()
-        pageViewModel.currentPageIndex = pageViewModel.diary.diaryPages[pageViewModel.selectedDay].pages.count - 1
-        reloadStickers()
+        removeStickers()
         reloadPageDescriptionLabel()
+        pageViewModel.updateDBPages()
     }
 
     private func onTapDeletePageMenu() {
@@ -394,8 +418,10 @@ extension PageViewController {
         if pageViewModel.currentPageIndex - 1 == pageViewModel.diary.diaryPages[pageViewModel.selectedDay].pages.count - 1 {
             pageViewModel.currentPageIndex -= 1
         }
+        removeStickers()
         reloadStickers()
         reloadPageDescriptionLabel()
+        pageViewModel.updateDBPages()
     }
     
     @objc private func swipeAction(_ sender: UISwipeGestureRecognizer) {
@@ -403,6 +429,7 @@ extension PageViewController {
         case .left:
             if pageViewModel.currentPageIndex + 2 <= pageViewModel.stickerArray.count {
                 pageViewModel.currentPageIndex += 1
+                removeStickers()
                 reloadStickers()
                 reloadPageDescriptionLabel()
             } else {
@@ -411,6 +438,7 @@ extension PageViewController {
         case .right:
             if pageViewModel.currentPageIndex - 1 >= 0 {
                 pageViewModel.currentPageIndex -= 1
+                removeStickers()
                 reloadStickers()
                 reloadPageDescriptionLabel()
             } else {
@@ -435,10 +463,7 @@ extension PageViewController {
         DispatchQueue.main.async {
             self.isEditMode = false
             self.pageViewModel.hideStickerSubview(true)
-//            self.pageViewModel.restoreOldData()
-//            self.pageViewModel.setStickerArray()
-//            self.reloadStickers()
-//            self.reloadPageDescriptionLabel()
+            self.pageViewModel.updateDBPages()
         }
     }
 
@@ -471,8 +496,9 @@ extension PageViewController: StickerViewDelegate {
         pageViewModel.bringStickerToFront(sticker)
     }
     
-    func willShowSubview() {
-        pageViewModel.hideStickerSubview(true)
+    func willShowSubview(sticker: StickerView) {
+        pageViewModel.hideStickerSubview(true, except: sticker)
+        pageViewModel.updateDBPages()
     }
     
     func updateStickerToDB() {
@@ -523,6 +549,7 @@ private extension PageViewController {
                 self?.reloadStickers()
                 self?.reloadPageDescriptionLabel()
                 self?.pageViewModel.isStickerArrayOutdated = false
+                print("stickerarrayhasChanged")
             }
             .store(in: &cancelBag)
     }

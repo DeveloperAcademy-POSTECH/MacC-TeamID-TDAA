@@ -12,7 +12,13 @@ class StickerViewData {
     var item: Item
     
     init(item: Item) {
-        self.item = item
+        if item.checkItemValidate() {
+            self.item = item
+        } else {
+            let itemUUID = UUID().uuidString + Date().timeIntervalSince1970.description
+            let item = Item(itemUUID: itemUUID, itemType: .sticker, contents: ["redAlert"], itemFrame: [0.0, 0.0, 100.0, 100.0], itemBounds: [0.0, 0.0, 100.0, 100.0], itemTransform: [1.0, 0.0, 0.0, 1.0, 0.0, 0.0])
+            self.item = item
+        }
     }
     
     func fetchCurrentEditor() -> String? {

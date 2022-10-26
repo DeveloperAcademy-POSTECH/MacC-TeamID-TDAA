@@ -19,7 +19,7 @@ enum BorderMode {
 protocol StickerViewDelegate {
     func removeSticker(sticker: StickerView)
     func bringToFront(sticker: StickerView)
-    func willShowSubview()
+    func willShowSubview(sticker: StickerView)
     func updateStickerToDB()
 }
 
@@ -46,7 +46,7 @@ class StickerView: UIView {
                 enableTranslucency(state: !newValue)
             } else {
                 if let delegate = self.delegate {
-                    delegate.willShowSubview()
+                    delegate.willShowSubview(sticker: self)
                 }
             }
             self.subviews.forEach{
@@ -57,9 +57,6 @@ class StickerView: UIView {
                     $0.isHidden = isControllerHidden(isSubviewHidden: newValue)
                 }
             }
-        }
-        didSet{
-            self.updateEdits()
         }
     }
     
@@ -95,6 +92,7 @@ class StickerView: UIView {
             self.borderMode = .otherUser
         }
         self.isSubviewHidden = false
+        self.updateEdits()
     }
     
     internal func setupContentView(content: UIView) {
@@ -255,7 +253,7 @@ class StickerView: UIView {
         guard borderMode != .otherUser else { return }
         if isSubviewHidden == true {
             guard let delegate = self.delegate else { return }
-            delegate.willShowSubview()
+            delegate.willShowSubview(sticker: self)
             self.isSubviewHidden.toggle()
         }
     }

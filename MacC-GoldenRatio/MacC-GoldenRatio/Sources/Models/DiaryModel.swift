@@ -62,6 +62,15 @@ struct Item: Codable, Equatable {
 
         return true
     }
+    
+    func checkItemValidate() -> Bool {
+        if self.contents == [] { return false }
+        if self.itemFrame == [] { return false }
+        if self.itemBounds == [] { return false }
+        if self.itemTransform == [] { return false }
+        
+        return true
+    }
 }
 
 struct TextBox: Codable {

@@ -52,7 +52,8 @@ class FirebaseClient {
         }
     }
     
-    func transactionPage(diaryUUID: String, newPage: Page) {
+    /// 서버 데이터와 로컬 데이터 병합 후 트랜잭션 업로드
+    func transactionPage(diaryUUID: String, newPages: Pages) {
         let diaryReference = db.collection("Diary").document(diaryUUID)
         db.runTransaction({ (transaction, errorPointer) -> Any? in
             let diaryDocument: DocumentSnapshot
@@ -65,52 +66,39 @@ class FirebaseClient {
             var oldDiary: Diary!
             do{
                 oldDiary = try diaryDocument.data(as: Diary.self)
-//                guard var oldDiary = try diaryDocument.data(as: Diary.self) else {
-//                    let error = NSError(
-//                        domain: "AppErrorDomain",
-//                        code: -1,
-//                        userInfo: [
-//                            NSLocalizedDescriptionKey: "Unable to retrieve population from snapshot \(diaryDocument)"
-//                        ]
-//                    )
-//                    errorPointer?.pointee = error
-//                    return nil
-//                }
             }catch{
                 print(error)
                 return nil
             }
             
-            
-            var oldPages = oldDiary.diaryPages[0]
-        
-            let oldPageIndex = oldPages.pages.firstIndex { page in
-                page.pageUUID == newPage.pageUUID
-            }
-            guard let oldPageIndex = oldPageIndex else { return }
-            
-            var oldItemDic: [String:Item] = [:]
-            oldPages.pages[oldPageIndex].items.forEach {
-                oldItemDic[$0.itemUUID] = $0
-            }
-            
             let userID = Auth.auth().currentUser?.uid ?? ""
-            let newItems = newPage.items.map({ item in
-                guard let oldItem = oldItemDic[item.itemUUID] else { return item }
-                switch oldItem.lastEditor {
-                case userID:
-                    return item
-                case nil:
-                    return item
-                default:
-                    // otherUser
-                    return oldItem
+            var oldItemDic: [String:Item] = [:]
+            let oldPages = oldDiary.diaryPages[0]
+            oldPages.pages.forEach({ oldPage in
+                oldPage.items.forEach {
+                    oldItemDic[$0.itemUUID] = $0
                 }
             })
-            oldPages.pages[oldPageIndex].items = newItems
+
+            var newPages = newPages
+            newPages.pages.enumerated().forEach { (pageIndex, newPage) in
+                let newItems = newPage.items.map({ item in
+                    guard let oldItem = oldItemDic[item.itemUUID] else { return item }
+                    switch oldItem.lastEditor {
+                    case userID:
+                        return item
+                    case nil:
+                        return item
+                    default:
+                        // otherUser
+                        return oldItem
+                    }
+                })
+                newPages.pages[pageIndex].items = newItems
+            }
             
             var encodedPages: [[String:Any]] = []
-            for pages in [oldPages] {
+            for pages in [newPages] {
                 do {
                     let endcodedPage = try Firestore.Encoder().encode(pages)
                     encodedPages.append(endcodedPage)
@@ -120,14 +108,8 @@ class FirebaseClient {
                 }
             }
             let pagesFieldData = ["diaryPages":encodedPages]
-//            let diaryRef = db.collection("Diary").document(diary.diaryUUID)
-//            diaryRef.updateData(pagesFieldData)
-            
             transaction.updateData(pagesFieldData, forDocument: diaryReference)
             
-            
-            
-//            transaction.updateData(["diaryPages":oldPages], forDocument: diaryReference)
             return nil
         }) { (object, error) in
             if let error = error {

@@ -13,11 +13,9 @@ enum EditType {
     case modify
 }
 
-struct EditPage {
-    var pageIndex: Int
+struct EditSticker {
     var sticker: StickerView
     var editType: EditType
-    
 }
 
 class PageViewModel {
@@ -25,10 +23,11 @@ class PageViewModel {
     var currentPageIndex: Int = 0
     @Published var diary: Diary = Diary(diaryUUID: "", diaryName: "", diaryLocation: Location(locationName: "", locationAddress: "", locationCoordinate: []), diaryStartDate: "", diaryEndDate: "", diaryCover: "")
     @Published var stickerArray: [[StickerView]] = []
+    var oldStickerViewDic: [String:StickerView] = [:]
+    
     var isStickerArrayOutdated: Bool = false
     var oldPageIndex: Int = 0
     var oldDiary: Diary!
-//    var editStack
 
     init(diary: Diary, selectedDay: Int) {
         // TODO: 선행 뷰에게서 diary 받아와서 init 하기
@@ -45,23 +44,6 @@ class PageViewModel {
     func restoreOldData() {
         currentPageIndex = oldPageIndex
         diary = oldDiary
-
-//        var oldItemDic: [String:Item] = [:]
-//        oldDiary.diaryPages[selectedDay].pages.forEach{ page in
-//            page.items.forEach{ item in
-//                oldItemDic[item.itemUUID] = item
-//            }
-//        }
-//
-//        diary.diaryPages[selectedDay].pages.enumerated().forEach{ (index, page) in
-//            let newItems = page.items.map { item in
-//                if let oldItem = oldItemDic[item.itemUUID] {
-//                    return oldItem
-//                }
-//                return item
-//            }
-//            diary.diaryPages[selectedDay].pages[index].items = newItems
-//        }
     }
     
     func addNewPage() {
@@ -86,10 +68,10 @@ class PageViewModel {
         stickerArray[currentPageIndex].remove(at: index)
     }
     
-    func hideStickerSubview(_ value: Bool) {
+    func hideStickerSubview(_ value: Bool, except: StickerView? = nil) {
         stickerArray.forEach{
             $0.forEach{
-                if $0.isSubviewHidden != value {
+                if $0 != except && $0.isSubviewHidden != value {
                     if $0.borderMode == .me {
                         $0.isSubviewHidden = value
                     }
@@ -119,8 +101,17 @@ class PageViewModel {
     }
     
     func setStickerArray() {
+        if self.stickerArray != [] {
+            self.stickerArray[currentPageIndex].forEach{
+                self.oldStickerViewDic[$0.stickerViewData.item.itemUUID] = $0
+            }
+        }
+        
         self.stickerArray = self.diary.diaryPages[self.selectedDay].pages.map{
             let stickerViews: [StickerView] = $0.items.map {
+                guard oldStickerViewDic[$0.itemUUID]?.stickerViewData.item != $0 else {
+                    return oldStickerViewDic[$0.itemUUID]!
+                }
                 var stickerView: StickerView!
                 switch $0.itemType {
                 case .text:
@@ -159,7 +150,6 @@ class PageViewModel {
         items.enumerated().forEach{
             diary.diaryPages[selectedDay].pages[$0].items = $1
         }
-//        FirebaseClient().updatePage(diary: diary)
-        FirebaseClient().transactionPage(diaryUUID: diary.diaryUUID, newPage: diary.diaryPages[selectedDay].pages[currentPageIndex])
+        FirebaseClient().transactionPage(diaryUUID: diary.diaryUUID, newPages: diary.diaryPages[selectedDay])
     }
 }

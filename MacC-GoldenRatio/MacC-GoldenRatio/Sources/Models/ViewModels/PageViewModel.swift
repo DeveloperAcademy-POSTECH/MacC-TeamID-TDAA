@@ -159,6 +159,7 @@ class PageViewModel {
         items.enumerated().forEach{
             diary.diaryPages[selectedDay].pages[$0].items = $1
         }
-        FirebaseClient().updatePage(diary: diary)
+//        FirebaseClient().updatePage(diary: diary)
+        FirebaseClient().transactionPage(diaryUUID: diary.diaryUUID, newPage: diary.diaryPages[selectedDay].pages[currentPageIndex])
     }
 }

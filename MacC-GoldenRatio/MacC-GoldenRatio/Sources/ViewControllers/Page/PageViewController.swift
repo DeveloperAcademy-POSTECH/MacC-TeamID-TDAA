@@ -352,6 +352,7 @@ extension PageViewController {
     
     private func loadStickerViews(pageIndex: Int, isSubviewHidden: Bool) {
         DispatchQueue.main.async {
+            guard self.pageViewModel.stickerArray.count - 1 >= pageIndex else { return }
             self.pageViewModel.stickerArray[pageIndex].forEach{
                 $0.delegate = self
                 self.backgroundImageView.addSubview($0)

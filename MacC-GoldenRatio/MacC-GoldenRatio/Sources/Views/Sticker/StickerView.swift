@@ -45,7 +45,9 @@ class StickerView: UIView {
             if newValue {
                 enableTranslucency(state: !newValue)
             } else {
-                delegate.willShowSubview()
+                if let delegate = self.delegate {
+                    delegate.willShowSubview()
+                }
             }
             self.subviews.forEach{
                 if $0 is StickerBorderView {

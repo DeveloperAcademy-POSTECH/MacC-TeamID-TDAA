@@ -377,12 +377,6 @@ extension UIScreen {
             }
         }
         
-        var diaryConfigTitleTopInset: CGFloat {
-            switch self {
-            default: return 20
-            }
-        }
-        
         var diaryConfigCancelButtonLeftInset: CGFloat {
             switch self {
             default: return 20
@@ -409,7 +403,7 @@ extension UIScreen {
         
         var diaryConfigCollectionViewCellInset: CGFloat {
             switch self {
-            default: return 20
+            default: return 16
             }
         }
         
@@ -434,7 +428,7 @@ extension UIScreen {
         
         var diaryConfigCellLeftInset: CGFloat {
             switch self {
-            default: return 20
+            default: return 16
             }
         }
         
@@ -446,7 +440,7 @@ extension UIScreen {
         
         var diaryConfigCellRightInset: CGFloat {
             switch self {
-            default: return 20
+            default: return 12
             }
         }
         

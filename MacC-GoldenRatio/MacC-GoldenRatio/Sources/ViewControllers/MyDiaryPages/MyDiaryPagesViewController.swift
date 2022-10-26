@@ -5,12 +5,14 @@
 //  Created by DongKyu Kim on 2022/10/08.
 //
 
+import Combine
 import SnapKit
 import UIKit
 
 class MyDiaryPagesViewController: UIViewController {
     
     private let device = UIScreen.getDevice()
+    private var bag = Set<AnyCancellable>()
     private var viewModel = MyDiaryPagesViewModel()
     private let itemSpacing: CGFloat = 20 // TODO: UIScreen+ 추가 예정
     private var previousOffset: CGFloat = 0
@@ -22,14 +24,13 @@ class MyDiaryPagesViewController: UIViewController {
                 currentPage = pageCount
             }
             self.dayLabel.text = "\(currentPage)일차"
-            self.dateLabel.text = viewModel.makeDateString(diary: diaryData, page: currentPage)
+            self.dateLabel.text = viewModel.makeDateString(diary: viewModel.diaryData, page: currentPage)
         }
     }
     var pageCount: Int
-	var diaryData: Diary
 
 	init(diaryData: Diary) {
-		self.diaryData = diaryData
+        self.viewModel.diaryData = diaryData
         self.pageCount = diaryData.pageThumbnails.count
         
         super.init(nibName: nil, bundle: nil)
@@ -59,7 +60,7 @@ class MyDiaryPagesViewController: UIViewController {
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = diaryData.diaryName
+        label.text = viewModel.diaryData.diaryName
         label.font = UIFont(name: "EF_Diary", size: 17) ?? UIFont.systemFont(ofSize: 17)
         return label
     }()
@@ -73,7 +74,7 @@ class MyDiaryPagesViewController: UIViewController {
     
     lazy var dateLabel: UILabel = {
         let label = UILabel()
-        label.text = viewModel.makeDateString(diary: diaryData, page: 1)
+        label.text = viewModel.makeDateString(diary: viewModel.diaryData, page: 1)
         label.font = UIFont(name: "EF_Diary", size: 20) ?? UIFont.systemFont(ofSize: 20)
         label.textColor = UIColor(named: "calendarWeeklyGrayColor")
         return label
@@ -121,30 +122,18 @@ class MyDiaryPagesViewController: UIViewController {
         
         super.viewDidLoad()
         view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
+        
+        // 기본적인 View Setup
+        self.collectionViewSetup()
+        self.componentsSetup()
+        self.viewModelSetup()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         // Full Modal dismiss 이후 호출, 업데이트된 다이어리 정보 반영
         super.viewWillAppear(animated)
         self.navigationController?.isNavigationBarHidden = true
-
-        // 기본적인 View Setup
-        self.collectionViewSetup()
-        self.componentsSetup()
-        
-        // diary Config VC의 정보를 통한 UI Update
-        Task {
-            do {
-                diaryData = try await self.viewModel.getDiaryData(uuid: self.diaryData.diaryUUID) ?? self.diaryData
-            } catch {
-                print(error.localizedDescription)
-            }
-   
-            if let diaryConfigVC = self.presentedViewController as? DiaryConfigViewController {
-                self.titleLabel.text = diaryConfigVC.contentTextField.text
-                self.diaryData.diaryName = self.titleLabel.text ?? self.diaryData.diaryName
-            }
-        }
+        self.viewModelSetup()
     }
     
     // MARK: - Feature methods
@@ -162,12 +151,12 @@ class MyDiaryPagesViewController: UIViewController {
     }
     
     @objc func copyButtonTapped() {
-        UIPasteboard.general.string = diaryData.diaryUUID
+        UIPasteboard.general.string = viewModel.diaryData.diaryUUID
         self.view.showToastMessage("초대코드가 복사되었습니다.")
     }
     
     @objc func modifyButtonTapped() {
-        let vc = DiaryConfigViewController(mode: .modify, diary: diaryData)
+        let vc = DiaryConfigViewController(mode: .modify, diary: viewModel.diaryData)
         vc.modalPresentationStyle = .fullScreen
         self.present(vc, animated: true, completion: nil)
     }
@@ -176,7 +165,7 @@ class MyDiaryPagesViewController: UIViewController {
         let ac = UIAlertController(title: "다이어리를 나가시겠습니까?", message: "다이어리를 나가면 공동편집을 할 수 없습니다.", preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "다이어리 나가기", style: .destructive) { _ in
             print("다이어리 나가기")
-            self.viewModel.outCurrentDiary(diary: self.diaryData)
+            self.viewModel.outCurrentDiary(diary: self.viewModel.diaryData)
             self.backButtonTapped()
         })
         ac.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
@@ -205,6 +194,30 @@ class MyDiaryPagesViewController: UIViewController {
             UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.5, options: .allowUserInteraction, animations: {
                 self.myPagesCollectionView.setContentOffset(CGPoint(x: newXPoint, y: 0), animated: true)
             }, completion: nil)
+        }
+    }
+    
+    private func viewModelSetup() {
+        // diary Config VC의 정보를 통한 UI Update
+        Task {
+            do {
+                self.viewModel.diaryDataSetup()
+                try await self.viewModel.getThumbnailURL()
+                
+                self.viewModel.$thumbnailURL
+                    .receive(on: DispatchQueue.main)
+                    .sink { [weak self] _ in
+                        self?.myPagesCollectionView.reloadData()
+                    }
+                    .store(in: &bag)
+            } catch {
+                print(error.localizedDescription)
+            }
+   
+            if let diaryConfigVC = self.presentedViewController as? DiaryConfigViewController {
+                self.titleLabel.text = diaryConfigVC.contentTextField.text
+                self.viewModel.diaryData.diaryName = self.titleLabel.text ?? self.viewModel.diaryData.diaryName
+            }
         }
     }
     
@@ -275,23 +288,23 @@ extension MyDiaryPagesViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MyDiaryPagesViewCollectionViewCell", for: indexPath) as? MyDiaryPagesViewCollectionViewCell else { return UICollectionViewCell() }
         
-        if diaryData.pageThumbnails[indexPath.row] != "NoURL" {
-            Task {
-                // case1. 편집 View에서 진입한 경우 (VC의 Thumbnail 데이터를 그대로 전달)
-                // TODO: VC의 Thumbnail 데이터를 그대로 전달
-                
-                // case2. MainView에서 진입한 경우 (Networking)
-                let imageURL = diaryData.pageThumbnails[indexPath.row]
-                guard let image = ImageManager.shared.searchImage(urlString: imageURL) else {
-                    FirebaseStorageManager.downloadImage(urlString: imageURL) { image in
-                        ImageManager.shared.cacheImage(urlString: imageURL, image: image ?? UIImage())
-                        cell.previewImageView.image = image
+        if !viewModel.thumbnailURL.isEmpty {
+            if viewModel.thumbnailURL[indexPath.row] != "NoURL" {
+                Task {
+                    
+                    let imageURL = viewModel.thumbnailURL[indexPath.row]
+                    guard let image = ImageManager.shared.searchImage(urlString: imageURL) else {
+                        FirebaseStorageManager.downloadImage(urlString: imageURL) { image in
+                            ImageManager.shared.cacheImage(urlString: imageURL, image: image ?? UIImage())
+                            cell.previewImageView.image = image
+                        }
+                        return
                     }
-                    return
+                    cell.previewImageView.image = image
                 }
-                cell.previewImageView.image = image
             }
         }
+        
         
         return cell
     }
@@ -303,10 +316,8 @@ extension MyDiaryPagesViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let selectedDay = indexPath.item
         
-        let pageViewController = PageViewController(diary: diaryData, selectedDay: selectedDay)
+        let pageViewController = PageViewController(diary: self.viewModel.diaryData, selectedDay: selectedDay)
         
-        debugPrint(diaryData)
-        print(selectedDay)
         self.navigationController?.pushViewController(pageViewController, animated: false)
         self.navigationController?.isNavigationBarHidden = false
     }

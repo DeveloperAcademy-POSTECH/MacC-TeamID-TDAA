@@ -11,20 +11,41 @@ import UIKit
 
 class MyDiaryPagesViewModel {
     private var db = Firestore.firestore()
-    var imageURL: String = ""
-    var myUID = Auth.auth().currentUser?.uid ?? ""
+    private var myUID = Auth.auth().currentUser?.uid ?? ""
+    @Published var thumbnailURL: [String] = []
+    @Published var diaryData: Diary = Diary(diaryUUID: "", diaryName: "", diaryLocation: Location(locationName: "", locationAddress: "", locationCoordinate: []), diaryStartDate: "", diaryEndDate: "", diaryCover: "")
     
-    func getDiaryData(uuid diaryUUID: String) async throws -> Diary? {
+    func diaryDataSetup() {
+        Task {
+            do {
+                self.diaryData = try await getDiaryData(uuid: self.diaryData.diaryUUID)
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    func getDiaryData(uuid diaryUUID: String) async throws -> Diary {
         let query = db.collection("Diary").whereField("diaryUUID", isEqualTo: diaryUUID)
         let documents = try await query.getDocuments()
-        let data = try documents.documents[0].data(as: Diary.self)
+        let data = try await documents.documents[0].data(as: Diary.self)
         
+        self.diaryData = data
         return data
+    }
+    
+    func getThumbnailURL() async throws {
+        Task {
+            do {
+                self.thumbnailURL = try await getDiaryData(uuid: self.diaryData.diaryUUID).pageThumbnails
+            } catch {
+                print(error)
+            }
+        }
     }
     
     func outCurrentDiary(diary: Diary) {
         // 다이어리 UID에서 자신 삭제
-        // getDiaryData(diary: diary)
         let userUIDs = diary.userUIDs.filter(){ $0 != myUID }
         let diaryRef = db.collection("Diary").document(diary.diaryUUID)
         

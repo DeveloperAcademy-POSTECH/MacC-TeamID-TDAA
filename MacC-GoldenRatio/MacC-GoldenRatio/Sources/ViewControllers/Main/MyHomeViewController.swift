@@ -39,6 +39,7 @@ final class MyHomeViewController: UIViewController {
         super.viewDidLoad()
 		setupSubViews()
 		setupViewModel()
+		NotificationCenter.default.addObserver(self, selector: #selector(reloadDiaryCell), name: .reloadDiary, object: nil)
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -70,6 +71,10 @@ final class MyHomeViewController: UIViewController {
 		} else {
 			self.view.isUserInteractionEnabled = true
 		}
+	}
+	
+	@objc private func reloadDiaryCell() {
+		viewModel.fetchLoadData()
 	}
 	
 	@objc private func menuButtonTapped() {

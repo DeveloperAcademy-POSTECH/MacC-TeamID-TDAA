@@ -30,14 +30,11 @@ class CustomClusterAnnotationView: MKAnnotationView {
 				let size = UIScreen.getDevice().annotationSize
 				UIGraphicsBeginImageContext(size)
 
-				stampName.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+				stampName.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height-70))
 				let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
 				if let title = cluster.memberAnnotations[0].title {
-					print("1")
-					print(title)
 					image = createImageWithLabelOverlay(title: "\(title!)", count: "\(totalDiary)", imageSize: UIScreen.getDevice().annotationSize, image: resizedImage ?? UIImage()) ?? UIImage()
 				} else {
-					print("2")
 					image = createImageWithLabelOverlay(title: "", count: "\(totalDiary)", imageSize: UIScreen.getDevice().annotationSize, image: resizedImage ?? UIImage()) ?? UIImage()
 				}
 				displayPriority = .defaultLow

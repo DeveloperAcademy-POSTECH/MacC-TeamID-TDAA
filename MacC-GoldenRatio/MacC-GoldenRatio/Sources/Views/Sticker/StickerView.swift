@@ -13,6 +13,7 @@ import FirebaseAuth
 protocol StickerViewDelegate {
     func removeSticker(sticker: StickerView)
     func bringToFront(sticker: StickerView)
+    func willShowSubview()
     func updateStickerToDB()
 }
 
@@ -223,8 +224,10 @@ class StickerView: UIView {
     // MARK: 스티커 자체에 입력되는 제스처 관련 메서드
     @objc private func stickerViewSingleTap(_ sender: UITapGestureRecognizer) {
         guard let borderMode = self.borderMode else { return }
-        guard borderMode == .me else { return }
+        guard borderMode != .otherUser else { return }
         if isSubviewHidden == true {
+            guard let delegate = self.delegate else { return }
+            delegate.willShowSubview()
             self.isSubviewHidden.toggle()
         }
     }

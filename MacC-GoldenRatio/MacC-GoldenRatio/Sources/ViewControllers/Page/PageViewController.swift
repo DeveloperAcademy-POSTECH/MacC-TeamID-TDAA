@@ -118,6 +118,7 @@ class PageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        NotificationCenter.default.addObserver(self, selector: #selector(self.appHasTerminated), name: UIApplication.willTerminateNotification, object: nil)
         DispatchQueue.main.async {
             self.view.backgroundColor = .backgroundTexture
             self.setupViewModel()
@@ -135,6 +136,16 @@ class PageViewController: UIViewController {
         self.backgroundImageView.isUserInteractionEnabled = false
         self.configureNavigationItem()
         self.loadStickerViews(pageIndex: self.pageViewModel.currentPageIndex, isSubviewHidden: true)
+    }
+    
+    @objc private func appHasTerminated() {
+        DispatchQueue.main.async {
+            print("asasdfasdf")
+            let identifier = UIApplication.shared.beginBackgroundTask()
+            self.pageViewModel.hideStickerSubview(true)
+            self.pageViewModel.updateDBPages()
+            UIApplication.shared.endBackgroundTask(identifier)
+        }
     }
     
     //MARK: view 세팅 관련
@@ -422,10 +433,10 @@ extension PageViewController {
     @objc private func onTapNavigationCancel() {
         DispatchQueue.main.async {
             self.isEditMode = false
-            self.pageViewModel.restoreOldData()
-            self.pageViewModel.setStickerArray()
-            self.reloadStickers()
-            self.reloadPageDescriptionLabel()
+//            self.pageViewModel.restoreOldData()
+//            self.pageViewModel.setStickerArray()
+//            self.reloadStickers()
+//            self.reloadPageDescriptionLabel()
         }
     }
 
@@ -456,6 +467,10 @@ extension PageViewController: StickerViewDelegate {
     func bringToFront(sticker: StickerView) {
         backgroundImageView.bringSubviewToFront(sticker)
         pageViewModel.bringStickerToFront(sticker)
+    }
+    
+    func willShowSubview() {
+        pageViewModel.hideStickerSubview(true)
     }
     
     func updateStickerToDB() {

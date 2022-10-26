@@ -208,7 +208,7 @@ extension UIScreen {
         
         var annotationTitleFont: UIFont {
             switch self {
-            default: return UIFont(name: "EF_Diary", size: 10) ?? UIFont.systemFont(ofSize: 10)
+            default: return UIFont(name: "EF_Diary", size: 16) ?? UIFont.systemFont(ofSize: 16)
             }
         }
         
@@ -230,11 +230,17 @@ extension UIScreen {
             }
         }
         
-        var clusterAnnotationLabelFrame: CGRect {
+        var clusterAnnotationCountLabelFrame: CGRect {
             switch self {
             default: return CGRect(x: annotationSize.width-26, y: 3, width: 25, height: 25)
             }
         }
+		
+		var clusterAnnotationTitleLabelFrame: CGRect {
+			switch self {
+			default: return CGRect(x: 10, y: annotationSize.height/2, width: annotationSize.width-20, height: 20)
+			}
+		}
         
         // MARK: Album
         var myAlbumPhotoPageLabelFont: UIFont {

@@ -32,14 +32,20 @@ class CustomClusterAnnotationView: MKAnnotationView {
 
 				stampName.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
 				let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
-				
-				image = createImageWithLabelOverlay(text: "\(totalDiary)", imageSize: UIScreen.getDevice().annotationSize, image: resizedImage ?? UIImage()) ?? UIImage()
+				if let title = cluster.memberAnnotations[0].title {
+					print("1")
+					print(title)
+					image = createImageWithLabelOverlay(title: "\(title!)", count: "\(totalDiary)", imageSize: UIScreen.getDevice().annotationSize, image: resizedImage ?? UIImage()) ?? UIImage()
+				} else {
+					print("2")
+					image = createImageWithLabelOverlay(title: "", count: "\(totalDiary)", imageSize: UIScreen.getDevice().annotationSize, image: resizedImage ?? UIImage()) ?? UIImage()
+				}
 				displayPriority = .defaultLow
 			}
 		}
 	}
 	
-	func createImageWithLabelOverlay(text: String, imageSize: CGSize, image: UIImage) -> UIImage? {
+	func createImageWithLabelOverlay(title: String, count: String, imageSize: CGSize, image: UIImage) -> UIImage? {
 		UIGraphicsBeginImageContextWithOptions(myDevice.clusterAnnotationSize, false, 2.0)
 		let currentView = UIView.init(frame: CGRect(x: 0, y: 0, width: myDevice.clusterAnnotationSize.width, height: myDevice.clusterAnnotationSize.height))
 		
@@ -47,16 +53,29 @@ class CustomClusterAnnotationView: MKAnnotationView {
 		currentImage.frame = myDevice.clusterAnnotationImageFrame
 		currentView.addSubview(currentImage)
 		
-		let label = UILabel(frame: myDevice.clusterAnnotationLabelFrame)
-		label.font = myDevice.clusterAnnotationLabelFont
-		label.clipsToBounds = true
-		label.layer.cornerRadius = 12
-		label.backgroundColor = UIColor(named: "sandbrownColor") ?? UIColor.black
-		label.textColor = UIColor.white
-		label.textAlignment = .center
-		label.text = text
+		lazy var countLabel: UILabel = {
+			let label = UILabel(frame: myDevice.clusterAnnotationCountLabelFrame)
+			label.font = myDevice.clusterAnnotationLabelFont
+			label.clipsToBounds = true
+			label.layer.cornerRadius = 12
+			label.backgroundColor = UIColor(named: "sandbrownColor") ?? UIColor.black
+			label.textColor = UIColor.white
+			label.textAlignment = .center
+			label.text = count
+			return label
+		}()
 		
-		currentView.addSubview(label)
+		lazy var titleLabel: UILabel = {
+			let label = UILabel(frame: myDevice.clusterAnnotationTitleLabelFrame)
+			label.font = myDevice.annotationTitleFont
+			label.textColor = UIColor.darkgrayColor
+			label.textAlignment = .center
+			label.text = title
+			return label
+		}()
+		
+		[titleLabel, countLabel].forEach { currentView.addSubview($0) }
+		
 		currentView.layer.render(in: UIGraphicsGetCurrentContext()!)
 		let img = UIGraphicsGetImageFromCurrentImageContext()
 		UIGraphicsEndImageContext()

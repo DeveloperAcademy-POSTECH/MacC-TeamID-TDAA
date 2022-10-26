@@ -29,10 +29,14 @@ class CustomAnnotationView: MKAnnotationView {
 
 
 class CustomAnnotation: NSObject, MKAnnotation {
+	let title: String?
 	let coordinate: CLLocationCoordinate2D
+	let diaryTitle: String
 	
-	init(coordinate: CLLocationCoordinate2D) {
+	init(coordinate: CLLocationCoordinate2D, diaryTitle: String, title: String) {
 		self.coordinate = coordinate
+		self.diaryTitle = diaryTitle
+		self.title = title
 		
 		super.init()
 	}

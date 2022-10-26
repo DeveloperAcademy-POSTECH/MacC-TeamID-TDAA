@@ -74,7 +74,7 @@ class MyPlaceViewController: UIViewController, MKMapViewDelegate, CLLocationMana
 		let allAnnotations = self.mapView.map.annotations
 		self.mapView.map.removeAnnotations(allAnnotations)
 		mapData.forEach { data in
-			let pin = CustomAnnotation(coordinate: CLLocationCoordinate2D(latitude: data.location.locationCoordinate[0], longitude: data.location.locationCoordinate[1]))
+			let pin = CustomAnnotation(coordinate: CLLocationCoordinate2D(latitude: data.location.locationCoordinate[0], longitude: data.location.locationCoordinate[1]), diaryTitle: data.diaryName, title: data.diaryName)
 			mapView.map.addAnnotation(pin)
 		}
 	}
@@ -92,6 +92,23 @@ class MyPlaceViewController: UIViewController, MKMapViewDelegate, CLLocationMana
 			annotationView?.contentMode = .scaleAspectFit
 		} else {
 			annotationView?.annotation = annotation
+		}
+		
+		if let viewWithTag = annotationView?.viewWithTag(1) {
+			viewWithTag.removeFromSuperview()
+		}
+		
+		let diaryTitle = UILabel()
+		diaryTitle.tag = 1
+		diaryTitle.text = annotation.diaryTitle
+		diaryTitle.font = myDevice.annotationTitleFont
+		diaryTitle.textAlignment = .center
+		
+		annotationView?.addSubview(diaryTitle)
+		
+		diaryTitle.snp.makeConstraints {
+			$0.leading.trailing.equalToSuperview()
+			$0.top.equalToSuperview().inset(40)
 		}
 		
 		let stampName = UIImage(named: "stampLayout") ?? UIImage()

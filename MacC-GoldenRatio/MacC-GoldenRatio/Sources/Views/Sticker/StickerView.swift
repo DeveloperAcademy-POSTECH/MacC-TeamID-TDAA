@@ -10,6 +10,12 @@ import SnapKit
 import UIKit
 import FirebaseAuth
 
+/// 누가 편집 중이냐??
+enum BorderMode {
+    case me
+    case otherUser
+}
+
 protocol StickerViewDelegate {
     func removeSticker(sticker: StickerView)
     func bringToFront(sticker: StickerView)
@@ -35,18 +41,22 @@ class StickerView: UIView {
     
     var borderMode: BorderMode? = .me
     var isSubviewHidden = true {
-        willSet {
-            self.subviews.forEach{
-                if $0 is StickerControllerView || $0 is StickerBorderView {
-                    $0.isHidden = newValue
-                }
-            }
+        willSet{
             if newValue {
                 enableTranslucency(state: !newValue)
+            } else {
+                delegate.willShowSubview()
+            }
+            self.subviews.forEach{
+                if $0 is StickerBorderView {
+                    $0.isHidden = newValue
+                }
+                if $0 is StickerControllerView {
+                    $0.isHidden = isControllerHidden(isSubviewHidden: newValue)
+                }
             }
         }
         didSet{
-            print("update edits")
             self.updateEdits()
         }
     }
@@ -123,13 +133,13 @@ class StickerView: UIView {
         let singleTap = UITapGestureRecognizer(target: self, action: #selector(singleTap(_:)))
         deleteController = StickerControllerView(image: deleteControlImage, gestureRecognizer: singleTap)
         addSubview(deleteController)
-        deleteController.isHidden = isSubviewHidden
+        deleteController.isHidden = isControllerHidden(isSubviewHidden: self.isSubviewHidden)
 
         let resizingControlImage = UIImage(systemName: "crop.rotate")
         let panResizeGesture = UIPanGestureRecognizer(target: self, action: #selector(resizeTranslate(_:)))
         resizingController = StickerControllerView(image: resizingControlImage, gestureRecognizer: panResizeGesture)
         addSubview(resizingController)
-        resizingController.isHidden = isSubviewHidden
+        resizingController.isHidden = isControllerHidden(isSubviewHidden: self.isSubviewHidden)
 
         let pinchResizeGesture = UIPinchGestureRecognizer(target: self, action: #selector(pinch(_:)))
         pinchResizeGesture.delegate = self
@@ -142,6 +152,22 @@ class StickerView: UIView {
         updateControlsPosition()
 
         deltaAngle = atan2(frame.origin.y + frame.height - center.y, frame.origin.x + frame.width - center.x)
+    }
+    
+    internal func updateEdits() {
+        guard let stickerViewData = self.stickerViewData else { return }
+        guard stickerViewData.updateItem(sticker: self) else { return }
+        guard let delegate = self.delegate else { return }
+        delegate.updateStickerToDB()
+    }
+    
+    private func isControllerHidden(isSubviewHidden: Bool) -> Bool {
+        if isSubviewHidden {
+            return true
+        } else {
+            guard self.borderMode == .me else { return true }
+            return false
+        }
     }
     
     func switchControls(toState state: Bool, animated: Bool = false) {
@@ -330,13 +356,6 @@ class StickerView: UIView {
                 self.alpha = 1
             }
         }
-    }
-    
-    internal func updateEdits() {
-        guard let stickerViewData = self.stickerViewData else { return }
-        guard stickerViewData.updateItem(sticker: self) else { return }
-        guard let delegate = self.delegate else { return }
-        delegate.updateStickerToDB()
     }
     
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {

@@ -329,11 +329,11 @@ class PageViewController: UIViewController {
     
     private func addSticker(stickerView: StickerView) {
         DispatchQueue.main.async {
-            stickerView.delegate = self
-            stickerView.isSubviewHidden = false
             stickerView.center = CGPoint(x: self.view.center.x, y: self.view.center.y - 100)
             self.backgroundImageView.addSubview(stickerView)
             self.backgroundImageView.bringSubviewToFront(stickerView)
+            stickerView.delegate = self
+            stickerView.isSubviewHidden = false
         }
     }
 }
@@ -433,6 +433,7 @@ extension PageViewController {
     @objc private func onTapNavigationCancel() {
         DispatchQueue.main.async {
             self.isEditMode = false
+            self.pageViewModel.hideStickerSubview(true)
 //            self.pageViewModel.restoreOldData()
 //            self.pageViewModel.setStickerArray()
 //            self.reloadStickers()
@@ -516,7 +517,6 @@ private extension PageViewController {
         pageViewModel.$stickerArray
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                print("stickerArrayHasChanged")
                 guard let isStickerArrayOutdated = self?.pageViewModel.isStickerArrayOutdated else { return }
                 guard isStickerArrayOutdated else { return }
                 self?.reloadStickers()

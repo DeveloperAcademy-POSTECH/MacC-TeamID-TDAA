@@ -39,7 +39,6 @@ class MyAlbumViewController: UIViewController {
 		label.text = "앨범"
 		label.font = myDevice.TabBarTitleFont
 		label.textColor = UIColor.buttonColor
-		
 		return label
 	}()
 	
@@ -48,29 +47,21 @@ class MyAlbumViewController: UIViewController {
 		layout.scrollDirection = .horizontal
 		let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
 		collectionView.showsHorizontalScrollIndicator = false
-		collectionView.frame = CGRect(x: self.view.center.x, y: 0, width: self.view.bounds.width, height: 25)
-
 		collectionView.delegate = self
 		collectionView.dataSource = self
-
 		collectionView.backgroundColor = UIColor.clear
-		
 		collectionView.register(MyAlbumTitleCollectionViewCell.self, forCellWithReuseIdentifier: "MyAlbumTitleCollectionViewCell")
-
 		return collectionView
 	}()
 	
 	private lazy var albumCollectionView: UICollectionView = {
 		let layout = UICollectionViewFlowLayout()
 		let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-		
+		collectionView.showsVerticalScrollIndicator = false
 		collectionView.delegate = self
 		collectionView.dataSource = self
-
 		collectionView.backgroundColor = UIColor.clear
-		
 		collectionView.register(MyAlbumCollectionViewCell.self, forCellWithReuseIdentifier: "MyAlbumCollectionViewCell")
-
 		return collectionView
 	}()
 
@@ -88,6 +79,11 @@ class MyAlbumViewController: UIViewController {
 		setupViewModel()
 	}
 	
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		self.isInitializing = false
+	}
+	
 	private func setup() {
 		self.view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
 	}
@@ -95,13 +91,13 @@ class MyAlbumViewController: UIViewController {
 	private func setupSubView() {
 		[titleLabel, titleCollectionView, albumCollectionView].forEach { view.addSubview($0) }
 		titleLabel.snp.makeConstraints {
-			$0.top.equalToSuperview().inset(myDevice.TabBarTitleLabelTop+50)
+			$0.top.equalTo(self.view.safeAreaLayoutGuide).inset(myDevice.TabBarTitleLabelTop)
 			$0.leading.equalToSuperview().inset(myDevice.TabBarTitleLabelLeading)
 		}
 		titleCollectionView.snp.makeConstraints {
 			$0.top.equalTo(titleLabel.snp.bottom).offset(myDevice.TabBarTitleLabelTop)
 			$0.leading.trailing.equalToSuperview().inset(20)
-			$0.bottom.equalToSuperview().inset(630)
+			$0.bottom.equalToSuperview().inset(self.view.bounds.height*0.78)
 		}
 		albumCollectionView.snp.makeConstraints {
 			$0.top.equalTo(titleCollectionView.snp.bottom).offset(30)
@@ -122,7 +118,6 @@ class MyAlbumViewController: UIViewController {
 extension MyAlbumViewController: UICollectionViewDataSource {
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 		if collectionView == albumCollectionView {
-//			self.isInitializing = false
 			if viewModel.albumDatas.isEmpty {
 				if !self.isInitializing {
 					collectionView.backgroundView = setEmptyView("추가하신 다이어리가 없어요.")
@@ -137,7 +132,6 @@ extension MyAlbumViewController: UICollectionViewDataSource {
 				}
 			}
 		}
-		
 		return collectionView == titleCollectionView ? viewModel.albumDatas.count : viewModel.albumDatas.isEmpty ? 0 : viewModel.albumDatas[selectedAlbum].imageURLs?.count ?? 0
 	}
 
@@ -172,11 +166,16 @@ extension MyAlbumViewController: UICollectionViewDelegate {
 
 extension MyAlbumViewController: UICollectionViewDelegateFlowLayout {
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-		var width = 0
-		if !viewModel.albumDatas.isEmpty && viewModel.albumDatas.count > indexPath.item {
-			width = viewModel.albumDatas[indexPath.item].diaryName.count
+		if collectionView == titleCollectionView {
+			var width = 0
+			if !viewModel.albumDatas.isEmpty && viewModel.albumDatas.count > indexPath.item {
+				width = viewModel.albumDatas[indexPath.item].diaryName.count
+			}
+			return CGSize(width: width*20, height: 30)
+		} else {
+			let size = (self.view.bounds.width-60)/3
+			return CGSize(width: size, height: size)
 		}
-		return collectionView == titleCollectionView ? CGSize(width: width*20, height: 50) : CGSize(width: 110, height: 110)
 	}
 }
 
@@ -199,7 +198,7 @@ private extension MyAlbumViewController {
 		let label = UILabel()
 		label.text = text
 		label.font = myDevice.collectionBackgoundViewFont
-		label.textColor = UIColor.buttonColor
+		label.textColor = UIColor.subTextColor
 		label.textAlignment = .center
 		
 		emptyView.addSubview(label)

@@ -15,7 +15,7 @@ class DiaryCollectionViewCell: UICollectionViewCell {
 		let label =  UILabel()
 		label.textAlignment = .center
 		label.font = myDevice.diaryCollectionViewCellTitleLabelFont
-		label.textColor = .black
+		label.textColor = UIColor.darkgrayColor
 		
 		return label
 	}()

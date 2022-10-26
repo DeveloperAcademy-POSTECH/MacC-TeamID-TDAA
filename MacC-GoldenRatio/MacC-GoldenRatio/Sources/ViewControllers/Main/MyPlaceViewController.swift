@@ -24,7 +24,6 @@ class MyPlaceViewController: UIViewController, MKMapViewDelegate, CLLocationMana
 		label.text = "지도"
 		label.font = myDevice.TabBarTitleFont
 		label.textColor = UIColor.buttonColor
-		
 		return label
 	}()
 	
@@ -58,6 +57,11 @@ class MyPlaceViewController: UIViewController, MKMapViewDelegate, CLLocationMana
 		titleLabel.snp.makeConstraints {
 			$0.top.equalTo(view.safeAreaLayoutGuide).inset(myDevice.TabBarTitleLabelTop)
 			$0.leading.equalToSuperview().inset(myDevice.TabBarTitleLabelLeading)
+		}
+		mapView.map.snp.makeConstraints {
+			$0.top.equalTo(titleLabel.snp.bottom).offset(myDevice.mapViewTop)
+			$0.bottom.equalTo(self.view.safeAreaLayoutGuide).inset(myDevice.mapViewBottom)
+			$0.leading.trailing.equalToSuperview()
 		}
 	}
 	

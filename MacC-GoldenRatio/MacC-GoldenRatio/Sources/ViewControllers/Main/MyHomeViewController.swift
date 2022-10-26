@@ -20,22 +20,18 @@ final class MyHomeViewController: UIViewController {
 		let layout = UICollectionViewFlowLayout()
 		let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
 		collectionView.showsVerticalScrollIndicator = false
-		
 		collectionView.delegate = self
 		collectionView.dataSource = self
-
 		collectionView.backgroundColor = UIColor.clear
 		collectionView.register(DiaryCollectionViewCell.self, forCellWithReuseIdentifier: "DiaryCollectionViewCell")
 		collectionView.register(DiaryCollectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "DiaryCollectionHeaderView")
-
 		return collectionView
 	}()
 	
-	private lazy var addDiaryButton: UIButton = {
+	lazy var addDiaryButton: UIButton = {
 		let button = UIButton()
 		button.setImage(UIImage(named: "plusButton"), for: .normal)
 		button.addTarget(self, action: #selector(menuButtonTapped), for: .touchUpInside)
-		
 		return button
 	}()
 
@@ -43,11 +39,17 @@ final class MyHomeViewController: UIViewController {
         super.viewDidLoad()
 		setupSubViews()
 		setupViewModel()
+		NotificationCenter.default.addObserver(self, selector: #selector(reloadDiaryCell), name: .reloadDiary, object: nil)
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		setupViewModel()
+		addDiaryButton.setImage(UIImage(named: "plusButton"), for: .normal)
+	}
+	
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		viewModel.isInitializing = false
 	}
 	
 	private func setupSubViews() {
@@ -71,7 +73,12 @@ final class MyHomeViewController: UIViewController {
 		}
 	}
 	
+	@objc private func reloadDiaryCell() {
+		viewModel.fetchLoadData()
+	}
+	
 	@objc private func menuButtonTapped() {
+		addDiaryButton.setImage(UIImage(named: "closeButton"), for: .normal)
 		let popUp = PopUpViewController(popUpPosition: .bottom)
 		popUp.addButton(buttonTitle: "다이어리 생성", action: createButtonTapped)
 		popUp.addButton(buttonTitle: "초대코드로 참가", action: joinButtonTapped)
@@ -117,7 +124,7 @@ extension MyHomeViewController: UICollectionViewDataSource {
 			let label = UILabel()
 			label.text = "다이어리를 추가해주세요."
 			label.font = myDevice.collectionBackgoundViewFont
-			label.textColor = UIColor.buttonColor
+			label.textColor = UIColor.subTextColor
 			label.textAlignment = .center
 			collectionView.backgroundView = label
 		} else {
@@ -149,7 +156,6 @@ extension MyHomeViewController: UICollectionViewDataSource {
 extension MyHomeViewController: UICollectionViewDelegate {
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 		let vc = MyDiaryPagesViewController(diaryData: viewModel.diaryData[indexPath.item])
-		// TODO: 수정 예정
 		self.navigationController?.pushViewController(vc, animated: true)
 	}
 }

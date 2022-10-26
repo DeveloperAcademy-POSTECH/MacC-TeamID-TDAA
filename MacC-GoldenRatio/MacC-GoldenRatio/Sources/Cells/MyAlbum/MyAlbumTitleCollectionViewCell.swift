@@ -45,13 +45,15 @@ class MyAlbumTitleCollectionViewCell: UICollectionViewCell {
 		titleLabel.textAlignment = .center
 		titleLabel.snp.makeConstraints {
 			$0.centerX.equalToSuperview()
-			$0.top.leading.trailing.equalToSuperview()
-			$0.bottom.equalToSuperview().inset(5)
+			$0.top.equalToSuperview()
+			$0.leading.trailing.equalToSuperview()
+			$0.bottom.equalToSuperview().inset(2.5)
 		}
 		
 		lineView.snp.makeConstraints {
-			$0.top.equalTo(titleLabel.snp.bottom).offset(2)
-			$0.leading.trailing.bottom.equalToSuperview()
+			$0.top.equalTo(titleLabel.snp.bottom)
+			$0.leading.trailing.equalToSuperview()
+			$0.bottom.equalToSuperview()
 		}
 	}
 }

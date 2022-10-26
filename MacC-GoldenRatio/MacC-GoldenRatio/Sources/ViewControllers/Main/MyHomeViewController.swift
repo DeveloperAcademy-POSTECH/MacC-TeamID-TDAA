@@ -149,7 +149,6 @@ extension MyHomeViewController: UICollectionViewDataSource {
 extension MyHomeViewController: UICollectionViewDelegate {
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 		let vc = MyDiaryPagesViewController(diaryData: viewModel.diaryData[indexPath.item])
-		// TODO: 수정 예정
 		self.navigationController?.pushViewController(vc, animated: true)
 	}
 }

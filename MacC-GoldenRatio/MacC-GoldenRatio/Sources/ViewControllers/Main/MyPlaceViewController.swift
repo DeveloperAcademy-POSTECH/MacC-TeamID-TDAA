@@ -70,7 +70,7 @@ class MyPlaceViewController: UIViewController, MKMapViewDelegate, CLLocationMana
 		let allAnnotations = self.mapView.map.annotations
 		self.mapView.map.removeAnnotations(allAnnotations)
 		mapData.forEach { data in
-			let pin = CustomAnnotation(coordinate: CLLocationCoordinate2D(latitude: data.location.locationCoordinate[0], longitude: data.location.locationCoordinate[1]))
+			let pin = CustomAnnotation(coordinate: CLLocationCoordinate2D(latitude: data.location.locationCoordinate[0], longitude: data.location.locationCoordinate[1]), diaryTitle: data.diaryName, title: data.diaryName)
 			mapView.map.addAnnotation(pin)
 		}
 	}
@@ -90,11 +90,29 @@ class MyPlaceViewController: UIViewController, MKMapViewDelegate, CLLocationMana
 			annotationView?.annotation = annotation
 		}
 		
+		if let viewWithTag = annotationView?.viewWithTag(1) {
+			viewWithTag.removeFromSuperview()
+		}
+		
+		let diaryTitle = UILabel()
+		diaryTitle.tag = 1
+		diaryTitle.text = annotation.diaryTitle
+		diaryTitle.font = myDevice.annotationTitleFont
+		diaryTitle.textColor = UIColor.darkgrayColor
+		diaryTitle.textAlignment = .center
+		
+		annotationView?.addSubview(diaryTitle)
+		
+		diaryTitle.snp.makeConstraints {
+			$0.leading.trailing.equalToSuperview()
+			$0.top.equalToSuperview().inset(35)
+		}
+		
 		let stampName = UIImage(named: "stampLayout") ?? UIImage()
 		let size = myDevice.annotationSize
 		UIGraphicsBeginImageContext(size)
 		
-		stampName.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+		stampName.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height-70))
 		let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
 		annotationView?.image = resizedImage
 		

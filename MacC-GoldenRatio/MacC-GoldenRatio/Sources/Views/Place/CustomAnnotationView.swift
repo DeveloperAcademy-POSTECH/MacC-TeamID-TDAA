@@ -12,7 +12,7 @@ class CustomAnnotationView: MKAnnotationView {
 	
 	override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
 		super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
-		frame = CGRect(x: 0, y: 0, width: 40, height: 50)
+		frame = CGRect(x: 0, y: 0, width: 40, height: 90)
 		centerOffset = CGPoint(x: 0, y: -frame.size.height / 2)
 		setupUI()
 	}
@@ -29,10 +29,14 @@ class CustomAnnotationView: MKAnnotationView {
 
 
 class CustomAnnotation: NSObject, MKAnnotation {
+	let title: String?
 	let coordinate: CLLocationCoordinate2D
+	let diaryTitle: String
 	
-	init(coordinate: CLLocationCoordinate2D) {
+	init(coordinate: CLLocationCoordinate2D, diaryTitle: String, title: String) {
 		self.coordinate = coordinate
+		self.diaryTitle = diaryTitle
+		self.title = title
 		
 		super.init()
 	}

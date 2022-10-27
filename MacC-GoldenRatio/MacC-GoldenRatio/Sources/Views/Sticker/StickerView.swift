@@ -91,7 +91,7 @@ class StickerView: UIView {
         borderView = StickerBorderView(frame: bounds)
         addSubview(borderView)
         
-        let deleteControlImage = UIImage(systemName: "xmark.circle.fill")
+        let deleteControlImage = UIImage(named: "closeButton")
         let singleTap = UITapGestureRecognizer(target: self, action: #selector(singleTap(_:)))
         deleteController = StickerControllerView(image: deleteControlImage, gestureRecognizer: singleTap)
         addSubview(deleteController)

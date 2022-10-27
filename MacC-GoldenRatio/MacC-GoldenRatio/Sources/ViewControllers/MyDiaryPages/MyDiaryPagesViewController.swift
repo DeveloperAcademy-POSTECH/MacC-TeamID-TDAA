@@ -5,12 +5,14 @@
 //  Created by DongKyu Kim on 2022/10/08.
 //
 
+import Combine
 import SnapKit
 import UIKit
 
 class MyDiaryPagesViewController: UIViewController {
     
     private let device = UIScreen.getDevice()
+    private var bag = Set<AnyCancellable>()
     private var viewModel = MyDiaryPagesViewModel()
     private let itemSpacing: CGFloat = 20 // TODO: UIScreen+ 추가 예정
     private var previousOffset: CGFloat = 0
@@ -22,13 +24,13 @@ class MyDiaryPagesViewController: UIViewController {
                 currentPage = pageCount
             }
             self.dayLabel.text = "\(currentPage)일차"
+            self.dateLabel.text = viewModel.makeDateString(diary: viewModel.diaryData, page: currentPage)
         }
     }
     var pageCount: Int
-	var diaryData: Diary
 
 	init(diaryData: Diary) {
-		self.diaryData = diaryData
+        self.viewModel.diaryData = diaryData
         self.pageCount = diaryData.pageThumbnails.count
         
         super.init(nibName: nil, bundle: nil)
@@ -58,21 +60,29 @@ class MyDiaryPagesViewController: UIViewController {
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = diaryData.diaryName
-        label.font = UIFont(name: "EF_Diary", size: 24) ?? UIFont.systemFont(ofSize: 24)
+        label.text = viewModel.diaryData.diaryName
+        label.font = UIFont(name: "EF_Diary", size: 17) ?? UIFont.systemFont(ofSize: 17)
         return label
     }()
     
     private lazy var dayLabel: UILabel = {
         let label = UILabel()
         label.text = "1일차"
+        label.font = UIFont(name: "EF_Diary", size: 24) ?? UIFont.systemFont(ofSize: 24)
+        return label
+    }()
+    
+    lazy var dateLabel: UILabel = {
+        let label = UILabel()
+        label.text = viewModel.makeDateString(diary: viewModel.diaryData, page: 1)
         label.font = UIFont(name: "EF_Diary", size: 20) ?? UIFont.systemFont(ofSize: 20)
+        label.textColor = UIColor(named: "calendarWeeklyGrayColor")
         return label
     }()
     
     private lazy var myPagesCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.minimumLineSpacing = itemSpacing
+        layout.minimumLineSpacing = self.itemSpacing
         layout.scrollDirection = .horizontal
         layout.itemSize = CGSize(width: view.frame.width - 100, height: view.frame.height / 1.61)
         
@@ -112,29 +122,18 @@ class MyDiaryPagesViewController: UIViewController {
         
         super.viewDidLoad()
         view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
+        
+        // 기본적인 View Setup
+        self.collectionViewSetup()
+        self.componentsSetup()
+        self.viewModelSetup()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         // Full Modal dismiss 이후 호출, 업데이트된 다이어리 정보 반영
         super.viewWillAppear(animated)
         self.navigationController?.isNavigationBarHidden = true
-
-        // TODO: - modal completion handler 필요?
-        Task {
-            do {
-                diaryData = try await self.viewModel.getDiaryData(uuid: self.diaryData.diaryUUID) ?? self.diaryData
-            } catch {
-                print(error.localizedDescription)
-            }
-            
-            self.collectionViewSetup()
-            self.componentsSetup()
-   
-            if let diaryConfigVC = self.presentedViewController as? DiaryConfigViewController {
-                self.titleLabel.text = diaryConfigVC.contentTextField.text
-                self.diaryData.diaryName = self.titleLabel.text ?? self.diaryData.diaryName
-            }
-        }
+        self.viewModelSetup()
     }
     
     // MARK: - Feature methods
@@ -152,12 +151,12 @@ class MyDiaryPagesViewController: UIViewController {
     }
     
     @objc func copyButtonTapped() {
-        UIPasteboard.general.string = diaryData.diaryUUID
+        UIPasteboard.general.string = viewModel.diaryData.diaryUUID
         self.view.showToastMessage("초대코드가 복사되었습니다.")
     }
     
     @objc func modifyButtonTapped() {
-        let vc = DiaryConfigViewController(mode: .modify, diary: diaryData)
+        let vc = DiaryConfigViewController(mode: .modify, diary: viewModel.diaryData)
         vc.modalPresentationStyle = .fullScreen
         self.present(vc, animated: true, completion: nil)
     }
@@ -167,7 +166,7 @@ class MyDiaryPagesViewController: UIViewController {
         ac.addAction(UIAlertAction(title: "다이어리 나가기", style: .destructive) { _ in
             print("다이어리 나가기")
 			NotificationCenter.default.post(name: .reloadDiary, object: nil)
-            self.viewModel.outCurrentDiary(diary: self.diaryData)
+            self.viewModel.outCurrentDiary(diary: self.viewModel.diaryData)
             self.backButtonTapped()
         })
         ac.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
@@ -190,15 +189,42 @@ class MyDiaryPagesViewController: UIViewController {
     
     private func updatePageOffset() {
         
+        let newXPoint = CGFloat(self.currentPage-1) * (self.myPagesCollectionView.frame.width + self.itemSpacing)
+        
         DispatchQueue.main.async {
             UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.5, options: .allowUserInteraction, animations: {
-                let newXPoint = CGFloat(self.currentPage-1) * (self.myPagesCollectionView.frame.width + self.itemSpacing)
                 self.myPagesCollectionView.setContentOffset(CGPoint(x: newXPoint, y: 0), animated: true)
             }, completion: nil)
         }
     }
     
     // MARK: - Setup methods
+    
+    private func viewModelSetup() {
+        // diary Config VC의 정보를 통한 UI Update
+        Task {
+            do {
+                self.viewModel.diaryDataSetup() {
+                    print("다이어리 가져오기 완료")
+                }
+                try await self.viewModel.getThumbnailURL()
+                
+                self.viewModel.$thumbnailURL
+                    .receive(on: DispatchQueue.main)
+                    .sink { [weak self] _ in
+                        self?.myPagesCollectionView.reloadData()
+                    }
+                    .store(in: &bag)
+            } catch {
+                print(error.localizedDescription)
+            }
+   
+            if let diaryConfigVC = self.presentedViewController as? DiaryConfigViewController {
+                self.titleLabel.text = diaryConfigVC.contentTextField.text
+                self.viewModel.diaryData.diaryName = self.titleLabel.text ?? self.viewModel.diaryData.diaryName
+            }
+        }
+    }
     
     private func collectionViewSetup() {
         
@@ -211,18 +237,23 @@ class MyDiaryPagesViewController: UIViewController {
     }
     
     private func componentsSetup() {
-        [titleLabel, dayLabel, backButton, menuButton, previousButton, nextButton].forEach {
+        [titleLabel, dayLabel, dateLabel, backButton, menuButton, previousButton, nextButton].forEach {
             view.addSubview($0)
         }
         
         titleLabel.snp.makeConstraints {
-            $0.leading.equalTo(myPagesCollectionView)
-            $0.bottom.equalTo(dayLabel.snp.top).offset(-20)
+            $0.centerX.equalToSuperview()
+            $0.centerY.equalTo(backButton)
         }
         
         dayLabel.snp.makeConstraints {
             $0.leading.equalTo(myPagesCollectionView)
-            $0.bottom.equalTo(myPagesCollectionView.snp.top).offset(-30)
+            $0.bottom.equalTo(dateLabel.snp.top).offset(-20)
+        }
+        
+        dateLabel.snp.makeConstraints {
+            $0.leading.equalTo(myPagesCollectionView)
+            $0.bottom.equalTo(myPagesCollectionView.snp.top).offset(-32)
         }
         
         backButton.snp.makeConstraints {
@@ -260,21 +291,24 @@ extension MyDiaryPagesViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MyDiaryPagesViewCollectionViewCell", for: indexPath) as? MyDiaryPagesViewCollectionViewCell else { return UICollectionViewCell() }
         
-        if diaryData.pageThumbnails[indexPath.row] != "NoURL" {
-            // TODO: 이미지 로드 해서 cell에 할당
-            Task {
-                let imageURL = diaryData.pageThumbnails[indexPath.row]
-                guard let image = ImageManager.shared.searchImage(urlString: imageURL) else {
-                    FirebaseStorageManager.downloadImage(urlString: imageURL) { image in
-                        ImageManager.shared.cacheImage(urlString: imageURL, image: image ?? UIImage())
-                        cell.previewImageView.image = image
+        if !viewModel.thumbnailURL.isEmpty {
+                Task {
+                    let pageUUID = viewModel.diaryData.diaryPages[indexPath.row].pages[0].pageUUID
+                    let imageURL = viewModel.thumbnailURL[indexPath.row]
+                    
+                    guard let image = ImageManager.shared.searchImage(urlString: pageUUID) else {
+                        if viewModel.thumbnailURL[indexPath.row] != "NoURL" {
+                            FirebaseStorageManager.downloadImage(urlString: imageURL) { image in
+                                ImageManager.shared.cacheImage(urlString: imageURL, image: image ?? UIImage())
+                                cell.previewImageView.image = image
+                            }
+                        }
+                        return cell
                     }
-                    return
+                    cell.previewImageView.image = image
+                    return cell
                 }
-                cell.previewImageView.image = image
-            }
         }
-        
         return cell
     }
     
@@ -285,44 +319,28 @@ extension MyDiaryPagesViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let selectedDay = indexPath.item
         
-        let pageViewController = PageViewController(diary: diaryData, selectedDay: selectedDay)
-        
-        debugPrint(diaryData)
-        print(selectedDay)
-        self.navigationController?.pushViewController(pageViewController, animated: false)
-        self.navigationController?.isNavigationBarHidden = false
+        self.viewModel.diaryDataSetup() {
+            DispatchQueue.main.async {
+                let pageViewController = PageViewController(diary: self.viewModel.diaryData, selectedDay: selectedDay)
+                self.navigationController?.pushViewController(pageViewController, animated: false)
+                self.navigationController?.isNavigationBarHidden = false
+            }
+        }
     }
 
 }
 
 extension MyDiaryPagesViewController: UIScrollViewDelegate {
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        let point = self.targetContentOffset(scrollView, withVelocity: velocity)
-        targetContentOffset.pointee = point
+        let cellWidth = self.myPagesCollectionView.frame.width + self.itemSpacing
         
-        UIView.animate(withDuration: 0.2, delay: 0.0, usingSpringWithDamping: 0, initialSpringVelocity: velocity.x, options: .allowUserInteraction, animations: {
-            self.myPagesCollectionView.setContentOffset(point, animated: true)
-        }, completion: nil)
-    }
-    
-    func targetContentOffset(_ scrollView: UIScrollView, withVelocity velocity: CGPoint) -> CGPoint {
+        var offset = targetContentOffset.pointee
+        let index = (offset.x + scrollView.contentInset.left) / cellWidth
+        let roundedIndex: CGFloat = round(index)
         
-        guard let flowLayout = myPagesCollectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return .zero }
+        offset = CGPoint(x: roundedIndex * cellWidth - scrollView.contentInset.left, y: scrollView.contentInset.top)
+        targetContentOffset.pointee = offset
         
-        // Offset 변화, slide 제스처 비교 후 이동 방향 결정
-        if previousOffset > myPagesCollectionView.contentOffset.x && velocity.x < 0 {
-            currentPage = currentPage - 1
-        } else if previousOffset < myPagesCollectionView.contentOffset.x && velocity.x > 0 {
-            currentPage = currentPage + 1
-        }
-        
-        let additional = (flowLayout.itemSize.width + flowLayout.minimumLineSpacing)
-        
-        let updatedOffset = (flowLayout.itemSize.width + flowLayout.minimumLineSpacing) * CGFloat(currentPage) - additional
-        
-        previousOffset = updatedOffset
-        
-        return CGPoint(x: updatedOffset, y: 0)
+        currentPage = Int(roundedIndex) + 1
     }
 }
-

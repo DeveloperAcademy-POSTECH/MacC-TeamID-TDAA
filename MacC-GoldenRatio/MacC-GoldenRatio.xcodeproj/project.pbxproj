@@ -62,7 +62,6 @@
 		E276B91C28E46AE900163833 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E276B91B28E46AE900163833 /* User.swift */; };
 		E276B91E28E46B3700163833 /* DiaryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E276B91D28E46B3700163833 /* DiaryModel.swift */; };
 		E276B92028E4812E00163833 /* UIScreen+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E276B91F28E4812E00163833 /* UIScreen+.swift */; };
-		E284909C29093A1D003A4F4B /* Notification+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E284909B29093A1D003A4F4B /* Notification+.swift */; };
 		E28F080228E4655100832F4A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28F080128E4655100832F4A /* AppDelegate.swift */; };
 		E28F080428E4655100832F4A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28F080328E4655100832F4A /* SceneDelegate.swift */; };
 		E28F080628E4655100832F4A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28F080528E4655100832F4A /* ViewController.swift */; };
@@ -190,7 +189,6 @@
 		E276B91B28E46AE900163833 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		E276B91D28E46B3700163833 /* DiaryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryModel.swift; sourceTree = "<group>"; };
 		E276B91F28E4812E00163833 /* UIScreen+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+.swift"; sourceTree = "<group>"; };
-		E284909B29093A1D003A4F4B /* Notification+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+.swift"; sourceTree = "<group>"; };
 		E28F07FE28E4655100832F4A /* MacC-GoldenRatio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MacC-GoldenRatio.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E28F080128E4655100832F4A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E28F080328E4655100832F4A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -447,7 +445,6 @@
 				B93EC22828F7BC8000BB89C5 /* String+.swift */,
 				0A5235AF28F8510C00AC77AC /* UIFont+.swift */,
 				0A5235B128F854C200AC77AC /* UIColor+.swift */,
-				E284909B29093A1D003A4F4B /* Notification+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -788,7 +785,6 @@
 				E2DA8F6428F857D80098DD94 /* MyAlbumPhotoCollectionViewCell.swift in Sources */,
 				E2CCF30128F74450008A12F9 /* CustomAnnotationView.swift in Sources */,
 				0A5E904828E857E200B381B8 /* StickerView.swift in Sources */,
-				E284909C29093A1D003A4F4B /* Notification+.swift in Sources */,
 				0A3ED14628F99FBF000D55D8 /* SetProfileImageViewController.swift in Sources */,
 				0AAB2ACF28EAFF52009FBD96 /* TableView+.swift in Sources */,
 				CC40BC1C28EEAEB200DF48E1 /* Day.swift in Sources */,
@@ -888,7 +884,6 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				EXCLUDED_ARCHS = "";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -950,7 +945,6 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				EXCLUDED_ARCHS = "";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;

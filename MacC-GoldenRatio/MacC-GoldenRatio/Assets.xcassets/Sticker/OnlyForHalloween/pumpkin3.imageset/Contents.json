@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "xButton.png",
+      "filename" : "pumpkin3.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "xButton@2x.png",
+      "filename" : "pumpkin3@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "xButton@3x.png",
+      "filename" : "pumpkin3@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

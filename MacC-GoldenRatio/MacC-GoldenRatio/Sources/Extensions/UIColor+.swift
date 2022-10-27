@@ -49,9 +49,14 @@ extension UIColor {
         let color = UIColor(named: "darkgrayColor")!
         return color
     }
-	
+    
 	static var subTextColor: UIColor {
 		let color = UIColor(named: "calendarSubTextColor")!
+		return color
+	}
+	
+	static var middleGrayColor: UIColor {
+		let color = UIColor(named: "calendarWeeklyGrayColor")!
 		return color
 	}
 }

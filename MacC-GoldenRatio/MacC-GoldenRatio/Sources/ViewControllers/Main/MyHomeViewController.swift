@@ -88,7 +88,7 @@ final class MyHomeViewController: UIViewController {
 	@objc private func menuButtonTapped() {
 		addDiaryButton.setImage(UIImage(named: "closeButton"), for: .normal)
 		let popUp = PopUpViewController(popUpPosition: .bottom)
-		popUp.addButton(buttonTitle: "다이어리 생성", action: createButtonTapped)
+		popUp.addButton(buttonTitle: "다이어리 추가", action: createButtonTapped)
 		popUp.addButton(buttonTitle: "초대코드로 참가", action: joinButtonTapped)
 		present(popUp, animated: false)
 	}

@@ -47,8 +47,9 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
     
     lazy var clearButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: "closeButton"), for: .normal)
-        button.tintColor = .systemGray
+        let image = UIImage(named: "clearButton")
+        button.setImage(image, for: .normal)
+        
         return button
     }()
     
@@ -112,6 +113,7 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
         clearButton.snp.makeConstraints {
             $0.trailing.equalToSuperview().inset(device.diaryConfigCellRightInset)
             $0.bottom.equalToSuperview().inset(device.diaryConfigCellBottomInset)
+            $0.size.equalTo(CGSize(width: 17, height: 17))
         }
         
         dividerView.snp.makeConstraints {

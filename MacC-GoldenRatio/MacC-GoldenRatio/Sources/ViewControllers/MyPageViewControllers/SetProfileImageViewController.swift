@@ -17,7 +17,7 @@ class SetProfileImageViewController: UIViewController {
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.textColor = .darkgrayColor
         label.text = "마이페이지"
         label.font = .tabTitleFont
         
@@ -98,7 +98,7 @@ class SetProfileImageViewController: UIViewController {
             view.addSubview($0)
         }
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(myDevice.myPageVerticalPadding)
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(myDevice.myPageVerticalPadding2)
             make.leading.equalTo(view.safeAreaLayoutGuide).offset(myDevice.myPageHorizontalPadding)
         }
         profileImageView.snp.makeConstraints { make in

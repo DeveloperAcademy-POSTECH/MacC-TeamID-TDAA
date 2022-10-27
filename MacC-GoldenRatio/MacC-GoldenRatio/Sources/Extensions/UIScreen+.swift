@@ -494,6 +494,14 @@ extension UIScreen {
             default: return 20
             }
         }
+        
+        /// 30
+        var myPageVerticalPadding2: CGFloat {
+            switch self {
+            default: return 30
+            }
+        }
+        
         /// 10
         var myPageVerticalSpacing: CGFloat {
             switch self {

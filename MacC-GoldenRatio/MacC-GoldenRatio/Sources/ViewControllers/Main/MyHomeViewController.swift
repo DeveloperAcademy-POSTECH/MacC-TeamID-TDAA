@@ -38,17 +38,13 @@ final class MyHomeViewController: UIViewController {
 		
 		return button
 	}()
-
+	
     override func viewDidLoad() {
         super.viewDidLoad()
 		setupSubViews()
 		setupViewModel()
+		setupNotification()
     }
-	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		setupViewModel()
-	}
 	
 	private func setupSubViews() {
 		self.view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
@@ -63,6 +59,11 @@ final class MyHomeViewController: UIViewController {
 		}
 	}
 	
+	private func setupNotification() {
+		NotificationCenter.default.addObserver(self, selector: #selector(reloadDiaryCell), name: .reloadDiary, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(changeAddButtonImage), name: .changeAddButtonImage, object: nil)
+	}
+	
 	private func isIndicator() {
 		if viewModel.isInitializing {
 			self.view.isUserInteractionEnabled = false
@@ -71,7 +72,16 @@ final class MyHomeViewController: UIViewController {
 		}
 	}
 	
+	@objc private func reloadDiaryCell() {
+		viewModel.fetchLoadData()
+	}
+	
+	@objc private func changeAddButtonImage() {
+		addDiaryButton.setImage(UIImage(named: "plusButton"), for: .normal)
+	}
+	
 	@objc private func menuButtonTapped() {
+		addDiaryButton.setImage(UIImage(named: "closeButton"), for: .normal)
 		let popUp = PopUpViewController(popUpPosition: .bottom)
 		popUp.addButton(buttonTitle: "다이어리 생성", action: createButtonTapped)
 		popUp.addButton(buttonTitle: "초대코드로 참가", action: joinButtonTapped)

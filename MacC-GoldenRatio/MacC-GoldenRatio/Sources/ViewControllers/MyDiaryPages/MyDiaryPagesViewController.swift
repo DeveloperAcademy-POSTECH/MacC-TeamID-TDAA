@@ -166,6 +166,7 @@ class MyDiaryPagesViewController: UIViewController {
         let ac = UIAlertController(title: "다이어리를 나가시겠습니까?", message: "다이어리를 나가면 공동편집을 할 수 없습니다.", preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "다이어리 나가기", style: .destructive) { _ in
             print("다이어리 나가기")
+			NotificationCenter.default.post(name: .reloadDiary, object: nil)
             self.viewModel.outCurrentDiary(diary: self.diaryData)
             self.backButtonTapped()
         })

@@ -7,11 +7,10 @@
 
 import SnapKit
 import UIKit
-
 class StickerPickerViewController: UIViewController {
     var completion: (_ sticker: String) -> Void = { sticker in }
     private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
-    private let stickerArray: [String] = ["manLong", "manShort", "womanLong", "womanShort", "passport", "hamburgerSticker" ,"pizzaSticker", "fireSticker"]
+    private let stickerArray: [String] = ["broom", "ghost1", "ghost2", "ghost3", "ghost4", "ghost5", "ghost6", "ghost7", "pot", "pumpkin1", "pumpkin2", "pumpkin3", "wizardHat", "manLong", "manShort", "womanLong", "womanShort", "passport", "hamburgerSticker" ,"pizzaSticker", "fireSticker"]
     
     private lazy var xMarkButton: UIButton = {
         let button = UIButton()
@@ -26,6 +25,7 @@ class StickerPickerViewController: UIViewController {
     private lazy var stickerPickerCollectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout.init())
         collectionView.register(StickerPickerCollectionViewCell.classForCoder(), forCellWithReuseIdentifier: StickerPickerCollectionViewCell.identifier)
+        collectionView.showsVerticalScrollIndicator = false
         
         return collectionView
     }()

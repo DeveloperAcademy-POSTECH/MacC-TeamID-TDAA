@@ -34,7 +34,7 @@ class TabBarController: UITabBarController {
 	
 	private lazy var myAlbumsViewController: UIViewController = {
 		let viewController = UINavigationController(rootViewController: MyAlbumViewController())
-		viewController.isNavigationBarHidden = true
+		
 		let pressImage = UIImage(named: "pressAlbum")?.withRenderingMode(.alwaysOriginal)
 		let notPressImage = UIImage(named: "notPressAlbum")?.withRenderingMode(.alwaysOriginal)
 

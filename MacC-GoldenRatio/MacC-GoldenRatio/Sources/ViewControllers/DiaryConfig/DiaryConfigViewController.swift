@@ -77,7 +77,7 @@ class DiaryConfigViewController: UIViewController {
     
     lazy var contentTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "PlaceHolder"
+        textField.placeholder = "다이어리 이름을 입력해주세요."
         textField.text = diaryToConfig?.diaryName ?? nil
         textField.font = UIFont(name: "EF_Diary", size: 17)
         textField.returnKeyType = .done
@@ -176,7 +176,7 @@ class DiaryConfigViewController: UIViewController {
     private func textFieldSetup() {
         view.addSubview(contentTextField)
         contentTextField.snp.makeConstraints {
-            $0.leading.equalToSuperview().inset(20)
+            $0.leading.equalToSuperview().inset(device.diaryConfigCellLeftInset)
             $0.trailing.equalToSuperview().inset(50)
             $0.height.equalTo(44)
             $0.top.equalTo(diaryConfigCollectionView.snp.top).inset(62)
@@ -284,14 +284,20 @@ extension DiaryConfigViewController: UICollectionViewDataSource {
         case .diaryName:
             self.contentTextField.text = nil
             self.contentTextField.endEditing(true)
-        case .location, .diaryDate:
-            self.contentTextField.endEditing(true)
-            
+        case .location:
             UIView.performWithoutAnimation {
                 let contentButton = self.diaryConfigCollectionView.viewWithTag(sender.tag) as? UIButton ?? UIButton()
-                contentButton.setTitle("PlaceHolder", for: .normal)
+                contentButton.setTitle("여행지를 입력해주세요.", for: .normal)
                 contentButton.tintColor = .placeholderText
             }
+            self.contentTextField.endEditing(true)
+        case .diaryDate:
+            UIView.performWithoutAnimation {
+                let contentButton = self.diaryConfigCollectionView.viewWithTag(sender.tag) as? UIButton ?? UIButton()
+                contentButton.setTitle("여행한 날짜를 선택해주세요.", for: .normal)
+                contentButton.tintColor = .placeholderText
+            }
+            self.contentTextField.endEditing(true)
         }
     }
 }

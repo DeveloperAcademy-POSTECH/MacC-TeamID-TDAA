@@ -74,7 +74,7 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
             case .location:
                 contentButton.setTitle(diary.diaryLocation.locationName, for: .normal)
             case .diaryDate:
-                contentButton.setTitle("\(startDate.customFormat()) \(startDate.dayOfTheWeek())  - \(endDate.customFormat()) \(endDate.dayOfTheWeek())", for: .normal)
+                contentButton.setTitle("\(startDate.customFormat()) (\(startDate.dayOfTheWeek()))  - \(endDate.customFormat()) (\(endDate.dayOfTheWeek()))", for: .normal)
             default:
                 contentButton.tintColor = .placeholderText
                 contentButton.setTitle("PlaceHolder", for: .normal)
@@ -83,9 +83,12 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
             switch contentType {
             case .diaryName:
                 contentButton.setTitle(nil, for: .normal)
-            case .location, .diaryDate:
+            case .location:
                 contentButton.tintColor = .placeholderText
-                contentButton.setTitle("PlaceHolder", for: .normal)
+                contentButton.setTitle("여행지를 입력해주세요.", for: .normal)
+            case .diaryDate:
+                contentButton.tintColor = .placeholderText
+                contentButton.setTitle("여행한 날짜를 선택해주세요.", for: .normal)
             default:
                 contentButton.setTitle(nil, for: .normal)
             }
@@ -102,8 +105,8 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
         }
         
         contentTitle.snp.makeConstraints {
-            $0.leading.equalToSuperview().inset(device.diaryConfigCellLeftInset)
-            $0.top.equalToSuperview().inset(device.diaryConfigCellTopInset)
+            $0.leading.equalToSuperview().inset(device.diaryConfigCellLeftInset+4)
+            $0.bottom.equalTo(contentButton.snp.top)
         }
         
         clearButton.snp.makeConstraints {
@@ -113,13 +116,13 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
         
         dividerView.snp.makeConstraints {
             $0.bottom.equalToSuperview()
-            $0.leading.equalToSuperview().inset(16)
+            $0.leading.equalToSuperview().inset(device.diaryConfigCellLeftInset)
             $0.trailing.equalToSuperview()
             $0.height.equalTo(1)
         }
         
         contentButton.snp.makeConstraints{
-            $0.leading.equalTo(contentTitle)
+            $0.leading.equalTo(dividerView)
             $0.trailing.equalToSuperview().inset(50)
             $0.height.equalTo(44)
             $0.bottom.equalToSuperview()

@@ -333,6 +333,14 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
+		CC3FEA222906CDAA005EE514 /* DiaryConfig */ = {
+			isa = PBXGroup;
+			children = (
+				CC6BD74528EC18B8001ED665 /* DiaryConfigCollectionViewCell.swift */,
+			);
+			path = DiaryConfig;
+			sourceTree = "<group>";
+		};
 		CC65514E28F086D900E637A2 /* MyDiaryPages */ = {
 			isa = PBXGroup;
 			children = (
@@ -424,11 +432,11 @@
 		E276B91728E4692B00163833 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				CC3FEA222906CDAA005EE514 /* DiaryConfig */,
 				0A3ED14228F99EEF000D55D8 /* MyPage */,
 				E2BEC46128F82DAB0056E755 /* MyAlbum */,
 				E25753BC28ED8E3B00023619 /* MyHome */,
 				0AAB2AD828EC8C69009FBD96 /* Page */,
-				CC6BD74528EC18B8001ED665 /* DiaryConfigCollectionViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";

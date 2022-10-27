@@ -323,7 +323,7 @@ extension CalendarPickerViewController: UICollectionViewDelegateFlowLayout {
         case 1:
             self.footerView.selectButton.isEnabled = false
             let startDate = dateInterval[0]
-            self.footerView.buttonLabel = "\(startDate.customFormat()) \(startDate.dayOfTheWeek()) 부터"
+            self.footerView.buttonLabel = "\(startDate.customFormat()) (\(startDate.dayOfTheWeek())) 부터"
         case 2:
             self.footerView.selectButton.isEnabled = true
             let startDate = dateInterval[0]

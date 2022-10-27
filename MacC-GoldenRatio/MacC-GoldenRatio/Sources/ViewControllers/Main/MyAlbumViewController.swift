@@ -63,7 +63,7 @@ class MyAlbumViewController: UIViewController {
 	private lazy var albumCollectionView: UICollectionView = {
 		let layout = UICollectionViewFlowLayout()
 		let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-		
+		collectionView.showsVerticalScrollIndicator = false
 		collectionView.delegate = self
 		collectionView.dataSource = self
 
@@ -73,6 +73,13 @@ class MyAlbumViewController: UIViewController {
 
 		return collectionView
 	}()
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		isInitializing = true
+		viewModel.fetchLoadData(completion: {self.isInitializing = false})
+		setupViewModel()
+	}
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -81,11 +88,9 @@ class MyAlbumViewController: UIViewController {
 		setupViewModel()
 	}
 	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		isInitializing = true
-        viewModel.fetchLoadData(completion: {self.isInitializing = false})
-		setupViewModel()
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		self.isInitializing = false
 	}
 	
 	private func setup() {
@@ -95,13 +100,13 @@ class MyAlbumViewController: UIViewController {
 	private func setupSubView() {
 		[titleLabel, titleCollectionView, albumCollectionView].forEach { view.addSubview($0) }
 		titleLabel.snp.makeConstraints {
-			$0.top.equalToSuperview().inset(myDevice.TabBarTitleLabelTop+50)
+			$0.top.equalTo(self.view.safeAreaLayoutGuide).inset(myDevice.TabBarTitleLabelTop)
 			$0.leading.equalToSuperview().inset(myDevice.TabBarTitleLabelLeading)
 		}
 		titleCollectionView.snp.makeConstraints {
 			$0.top.equalTo(titleLabel.snp.bottom).offset(myDevice.TabBarTitleLabelTop)
 			$0.leading.trailing.equalToSuperview().inset(20)
-			$0.bottom.equalToSuperview().inset(630)
+			$0.bottom.equalToSuperview().inset(self.view.bounds.height*0.78)
 		}
 		albumCollectionView.snp.makeConstraints {
 			$0.top.equalTo(titleCollectionView.snp.bottom).offset(30)
@@ -172,11 +177,16 @@ extension MyAlbumViewController: UICollectionViewDelegate {
 
 extension MyAlbumViewController: UICollectionViewDelegateFlowLayout {
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-		var width = 0
-		if !viewModel.albumDatas.isEmpty && viewModel.albumDatas.count > indexPath.item {
-			width = viewModel.albumDatas[indexPath.item].diaryName.count
+		if collectionView == titleCollectionView {
+			var width = 0
+			if !viewModel.albumDatas.isEmpty && viewModel.albumDatas.count > indexPath.item {
+				width = viewModel.albumDatas[indexPath.item].diaryName.count
+			}
+			return CGSize(width: width*20, height: 30)
+		} else {
+			let size = (self.view.bounds.width-60)/3
+			return CGSize(width: size, height: size)
 		}
-		return collectionView == titleCollectionView ? CGSize(width: width*20, height: 50) : CGSize(width: 110, height: 110)
 	}
 }
 
@@ -199,7 +209,7 @@ private extension MyAlbumViewController {
 		let label = UILabel()
 		label.text = text
 		label.font = myDevice.collectionBackgoundViewFont
-		label.textColor = UIColor.buttonColor
+		label.textColor = UIColor.subTextColor
 		label.textAlignment = .center
 		
 		emptyView.addSubview(label)

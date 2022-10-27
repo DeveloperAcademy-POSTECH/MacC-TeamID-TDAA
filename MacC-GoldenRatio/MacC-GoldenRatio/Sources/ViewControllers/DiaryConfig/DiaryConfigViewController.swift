@@ -134,7 +134,7 @@ class DiaryConfigViewController: UIViewController {
                     switch self.configState {
                     case .create:
                         self.viewModel.addDiary()
-                        
+						NotificationCenter.default.post(name: .reloadDiary, object: nil)
                         let myDiaryPagesVC = MyDiaryPagesViewController(diaryData: self.viewModel.diary!)
                         parentNavigationController.isNavigationBarHidden = false
                         parentNavigationController.pushViewController(myDiaryPagesVC, animated: true)

@@ -147,6 +147,9 @@ class PopUpViewController: UIViewController {
     }
     
     @objc func dismissController() {
+		if popUpPosition == .bottom {
+			NotificationCenter.default.post(name: .changeAddButtonImage, object: nil)
+		}
         self.dismiss(animated: false, completion: nil)
     }
 }

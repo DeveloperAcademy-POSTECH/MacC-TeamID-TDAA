@@ -197,11 +197,15 @@ class MyDiaryPagesViewController: UIViewController {
         }
     }
     
+    // MARK: - Setup methods
+    
     private func viewModelSetup() {
         // diary Config VC의 정보를 통한 UI Update
         Task {
             do {
-                self.viewModel.diaryDataSetup()
+                self.viewModel.diaryDataSetup() {
+                    print("다이어리 가져오기 완료")
+                }
                 try await self.viewModel.getThumbnailURL()
                 
                 self.viewModel.$thumbnailURL
@@ -220,8 +224,6 @@ class MyDiaryPagesViewController: UIViewController {
             }
         }
     }
-    
-    // MARK: - Setup methods
     
     private func collectionViewSetup() {
         
@@ -289,23 +291,23 @@ extension MyDiaryPagesViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MyDiaryPagesViewCollectionViewCell", for: indexPath) as? MyDiaryPagesViewCollectionViewCell else { return UICollectionViewCell() }
         
         if !viewModel.thumbnailURL.isEmpty {
-            if viewModel.thumbnailURL[indexPath.row] != "NoURL" {
                 Task {
-                    
+                    let pageUUID = viewModel.diaryData.diaryPages[indexPath.row].pages[0].pageUUID
                     let imageURL = viewModel.thumbnailURL[indexPath.row]
-                    guard let image = ImageManager.shared.searchImage(urlString: imageURL) else {
-                        FirebaseStorageManager.downloadImage(urlString: imageURL) { image in
-                            ImageManager.shared.cacheImage(urlString: imageURL, image: image ?? UIImage())
-                            cell.previewImageView.image = image
+                    
+                    guard let image = ImageManager.shared.searchImage(urlString: pageUUID) else {
+                        if viewModel.thumbnailURL[indexPath.row] != "NoURL" {
+                            FirebaseStorageManager.downloadImage(urlString: imageURL) { image in
+                                ImageManager.shared.cacheImage(urlString: imageURL, image: image ?? UIImage())
+                                cell.previewImageView.image = image
+                            }
                         }
-                        return
+                        return cell
                     }
                     cell.previewImageView.image = image
+                    return cell
                 }
-            }
         }
-        
-        
         return cell
     }
     
@@ -316,10 +318,13 @@ extension MyDiaryPagesViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let selectedDay = indexPath.item
         
-        let pageViewController = PageViewController(diary: self.viewModel.diaryData, selectedDay: selectedDay)
-        
-        self.navigationController?.pushViewController(pageViewController, animated: false)
-        self.navigationController?.isNavigationBarHidden = false
+        self.viewModel.diaryDataSetup() {
+            DispatchQueue.main.async {
+                let pageViewController = PageViewController(diary: self.viewModel.diaryData, selectedDay: selectedDay)
+                self.navigationController?.pushViewController(pageViewController, animated: false)
+                self.navigationController?.isNavigationBarHidden = false
+            }
+        }
     }
 
 }

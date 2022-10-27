@@ -15,10 +15,11 @@ class MyDiaryPagesViewModel {
     @Published var thumbnailURL: [String] = []
     @Published var diaryData: Diary = Diary(diaryUUID: "", diaryName: "", diaryLocation: Location(locationName: "", locationAddress: "", locationCoordinate: []), diaryStartDate: "", diaryEndDate: "", diaryCover: "")
     
-    func diaryDataSetup() {
+    func diaryDataSetup(_ completion: @escaping () -> Void) {
         Task {
             do {
                 self.diaryData = try await getDiaryData(uuid: self.diaryData.diaryUUID)
+                completion()
             } catch {
                 print(error)
             }
@@ -30,7 +31,6 @@ class MyDiaryPagesViewModel {
         let documents = try await query.getDocuments()
         let data = try await documents.documents[0].data(as: Diary.self)
         
-        self.diaryData = data
         return data
     }
     

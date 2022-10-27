@@ -46,6 +46,11 @@ final class MyHomeViewController: UIViewController {
 		setupNotification()
     }
 	
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		viewModel.isInitializing = false
+	}
+	
 	private func setupSubViews() {
 		self.view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
 		
@@ -127,7 +132,7 @@ extension MyHomeViewController: UICollectionViewDataSource {
 			let label = UILabel()
 			label.text = "다이어리를 추가해주세요."
 			label.font = myDevice.collectionBackgoundViewFont
-			label.textColor = UIColor.buttonColor
+			label.textColor = UIColor.subTextColor
 			label.textAlignment = .center
 			collectionView.backgroundView = label
 		} else {

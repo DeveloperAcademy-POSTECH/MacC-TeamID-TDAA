@@ -28,8 +28,10 @@ class MyAlbumTitleCollectionViewCell: UICollectionViewCell {
 		didSet{
 			if isSelected {
 				lineView.isHidden = false
+				titleLabel.textColor = .black
 			} else {
 				lineView.isHidden = true
+				titleLabel.textColor = .middleGrayColor
 			}
 		}
 	}
@@ -38,8 +40,10 @@ class MyAlbumTitleCollectionViewCell: UICollectionViewCell {
 		[titleLabel, lineView].forEach { self.addSubview($0) }
 		if isFirstCell {
 			lineView.isHidden = false
+			titleLabel.textColor = .black
 		} else {
 			lineView.isHidden = true
+			titleLabel.textColor = .middleGrayColor
 		}
 		titleLabel.text = title
 		titleLabel.textAlignment = .center

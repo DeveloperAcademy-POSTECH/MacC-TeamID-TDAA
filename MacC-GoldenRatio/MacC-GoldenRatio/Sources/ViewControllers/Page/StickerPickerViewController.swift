@@ -7,11 +7,10 @@
 
 import SnapKit
 import UIKit
-
 class StickerPickerViewController: UIViewController {
     var completion: (_ sticker: String) -> Void = { sticker in }
     private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
-    private let stickerArray: [String] = ["manLong", "manShort", "womanLong", "womanShort", "passport", "hamburgerSticker" ,"pizzaSticker", "fireSticker"]
+    private let stickerArray: [String] = ["broom", "ghost1", "ghost2", "ghost3", "ghost4", "ghost5", "ghost6", "ghost7", "pot", "pumpkin1", "pumpkin2", "pumpkin3", "wizardHat", "manLong", "manShort", "womanLong", "womanShort", "passport", "hamburgerSticker" ,"pizzaSticker", "fireSticker"]
     
     private lazy var xMarkButton: UIButton = {
         let button = UIButton()
@@ -26,6 +25,7 @@ class StickerPickerViewController: UIViewController {
     private lazy var stickerPickerCollectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout.init())
         collectionView.register(StickerPickerCollectionViewCell.classForCoder(), forCellWithReuseIdentifier: StickerPickerCollectionViewCell.identifier)
+        collectionView.showsVerticalScrollIndicator = false
         
         return collectionView
     }()
@@ -34,13 +34,22 @@ class StickerPickerViewController: UIViewController {
         super.viewDidLoad()
         
         DispatchQueue.main.async {
-            self.view.backgroundColor = .systemBackground
+            self.view.backgroundColor = .white
             self.stickerPickerCollectionView.dataSource = self
             self.stickerPickerCollectionView.delegate = self
+            self.setShadowEffect()
             self.addSubviews()
             self.configureConstraints()
             self.configureButtonSize()
         }
+    }
+    
+    private func setShadowEffect() {
+        view.layer.shadowColor = UIColor.black.cgColor // 검정색 사용
+        view.layer.masksToBounds = false
+        view.layer.shadowOffset = CGSize(width: 5, height: 5) // 반경에 대해서 너무 적용이 되어서 4point 정도 ㅐ림.
+        view.layer.shadowRadius = 8 // 반경?
+        view.layer.shadowOpacity = 0.5
     }
     
     private func addSubviews() {
@@ -51,7 +60,7 @@ class StickerPickerViewController: UIViewController {
     
     private func configureConstraints() {
         xMarkButton.snp.makeConstraints { make in
-            make.leading.top.equalToSuperview().inset(myDevice.stickerPickerPadding)
+            make.trailing.top.equalToSuperview().inset(myDevice.stickerPickerPadding)
             make.size.equalTo(myDevice.stickerPickerButtonFrameSize)
         }
         

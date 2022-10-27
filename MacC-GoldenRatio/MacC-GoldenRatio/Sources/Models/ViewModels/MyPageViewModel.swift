@@ -17,7 +17,7 @@ class MyPageViewModel {
     @Published var myUser: User = User(userUID: "", userName: "", userImageURL: "", diaryUUIDs: [""])
     @Published var myProfileImage: UIImage = UIImage()
     @Published var myTravelLocations: [String] = []
-    let menuArray: [(String, String?)] = [("앱 버전", "1.0.0"), ("오픈소스",">"), ("앱 평가하기",">"), ("로그아웃", ">"), ("회원탈퇴", ">")]
+    let menuArray: [(String, String?)] = [("앱 버전", "1.0.1"), ("오픈소스",">"), ("앱 평가하기",">"), ("로그아웃", ">"), ("회원탈퇴", ">")]
     
     init() {
         Task{

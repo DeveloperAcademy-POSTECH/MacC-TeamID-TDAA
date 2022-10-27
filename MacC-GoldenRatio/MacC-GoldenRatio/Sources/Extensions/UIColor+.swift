@@ -59,4 +59,9 @@ extension UIColor {
 		let color = UIColor(named: "calendarWeeklyGrayColor")!
 		return color
 	}
+
+    static var calendarWeeklyGrayColor: UIColor {
+        let color = UIColor(named: "calendarWeeklyGrayColor")!
+        return color
+    }
 }

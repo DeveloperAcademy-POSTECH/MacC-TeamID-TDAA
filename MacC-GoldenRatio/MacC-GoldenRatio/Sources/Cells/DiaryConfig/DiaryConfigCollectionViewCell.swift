@@ -47,7 +47,7 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
     
     lazy var clearButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "xmark.circle.fill"), for: .normal)
+        button.setImage(UIImage(named: "closeButton"), for: .normal)
         button.tintColor = .systemGray
         return button
     }()

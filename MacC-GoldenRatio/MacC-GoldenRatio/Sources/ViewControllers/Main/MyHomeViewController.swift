@@ -132,7 +132,7 @@ extension MyHomeViewController: UICollectionViewDataSource {
 			let label = UILabel()
 			label.text = "다이어리를 추가해주세요."
 			label.font = myDevice.collectionBackgoundViewFont
-			label.textColor = UIColor.subTextColor
+            label.textColor = UIColor(named: "calendarWeeklyGrayColor")
 			label.textAlignment = .center
 			collectionView.backgroundView = label
 		} else {

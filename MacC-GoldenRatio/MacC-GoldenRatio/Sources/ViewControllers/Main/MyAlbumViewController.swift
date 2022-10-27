@@ -209,7 +209,7 @@ private extension MyAlbumViewController {
 		let label = UILabel()
 		label.text = text
 		label.font = myDevice.collectionBackgoundViewFont
-		label.textColor = UIColor.subTextColor
+        label.textColor = UIColor(named: "calendarWeeklyGrayColor")
 		label.textAlignment = .center
 		
 		emptyView.addSubview(label)

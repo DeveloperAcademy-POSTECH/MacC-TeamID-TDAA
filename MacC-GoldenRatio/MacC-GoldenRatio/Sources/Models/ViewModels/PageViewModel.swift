@@ -103,14 +103,14 @@ class PageViewModel {
     }
     
     func updateDBPages() {
-        let items = stickerArray.map{
-            $0.map{
-                $0.stickerViewData.item
-            }
-        }
-        items.enumerated().forEach{
-            diary.diaryPages[selectedDay].pages[$0].items = $1
-        }
-        FirebaseClient().updatePage(diary: diary)
+//        let items = stickerArray.map{
+//            $0.map{
+//                $0.stickerViewData.item
+//            }
+//        }
+//        items.enumerated().forEach{
+//            diary.diaryPages[selectedDay].pages[$0].items = $1
+//        }
+//        FirebaseClient().updatePage(diary: diary)
     }
 }

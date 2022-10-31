@@ -4,6 +4,8 @@
 //
 //  Created by 김상현 on 2022/10/05.
 //
+import RxCocoa
+import RxSwift
 import MapKit
 import SnapKit
 import UIKit
@@ -57,11 +59,13 @@ class MapStickerView: StickerView {
     init(mapItem: MKMapItem) {
         super.init(frame: mapLabel.frame)
 
-        DispatchQueue.main.async {
-            self.initializeStickerViewData(itemType: .location)
-            self.mapItemContents(mapItem: mapItem)
-            self.setLocationView()
-            self.setLocationViewFrame()
+        Task {
+            self.stickerViewData = await StickerViewData(itemType: .location)
+            await self.mapItemContents(mapItem: mapItem)
+            await self.setLocationView()
+            await self.setLocationViewFrame()
+            await self.configureStickerViewData()
+            
             super.setupContentView(content: self.locationView.convertViewToImageView())
             super.setupDefaultAttributes()
         }
@@ -71,11 +75,12 @@ class MapStickerView: StickerView {
     init(item: Item) {
         super.init(frame: CGRect())
 
-        DispatchQueue.main.async{
-            self.stickerViewData = StickerViewData(item: item)
-            self.setLocationView()
-            self.setLocationViewFrame()
-            self.configureStickerViewData()
+        Task {
+            self.stickerViewData = await StickerViewData(item: item)
+            await self.setLocationView()
+            await self.setLocationViewFrame()
+            await self.configureStickerViewData()
+            
             super.setupContentView(content: self.locationView.convertViewToImageView())
             super.setupDefaultAttributes()
         }
@@ -85,26 +90,35 @@ class MapStickerView: StickerView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func mapItemContents(mapItem: MKMapItem) {
-        let locationName = mapItem.name ?? ""
-        let locationAddress = mapItem.placemark.title ?? ""
-        let latitude = mapItem.placemark.coordinate.latitude.description
-        let longitude = mapItem.placemark.coordinate.longitude.description
+    private func mapItemContents(mapItem: MKMapItem) async {
+        Task {
+            let locationName = mapItem.name ?? ""
+            let locationAddress = mapItem.placemark.title ?? ""
+            let latitude = mapItem.placemark.coordinate.latitude.description
+            let longitude = mapItem.placemark.coordinate.longitude.description
+            let itemContents = [locationName, locationAddress, latitude, longitude]
+            
+            await self.stickerViewData?.updateContents(contents: itemContents)
+        }
+    }
+    
+    private func setLocationView() async {
         
-        self.stickerViewData.item.contents = [locationName, locationAddress, latitude, longitude]
-    }
-    
-    private func setLocationView() {
-        let item = super.stickerViewData.item
-        let locationName = item.contents[0]
-        let locationAddress = item.contents[1]
+        self.stickerViewData?.contentsObservable
+            .observe(on: MainScheduler.asyncInstance)
+            .subscribe(onNext: {
+                let locationName = $0[0]
+                let locationAddress = $0[1]
+                
+                self.locationNameLabel.text = locationName
+                self.locationAddressLabel.text = locationAddress
+            })
+            .disposed(by: self.disposeBag)
 
-        locationNameLabel.text = locationName
-        locationAddressLabel.text = locationAddress
     }
     
-    private func setLocationViewFrame() {
-        [pinImageView, locationNameLabel, locationAddressLabel].forEach{
+    private func setLocationViewFrame() async {
+        [pinImageView, locationNameLabel, locationAddressLabel].forEach {
             locationView.addSubview($0)
         }
         pinImageView.frame = CGRect(origin: .init(x: 15, y: 18.5), size: .init(width: 25, height: 25))

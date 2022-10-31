@@ -51,6 +51,44 @@ struct Item: Codable {
 	var itemTransform: [Double]
 }
 
+extension Item {
+    
+    func fetchFrame() -> CGRect {
+        let x = self.itemFrame[0]
+        let y = self.itemFrame[1]
+        let width = self.itemFrame[2]
+        let height = self.itemFrame[3]
+
+        return CGRect(x: x, y: y, width: width, height: height)
+    }
+    
+    func fetchBounds() -> CGRect {
+        let x = self.itemBounds[0]
+        let y = self.itemBounds[1]
+        let width = self.itemBounds[2]
+        let height = self.itemBounds[3]
+
+        return CGRect(x: x, y: y, width: width, height: height)
+    }
+    
+    func fetchTransform() -> CGAffineTransform {
+        let a = self.itemTransform[0]
+        let b = self.itemTransform[1]
+        let c = self.itemTransform[2]
+        let d = self.itemTransform[3]
+        let tx = self.itemTransform[4]
+        let ty = self.itemTransform[5]
+
+        return CGAffineTransform(a: a, b: b, c: c, d: d, tx: tx, ty: ty)
+    }
+    
+    func fetchContents() -> [String] {
+        let contents = self.contents
+
+        return contents
+    }
+}
+
 struct TextBox: Codable {
 	let text: String
 	let fontName: String

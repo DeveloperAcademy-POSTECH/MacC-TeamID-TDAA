@@ -6,6 +6,8 @@
 //
 
 import MapKit
+import RxSwift
+import RxCocoa
 import SnapKit
 import UIKit
 
@@ -16,7 +18,9 @@ protocol StickerViewDelegate {
 
 class StickerView: UIView {
     var delegate: StickerViewDelegate!
-    internal var stickerViewData: StickerViewData!
+    var disposeBag = DisposeBag()
+    
+    internal var stickerViewData: StickerViewData?
     internal let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
 
     internal var touchStart: CGPoint?
@@ -39,8 +43,8 @@ class StickerView: UIView {
             }
             if newValue {
                 enableTranslucency(state: !newValue)
-                guard let stickerViewData else { return }
-                stickerViewData.updateItem(sticker: self)
+//                guard let stickerViewData else { return }
+//                stickerViewData.updateItem(sticker: self)
             }
         }
     }
@@ -58,17 +62,34 @@ class StickerView: UIView {
         }
     }
 
-    internal func initializeStickerViewData(itemType: ItemType) {
-        let id = UUID().uuidString + String(Date().timeIntervalSince1970)
-        let item = Item(itemUUID: id, itemType: itemType, contents: [], itemFrame: [], itemBounds: [], itemTransform: [])
-        self.stickerViewData = StickerViewData(item: item)
-    }
 
-    /// StickerViewData 를 현재 View의 프로퍼티들에게 적용합니다.
-    internal func configureStickerViewData() {
-        self.frame = self.stickerViewData.fetchFrame()
-        self.bounds = self.stickerViewData.fetchBounds()
-        self.transform = self.stickerViewData.fetchTransform()
+    /// StickerViewData 를 현재 View의 프로퍼티들와 binding 합니다.
+    internal func configureStickerViewData() async {
+        
+        self.stickerViewData?.frameObservable
+            .observe(on: MainScheduler.asyncInstance)
+            .debug()
+            .subscribe(onNext: {
+                self.frame = $0
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.stickerViewData?.boundsObservable
+            .observe(on: MainScheduler.asyncInstance)
+            .debug()
+            .subscribe(onNext: {
+                self.bounds = $0
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.stickerViewData?.transitionObservable
+            .observe(on: MainScheduler.asyncInstance)
+            .debug()
+            .subscribe(onNext: {
+                self.transform = $0
+            })
+            .disposed(by: self.disposeBag)
+        
     }
     
     internal func setupContentView(content: UIView) {

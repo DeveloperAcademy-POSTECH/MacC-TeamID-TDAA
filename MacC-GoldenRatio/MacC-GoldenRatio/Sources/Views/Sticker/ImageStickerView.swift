@@ -4,7 +4,8 @@
 //
 //  Created by 김상현 on 2022/10/05.
 //
-
+import RxCocoa
+import RxSwift
 import UIKit
 
 class ImageStickerView: StickerView {
@@ -19,9 +20,11 @@ class ImageStickerView: StickerView {
     init(image: UIImage, diaryUUID: String) {
         super.init(frame: imageView.frame)
 
-        upLoadImage(image: image, path: "Diary/" + diaryUUID.description)
-        DispatchQueue.main.async {
-            self.initializeStickerViewData(itemType: .image)
+        self.upLoadImage(image: image, path: "Diary/" + diaryUUID.description)
+        
+        Task {
+            self.stickerViewData = await StickerViewData(itemType: .image)
+            await self.configureStickerViewData()
             super.setupContentView(content: self.imageView)
             super.setupDefaultAttributes()
         }
@@ -31,10 +34,10 @@ class ImageStickerView: StickerView {
     init(item: Item) {
         super.init(frame: CGRect())
 
-        DispatchQueue.main.async{
-            self.stickerViewData = StickerViewData(item: item)
-            self.configureStickerViewData()
-            self.configureImageView()
+        Task {
+            self.stickerViewData = await StickerViewData(item: item)
+            await self.configureStickerViewData()
+            await self.configureImageView()
             super.setupContentView(content: self.imageView)
             super.setupDefaultAttributes()
         }
@@ -44,19 +47,25 @@ class ImageStickerView: StickerView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func configureImageView() {
-        guard let imageUrl = super.stickerViewData.item.contents.first else { return }
+    private func configureImageView() async {
         
-        let image = ImageManager.shared.searchImage(urlString: imageUrl)
-        
-        switch image {
-        case nil:
-            downLoadImage(imageUrl: imageUrl)
-            return
-        default:
-            self.imageView.image = image
-            return
-        }
+        self.stickerViewData?.contentsObservable
+            .observe(on: MainScheduler.asyncInstance)
+            .subscribe(onNext: {
+                guard let imageUrl = $0.first else { return }
+                let image = ImageManager.shared.searchImage(urlString: imageUrl)
+                
+                switch image {
+                case nil:
+                    self.downLoadImage(imageUrl: imageUrl)
+                    return
+                default:
+                    self.imageView.image = image
+                    return
+                }
+            })
+            .disposed(by: self.disposeBag)
+    
     }
     
     private func downLoadImage(imageUrl: String) {
@@ -72,7 +81,9 @@ class ImageStickerView: StickerView {
             self.imageView.image = image
             guard let url = url else { return }
             ImageManager.shared.cacheImage(urlString: url.absoluteString, image: image)
-            self.stickerViewData.updateContents(contents: [url.absoluteString])
+            Task {
+                await self.stickerViewData?.updateContents(contents: [url.absoluteString])
+            }
         }
     }
 

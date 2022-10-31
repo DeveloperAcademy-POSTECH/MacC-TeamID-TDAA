@@ -5,6 +5,8 @@
 //  Created by 김상현 on 2022/10/05.
 //
 
+import RxSwift
+import RxCocoa
 import SnapKit
 import UIKit
 
@@ -30,20 +32,23 @@ class TextStickerView: StickerView {
     init() {
         super.init(frame: textView.frame)
         
-        self.initializeStickerViewData(itemType: .text)
-        self.setTextView()
-        super.setupContentView(content: textView)
-        super.setupDefaultAttributes()
+        Task {
+            self.stickerViewData = await StickerViewData(itemType: .text)
+            await self.configureStickerViewData()
+            await self.setTextView()
+            super.setupContentView(content: textView)
+            super.setupDefaultAttributes()
+        }
     }
     
     /// DB에서 StickerView를 불러옵니다.
     init(item: Item) {
         super.init(frame: textView.frame)
 
-        DispatchQueue.main.async{
-            self.stickerViewData = StickerViewData(item: item)
-            self.configureStickerViewData()
-            self.setTextView()
+        Task {
+            self.stickerViewData = await StickerViewData(item: item)
+            await self.configureStickerViewData()
+            await self.setTextView()
             super.setupContentView(content: self.textView)
             super.setupDefaultAttributes()
         }
@@ -53,11 +58,16 @@ class TextStickerView: StickerView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setTextView() {
+    private func setTextView() async {
+        
         self.textView.delegate = self
         
-        guard let text = self.stickerViewData.item.contents.first else { return }
-        self.textView.text = text
+        self.stickerViewData?.contentsObservable
+            .observe(on: MainScheduler.asyncInstance)
+            .map { $0[0] }
+            .bind(to: self.textView.rx.text)
+            .disposed(by: self.disposeBag)
+        
     }
 }
 
@@ -78,14 +88,18 @@ extension TextStickerView {
 extension TextStickerView: UITextViewDelegate {
     
     func textViewDidChange(_ textView: UITextView) {
-        stickerViewData.updateContents(contents: [self.textView.text])
-        
-        let size = CGSize(width: 2000, height: 2000)
-        let estimatedSize = textView.sizeThatFits(size)
+        Task {
+            await stickerViewData?.updateContents(contents: [self.textView.text])
 
-        textView.frame = CGRect(origin: textView.frame.origin, size: estimatedSize)
-        bounds = textView.frame
-        updateControlsPosition()
+            let size = CGSize(width: 2000, height: 2000)
+            let estimatedSize = textView.sizeThatFits(size)
+
+            DispatchQueue.main.async {
+                self.textView.frame = CGRect(origin: textView.frame.origin, size: estimatedSize)
+                self.bounds = self.textView.frame
+                self.updateControlsPosition()
+            }
+        }
     }
     
 }

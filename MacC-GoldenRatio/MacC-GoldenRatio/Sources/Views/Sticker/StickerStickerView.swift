@@ -5,6 +5,8 @@
 //  Created by 김상현 on 2022/10/05.
 //
 
+import RxCocoa
+import RxSwift
 import UIKit
 
 class StickerStickerView: StickerView {
@@ -20,10 +22,11 @@ class StickerStickerView: StickerView {
     init(sticker: String) {
         super.init(frame: stickerImageView.frame)
 
-        DispatchQueue.main.async {
-            self.initializeStickerViewData(itemType: .sticker)
-            self.stickerViewData.item.contents = [sticker]
-            self.setStickerImage()
+        Task{
+            self.stickerViewData = await StickerViewData(itemType: .sticker)
+            await self.configureStickerViewData()
+            await self.stickerViewData?.updateContents(contents: [sticker])
+            await self.setStickerImage()
             super.setupContentView(content: self.stickerImageView)
             super.setupDefaultAttributes()
         }
@@ -33,21 +36,29 @@ class StickerStickerView: StickerView {
     init(item: Item) {
         super.init(frame: CGRect())
 
-        DispatchQueue.main.async{
-            self.stickerViewData = StickerViewData(item: item)
-            self.configureStickerViewData()
-            self.setStickerImage()
+        Task{
+            self.stickerViewData = await StickerViewData(item: item)
+            await self.configureStickerViewData()
+            await self.setStickerImage()
             super.setupContentView(content: self.stickerImageView)
             super.setupDefaultAttributes()
         }
+       
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setStickerImage() {
-        guard let stickerString = super.stickerViewData.item.contents.first else { return }
-        stickerImageView.image = UIImage(named: stickerString)
+    private func setStickerImage() async {
+        
+        self.stickerViewData?.contentsObservable
+            .observe(on: MainScheduler.asyncInstance)
+            .map { $0[0] }
+            .subscribe(onNext: {
+                self.stickerImageView.image = UIImage(named: $0)
+            })
+            .disposed(by: self.disposeBag)
+        
     }
 }

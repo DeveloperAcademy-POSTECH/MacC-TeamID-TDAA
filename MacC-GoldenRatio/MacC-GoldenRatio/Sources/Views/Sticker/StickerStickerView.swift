@@ -22,7 +22,7 @@ class StickerStickerView: StickerView {
         super.init(frame: stickerImageView.frame)
 
         Task{
-            self.stickerViewData = await StickerViewData(itemType: .sticker, contents: [sticker], appearPoint: appearPoint, defaultSize: stickerImageView.frame.size)
+            self.stickerViewData = await StickerViewData(itemType: .sticker, contents: [sticker], appearPoint: appearPoint, defaultSize: stickerImageView.frame.size, lastEditor: UserManager.shared.userUID)
             await self.configureStickerViewData()
             await self.setStickerImage()
 

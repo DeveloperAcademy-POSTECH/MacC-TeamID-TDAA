@@ -11,10 +11,10 @@ import SnapKit
 import UIKit
 
 class TextStickerView: StickerView {    
-    override var subviewIsHidden: Bool {
+    override var isGestureEnabled: Bool {
         willSet {
-            self.textView.isEditable = !newValue
-            self.textView.isUserInteractionEnabled = !newValue
+            self.textView.isEditable = newValue
+            self.textView.isUserInteractionEnabled = newValue
         }
     }
     
@@ -33,7 +33,7 @@ class TextStickerView: StickerView {
         super.init(frame: textView.frame)
         
         Task {
-            self.stickerViewData = await StickerViewData(itemType: .text, contents: [""], appearPoint: appearPoint, defaultSize: textView.frame.size)
+            self.stickerViewData = await StickerViewData(itemType: .text, contents: [""], appearPoint: appearPoint, defaultSize: textView.frame.size, lastEditor: UserManager.shared.userUID)
             await self.configureStickerViewData()
             await self.setTextView()
             
@@ -75,6 +75,11 @@ class TextStickerView: StickerView {
             .disposed(by: self.disposeBag)
         
     }
+    
+    override func changeLastEditor(lastEditor: String?) {
+        textView.endEditing(true)
+    }
+    
 }
 
 extension TextStickerView {
@@ -94,14 +99,12 @@ extension TextStickerView {
 extension TextStickerView: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        Task {
-            await stickerViewData?.updateItem(sticker: self, contents: [textView.text])
-        }
+        print("begineding")
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
         Task {
-            await stickerViewData?.updateItem(sticker: self, contents: [textView.text])
+            await stickerViewData?.updateItem(sticker: self, contents: [textView.text], lastEditor: nil)
         }
     }
     
@@ -113,17 +116,6 @@ extension TextStickerView: UITextViewDelegate {
             self.bounds = self.textView.frame
             self.updateControlsPosition()
         }
-        
-        
-//        Task {
-//
-//            let size = CGSize(width: 2000, height: 2000)
-//            let estimatedSize = textView.sizeThatFits(size)
-//            let textViewFrame = CGRect(origin: textView.frame.origin, size: estimatedSize)
-//            await stickerViewData?.updateUIItem(frame: textViewFrame, bounds: textViewFrame, transform: self.transform)
-//            await stickerViewData?.updateContents(contents: [self.textView.text])
-//            self.updateControlsPosition()
-//        }
     }
     
 }

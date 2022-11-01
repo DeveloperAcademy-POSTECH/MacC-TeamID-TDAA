@@ -24,7 +24,7 @@ class ImageStickerView: StickerView {
         self.upLoadImage(image: image, path: "Diary/" + diaryUUID.description)
         
         Task {
-            self.stickerViewData = await StickerViewData(itemType: .image, contents: [""], appearPoint: appearPoint, defaultSize: imageView.frame.size)
+            self.stickerViewData = await StickerViewData(itemType: .image, contents: [""], appearPoint: appearPoint, defaultSize: imageView.frame.size, lastEditor: UserManager.shared.userUID)
             await self.configureStickerViewData()
             
             DispatchQueue.main.async {

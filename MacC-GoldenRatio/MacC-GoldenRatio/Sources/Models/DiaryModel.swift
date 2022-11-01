@@ -49,6 +49,7 @@ struct Item: Codable {
     var itemBounds: [Double]
     /// Sticker의 크기, 회전각을 나타냅니다.
 	var itemTransform: [Double]
+    var lastEditor: String?
 }
 
 extension Item {

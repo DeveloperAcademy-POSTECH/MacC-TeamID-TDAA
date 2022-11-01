@@ -61,7 +61,7 @@ class MapStickerView: StickerView {
 
         Task {
             let mapItemContents = await self.mapItemContents(mapItem: mapItem)
-            self.stickerViewData = await StickerViewData(itemType: .location, contents: mapItemContents, appearPoint: appearPoint, defaultSize: CGSize(width: 100, height: 100))
+            self.stickerViewData = await StickerViewData(itemType: .location, contents: mapItemContents, appearPoint: appearPoint, defaultSize: CGSize(width: 100, height: 100), lastEditor: UserManager.shared.userUID)
             
             await self.setLocationView()
             await self.setLocationViewFrame()

@@ -56,8 +56,8 @@ class PageViewModel {
     
     func hideStickerSubview(_ value: Bool) {
         stickerArray.forEach{
-            $0.forEach{
-                $0.subviewIsHidden = value
+            $0.forEach{ stickerView in
+                stickerView.changeLastEditor(lastEditor: nil)
             }
         }
     }

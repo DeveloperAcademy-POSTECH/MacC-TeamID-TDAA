@@ -62,34 +62,38 @@ class StickerView: UIView {
         }
     }
 
-
+    internal func stickerUIDidChange() async {
+        Task {
+            await self.stickerViewData?.updateUIItem(frame: self.frame, bounds: self.bounds, transform: self.transform)
+        }
+    }
+    
     /// StickerViewData 를 현재 View의 프로퍼티들와 binding 합니다.
     internal func configureStickerViewData() async {
         
         self.stickerViewData?.frameObservable
-            .observe(on: MainScheduler.asyncInstance)
+            .observe(on: MainScheduler.instance)
             .debug()
             .subscribe(onNext: {
-                self.frame = $0
+                self.center = $0.origin
+                self.frame.size = $0.size
             })
             .disposed(by: self.disposeBag)
         
         self.stickerViewData?.boundsObservable
-            .observe(on: MainScheduler.asyncInstance)
-            .debug()
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: {
                 self.bounds = $0
             })
             .disposed(by: self.disposeBag)
         
         self.stickerViewData?.transitionObservable
-            .observe(on: MainScheduler.asyncInstance)
-            .debug()
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: {
                 self.transform = $0
             })
             .disposed(by: self.disposeBag)
-        
+
     }
     
     internal func setupContentView(content: UIView) {

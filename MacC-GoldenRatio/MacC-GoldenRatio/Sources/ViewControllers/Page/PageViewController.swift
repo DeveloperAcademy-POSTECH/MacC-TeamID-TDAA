@@ -16,12 +16,13 @@ enum pageViewMode {
 }
 
 class PageViewController: UIViewController {
-//    private var cancelBag = Set<AnyCancellable>()
+    private lazy var newStickerAppearPoint = CGPoint(x: self.view.center.x, y: self.view.center.y - 100)
+    
     private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
     private let imagePicker = UIImagePickerController()
     private var myDiariesViewModalBackgroundView = UIView()
     private var pageViewModel: PageViewModel!
-    
+        
     private var isEditMode = false {
         willSet{
             switch newValue {
@@ -292,7 +293,7 @@ class PageViewController: UIViewController {
     
     // MARK: Completion Method
     private func addMapSticker(mapItem: MKMapItem) {
-        let mapStickerView = MapStickerView(mapItem: mapItem)
+        let mapStickerView = MapStickerView(mapItem: mapItem, appearPoint: newStickerAppearPoint)
         self.addSticker(stickerView: mapStickerView)
         self.pageViewModel.appendSticker(mapStickerView)
 
@@ -300,19 +301,19 @@ class PageViewController: UIViewController {
     
     private func addImageSticker(image: UIImage?) {
         guard let image = image else { return }
-        let imageStickerView = ImageStickerView(image: image, diaryUUID: pageViewModel.diary.diaryUUID)
+        let imageStickerView = ImageStickerView(image: image, diaryUUID: pageViewModel.diary.diaryUUID, appearPoint: newStickerAppearPoint)
         self.addSticker(stickerView: imageStickerView)
         self.pageViewModel.appendSticker(imageStickerView)
     }
     
     private func addSticker(sticker: String) {
-        let imageStickerView = StickerStickerView(sticker: sticker)
+        let imageStickerView = StickerStickerView(sticker: sticker, appearPoint: newStickerAppearPoint)
         self.addSticker(stickerView: imageStickerView)
         self.pageViewModel.appendSticker(imageStickerView)
     }
     
     private func addTextSticker() {
-        let textStickerView = TextStickerView()
+        let textStickerView = TextStickerView(appearPoint: newStickerAppearPoint)
         self.addSticker(stickerView: textStickerView)
         self.pageViewModel.appendSticker(textStickerView)
     }
@@ -320,7 +321,7 @@ class PageViewController: UIViewController {
     private func addSticker(stickerView: StickerView) {
         DispatchQueue.main.async {
             stickerView.delegate = self
-            stickerView.center = CGPoint(x: self.view.center.x, y: self.view.center.y - 100)
+//            stickerView.center = CGPoint(x: self.view.center.x, y: self.view.center.y - 100)
             self.backgroundImageView.addSubview(stickerView)
             self.backgroundImageView.bringSubviewToFront(stickerView)
         }

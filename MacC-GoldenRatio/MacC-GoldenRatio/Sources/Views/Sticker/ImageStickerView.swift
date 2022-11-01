@@ -9,6 +9,7 @@ import RxSwift
 import UIKit
 
 class ImageStickerView: StickerView {
+    
     private let imageView: UIImageView = {
         let imageView = UIImageView(frame: CGRect(origin: .zero, size: UIScreen.getDevice().stickerDefaultSize))
         imageView.contentMode = .scaleAspectFit
@@ -17,16 +18,19 @@ class ImageStickerView: StickerView {
     }()
     
     /// StickerView를 새로 만듭니다.
-    init(image: UIImage, diaryUUID: String) {
+    init(image: UIImage, diaryUUID: String, appearPoint: CGPoint) {
         super.init(frame: imageView.frame)
 
         self.upLoadImage(image: image, path: "Diary/" + diaryUUID.description)
         
         Task {
-            self.stickerViewData = await StickerViewData(itemType: .image)
+            self.stickerViewData = await StickerViewData(itemType: .image, contents: [""], appearPoint: appearPoint, defaultSize: imageView.frame.size)
             await self.configureStickerViewData()
-            super.setupContentView(content: self.imageView)
-            super.setupDefaultAttributes()
+            
+            DispatchQueue.main.async {
+                super.setupContentView(content: self.imageView)
+                super.setupDefaultAttributes()
+            }
         }
     }
     
@@ -38,8 +42,11 @@ class ImageStickerView: StickerView {
             self.stickerViewData = await StickerViewData(item: item)
             await self.configureStickerViewData()
             await self.configureImageView()
-            super.setupContentView(content: self.imageView)
-            super.setupDefaultAttributes()
+            
+            DispatchQueue.main.async {
+                super.setupContentView(content: self.imageView)
+                super.setupDefaultAttributes()
+            }
         }
     }
     
@@ -50,7 +57,7 @@ class ImageStickerView: StickerView {
     private func configureImageView() async {
         
         self.stickerViewData?.contentsObservable
-            .observe(on: MainScheduler.asyncInstance)
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: {
                 guard let imageUrl = $0.first else { return }
                 let image = ImageManager.shared.searchImage(urlString: imageUrl)
@@ -78,7 +85,9 @@ class ImageStickerView: StickerView {
     
     private func upLoadImage(image: UIImage, path: String) {
         FirebaseStorageManager.uploadImage(image: image, pathRoot: path) { url in
-            self.imageView.image = image
+            DispatchQueue.main.async {
+                self.imageView.image = image
+            }
             guard let url = url else { return }
             ImageManager.shared.cacheImage(urlString: url.absoluteString, image: image)
             Task {

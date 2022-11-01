@@ -29,15 +29,18 @@ class TextStickerView: StickerView {
     }()
     
     /// StickerView를 새로 만듭니다.
-    init() {
+    init(appearPoint: CGPoint) {
         super.init(frame: textView.frame)
         
         Task {
-            self.stickerViewData = await StickerViewData(itemType: .text)
+            self.stickerViewData = await StickerViewData(itemType: .text, contents: [""], appearPoint: appearPoint, defaultSize: textView.frame.size)
             await self.configureStickerViewData()
             await self.setTextView()
-            super.setupContentView(content: textView)
-            super.setupDefaultAttributes()
+            
+            DispatchQueue.main.async {
+                super.setupContentView(content: self.textView)
+                super.setupDefaultAttributes()
+            }
         }
     }
     
@@ -49,8 +52,11 @@ class TextStickerView: StickerView {
             self.stickerViewData = await StickerViewData(item: item)
             await self.configureStickerViewData()
             await self.setTextView()
-            super.setupContentView(content: self.textView)
-            super.setupDefaultAttributes()
+            
+            DispatchQueue.main.async {
+                super.setupContentView(content: self.textView)
+                super.setupDefaultAttributes()
+            }
         }
     }
     
@@ -63,7 +69,7 @@ class TextStickerView: StickerView {
         self.textView.delegate = self
         
         self.stickerViewData?.contentsObservable
-            .observe(on: MainScheduler.asyncInstance)
+            .observe(on: MainScheduler.instance)
             .map { $0[0] }
             .bind(to: self.textView.rx.text)
             .disposed(by: self.disposeBag)
@@ -87,19 +93,37 @@ extension TextStickerView {
 
 extension TextStickerView: UITextViewDelegate {
     
-    func textViewDidChange(_ textView: UITextView) {
+    func textViewDidBeginEditing(_ textView: UITextView) {
         Task {
-            await stickerViewData?.updateContents(contents: [self.textView.text])
-
+            await stickerViewData?.updateItem(sticker: self, contents: [textView.text])
+        }
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        Task {
+            await stickerViewData?.updateItem(sticker: self, contents: [textView.text])
+        }
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        DispatchQueue.main.async {
             let size = CGSize(width: 2000, height: 2000)
             let estimatedSize = textView.sizeThatFits(size)
-
-            DispatchQueue.main.async {
-                self.textView.frame = CGRect(origin: textView.frame.origin, size: estimatedSize)
-                self.bounds = self.textView.frame
-                self.updateControlsPosition()
-            }
+            self.textView.frame = CGRect(origin: textView.frame.origin, size: estimatedSize)
+            self.bounds = self.textView.frame
+            self.updateControlsPosition()
         }
+        
+        
+//        Task {
+//
+//            let size = CGSize(width: 2000, height: 2000)
+//            let estimatedSize = textView.sizeThatFits(size)
+//            let textViewFrame = CGRect(origin: textView.frame.origin, size: estimatedSize)
+//            await stickerViewData?.updateUIItem(frame: textViewFrame, bounds: textViewFrame, transform: self.transform)
+//            await stickerViewData?.updateContents(contents: [self.textView.text])
+//            self.updateControlsPosition()
+//        }
     }
     
 }

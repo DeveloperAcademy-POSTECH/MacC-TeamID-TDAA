@@ -56,18 +56,22 @@ class MapStickerView: StickerView {
     }()
     
     /// StickerView를 새로 만듭니다.
-    init(mapItem: MKMapItem) {
+    init(mapItem: MKMapItem, appearPoint: CGPoint) {
         super.init(frame: mapLabel.frame)
 
         Task {
-            self.stickerViewData = await StickerViewData(itemType: .location)
-            await self.mapItemContents(mapItem: mapItem)
+            let mapItemContents = await self.mapItemContents(mapItem: mapItem)
+            self.stickerViewData = await StickerViewData(itemType: .location, contents: mapItemContents, appearPoint: appearPoint, defaultSize: CGSize(width: 100, height: 100))
+            
             await self.setLocationView()
             await self.setLocationViewFrame()
+            await self.stickerUIDidChange()
             await self.configureStickerViewData()
             
-            super.setupContentView(content: self.locationView.convertViewToImageView())
-            super.setupDefaultAttributes()
+            DispatchQueue.main.async {
+                super.setupContentView(content: self.locationView.convertViewToImageView())
+                super.setupDefaultAttributes()
+            }
         }
     }
     
@@ -79,10 +83,13 @@ class MapStickerView: StickerView {
             self.stickerViewData = await StickerViewData(item: item)
             await self.setLocationView()
             await self.setLocationViewFrame()
+            await self.stickerUIDidChange()
             await self.configureStickerViewData()
             
-            super.setupContentView(content: self.locationView.convertViewToImageView())
-            super.setupDefaultAttributes()
+            DispatchQueue.main.async {
+                super.setupContentView(content: self.locationView.convertViewToImageView())
+                super.setupDefaultAttributes()
+            }
         }
     }
     
@@ -90,22 +97,20 @@ class MapStickerView: StickerView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func mapItemContents(mapItem: MKMapItem) async {
-        Task {
-            let locationName = mapItem.name ?? ""
-            let locationAddress = mapItem.placemark.title ?? ""
-            let latitude = mapItem.placemark.coordinate.latitude.description
-            let longitude = mapItem.placemark.coordinate.longitude.description
-            let itemContents = [locationName, locationAddress, latitude, longitude]
-            
-            await self.stickerViewData?.updateContents(contents: itemContents)
-        }
+    private func mapItemContents(mapItem: MKMapItem) async -> [String] {
+        let locationName = mapItem.name ?? ""
+        let locationAddress = mapItem.placemark.title ?? ""
+        let latitude = mapItem.placemark.coordinate.latitude.description
+        let longitude = mapItem.placemark.coordinate.longitude.description
+        let itemContents = [locationName, locationAddress, latitude, longitude]
+        
+        return itemContents
     }
     
     private func setLocationView() async {
         
         self.stickerViewData?.contentsObservable
-            .observe(on: MainScheduler.asyncInstance)
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: {
                 let locationName = $0[0]
                 let locationAddress = $0[1]
@@ -118,16 +123,20 @@ class MapStickerView: StickerView {
     }
     
     private func setLocationViewFrame() async {
-        [pinImageView, locationNameLabel, locationAddressLabel].forEach {
-            locationView.addSubview($0)
+        DispatchQueue.main.async {
+            [self.pinImageView, self.locationNameLabel, self.locationAddressLabel].forEach {
+                self.locationView.addSubview($0)
+            }
+            self.pinImageView.frame = CGRect(origin: .init(x: 15, y: 18.5), size: .init(width: 25, height: 25))
+            self.locationNameLabel.frame = CGRect(origin: .init(x: 55, y: 10), size: self.locationNameLabel.intrinsicContentSize)
+            self.locationAddressLabel.frame = CGRect(origin: .init(x: 55, y: self.locationNameLabel.frame.maxY + 4), size: self.locationAddressLabel.intrinsicContentSize)
+            
+            let width = (self.locationNameLabel.frame.width < self.locationAddressLabel.frame.width) ? self.locationAddressLabel.frame.width : self.locationNameLabel.frame.width
+            self.locationView.frame = CGRect(origin: .zero, size: .init(width: 70 + width, height: 60))
+            
+            self.frame.origin.x -= self.locationView.frame.width / 2
+            self.frame.origin.y -= self.locationView.frame.height / 2
+            self.frame.size = self.locationView.frame.size
         }
-        pinImageView.frame = CGRect(origin: .init(x: 15, y: 18.5), size: .init(width: 25, height: 25))
-        locationNameLabel.frame = CGRect(origin: .init(x: 55, y: 10), size: locationNameLabel.intrinsicContentSize)
-        locationAddressLabel.frame = CGRect(origin: .init(x: 55, y: locationNameLabel.frame.maxY + 4), size: locationAddressLabel.intrinsicContentSize)
-        
-        let width = (locationNameLabel.frame.width < locationAddressLabel.frame.width) ? locationAddressLabel.frame.width : locationNameLabel.frame.width
-        locationView.frame = CGRect(origin: .zero, size: .init(width: 70 + width, height: 60))
-        
-        frame = CGRect(origin: .zero, size: locationView.frame.size)
     }
 }

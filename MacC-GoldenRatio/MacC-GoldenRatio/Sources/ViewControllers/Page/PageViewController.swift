@@ -493,35 +493,3 @@ extension PageViewController: UIGestureRecognizerDelegate {
         return false
     }
 }
-//// MARK: Combine
-//private extension PageViewController {
-//    func setupViewModel() {
-//        pageViewModel.$currentPageIndex
-//            .receive(on: DispatchQueue.main)
-//            .sink { [weak self] _ in
-//
-//            }
-//            .store(in: &cancelBag)
-//
-//        pageViewModel.$selectedDay
-//            .receive(on: DispatchQueue.main)
-//            .sink { [weak self] _ in
-//
-//            }
-//            .store(in: &cancelBag)
-//
-//        pageViewModel.$diary
-//            .receive(on: DispatchQueue.main)
-//            .sink { [weak self] _ in
-//
-//            }
-//            .store(in: &cancelBag)
-//
-//        pageViewModel.$stickerArray
-//            .receive(on: DispatchQueue.main)
-//            .sink { [weak self] _ in
-//                self?.reloadStickers()
-//            }
-//            .store(in: &cancelBag)
-//    }
-//}

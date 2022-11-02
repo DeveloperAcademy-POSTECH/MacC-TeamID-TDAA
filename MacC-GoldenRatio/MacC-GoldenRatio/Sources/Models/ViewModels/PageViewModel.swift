@@ -5,6 +5,7 @@
 //  Created by 김상현 on 2022/10/02.
 //
 
+import RxSwift
 import UIKit
 
 class PageViewModel {
@@ -103,14 +104,20 @@ class PageViewModel {
     }
     
     func updateDBPages() {
-//        let items = stickerArray.map{
-//            $0.map{
-//                $0.stickerViewData.item
-//            }
-//        }
-//        items.enumerated().forEach{
-//            diary.diaryPages[selectedDay].pages[$0].items = $1
-//        }
-//        FirebaseClient().updatePage(diary: diary)
+        do {
+            let items = try stickerArray.map{
+                try $0.map{
+                    guard let stickerViewData = $0.stickerViewData else { throw ErrorMessage.stickerViewDataDoesntExist }
+                    return try stickerViewData.itemObservable.value()
+                }
+            }
+            items.enumerated().forEach{
+                diary.diaryPages[selectedDay].pages[$0].items = $1
+            }
+        } catch {
+            print(error)
+        }
+        
+        FirebaseClient().updatePage(diary: diary)
     }
 }

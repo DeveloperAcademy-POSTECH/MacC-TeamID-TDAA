@@ -8,28 +8,18 @@
 import Combine
 import Firebase
 import FirebaseAuth
+import RxCocoa
+import RxSwift
 import SnapKit
 import UIKit
 
-final class MyHomeViewController: UIViewController {
-	private var cancelBag = Set<AnyCancellable>()
+final class MyHomeViewController: UIViewController, UICollectionViewDelegateFlowLayout {
+	private let disposeBag = DisposeBag()
 	private let viewModel = MyHomeViewModel()
 	private let myDevice = UIScreen.getDevice()
 	
-	private lazy var collectionView: UICollectionView = {
-		let layout = UICollectionViewFlowLayout()
-		let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-		collectionView.showsVerticalScrollIndicator = false
-		
-		collectionView.delegate = self
-		collectionView.dataSource = self
-
-		collectionView.backgroundColor = UIColor.clear
-		collectionView.register(DiaryCollectionViewCell.self, forCellWithReuseIdentifier: "DiaryCollectionViewCell")
-		collectionView.register(DiaryCollectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "DiaryCollectionHeaderView")
-
-		return collectionView
-	}()
+	private lazy var collectionView = DiaryCollectionView()
+	private lazy var headerView = HomeHeaderView()
 	
 	private lazy var addDiaryButton: UIButton = {
 		let button = UIButton()
@@ -42,7 +32,7 @@ final class MyHomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 		setupSubViews()
-		setupViewModel()
+		bind()
 		setupNotification()
     }
 	
@@ -53,15 +43,32 @@ final class MyHomeViewController: UIViewController {
 	
 	private func setupSubViews() {
 		self.view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
-		
-		[collectionView, addDiaryButton].forEach { view.addSubview($0) }
 
+		[headerView, collectionView, addDiaryButton].forEach { view.addSubview($0) }
+
+		headerView.setupViews()
+		headerView.snp.makeConstraints {
+			$0.top.equalTo(view.safeAreaLayoutGuide)
+			$0.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+		}
 		collectionView.snp.makeConstraints {
-			$0.edges.equalTo(view.safeAreaLayoutGuide)
+			$0.top.equalTo(headerView.snp.bottom)
+			$0.bottom.leading.trailing.equalTo(view.safeAreaLayoutGuide)
 		}
 		addDiaryButton.snp.makeConstraints {
 			$0.bottom.trailing.equalTo(view.safeAreaLayoutGuide).inset(myDevice.MyDiariesViewAddDiaryButtonPadding)
 		}
+	}
+	
+	private func bind() {
+		collectionView.bind(viewModel.diaryCollectionViewModel)
+		collectionView.rx
+			.modelSelected(Diary.self)
+			.subscribe(onNext: { diary in
+				let vc = MyDiaryPagesViewController(diaryData: diary)
+				self.navigationController?.pushViewController(vc, animated: true)
+			})
+			.disposed(by: disposeBag)
 	}
 	
 	private func setupNotification() {
@@ -78,7 +85,7 @@ final class MyHomeViewController: UIViewController {
 	}
 	
 	@objc private func reloadDiaryCell() {
-		viewModel.fetchLoadData()
+		viewModel.createCell()
 	}
 	
 	@objc private func changeAddButtonImage() {
@@ -107,7 +114,7 @@ final class MyHomeViewController: UIViewController {
 				DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.5) {
 					if self.viewModel.isEqual {
 						self.viewModel.updateJoinDiary(textField.text ?? "")
-						self.viewModel.fetchLoadData()
+						self.viewModel.createCell()
 						self.view.showToastMessage("다이어리가 추가되었습니다.")
 					} else {
 						self.view.showToastMessage("잘못된 초대코드입니다.")
@@ -123,78 +130,5 @@ final class MyHomeViewController: UIViewController {
 		joinDiaryAlert.addAction(joinAction)
 		joinDiaryAlert.addAction(cancelAction)
 		self.present(joinDiaryAlert, animated: true)
-	}
-}
-
-extension MyHomeViewController: UICollectionViewDataSource {
-	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		if !viewModel.isInitializing && viewModel.diaryCellData.isEmpty {
-			let label = UILabel()
-			label.text = "다이어리를 추가해주세요."
-			label.font = myDevice.collectionBackgoundViewFont
-            label.textColor = UIColor(named: "calendarWeeklyGrayColor")
-			label.textAlignment = .center
-			collectionView.backgroundView = label
-		} else {
-			collectionView.backgroundView = nil
-		}
-
-		return viewModel.diaryCellData.count
-	}
-
-	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DiaryCollectionViewCell", for: indexPath) as? DiaryCollectionViewCell
-		cell?.setup(cellData: viewModel.diaryCellData[indexPath.item])
-		return cell ?? UICollectionViewCell()
-	}
-
-	func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-		guard kind == UICollectionView.elementKindSectionHeader,
-			  let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "DiaryCollectionHeaderView", for: indexPath) as? DiaryCollectionHeaderView
-		else {
-			return UICollectionReusableView()
-		}
-
-		header.setupViews()
-
-		return header
-	}
-}
-
-extension MyHomeViewController: UICollectionViewDelegate {
-	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-		let vc = MyDiaryPagesViewController(diaryData: viewModel.diaryData[indexPath.item])
-		self.navigationController?.pushViewController(vc, animated: true)
-	}
-}
-
-extension MyHomeViewController: UICollectionViewDelegateFlowLayout {
-	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-		return myDevice.diaryCollectionViewCellSize
-	}
-
-	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-		CGSize(width: collectionView.frame.width - myDevice.diaryCollectionViewCellHeaderWidthPadding, height: myDevice.diaryCollectionViewCellHeaderHeight+myDevice.diaryCollectionViewCellHeaderTop)
-	}
-
-	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-		return UIEdgeInsets(top: myDevice.diaryCollectionViewCellTop, left: myDevice.diaryCollectionViewCellLeading, bottom: myDevice.diaryCollectionViewCellBottom, right: myDevice.diaryCollectionViewCellTrailing)
-	}
-	
-	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-		return CGFloat(UIScreen.getDevice().diaryCollectionViewCellTop)
-	}
-}
-
-private extension MyHomeViewController {
-	func setupViewModel() {
-		viewModel.fetchLoadData()
-		viewModel.$diaryCellData
-			.receive(on: DispatchQueue.main)
-			.sink { [weak self] diaryCell in
-				self?.collectionView.reloadData()
-				self?.isIndicator()
-			}
-			.store(in: &cancelBag)
 	}
 }

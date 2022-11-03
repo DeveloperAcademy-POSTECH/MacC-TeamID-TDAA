@@ -88,7 +88,7 @@ class MyPageViewModel {
             do {
                 let uid = Auth.auth().currentUser?.uid
                 let userRef = db.collection("User").document(uid ?? self.myUID)
-                let diaries = try await FirestoreClient().fetchMyDiaries(uid ?? self.myUID)
+                let diaries = try await FirestoreClient().fetchDiaries(uid ?? self.myUID)
                 
                 // 가져온 다이어리 목록에 대해서 다이어리 삭제
                 for diary in diaries {

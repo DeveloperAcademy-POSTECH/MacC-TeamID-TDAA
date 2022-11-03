@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-final class DiaryCollectionHeaderView: UICollectionReusableView {
+final class HomeHeaderView: UIView {
 	let myDevice = UIScreen.getDevice()
 	
 	private lazy var titleLabel: UILabel = {

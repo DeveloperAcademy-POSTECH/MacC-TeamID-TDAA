@@ -131,6 +131,7 @@ class StickerViewData {
         
         self.itemObservable
             .observe(on: MainScheduler.instance)
+            .debug()
             .map { item in
                 var newItem = item
                 
@@ -145,7 +146,6 @@ class StickerViewData {
                     }
                 }
                 return newItem
-                
             }
             .take(1)
             .subscribe(onNext: {

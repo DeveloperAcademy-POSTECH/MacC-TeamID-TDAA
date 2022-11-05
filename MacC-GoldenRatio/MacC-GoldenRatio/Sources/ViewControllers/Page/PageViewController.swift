@@ -24,7 +24,7 @@ class PageViewController: UIViewController {
         let backgroundImageView = UIImageView()
         backgroundImageView.backgroundColor = .gray
         backgroundImageView.clipsToBounds = true
-        backgroundImageView.isUserInteractionEnabled = false
+        backgroundImageView.isUserInteractionEnabled = true
         backgroundImageView.backgroundColor = .diaryInnerTexture
         
         return backgroundImageView
@@ -44,7 +44,6 @@ class PageViewController: UIViewController {
         button.setImage(image, for: .normal)
         button.tintColor = .black
         button.addTarget(self, action: #selector(onTapMapButton), for: .touchUpInside)
-        button.isHidden = true
         
         return button
     }()
@@ -55,7 +54,6 @@ class PageViewController: UIViewController {
         button.setImage(image, for: .normal)
         button.tintColor = .black
         button.addTarget(self, action: #selector(onTapImageButton), for: .touchUpInside)
-        button.isHidden = true
 
         return button
     }()
@@ -66,7 +64,6 @@ class PageViewController: UIViewController {
         button.setImage(image, for: .normal)
         button.tintColor = .black
         button.addTarget(self, action: #selector(onTapStickerButton), for: .touchUpInside)
-        button.isHidden = true
 
         return button
     }()
@@ -77,7 +74,6 @@ class PageViewController: UIViewController {
         button.setImage(image, for: .normal)
         button.tintColor = .black
         button.addTarget(self, action: #selector(onTapTextButton), for: .touchUpInside)
-        button.isHidden = true
 
         return button
     }()
@@ -336,23 +332,7 @@ extension PageViewController {
 //            self.pageViewModel.hideStickerSubview(true)
 //        }
 //    }
-//
-//    private func loadStickerViews(pageIndex: Int) {
-//        DispatchQueue.main.async {
-//            self.pageViewModel.stickerArrayObservable[pageIndex].forEach{
-//                $0.delegate = self
-//                self.backgroundImageView.addSubview($0)
-//            }
-//        }
-//    }
-//
-//    private func reloadPageDescriptionLabel() {
-//        let selectedDay = pageViewModel.selectedDay
-//        let currentPageString = (pageViewModel.currentPageIndex + 1).description
-//        let currentDayPageCount = pageViewModel.diary.diaryPages[selectedDay].pages.count.description
-//        let labelText = currentPageString + "/" + currentDayPageCount
-//        pageDescriptionLabel.text = labelText
-//    }
+
 }
 
 // MARK: 페이지 편집 처리
@@ -421,7 +401,6 @@ extension PageViewController {
     }
 }
 
-
 // MARK: StickerViewDelegate
 extension PageViewController: StickerViewDelegate {
     func removeSticker(sticker: StickerView) {
@@ -429,7 +408,7 @@ extension PageViewController: StickerViewDelegate {
         pageViewModel.removeSticker(sticker)
     }
     
-    func bringToFront(sticker: StickerView) {
+    func bringStickerToFront(sticker: StickerView) {
         backgroundImageView.bringSubviewToFront(sticker)
         pageViewModel.bringStickerToFront(sticker)
     }

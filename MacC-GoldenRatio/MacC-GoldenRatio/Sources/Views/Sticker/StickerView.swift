@@ -13,7 +13,7 @@ import UIKit
 
 protocol StickerViewDelegate {
     func removeSticker(sticker: StickerView)
-    func bringToFront(sticker: StickerView)
+    func bringStickerToFront(sticker: StickerView)
 }
 
 class StickerView: UIView {
@@ -51,7 +51,9 @@ class StickerView: UIView {
 
     func changeLastEditor(lastEditor: String?) {
         Task {
+            print("gd")
             await self.stickerViewData?.updateLastEditor(lastEditor: lastEditor)
+            print("sc")
         }
     }
     
@@ -277,7 +279,7 @@ class StickerView: UIView {
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard isGestureEnabled == true else { return }
-        self.delegate.bringToFront(sticker: self)
+        self.delegate.bringStickerToFront(sticker: self)
         enableTranslucency(state: true)
 
         let touch = touches.first

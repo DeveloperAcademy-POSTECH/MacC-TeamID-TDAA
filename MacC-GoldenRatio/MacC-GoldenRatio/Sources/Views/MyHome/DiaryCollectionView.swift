@@ -36,6 +36,17 @@ class DiaryCollectionView: UICollectionView {
 				cell.setup(cellData: DiaryCell(diaryUUID: diary.diaryUUID, diaryName: diary.diaryName, diaryCover: diary.diaryCover))
 			}
 			.disposed(by: disposeBag)
+		
+		viewModel.diaryData
+			.asObservable()
+			.subscribe(onNext: { data in
+				if data.isEmpty {
+					self.backgroundView = DiaryCollectionEmptyView()
+				} else {
+					self.backgroundView = nil
+				}
+			})
+			.disposed(by: disposeBag)
 	}
 }
 

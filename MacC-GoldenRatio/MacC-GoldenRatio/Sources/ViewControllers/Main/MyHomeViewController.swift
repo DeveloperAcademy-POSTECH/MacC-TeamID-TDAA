@@ -105,6 +105,7 @@ final class MyHomeViewController: UIViewController, UICollectionViewDelegateFlow
 				DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.5) {
 					if self.viewModel.isEqual {
 						self.viewModel.updateJoinDiary(textField.text ?? "")
+						self.reloadDiaryCell()
 						self.view.showToastMessage("다이어리가 추가되었습니다.")
 					} else {
 						self.view.showToastMessage("잘못된 초대코드입니다.")

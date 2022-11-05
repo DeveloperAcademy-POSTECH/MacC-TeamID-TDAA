@@ -5,7 +5,6 @@
 //  Created by woo0 on 2022/10/04.
 //
 
-import Firebase
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 import RxSwift

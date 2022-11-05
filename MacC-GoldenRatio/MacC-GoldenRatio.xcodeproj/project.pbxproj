@@ -77,7 +77,6 @@
 		E2BEC46028F806F80056E755 /* AlbumData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEC45F28F806F80056E755 /* AlbumData.swift */; };
 		E2BEC46328F82DC30056E755 /* MyAlbumTitleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEC46228F82DC30056E755 /* MyAlbumTitleCollectionViewCell.swift */; };
 		E2C27502290D62EB00319885 /* DiaryCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C27501290D62EB00319885 /* DiaryCollectionViewModel.swift */; };
-		E2C27509290D693700319885 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C27508290D693700319885 /* NetworkError.swift */; };
 		E2C2750B290D950400319885 /* DiaryCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C2750A290D950400319885 /* DiaryCollectionView.swift */; };
 		E2C2A76C28F97DB900D48F8F /* LoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C2A76B28F97DB900D48F8F /* LoadingIndicator.swift */; };
 		E2C8FA26291432B4009C58C9 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = E2C8FA25291432B4009C58C9 /* RxCocoa */; };
@@ -213,7 +212,6 @@
 		E2BEC45F28F806F80056E755 /* AlbumData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumData.swift; sourceTree = "<group>"; };
 		E2BEC46228F82DC30056E755 /* MyAlbumTitleCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAlbumTitleCollectionViewCell.swift; sourceTree = "<group>"; };
 		E2C27501290D62EB00319885 /* DiaryCollectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryCollectionViewModel.swift; sourceTree = "<group>"; };
-		E2C27508290D693700319885 /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		E2C2750A290D950400319885 /* DiaryCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryCollectionView.swift; sourceTree = "<group>"; };
 		E2C2A76B28F97DB900D48F8F /* LoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingIndicator.swift; sourceTree = "<group>"; };
 		E2CCF30028F74450008A12F9 /* CustomAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotationView.swift; sourceTree = "<group>"; };
@@ -408,7 +406,6 @@
 		E276B91328E468D700163833 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				E2C27507290D692D00319885 /* Entities */,
 				E2EA7F1428E570F100AC1C49 /* Views */,
 				E276B91A28E4697E00163833 /* ViewControllers */,
 				E276B91928E4697900163833 /* Models */,
@@ -558,14 +555,6 @@
 				E2DA8F6328F857D80098DD94 /* MyAlbumPhotoCollectionViewCell.swift */,
 			);
 			path = MyAlbum;
-			sourceTree = "<group>";
-		};
-		E2C27507290D692D00319885 /* Entities */ = {
-			isa = PBXGroup;
-			children = (
-				E2C27508290D693700319885 /* NetworkError.swift */,
-			);
-			path = Entities;
 			sourceTree = "<group>";
 		};
 		E2EA7F0428E56BD700AC1C49 /* Main */ = {
@@ -771,7 +760,6 @@
 				CC0F434428F71E62003060D5 /* DiaryConfigViewModel.swift in Sources */,
 				E21342D928F6B0660048D9CF /* FirebaseClient.swift in Sources */,
 				E2BEC46328F82DC30056E755 /* MyAlbumTitleCollectionViewCell.swift in Sources */,
-				E2C27509290D693700319885 /* NetworkError.swift in Sources */,
 				E276B92028E4812E00163833 /* UIScreen+.swift in Sources */,
 				CC40BC1F28EEB10800DF48E1 /* CalendarPickerViewController.swift in Sources */,
 				0A3ED14828FBE6EB000D55D8 /* MyPageViewController.swift in Sources */,

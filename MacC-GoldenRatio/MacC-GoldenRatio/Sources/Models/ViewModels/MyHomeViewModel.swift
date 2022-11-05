@@ -5,8 +5,10 @@
 //  Created by woo0 on 2022/10/04.
 //
 
+import Firebase
 import FirebaseAuth
 import FirebaseFirestore
+import RxCocoa
 import RxSwift
 
 // TODO: 수정 예정
@@ -45,31 +47,19 @@ class MyHomeViewModel {
 			.map(getDiaryValue)
 			.filter { $0 != nil }
 
-		let diaryError = diaryResult
-			.map(getDiaryError)
-			.filter { $0 != nil }
-		
 		let diaryData = diaryValue
 			.map(getCollectionDiaryData)
 		
 		diaryData
 			.bind(to: diaryCollectionViewModel.collectionDiaryData)
 			.disposed(by: disposeBag)
-		
 	}
 	
-	func getDiaryValue(_ result: Result<[Diary], NetworkError>) -> [Diary]? {
+	func getDiaryValue(_ result: Result<[Diary], Error>) -> [Diary]? {
 		guard case .success(let value) = result else {
 			return nil
 		}
 		return value
-	}
-	
-	func getDiaryError(_ result: Result<[Diary], NetworkError>) -> String? {
-		guard case .failure(let error) = result else {
-			return nil
-		}
-		return error.message
 	}
 	
 	func getCollectionDiaryData(_ value: [Diary]?) -> [Diary] {

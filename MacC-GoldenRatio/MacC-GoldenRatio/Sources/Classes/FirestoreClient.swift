@@ -5,6 +5,7 @@
 //  Created by woo0 on 2022/10/04.
 //
 
+import Firebase
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 import RxSwift
@@ -29,9 +30,9 @@ class FirestoreClient {
 		return diaries
 	}
 	
-	func fetchMyDiaries(_ uid: String) -> Observable<Result<[Diary], NetworkError>> {
+	func fetchMyDiaries(_ uid: String) -> Observable<Result<[Diary], Error>> {
 		var diaries = [Diary]()
-		return Observable<Result<[Diary], NetworkError>>.create { observer in
+		return Observable<Result<[Diary], Error>>.create { observer in
 			self.db.collection("Diary").whereField("userUIDs", arrayContains: uid).getDocuments { (snapshot, error) in
 				if let error = error {
 					observer.onError(error)
@@ -164,13 +165,9 @@ class FirestoreClient {
 	}
 	
 	func isDiaryCodeEqualTo(_ diaryUUID: String) async throws -> Bool {
-		var isResult = false
 		let query = db.collection("Diary").whereField("diaryUUID", isEqualTo: diaryUUID)
 		let querySnapshot = try await query.getDocuments()
-		querySnapshot.documents.forEach { document in
-			isResult = true
-		}
 		
-		return isResult
+		return !querySnapshot.documents.isEmpty
 	}
 }

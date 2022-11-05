@@ -9,7 +9,7 @@ import RxCocoa
 import RxSwift
 
 struct DiaryCollectionViewModel {
-	let collectionDiaryData = PublishSubject<[Diary]>()
+	let collectionDiaryData = BehaviorRelay<[Diary]>(value: [])
 	let diaryData: Driver<[Diary]>
 	
 	var isInitializing = true {

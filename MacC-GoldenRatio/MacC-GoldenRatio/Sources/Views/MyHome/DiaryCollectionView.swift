@@ -20,6 +20,9 @@ class DiaryCollectionView: UICollectionView {
 		self.showsVerticalScrollIndicator = false
 		self.backgroundColor = UIColor.clear
 		self.register(DiaryCollectionViewCell.self, forCellWithReuseIdentifier: "DiaryCollectionViewCell")
+		
+		self.rx.setDelegate(self)
+			.disposed(by: disposeBag)
 	}
 	
 	required init?(coder: NSCoder) {
@@ -32,9 +35,6 @@ class DiaryCollectionView: UICollectionView {
 			.drive(self.rx.items(cellIdentifier: "DiaryCollectionViewCell", cellType: DiaryCollectionViewCell.self)) { index, diary, cell in
 				cell.setup(cellData: DiaryCell(diaryUUID: diary.diaryUUID, diaryName: diary.diaryName, diaryCover: diary.diaryCover))
 			}
-			.disposed(by: disposeBag)
-		
-		self.rx.setDelegate(self)
 			.disposed(by: disposeBag)
 	}
 }

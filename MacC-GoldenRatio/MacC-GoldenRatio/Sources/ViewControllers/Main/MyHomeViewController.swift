@@ -5,9 +5,6 @@
 //  Created by woo0 on 2022/09/29.
 //
 
-import Combine
-import Firebase
-import FirebaseAuth
 import RxCocoa
 import RxSwift
 import SnapKit
@@ -20,25 +17,17 @@ final class MyHomeViewController: UIViewController, UICollectionViewDelegateFlow
 	
 	private lazy var collectionView = DiaryCollectionView()
 	private lazy var headerView = HomeHeaderView()
+	private lazy var addDiaryButton = HomeAddDiaryButtonView()
 	
-	private lazy var addDiaryButton: UIButton = {
-		let button = UIButton()
-		button.setImage(UIImage(named: "plusButton"), for: .normal)
-		button.addTarget(self, action: #selector(menuButtonTapped), for: .touchUpInside)
-		
-		return button
-	}()
-	
-    override func viewDidLoad() {
-        super.viewDidLoad()
+	override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+		super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
 		setupSubViews()
 		bind()
 		setupNotification()
-    }
+	}
 	
-	override func viewWillDisappear(_ animated: Bool) {
-		super.viewWillDisappear(animated)
-		viewModel.isInitializing = false
+	required init?(coder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
 	}
 	
 	private func setupSubViews() {
@@ -46,7 +35,6 @@ final class MyHomeViewController: UIViewController, UICollectionViewDelegateFlow
 
 		[headerView, collectionView, addDiaryButton].forEach { view.addSubview($0) }
 
-		headerView.setupViews()
 		headerView.snp.makeConstraints {
 			$0.top.equalTo(view.safeAreaLayoutGuide)
 			$0.leading.trailing.equalTo(view.safeAreaLayoutGuide)
@@ -56,7 +44,7 @@ final class MyHomeViewController: UIViewController, UICollectionViewDelegateFlow
 			$0.bottom.leading.trailing.equalTo(view.safeAreaLayoutGuide)
 		}
 		addDiaryButton.snp.makeConstraints {
-			$0.bottom.trailing.equalTo(view.safeAreaLayoutGuide).inset(myDevice.MyDiariesViewAddDiaryButtonPadding)
+			$0.bottom.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(myDevice.MyDiariesViewAddDiaryButtonPadding)
 		}
 	}
 	
@@ -69,6 +57,17 @@ final class MyHomeViewController: UIViewController, UICollectionViewDelegateFlow
 				self.navigationController?.pushViewController(vc, animated: true)
 			})
 			.disposed(by: disposeBag)
+		
+		addDiaryButton.rx.tap
+			.bind {
+				self.addDiaryButton.setImage(UIImage(named: "closeButton"), for: .normal)
+				let popUp = PopUpViewController(popUpPosition: .bottom)
+				popUp.addButton(buttonTitle: "다이어리 추가", action: self.createButtonTapped)
+				popUp.addButton(buttonTitle: "초대코드로 참가", action: self.joinButtonTapped)
+				self.present(popUp, animated: false)
+			}
+			.disposed(by: disposeBag)
+		
 	}
 	
 	private func setupNotification() {
@@ -92,14 +91,6 @@ final class MyHomeViewController: UIViewController, UICollectionViewDelegateFlow
 		addDiaryButton.setImage(UIImage(named: "plusButton"), for: .normal)
 	}
 	
-	@objc private func menuButtonTapped() {
-		addDiaryButton.setImage(UIImage(named: "closeButton"), for: .normal)
-		let popUp = PopUpViewController(popUpPosition: .bottom)
-		popUp.addButton(buttonTitle: "다이어리 추가", action: createButtonTapped)
-		popUp.addButton(buttonTitle: "초대코드로 참가", action: joinButtonTapped)
-		present(popUp, animated: false)
-	}
-	
 	@objc func createButtonTapped() {
 		let vc = DiaryConfigViewController(mode: .create, diary: nil)
 		vc.modalPresentationStyle = .fullScreen
@@ -114,7 +105,6 @@ final class MyHomeViewController: UIViewController, UICollectionViewDelegateFlow
 				DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.5) {
 					if self.viewModel.isEqual {
 						self.viewModel.updateJoinDiary(textField.text ?? "")
-						self.viewModel.createCell()
 						self.view.showToastMessage("다이어리가 추가되었습니다.")
 					} else {
 						self.view.showToastMessage("잘못된 초대코드입니다.")

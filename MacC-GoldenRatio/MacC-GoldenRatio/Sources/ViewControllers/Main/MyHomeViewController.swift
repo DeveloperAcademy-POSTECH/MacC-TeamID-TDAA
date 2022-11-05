@@ -15,17 +15,7 @@ final class MyHomeViewController: UIViewController, UICollectionViewDelegateFlow
 	private let viewModel = MyHomeViewModel()
 	private let myDevice = UIScreen.getDevice()
 	
-	private lazy var titleLabel: UILabel = {
-		let label =  UILabel()
-		label.text = "다이어리"
-		label.font = myDevice.TabBarTitleFont
-		label.textColor = UIColor.buttonColor
-		
-		return label
-	}()
-	
 	private lazy var collectionView = DiaryCollectionView()
-//	private lazy var headerView = HomeHeaderView()
 	private lazy var addDiaryButton = HomeAddDiaryButtonView()
 	
 	override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {

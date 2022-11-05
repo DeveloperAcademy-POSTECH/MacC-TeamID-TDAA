@@ -40,7 +40,7 @@ class DiaryCollectionView: UICollectionView {
 		
 		viewModel.collectionDiaryData
 			.subscribe(onNext: { data in
-				if data.isEmpty {
+				if data.first?.items.count == 0 {
 					self.backgroundView = DiaryCollectionEmptyView()
 				} else {
 					self.backgroundView = nil
@@ -52,7 +52,7 @@ class DiaryCollectionView: UICollectionView {
 	private func configureCollectionViewDataSource() {
 		source = RxCollectionViewSectionedReloadDataSource<DiarySection>(configureCell: { dataSource, collectionView, indexPath, item in
 			if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DiaryCollectionViewCell", for: indexPath) as? DiaryCollectionViewCell {
-				cell.setup(cellData: item)
+				cell.setup(cellData: DiaryCell(diaryUUID: item.diaryUUID, diaryName: item.diaryName, diaryCover: item.diaryCover))
 				return cell
 			} else {
 				return UICollectionViewCell()

@@ -45,11 +45,8 @@ class MyHomeViewModel {
 		let diaryValue = diaryResult
 			.map(getDiaryValue)
 			.filter { $0 != nil }
-
-		let diaryData = diaryValue
-			.map(getCollectionCellData)
 		
-		diaryData
+		diaryValue
 			.map(getCollectionSection)
 			.bind(to: diaryCollectionViewModel.collectionDiaryData)
 			.disposed(by: disposeBag)
@@ -62,17 +59,15 @@ class MyHomeViewModel {
 		return value
 	}
 	
-	func getCollectionCellData(_ value: [Diary]?) -> [DiaryCell] {
+	func getDiaryData(_ value: [Diary]?) -> [Diary] {
 		guard let value = value else {
 			return []
 		}
 		
-		return value.map {
-			DiaryCell(diaryUUID: $0.diaryUUID, diaryName: $0.diaryName, diaryCover: $0.diaryCover)
-		}
+		return value
 	}
 	
-	func getCollectionSection(_ value: [DiaryCell]?) -> [DiarySection] {
+	func getCollectionSection(_ value: [Diary]?) -> [DiarySection] {
 		guard let value = value else {
 			return []
 		}

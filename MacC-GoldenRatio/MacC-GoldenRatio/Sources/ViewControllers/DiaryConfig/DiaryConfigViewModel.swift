@@ -6,11 +6,33 @@
 //
 
 import FirebaseAuth
+import RxSwift
+import RxCocoa
 import UIKit
 
 class DiaryConfigViewModel {
+    private let disposeBag = DisposeBag()
     private let firebaseClient = FirebaseClient()
+    let titleCellViewModel = DiaryConfigCellViewModel(type: .diaryName)
+    let locationCellViewModel = DiaryConfigCellViewModel(type: .location)
+    let dateCellViewModel = DiaryConfigCellViewModel(type: .diaryDate)
+    var diaryConfigModel = DiaryConfigModel()
     
+    // ViewModel -> View
+    let cellData: Driver<[DiaryConfigCellViewModel]>
+    let presentAlert: Signal<Void>
+    let complete: Signal<Void>
+    let textfieldEndEdit: Signal<Void>
+    
+    // View -> ViewModel
+    let doneButtonTapped = PublishRelay<Void>()
+    let cancelButtonTapped = PublishRelay<Void>()
+    var diaryTitle = PublishRelay<String?>()
+    
+    // Model Observer
+    let diaryData = PublishRelay<Diary>()
+    
+    // TODO: Model 관련 프로퍼티 / 메소드 분리
     var diaryUUID: String?
     var title: String?
     var location: Location?
@@ -22,15 +44,67 @@ class DiaryConfigViewModel {
     var thumbnails: [String] = []
     var myUID = Auth.auth().currentUser?.uid ?? ""
     
-    
     var pageArray: [Page] = []
     var diary: Diary?
+    let configState: ConfigState
+    
+    init(diary: Diary?) {
+        
+        if let diary = diary {
+            self.diary = diary
+            self.configState = .modify
+        } else {
+            self.configState = .create
+        }
+
+        let titleCell = Observable<DiaryConfigCellViewModel>.just(titleCellViewModel)
+        let locationCell = Observable<DiaryConfigCellViewModel>.just(locationCellViewModel)
+        let dateCell = Observable<DiaryConfigCellViewModel>.just(dateCellViewModel)
+        
+        switch self.configState {
+        case .create:
+            self.cellData = Observable
+                .combineLatest(titleCell, locationCell, dateCell) { [$0, $1, $2] }
+                .asDriver(onErrorJustReturn: [])
+            
+        case .modify:
+            self.cellData = Observable
+                .combineLatest(titleCell, locationCell) { [$0, $1] }
+                .asDriver(onErrorJustReturn: [])
+        }
+        
+        self.presentAlert = cancelButtonTapped
+            .map { _ in Void() }
+            .asSignal(onErrorSignalWith: .empty())
+        
+        self.complete = doneButtonTapped
+            .map { _ in Void() }
+            .asSignal(onErrorSignalWith: .empty())
+        
+        self.textfieldEndEdit = doneButtonTapped
+            .map { _ in Void() }
+            .asSignal(onErrorSignalWith: .empty())
+        
+        titleCell
+            .subscribe(onNext: { self.diaryTitle = $0.textFieldText })
+            .disposed(by: disposeBag)
+        
+        self.diaryTitle
+            .startWith(diary?.diaryName)
+            .subscribe(onNext: { self.title = $0 })
+            .disposed(by: disposeBag)
+        
+        [titleCellViewModel, locationCellViewModel, dateCellViewModel].forEach { viewModel in
+            viewModel.diary = self.diary
+        }
+
+    }
     
     func addDiary() {
         diaryUUID = UUID().uuidString + String(Date().timeIntervalSince1970)
         let diaryCoverArray = ["Black", "Blue", "Brown", "Green", "Orange", "Pink", "Purple", "Red", "White", "Yellow"]
         let diaryCover = "diary\(diaryCoverArray[Int.random(in: 0...9)])"
-
+        
         guard let diaryUUID = self.diaryUUID, let title = self.title, let location = self.location, let startDate = self.startDate, let endDate = endDate else { return print("Upload Error") }
         
         for _ in 1...getPageCount() {
@@ -43,31 +117,28 @@ class DiaryConfigViewModel {
         self.diary = Diary(diaryUUID: diaryUUID, diaryName: title, diaryLocation: location, diaryStartDate: startDate, diaryEndDate: endDate, diaryCover: diaryCover, userUIDs: [myUID], diaryPages: diaryPages, pageThumbnails: thumbnails)
         
         guard let diary = diary else { return }
-        
+
         firebaseClient.addDiary(diary: diary)
     }
     
     func updateDiary() {
         
-        if checkAvailable() {
-            setDiaryData()
-            
-            guard let diary = diary else { return }
-            
-            firebaseClient.addDiary(diary: diary)
-        }
+        setDiaryData()
+        
+        guard let diary = diary else { return }
+        firebaseClient.addDiary(diary: diary)
     }
     
-    func getDiaryData(diary: Diary) {
-        self.diaryUUID = diary.diaryUUID
-        self.title = diary.diaryName
-        self.location = diary.diaryLocation
-        self.startDate = diary.diaryStartDate
-        self.endDate = diary.diaryEndDate
-        self.diaryCover = diary.diaryCover
-        self.userUIDs = diary.userUIDs
-        self.diaryPages = diary.diaryPages
-        self.thumbnails = diary.pageThumbnails
+    func getDiaryData(diary: Diary?) {
+        self.diaryUUID = diary?.diaryUUID
+        // self.title = diary?.diaryName
+        self.location = diary?.diaryLocation
+        self.startDate = diary?.diaryStartDate
+        self.endDate = diary?.diaryEndDate
+        self.diaryCover = diary?.diaryCover
+        self.userUIDs = diary?.userUIDs
+        self.diaryPages = diary?.diaryPages ?? []
+        self.thumbnails = diary?.pageThumbnails ?? []
     }
     
     func setDiaryData() {
@@ -77,10 +148,19 @@ class DiaryConfigViewModel {
     }
     
     func checkAvailable() -> Bool {
+        
+        switch configState {
+        case .modify:
+            getDiaryData(diary: diary)
+        case .create:
+            break
+        }
+        
         if let title = self.title, let _ = self.location, let _ = self.startDate, let _ = self.endDate {
             if title.isEmpty {
                 return false
             }
+            setDiaryData()
             return true
         } else {
             print("ERROR: Incomplete Value")
@@ -100,3 +180,4 @@ class DiaryConfigViewModel {
         return count
     }
 }
+

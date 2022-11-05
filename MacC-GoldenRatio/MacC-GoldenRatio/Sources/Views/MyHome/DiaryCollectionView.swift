@@ -6,12 +6,15 @@
 //
 
 import RxCocoa
+import RxDataSources
 import RxSwift
 import UIKit
 
 class DiaryCollectionView: UICollectionView {
 	private let disposeBag = DisposeBag()
 	private let myDevice = UIScreen.getDevice()
+	
+	private var source: RxCollectionViewSectionedReloadDataSource<DiarySection>!
 	
 	override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
 		let layout = UICollectionViewFlowLayout()
@@ -20,7 +23,7 @@ class DiaryCollectionView: UICollectionView {
 		self.showsVerticalScrollIndicator = false
 		self.backgroundColor = UIColor.clear
 		self.register(DiaryCollectionViewCell.self, forCellWithReuseIdentifier: "DiaryCollectionViewCell")
-		
+		self.register(DiaryCollectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "DiaryCollectionHeaderView")
 		self.rx.setDelegate(self)
 			.disposed(by: disposeBag)
 	}
@@ -30,15 +33,12 @@ class DiaryCollectionView: UICollectionView {
 	}
 	
 	func bind(_ viewModel: DiaryCollectionViewModel) {
-		viewModel.diaryData
-			.asDriver(onErrorJustReturn: [])
-			.drive(self.rx.items(cellIdentifier: "DiaryCollectionViewCell", cellType: DiaryCollectionViewCell.self)) { index, diary, cell in
-				cell.setup(cellData: DiaryCell(diaryUUID: diary.diaryUUID, diaryName: diary.diaryName, diaryCover: diary.diaryCover))
-			}
+		configureCollectionViewDataSource()
+		viewModel.collectionDiaryData
+			.bind(to: self.rx.items(dataSource: source))
 			.disposed(by: disposeBag)
 		
-		viewModel.diaryData
-			.asObservable()
+		viewModel.collectionDiaryData
 			.subscribe(onNext: { data in
 				if data.isEmpty {
 					self.backgroundView = DiaryCollectionEmptyView()
@@ -47,6 +47,28 @@ class DiaryCollectionView: UICollectionView {
 				}
 			})
 			.disposed(by: disposeBag)
+	}
+	
+	private func configureCollectionViewDataSource() {
+		source = RxCollectionViewSectionedReloadDataSource<DiarySection>(configureCell: { dataSource, collectionView, indexPath, item in
+			if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DiaryCollectionViewCell", for: indexPath) as? DiaryCollectionViewCell {
+				cell.setup(cellData: item)
+				return cell
+			} else {
+				return UICollectionViewCell()
+			}
+		}, configureSupplementaryView: { (dataSource, collectionView, kind, indexPath) -> UICollectionReusableView in
+			switch kind {
+			case UICollectionView.elementKindSectionHeader:
+				if let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "DiaryCollectionHeaderView", for: indexPath) as? DiaryCollectionHeaderView {
+					return header
+				} else {
+					return UICollectionReusableView()
+				}
+			default:
+				fatalError()
+			}
+		})
 	}
 }
 

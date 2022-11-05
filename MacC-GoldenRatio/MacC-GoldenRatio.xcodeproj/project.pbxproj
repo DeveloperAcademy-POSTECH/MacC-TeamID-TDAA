@@ -60,7 +60,7 @@
 		E21342E328F6B6BC0048D9CF /* MapData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21342E228F6B6BC0048D9CF /* MapData.swift */; };
 		E25753BF28ED9E0600023619 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = E25753BE28ED9E0600023619 /* Kingfisher */; };
 		E265C8102914E9A4003380A5 /* HomeAddDiaryButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E265C80F2914E9A4003380A5 /* HomeAddDiaryButtonView.swift */; };
-		E26F0DB22916B33900B040C9 /* DiaryCollectionEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26F0DB12916B33900B040C9 /* DiaryCollectionEmptyView.swift */; };
+		E26F0DB22916B33900B040C9 /* CollectionEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26F0DB12916B33900B040C9 /* CollectionEmptyView.swift */; };
 		E276B91C28E46AE900163833 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E276B91B28E46AE900163833 /* User.swift */; };
 		E276B91E28E46B3700163833 /* DiaryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E276B91D28E46B3700163833 /* DiaryModel.swift */; };
 		E276B92028E4812E00163833 /* UIScreen+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E276B91F28E4812E00163833 /* UIScreen+.swift */; };
@@ -87,10 +87,11 @@
 		E2DA8F6028F842310098DD94 /* MyAlbumCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DA8F5F28F842310098DD94 /* MyAlbumCollectionViewCell.swift */; };
 		E2DA8F6228F856A10098DD94 /* MyAlbumPhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DA8F6128F856A10098DD94 /* MyAlbumPhotoViewController.swift */; };
 		E2DA8F6428F857D80098DD94 /* MyAlbumPhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DA8F6328F857D80098DD94 /* MyAlbumPhotoCollectionViewCell.swift */; };
+		E2E5442F2916C24600E611D0 /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = E2E5442E2916C24600E611D0 /* RxDataSources */; };
 		E2EA7F0628E56C0900AC1C49 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EA7F0528E56C0900AC1C49 /* TabBarController.swift */; };
 		E2EA7F0828E56CF600AC1C49 /* MyPlaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EA7F0728E56CF600AC1C49 /* MyPlaceViewController.swift */; };
 		E2EA7F0A28E56CFE00AC1C49 /* MyAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EA7F0928E56CFE00AC1C49 /* MyAlbumViewController.swift */; };
-		E2EA7F1628E5711E00AC1C49 /* HomeHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EA7F1528E5711E00AC1C49 /* HomeHeaderView.swift */; };
+		E2EA7F1628E5711E00AC1C49 /* DiaryCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EA7F1528E5711E00AC1C49 /* DiaryCollectionHeaderView.swift */; };
 		E2ED4872290ABE46002FEC2B /* Notification+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2ED4871290ABE46002FEC2B /* Notification+.swift */; };
 		E2F5690328E57E7B0039BE37 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = E2F5690228E57E7B0039BE37 /* SnapKit */; };
 		E2F5690928E5CCDC0039BE37 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = E2F5690828E5CCDC0039BE37 /* FirebaseAuth */; };
@@ -192,7 +193,7 @@
 		E21342E028F6B6940048D9CF /* MyPlaceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPlaceViewModel.swift; sourceTree = "<group>"; };
 		E21342E228F6B6BC0048D9CF /* MapData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapData.swift; sourceTree = "<group>"; };
 		E265C80F2914E9A4003380A5 /* HomeAddDiaryButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeAddDiaryButtonView.swift; sourceTree = "<group>"; };
-		E26F0DB12916B33900B040C9 /* DiaryCollectionEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryCollectionEmptyView.swift; sourceTree = "<group>"; };
+		E26F0DB12916B33900B040C9 /* CollectionEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionEmptyView.swift; sourceTree = "<group>"; };
 		E276B91B28E46AE900163833 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		E276B91D28E46B3700163833 /* DiaryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryModel.swift; sourceTree = "<group>"; };
 		E276B91F28E4812E00163833 /* UIScreen+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+.swift"; sourceTree = "<group>"; };
@@ -224,7 +225,7 @@
 		E2EA7F0528E56C0900AC1C49 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		E2EA7F0728E56CF600AC1C49 /* MyPlaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPlaceViewController.swift; sourceTree = "<group>"; };
 		E2EA7F0928E56CFE00AC1C49 /* MyAlbumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAlbumViewController.swift; sourceTree = "<group>"; };
-		E2EA7F1528E5711E00AC1C49 /* HomeHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeHeaderView.swift; sourceTree = "<group>"; };
+		E2EA7F1528E5711E00AC1C49 /* DiaryCollectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryCollectionHeaderView.swift; sourceTree = "<group>"; };
 		E2ED4871290ABE46002FEC2B /* Notification+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+.swift"; sourceTree = "<group>"; };
 		E2F5691828E5CE170039BE37 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E2FA41A028F4752D00BBA354 /* DiaryCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiaryCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -239,6 +240,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E25753BF28ED9E0600023619 /* Kingfisher in Frameworks */,
+				E2E5442F2916C24600E611D0 /* RxDataSources in Frameworks */,
 				E2F5690F28E5CCDC0039BE37 /* FirebaseDatabaseSwift in Frameworks */,
 				E2C8FA26291432B4009C58C9 /* RxCocoa in Frameworks */,
 				E2F5690328E57E7B0039BE37 /* SnapKit in Frameworks */,
@@ -390,10 +392,10 @@
 		E25753B928ED8C0600023619 /* MyHome */ = {
 			isa = PBXGroup;
 			children = (
-				E2EA7F1528E5711E00AC1C49 /* HomeHeaderView.swift */,
+				E2EA7F1528E5711E00AC1C49 /* DiaryCollectionHeaderView.swift */,
 				E2C2750A290D950400319885 /* DiaryCollectionView.swift */,
 				E265C80F2914E9A4003380A5 /* HomeAddDiaryButtonView.swift */,
-				E26F0DB12916B33900B040C9 /* DiaryCollectionEmptyView.swift */,
+				E26F0DB12916B33900B040C9 /* CollectionEmptyView.swift */,
 			);
 			path = MyHome;
 			sourceTree = "<group>";
@@ -622,6 +624,7 @@
 				E25753BE28ED9E0600023619 /* Kingfisher */,
 				E2C8FA25291432B4009C58C9 /* RxCocoa */,
 				E2C8FA27291432B4009C58C9 /* RxSwift */,
+				E2E5442E2916C24600E611D0 /* RxDataSources */,
 			);
 			productName = "MacC-GoldenRatio";
 			productReference = E28F07FE28E4655100832F4A /* MacC-GoldenRatio.app */;
@@ -700,6 +703,7 @@
 				E2F5690728E5CCDC0039BE37 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				E25753BD28ED9E0600023619 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				E2C8FA24291432B4009C58C9 /* XCRemoteSwiftPackageReference "RxSwift" */,
+				E2E5442D2916C24600E611D0 /* XCRemoteSwiftPackageReference "RxDataSources" */,
 			);
 			productRefGroup = E28F07FF28E4655100832F4A /* Products */;
 			projectDirPath = "";
@@ -763,7 +767,7 @@
 				CC0F434428F71E62003060D5 /* DiaryConfigViewModel.swift in Sources */,
 				E21342D928F6B0660048D9CF /* FirebaseClient.swift in Sources */,
 				E2BEC46328F82DC30056E755 /* MyAlbumTitleCollectionViewCell.swift in Sources */,
-				E26F0DB22916B33900B040C9 /* DiaryCollectionEmptyView.swift in Sources */,
+				E26F0DB22916B33900B040C9 /* CollectionEmptyView.swift in Sources */,
 				E276B92028E4812E00163833 /* UIScreen+.swift in Sources */,
 				CC40BC1F28EEB10800DF48E1 /* CalendarPickerViewController.swift in Sources */,
 				0A3ED14828FBE6EB000D55D8 /* MyPageViewController.swift in Sources */,
@@ -803,7 +807,7 @@
 				0A6F107128FBFA7C002FB611 /* MenuTableViewCell.swift in Sources */,
 				CC65514728EEBF7C00E637A2 /* Date+.swift in Sources */,
 				E21342DD28F6B2740048D9CF /* HalfModalPresentationController.swift in Sources */,
-				E2EA7F1628E5711E00AC1C49 /* HomeHeaderView.swift in Sources */,
+				E2EA7F1628E5711E00AC1C49 /* DiaryCollectionHeaderView.swift in Sources */,
 				B93EC22928F7BC8000BB89C5 /* String+.swift in Sources */,
 				E2B025BC28EB326C00B73891 /* MyHomeViewModel.swift in Sources */,
 				E2C2A76C28F97DB900D48F8F /* LoadingIndicator.swift in Sources */,
@@ -1208,6 +1212,14 @@
 				minimumVersion = 6.0.0;
 			};
 		};
+		E2E5442D2916C24600E611D0 /* XCRemoteSwiftPackageReference "RxDataSources" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RxSwiftCommunity/RxDataSources";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 		E2F5690128E57E7B0039BE37 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
@@ -1241,6 +1253,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E2C8FA24291432B4009C58C9 /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxSwift;
+		};
+		E2E5442E2916C24600E611D0 /* RxDataSources */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E2E5442D2916C24600E611D0 /* XCRemoteSwiftPackageReference "RxDataSources" */;
+			productName = RxDataSources;
 		};
 		E2F5690228E57E7B0039BE37 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;

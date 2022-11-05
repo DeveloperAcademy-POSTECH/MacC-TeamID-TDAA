@@ -9,7 +9,7 @@ import RxSwift
 import SnapKit
 import UIKit
 
-final class HomeHeaderView: UIView {
+final class DiaryCollectionHeaderView: UICollectionReusableView {
 	let myDevice = UIScreen.getDevice()
 	
 	private lazy var titleLabel: UILabel = {

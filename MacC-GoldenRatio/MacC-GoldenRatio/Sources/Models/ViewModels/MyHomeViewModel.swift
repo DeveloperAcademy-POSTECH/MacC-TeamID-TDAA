@@ -47,9 +47,10 @@ class MyHomeViewModel {
 			.filter { $0 != nil }
 
 		let diaryData = diaryValue
-			.map(getCollectionDiaryData)
+			.map(getCollectionCellData)
 		
 		diaryData
+			.map(getCollectionSection)
 			.bind(to: diaryCollectionViewModel.collectionDiaryData)
 			.disposed(by: disposeBag)
 	}
@@ -61,12 +62,22 @@ class MyHomeViewModel {
 		return value
 	}
 	
-	func getCollectionDiaryData(_ value: [Diary]?) -> [Diary] {
+	func getCollectionCellData(_ value: [Diary]?) -> [DiaryCell] {
 		guard let value = value else {
 			return []
 		}
 		
-		return value
+		return value.map {
+			DiaryCell(diaryUUID: $0.diaryUUID, diaryName: $0.diaryName, diaryCover: $0.diaryCover)
+		}
+	}
+	
+	func getCollectionSection(_ value: [DiaryCell]?) -> [DiarySection] {
+		guard let value = value else {
+			return []
+		}
+		
+		return [DiarySection(header: "다이어리", items: value)]
 	}
 	
 	func isDiaryCodeEqualTo(_ diaryUUID: String) {

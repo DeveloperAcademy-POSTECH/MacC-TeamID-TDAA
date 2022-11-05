@@ -15,8 +15,17 @@ final class MyHomeViewController: UIViewController, UICollectionViewDelegateFlow
 	private let viewModel = MyHomeViewModel()
 	private let myDevice = UIScreen.getDevice()
 	
+	private lazy var titleLabel: UILabel = {
+		let label =  UILabel()
+		label.text = "다이어리"
+		label.font = myDevice.TabBarTitleFont
+		label.textColor = UIColor.buttonColor
+		
+		return label
+	}()
+	
 	private lazy var collectionView = DiaryCollectionView()
-	private lazy var headerView = HomeHeaderView()
+//	private lazy var headerView = HomeHeaderView()
 	private lazy var addDiaryButton = HomeAddDiaryButtonView()
 	
 	override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
@@ -33,14 +42,9 @@ final class MyHomeViewController: UIViewController, UICollectionViewDelegateFlow
 	private func setupSubViews() {
 		self.view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
 
-		[headerView, collectionView, addDiaryButton].forEach { view.addSubview($0) }
-
-		headerView.snp.makeConstraints {
-			$0.top.equalTo(view.safeAreaLayoutGuide)
-			$0.leading.trailing.equalTo(view.safeAreaLayoutGuide)
-		}
+		[collectionView, addDiaryButton].forEach { view.addSubview($0) }
 		collectionView.snp.makeConstraints {
-			$0.top.equalTo(headerView.snp.bottom)
+			$0.top.equalTo(view.safeAreaLayoutGuide)
 			$0.bottom.leading.trailing.equalTo(view.safeAreaLayoutGuide)
 		}
 		addDiaryButton.snp.makeConstraints {

@@ -9,8 +9,7 @@ import RxCocoa
 import RxSwift
 
 struct DiaryCollectionViewModel {
-	let collectionDiaryData = BehaviorRelay<[Diary]>(value: [])
-	let diaryData: Driver<[Diary]>
+	let collectionDiaryData = BehaviorRelay<[DiarySection]>(value: [])
 	
 	var isInitializing = true {
 		didSet {
@@ -20,10 +19,5 @@ struct DiaryCollectionViewModel {
 				LoadingIndicator.hideLoading()
 			}
 		}
-	}
-	
-	init() {
-		self.diaryData = collectionDiaryData
-			.asDriver(onErrorJustReturn: [])
 	}
 }

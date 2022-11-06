@@ -20,9 +20,11 @@ class StickerStickerView: StickerView {
     /// StickerView를 새로 만듭니다.
     init(sticker: String, appearPoint: CGPoint) {
         super.init(frame: stickerImageView.frame)
+        
+        self.configureNewStickerView()
 
         Task{
-            self.stickerViewData = await StickerViewData(itemType: .sticker, contents: [sticker], appearPoint: appearPoint, defaultSize: stickerImageView.frame.size, lastEditor: UserManager.shared.userUID)
+            self.stickerViewData = await StickerViewData(itemType: .sticker, contents: [sticker], appearPoint: appearPoint, defaultSize: stickerImageView.frame.size)
             await self.configureStickerViewData()
             await self.setStickerImage()
 

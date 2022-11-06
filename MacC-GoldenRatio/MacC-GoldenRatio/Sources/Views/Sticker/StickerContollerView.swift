@@ -14,7 +14,7 @@ class StickerControllerView: UIImageView {
     private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
     private let disposeBag = DisposeBag()
 
-    init(image: UIImage?, gestureRecognizer: UIGestureRecognizer, isGestureEnabled: Observable<Bool>) {
+    init(image: UIImage?, gestureRecognizer: UIGestureRecognizer, isStickerViewActive: Observable<Bool>) {
         super.init(image: image)
 
         DispatchQueue.main.async {
@@ -26,7 +26,7 @@ class StickerControllerView: UIImageView {
             self.isUserInteractionEnabled = true
             self.contentMode = .scaleAspectFit
             
-            self.bindLastEditorObservable(isGestureEnabled: isGestureEnabled)
+            self.bindLastEditorObservable(isStickerViewActive: isStickerViewActive)
         }
     }
 
@@ -34,8 +34,8 @@ class StickerControllerView: UIImageView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func bindLastEditorObservable(isGestureEnabled: Observable<Bool>) {
-        isGestureEnabled
+    private func bindLastEditorObservable(isStickerViewActive: Observable<Bool>) {
+        isStickerViewActive
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: {
                 

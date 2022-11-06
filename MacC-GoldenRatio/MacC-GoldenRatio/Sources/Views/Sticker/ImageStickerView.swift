@@ -21,10 +21,11 @@ class ImageStickerView: StickerView {
     init(image: UIImage, diaryUUID: String, appearPoint: CGPoint) {
         super.init(frame: imageView.frame)
 
+        self.configureNewStickerView()
         self.upLoadImage(image: image, path: "Diary/" + diaryUUID.description)
         
         Task {
-            self.stickerViewData = await StickerViewData(itemType: .image, contents: [""], appearPoint: appearPoint, defaultSize: imageView.frame.size, lastEditor: UserManager.shared.userUID)
+            self.stickerViewData = await StickerViewData(itemType: .image, contents: [""], appearPoint: appearPoint, defaultSize: imageView.frame.size)
             await self.configureStickerViewData()
             
             DispatchQueue.main.async {
@@ -52,6 +53,10 @@ class ImageStickerView: StickerView {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func configureNewStickerView() {
+        super.configureNewStickerView()
     }
     
     private func configureImageView() async {

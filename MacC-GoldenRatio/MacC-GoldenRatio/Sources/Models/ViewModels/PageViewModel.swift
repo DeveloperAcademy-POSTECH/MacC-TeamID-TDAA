@@ -152,49 +152,6 @@ class PageViewModel {
 
     }
     
-    func appendSticker(_ sticker: StickerView) {
-//        stickerArrayObservable[currentPageIndex].append(sticker)
-    }
-    
-    func removeSticker(_ sticker: StickerView) {
-//        guard let index = stickerArrayObservable[currentPageIndex].firstIndex(of: sticker) else { return }
-//        stickerArrayObservable[currentPageIndex].remove(at: index)
-    }
-    
-    func hideStickerSubview(_ value: Bool) {
-        
-        
-        
-    }
-    
-    func bringStickerToFront(_ sticker: StickerView) {
-//        guard let index = stickerArrayObservable[currentPageIndex].firstIndex(of: sticker) else { return }
-//        stickerArrayObservable[currentPageIndex].remove(at: index)
-//        stickerArrayObservable[currentPageIndex].append(sticker)
-    }
-    
-    
-    
-//    func setStickerArray() async -> Observable<[[StickerView]]> {
-//        self.diaryObservable
-//            .map { diary in
-//                diary.diaryPages[self.selectedDay].pages.map {
-//                    let stickerViews: [StickerView] = $0.items.map { item in
-//                        switch item.itemType {
-//                        case .text:
-//                            return await TextStickerView(item: item)
-//                        case .image:
-//                            return await ImageStickerView(item: item)
-//                        case .sticker:
-//                            return await StickerStickerView(item: item)
-//                        case .location:
-//                            return await MapStickerView(item: item)
-//                        }
-//                    }
-//                    return stickerViews
-//                }
-//            }
-//    }
 //
 //    func updateDBPages() {
 //        do {

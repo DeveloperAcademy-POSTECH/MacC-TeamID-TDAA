@@ -13,8 +13,8 @@ import UIKit
 
 // PageEditModeViewController
 class PageViewController: UIViewController {
-    private lazy var newStickerDefaultSize = CGSize(width: 100, height: 100)
-    private lazy var newStickerAppearPoint = CGPoint(x: self.view.center.x - ( self.newStickerDefaultSize.width * 0.5 ), y: self.view.center.y - self.newStickerDefaultSize.height * 0.5)
+    private lazy var newStickerDefaultSize = UIScreen.getDevice().stickerDefaultSize
+    private lazy var newStickerAppearPoint = CGPoint(x: self.view.center.x - ( self.newStickerDefaultSize.width * 0.5 ), y: self.view.center.y - self.newStickerDefaultSize.height)
     
     private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
     private let imagePicker = UIImagePickerController()
@@ -151,7 +151,6 @@ class PageViewController: UIViewController {
                     stickerView.delegate = self
                     debugPrint(stickerView.frame)
                     self.backgroundImageView.addSubview(stickerView)
-//                        self.backgroundImageView.bringSubviewToFront(stickerView)
                 }
                 
             })
@@ -262,7 +261,13 @@ class PageViewController: UIViewController {
     
     // MARK: Actions
     @objc private func setStickerSubviewHidden() {
-        self.pageViewModel.hideStickerSubview(true)
+        
+        self.backgroundImageView.subviews.forEach {
+            if let stickerView = $0 as? StickerView {
+                stickerView.isStickerViewActive.onNext(false)
+            }
+        }
+        
     }
     
     @objc private func onTapMapButton() {
@@ -293,36 +298,31 @@ class PageViewController: UIViewController {
     private func addMapSticker(mapItem: MKMapItem) {
         let mapStickerView = MapStickerView(mapItem: mapItem, appearPoint: newStickerAppearPoint)
         self.addSticker(stickerView: mapStickerView)
-        self.pageViewModel.appendSticker(mapStickerView)
-
     }
     
     private func addImageSticker(image: UIImage?) {
-//        guard let image = image else { return }
-//        let imageStickerView = ImageStickerView(image: image, diaryUUID: pageViewModel.diary.diaryUUID, appearPoint: newStickerAppearPoint)
-//        self.addSticker(stickerView: imageStickerView)
-//        self.pageViewModel.appendSticker(imageStickerView)
+        guard let image = image else { return }
+        guard let diaryUUID = try? pageViewModel.diaryObservable.value().diaryUUID else { return }
+        let imageStickerView = ImageStickerView(image: image, diaryUUID: diaryUUID, appearPoint: newStickerAppearPoint)
+        self.addSticker(stickerView: imageStickerView)
     }
     
     private func addSticker(sticker: String) {
-//        let imageStickerView = StickerStickerView(sticker: sticker, appearPoint: newStickerAppearPoint)
-//        self.addSticker(stickerView: imageStickerView)
-//        self.pageViewModel.appendSticker(imageStickerView)
+        let imageStickerView = StickerStickerView(sticker: sticker, appearPoint: newStickerAppearPoint)
+        self.addSticker(stickerView: imageStickerView)
     }
     
     private func addTextSticker() {
-//        let textStickerView = TextStickerView(appearPoint: newStickerAppearPoint)
-//        self.addSticker(stickerView: textStickerView)
-//        self.pageViewModel.appendSticker(textStickerView)
+        let textStickerView = TextStickerView(appearPoint: newStickerAppearPoint)
+        self.addSticker(stickerView: textStickerView)
     }
     
     private func addSticker(stickerView: StickerView) {
-//        DispatchQueue.main.async {
-//            stickerView.delegate = self
-////            stickerView.center = CGPoint(x: self.view.center.x, y: self.view.center.y - 100)
-//            self.backgroundImageView.addSubview(stickerView)
-//            self.backgroundImageView.bringSubviewToFront(stickerView)
-//        }
+        DispatchQueue.main.async {
+            stickerView.delegate = self
+            self.backgroundImageView.addSubview(stickerView)
+            self.backgroundImageView.bringSubviewToFront(stickerView)
+        }
     }
 }
 
@@ -385,7 +385,6 @@ extension PageViewController {
     }
 
     @objc private func onTapNavigationComplete() {
-        self.pageViewModel.hideStickerSubview(true)
        
         // TODO: diarySubject의 value를 서버에 올리기
 //        pageViewModel.updateDBPages()
@@ -397,12 +396,10 @@ extension PageViewController: StickerViewDelegate {
     
     func removeSticker(sticker: StickerView) {
         sticker.removeFromSuperview()
-        pageViewModel.removeSticker(sticker)
     }
     
     func bringStickerToFront(sticker: StickerView) {
         backgroundImageView.bringSubviewToFront(sticker)
-        pageViewModel.bringStickerToFront(sticker)
     }
     
 }
@@ -448,7 +445,7 @@ extension PageViewController: UIGestureRecognizerDelegate {
                     
                     if let stickerView = $0 as? StickerView {
                         
-                        if try stickerView.isGestureEnabled.value() && stickerView.bounds.contains(convertedPoint) {
+                        if try stickerView.isStickerViewActive.value() && stickerView.bounds.contains(convertedPoint) {
                             
                             result = false
                             return

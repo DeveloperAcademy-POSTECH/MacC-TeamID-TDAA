@@ -59,9 +59,11 @@ class MapStickerView: StickerView {
     init(mapItem: MKMapItem, appearPoint: CGPoint) {
         super.init(frame: mapLabel.frame)
 
+        self.configureNewStickerView()
+        
         Task {
             let mapItemContents = await self.mapItemContents(mapItem: mapItem)
-            self.stickerViewData = await StickerViewData(itemType: .location, contents: mapItemContents, appearPoint: appearPoint, defaultSize: CGSize(width: 100, height: 100), lastEditor: UserManager.shared.userUID)
+            self.stickerViewData = await StickerViewData(itemType: .location, contents: mapItemContents, appearPoint: appearPoint, defaultSize: CGSize(width: 100, height: 100))
             
             await self.setLocationView()
             await self.setLocationViewFrame()
@@ -134,8 +136,8 @@ class MapStickerView: StickerView {
             let width = (self.locationNameLabel.frame.width < self.locationAddressLabel.frame.width) ? self.locationAddressLabel.frame.width : self.locationNameLabel.frame.width
             self.locationView.frame = CGRect(origin: .zero, size: .init(width: 70 + width, height: 60))
             
-            self.frame.origin.x -= self.locationView.frame.width / 2
-            self.frame.origin.y -= self.locationView.frame.height / 2
+            self.frame.origin.x -= ( self.locationView.frame.width / 2 - 50 )
+            self.frame.origin.y -= ( self.locationView.frame.height / 2 - 50 )
             self.frame.size = self.locationView.frame.size
         }
     }

@@ -22,7 +22,7 @@ class StickerViewData {
     
     var contentsObservable: Observable<[String]>!
         
-    init(itemType: ItemType, contents: [String], appearPoint: CGPoint, defaultSize: CGSize, lastEditor: String?) async {
+    init(itemType: ItemType, contents: [String], appearPoint: CGPoint, defaultSize: CGSize) async {
         
         let id = UUID().uuidString + String(Date().timeIntervalSince1970)
         let item = Item(itemUUID: id, itemType: itemType, contents: contents, itemFrame: [appearPoint.x, appearPoint.y, defaultSize.width, defaultSize.height], itemBounds: [0.0, 0.0, defaultSize.width, defaultSize.height], itemTransform: [1.0, 0.0, 0.0, 1.0, 0.0, 0.0])

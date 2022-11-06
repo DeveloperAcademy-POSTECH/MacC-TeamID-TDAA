@@ -26,11 +26,14 @@ class TextStickerView: StickerView {
     init(appearPoint: CGPoint) {
         super.init(frame: textView.frame)
         
+        self.configureNewStickerView()
+
         Task {
-            self.stickerViewData = await StickerViewData(itemType: .text, contents: [""], appearPoint: appearPoint, defaultSize: textView.frame.size, lastEditor: UserManager.shared.userUID)
+            self.stickerViewData = await StickerViewData(itemType: .text, contents: [""], appearPoint: appearPoint, defaultSize: textView.frame.size)
             await self.configureStickerViewData()
             await self.setTextView()
-            await self.bindIsGestureEnabled()
+            await self.setTextStickerViewFrame()
+            await self.bindIsStickerViewActive()
             
             DispatchQueue.main.async {
                 super.setupContentView(content: self.textView)
@@ -47,7 +50,7 @@ class TextStickerView: StickerView {
             self.stickerViewData = await StickerViewData(item: item)
             await self.configureStickerViewData()
             await self.setTextView()
-            await self.bindIsGestureEnabled()
+            await self.bindIsStickerViewActive()
             
             DispatchQueue.main.async {
                 super.setupContentView(content: self.textView)
@@ -72,8 +75,15 @@ class TextStickerView: StickerView {
         
     }
     
-    private func bindIsGestureEnabled() async {
-        self.isGestureEnabled
+    private func setTextStickerViewFrame() async {
+        DispatchQueue.main.async {
+            self.frame.origin.x -= ( self.textView.frame.width / 2 - 50 )
+            self.frame.origin.y -= ( self.textView.frame.height / 2 - 50 )
+        }
+    }
+    
+    private func bindIsStickerViewActive() async {
+        self.isStickerViewActive
             .subscribe(on: MainScheduler.instance)
             .subscribe(onNext: {
                 self.textView.isEditable = $0

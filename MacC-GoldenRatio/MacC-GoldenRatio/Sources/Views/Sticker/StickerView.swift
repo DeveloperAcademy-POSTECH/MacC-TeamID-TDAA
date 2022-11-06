@@ -34,7 +34,8 @@ class StickerView: UIView {
     private var oldBounds: CGRect!
     private var oldTransform: CGAffineTransform!
 
-    var isGestureEnabled: BehaviorSubject<Bool> = BehaviorSubject(value: false)
+    /// 스티커 뷰의 활성 상태를 나타내는 변수입니다. Local 상에서만 다뤄집니다. 즉, 서버 데이터에 업데이트 되지 않습니다.
+    var isStickerViewActive: BehaviorSubject<Bool> = BehaviorSubject(value: false)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -49,14 +50,18 @@ class StickerView: UIView {
         }
     }
 
-    func updateIsGestureEnabled(value: Bool) {
+    func updateIsStickerViewActive(value: Bool) {
         
         if !value {
             enableTranslucency(state: value)
         }
         
-        self.isGestureEnabled.onNext(value)
+        self.isStickerViewActive.onNext(value)
             
+    }
+    
+    internal func configureNewStickerView() {
+        self.isStickerViewActive.onNext(true)
     }
     
     internal func stickerUIDidChange() async {
@@ -122,19 +127,19 @@ class StickerView: UIView {
             self.addGestureRecognizer(stickerSingleTap)
                         
             // stickerBorder
-            self.borderView = StickerBorderView(frame: self.bounds, isGestureEnabled: self.isGestureEnabled)
+            self.borderView = StickerBorderView(frame: self.bounds, isStickerViewActive: self.isStickerViewActive)
             self.addSubview(self.borderView)
             
             // deleteController
             let deleteControlImage = UIImage(named: "closeButton")
             let singleTap = UITapGestureRecognizer(target: self, action: #selector(self.singleTap(_:)))
-            self.deleteController = StickerControllerView(image: deleteControlImage, gestureRecognizer: singleTap, isGestureEnabled: self.isGestureEnabled)
+            self.deleteController = StickerControllerView(image: deleteControlImage, gestureRecognizer: singleTap, isStickerViewActive: self.isStickerViewActive)
             self.addSubview(self.deleteController)
 
             // rotateController
             let resizingControlImage = UIImage(named: "rotateButton")
             let panResizeGesture = UIPanGestureRecognizer(target: self, action: #selector(self.resizeTranslate(_:)))
-            self.resizingController = StickerControllerView(image: resizingControlImage, gestureRecognizer: panResizeGesture, isGestureEnabled: self.isGestureEnabled)
+            self.resizingController = StickerControllerView(image: resizingControlImage, gestureRecognizer: panResizeGesture, isStickerViewActive: self.isStickerViewActive)
             self.addSubview(self.resizingController)
 
             let pinchResizeGesture = UIPinchGestureRecognizer(target: self, action: #selector(self.pinch(_:)))
@@ -222,8 +227,8 @@ class StickerView: UIView {
     // MARK: 스티커 자체에 입력되는 제스처 관련 메서드
     @objc private func stickerViewSingleTap(_ sender: UITapGestureRecognizer) {
         do {
-            let isGestureEnabled = try self.isGestureEnabled.value()
-            updateIsGestureEnabled(value: !isGestureEnabled)
+            let isStickerViewActive = try self.isStickerViewActive.value()
+            updateIsStickerViewActive(value: !isStickerViewActive)
         } catch {
             print(error)
         }
@@ -231,7 +236,7 @@ class StickerView: UIView {
     
     @objc private func pinch(_ sender: UIPinchGestureRecognizer) {
         
-        guard let isGestureEnabled = try? self.isGestureEnabled.value(), isGestureEnabled == true else { return }
+        guard let isStickerViewActive = try? self.isStickerViewActive.value(), isStickerViewActive == true else { return }
         
         if sender.state == .began {
             oldBounds = bounds
@@ -255,7 +260,7 @@ class StickerView: UIView {
 
     @objc private func rotate(_ sender: UIRotationGestureRecognizer) {
         
-        guard let isGestureEnabled = try? self.isGestureEnabled.value(), isGestureEnabled == true else { return }
+        guard let isStickerViewActive = try? self.isStickerViewActive.value(), isStickerViewActive == true else { return }
 
         if sender.state == .began {
             oldTransform = transform
@@ -279,7 +284,7 @@ class StickerView: UIView {
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
-        guard let isGestureEnabled = try? self.isGestureEnabled.value(), isGestureEnabled == true else { return }
+        guard let isStickerViewActive = try? self.isStickerViewActive.value(), isStickerViewActive == true else { return }
         
         self.delegate.bringStickerToFront(sticker: self)
         enableTranslucency(state: true)
@@ -293,7 +298,7 @@ class StickerView: UIView {
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
 
-        guard let isGestureEnabled = try? self.isGestureEnabled.value(), isGestureEnabled == true else { return }
+        guard let isStickerViewActive = try? self.isStickerViewActive.value(), isStickerViewActive == true else { return }
 
         let touchLocation = touches.first?.location(in: self)
         if resizingController.frame.contains(touchLocation!) {
@@ -308,7 +313,7 @@ class StickerView: UIView {
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
      
-        guard let isGestureEnabled = try? self.isGestureEnabled.value(), isGestureEnabled == true else { return }
+        guard let isStickerViewActive = try? self.isStickerViewActive.value(), isStickerViewActive == true else { return }
 
         enableTranslucency(state: false)
         

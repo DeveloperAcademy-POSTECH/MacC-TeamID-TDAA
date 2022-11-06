@@ -107,7 +107,6 @@ class PageViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.backgroundImageView.isUserInteractionEnabled = false
         self.configureNavigation()
     }
     
@@ -144,9 +143,12 @@ class PageViewController: UIViewController {
                 self.backgroundImageView.subviews.forEach {
                     $0.removeFromSuperview()
                 }
-                stickerViews.forEach {
-                    $0.delegate = self
-                    self.backgroundImageView.addSubview($0)
+                stickerViews.forEach { stickerView in
+                    
+                    stickerView.delegate = self
+                    self.backgroundImageView.addSubview(stickerView)
+//                        self.backgroundImageView.bringSubviewToFront(stickerView)
+                    
                 }
             })
             .disposed(by: self.pageViewModel.disposeBag)
@@ -320,21 +322,6 @@ class PageViewController: UIViewController {
     }
 }
 
-// MARK: 스티커 로딩 처리
-extension PageViewController {
-    
-//    private func reloadStickers() {
-//        DispatchQueue.main.async {
-//            self.backgroundImageView.subviews.forEach{
-//                $0.removeFromSuperview()
-//            }
-//            self.loadStickerViews(pageIndex: self.pageViewModel.currentPageIndex)
-//            self.pageViewModel.hideStickerSubview(true)
-//        }
-//    }
-
-}
-
 // MARK: 페이지 편집 처리
 extension PageViewController {
 //    @objc private func onTapDocsButton() {
@@ -403,6 +390,21 @@ extension PageViewController {
 
 // MARK: StickerViewDelegate
 extension PageViewController: StickerViewDelegate {
+    func stickerViewMoveStart() {
+        self.view.gestureRecognizers?.forEach {
+            $0.cancelsTouchesInView = false
+//            if let swipeAction = $0 as? UISwipeGestureRecognizer {
+//                swipeAction.cancelsTouchesInView = false
+//            }
+        }
+    }
+    
+    func stickerViewMoveEnd() {
+        self.view.gestureRecognizers?.forEach {
+            $0.cancelsTouchesInView = true
+        }
+    }
+    
     func removeSticker(sticker: StickerView) {
         sticker.removeFromSuperview()
         pageViewModel.removeSticker(sticker)
@@ -439,10 +441,37 @@ extension PageViewController: UIViewControllerTransitioningDelegate {
 
 // MARK: UIGestureRecognizerDelegate
 extension PageViewController: UIGestureRecognizerDelegate {
-    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        if gestureRecognizer is UISwipeGestureRecognizer {
-            return true
-        }
-        return false
-    }
+    
+//    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive event: UIEvent) -> Bool {
+//        if gestureRecognizer is UISwipeGestureRecognizer {
+//
+//            var result = true
+//
+//            let point = gestureRecognizer.location(ofTouch: 0, in: self.view)
+//
+//            self.backgroundImageView.subviews.forEach {
+//                let convertedPoint = $0.convert(point, from: self.view)
+//                print(convertedPoint)
+//                let hitTestView = $0.hitTest(convertedPoint, with: event)
+//
+//                if hitTestView != nil {
+//                    result = false
+//                    print("hey!!")
+//                }
+//            }
+//
+//            return result
+//        }
+//        return false
+//    }
+    
+//    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+//        var result = true
+//        self.backgroundImageView.subviews.forEach {
+//            if touch.view?.isDescendant(of: $0) == true {
+//                result = false
+//            }
+//        }
+//        return result
+//      }
 }

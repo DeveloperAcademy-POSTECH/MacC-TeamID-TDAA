@@ -45,6 +45,9 @@ class StickerStickerView: StickerView {
             DispatchQueue.main.async {
                 super.setupContentView(content: self.stickerImageView)
                 super.setupDefaultAttributes()
+                self.subviews.forEach{
+                    $0.isUserInteractionEnabled = true
+                }
             }
         }
        

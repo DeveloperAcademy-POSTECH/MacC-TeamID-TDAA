@@ -14,6 +14,8 @@ import UIKit
 protocol StickerViewDelegate {
     func removeSticker(sticker: StickerView)
     func bringStickerToFront(sticker: StickerView)
+    func stickerViewMoveStart()
+    func stickerViewMoveEnd()
 }
 
 class StickerView: UIView {
@@ -51,9 +53,7 @@ class StickerView: UIView {
 
     func changeLastEditor(lastEditor: String?) {
         Task {
-            print("gd")
             await self.stickerViewData?.updateLastEditor(lastEditor: lastEditor)
-            print("sc")
         }
     }
     
@@ -126,38 +126,41 @@ class StickerView: UIView {
     }
     
     internal func setupDefaultAttributes() {
-        let stickerSingleTap = UITapGestureRecognizer(target: self, action: #selector(stickerViewSingleTap(_:)))
-        addGestureRecognizer(stickerSingleTap)
-        
-        guard let lastEditorObservable = (stickerViewData?.lastEditorObservable) else { return }
-        
-        // stickerBorder
-        borderView = StickerBorderView(frame: bounds, lastEditorObservable: lastEditorObservable)
-        addSubview(borderView)
-        
-        // deleteController
-        let deleteControlImage = UIImage(named: "closeButton")
-        let singleTap = UITapGestureRecognizer(target: self, action: #selector(singleTap(_:)))
-        deleteController = StickerControllerView(image: deleteControlImage, gestureRecognizer: singleTap, lastEditorObservable: lastEditorObservable)
-        addSubview(deleteController)
+        DispatchQueue.main.async {
+            let stickerSingleTap = UITapGestureRecognizer(target: self, action: #selector(self.stickerViewSingleTap(_:)))
+            self.addGestureRecognizer(stickerSingleTap)
+            
+            guard let lastEditorObservable = (self.stickerViewData?.lastEditorObservable) else { return }
+            
+            // stickerBorder
+            self.borderView = StickerBorderView(frame: self.bounds, lastEditorObservable: lastEditorObservable)
+            self.addSubview(self.borderView)
+            
+            // deleteController
+            let deleteControlImage = UIImage(named: "closeButton")
+            let singleTap = UITapGestureRecognizer(target: self, action: #selector(self.singleTap(_:)))
+            self.deleteController = StickerControllerView(image: deleteControlImage, gestureRecognizer: singleTap, lastEditorObservable: lastEditorObservable)
+            self.addSubview(self.deleteController)
 
-        // rotateController
-        let resizingControlImage = UIImage(named: "rotateButton")
-        let panResizeGesture = UIPanGestureRecognizer(target: self, action: #selector(resizeTranslate(_:)))
-        resizingController = StickerControllerView(image: resizingControlImage, gestureRecognizer: panResizeGesture, lastEditorObservable: lastEditorObservable)
-        addSubview(resizingController)
+            // rotateController
+            let resizingControlImage = UIImage(named: "rotateButton")
+            let panResizeGesture = UIPanGestureRecognizer(target: self, action: #selector(self.resizeTranslate(_:)))
+            self.resizingController = StickerControllerView(image: resizingControlImage, gestureRecognizer: panResizeGesture, lastEditorObservable: lastEditorObservable)
+            self.addSubview(self.resizingController)
 
-        let pinchResizeGesture = UIPinchGestureRecognizer(target: self, action: #selector(pinch(_:)))
-        pinchResizeGesture.delegate = self
-        addGestureRecognizer(pinchResizeGesture)
+            let pinchResizeGesture = UIPinchGestureRecognizer(target: self, action: #selector(self.pinch(_:)))
+            pinchResizeGesture.delegate = self
+            self.addGestureRecognizer(pinchResizeGesture)
 
-        let rotateResizeGesture = UIRotationGestureRecognizer(target: self, action: #selector(rotate(_:)))
-        rotateResizeGesture.delegate = self
-        addGestureRecognizer(rotateResizeGesture)
+            let rotateResizeGesture = UIRotationGestureRecognizer(target: self, action: #selector(self.rotate(_:)))
+            rotateResizeGesture.delegate = self
+            self.addGestureRecognizer(rotateResizeGesture)
+            
+            self.updateControlsPosition()
 
-        updateControlsPosition()
-
-        deltaAngle = atan2(frame.origin.y + frame.height - center.y, frame.origin.x + frame.width - center.x)
+            self.deltaAngle = atan2(self.frame.origin.y + self.frame.height - self.center.y, self.frame.origin.x + self.frame.width - self.center.x)
+            
+        }
     }
     
     func switchControls(toState state: Bool, animated: Bool = false) {
@@ -259,6 +262,7 @@ class StickerView: UIView {
         guard isGestureEnabled == true else { return }
 
         if sender.state == .began {
+            self.delegate.stickerViewMoveStart()
             oldTransform = transform
             enableTranslucency(state: true)
             previousPoint = sender.location(in: self)
@@ -266,6 +270,7 @@ class StickerView: UIView {
         } else if sender.state == .changed {
             transform = CGAffineTransformRotate(oldTransform, sender.rotation)
         } else if sender.state == .ended {
+            self.delegate.stickerViewMoveEnd()
             oldTransform = transform
             enableTranslucency(state: false)
             previousPoint = sender.location(in: self)

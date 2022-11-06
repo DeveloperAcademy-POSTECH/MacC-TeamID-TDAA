@@ -43,11 +43,35 @@ class FirestoreClient {
 						observer.onError(error)
 					}
 				}
-				observer.onNext(.success(diaries))
-				observer.onCompleted()
+				Task {
+					do {
+						observer.onNext(.success(try await self.convertDiaryToCellData(diaries)))
+						observer.onCompleted()
+					} catch {
+						print(error)
+					}
+				}
 			}
 			return Disposables.create()
 		}
+	}
+	
+	private func convertDiaryToCellData(_ diaries: [Diary]) async throws -> [Diary] {
+		var diaryCellData = [Diary]()
+		var userImageURL = [String]()
+		var data: Diary
+		for diary in diaries {
+			for userUID in diary.userUIDs {
+				let document = try await db.collection("User").document(userUID).getDocument()
+				userImageURL.append(document.data(as: User.self).userImageURL)
+			}
+			data = diary
+			data.userUIDs = userImageURL
+			diaryCellData.append(data)
+			userImageURL.removeAll()
+		}
+		
+		return diaryCellData
 	}
     
     func fetchDiaryLocationData(_ uid: String) async throws -> [Location] {

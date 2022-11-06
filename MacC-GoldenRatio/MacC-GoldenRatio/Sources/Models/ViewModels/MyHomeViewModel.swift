@@ -44,7 +44,6 @@ class MyHomeViewModel {
 		
 		let diaryValue = diaryResult
 			.map(getDiaryValue)
-			.filter { $0 != nil }
 		
 		diaryValue
 			.map(getCollectionSection)
@@ -52,18 +51,10 @@ class MyHomeViewModel {
 			.disposed(by: disposeBag)
 	}
 	
-	func getDiaryValue(_ result: Result<[Diary], Error>) -> [Diary]? {
+	func getDiaryValue(_ result: Result<[Diary], Error>) -> [Diary] {
 		guard case .success(let value) = result else {
-			return nil
-		}
-		return value
-	}
-	
-	func getDiaryData(_ value: [Diary]?) -> [Diary] {
-		guard let value = value else {
 			return []
 		}
-		
 		return value
 	}
 	

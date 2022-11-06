@@ -40,10 +40,12 @@ class DiaryCollectionView: UICollectionView {
 		
 		viewModel.collectionDiaryData
 			.subscribe(onNext: { data in
-				if data.first?.items.count == 0 {
-					self.backgroundView = DiaryCollectionEmptyView()
-				} else {
-					self.backgroundView = nil
+				DispatchQueue.main.async {
+					if data.first?.items.count == 0 {
+						self.backgroundView = DiaryCollectionEmptyView()
+					} else {
+						self.backgroundView = nil
+					}
 				}
 			})
 			.disposed(by: disposeBag)
@@ -52,7 +54,7 @@ class DiaryCollectionView: UICollectionView {
 	private func configureCollectionViewDataSource() {
 		source = RxCollectionViewSectionedReloadDataSource<DiarySection>(configureCell: { dataSource, collectionView, indexPath, item in
 			if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DiaryCollectionViewCell", for: indexPath) as? DiaryCollectionViewCell {
-				cell.setup(cellData: DiaryCell(diaryUUID: item.diaryUUID, diaryName: item.diaryName, diaryCover: item.diaryCover))
+				cell.setup(cellData: DiaryCell(diaryUUID: item.diaryUUID, diaryName: item.diaryName, diaryCover: item.diaryCover, userImageURLs: item.userUIDs))
 				return cell
 			} else {
 				return UICollectionViewCell()

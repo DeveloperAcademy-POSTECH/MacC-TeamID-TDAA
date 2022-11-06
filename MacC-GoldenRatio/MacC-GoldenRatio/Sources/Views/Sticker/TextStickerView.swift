@@ -10,13 +10,7 @@ import RxCocoa
 import SnapKit
 import UIKit
 
-class TextStickerView: StickerView {    
-    override var isGestureEnabled: Bool {
-        willSet {
-            self.textView.isEditable = newValue
-            self.textView.isUserInteractionEnabled = newValue
-        }
-    }
+class TextStickerView: StickerView {
     
     let textView: UITextView = {
         let textView = UITextView(frame: .init(origin: .zero, size: .init(width: 27.3, height: 40)))
@@ -36,6 +30,7 @@ class TextStickerView: StickerView {
             self.stickerViewData = await StickerViewData(itemType: .text, contents: [""], appearPoint: appearPoint, defaultSize: textView.frame.size, lastEditor: UserManager.shared.userUID)
             await self.configureStickerViewData()
             await self.setTextView()
+            await self.bindIsGestureEnabled()
             
             DispatchQueue.main.async {
                 super.setupContentView(content: self.textView)
@@ -52,6 +47,7 @@ class TextStickerView: StickerView {
             self.stickerViewData = await StickerViewData(item: item)
             await self.configureStickerViewData()
             await self.setTextView()
+            await self.bindIsGestureEnabled()
             
             DispatchQueue.main.async {
                 super.setupContentView(content: self.textView)
@@ -76,8 +72,18 @@ class TextStickerView: StickerView {
         
     }
     
-    override func changeLastEditor(lastEditor: String?) {
-        textView.endEditing(true)
+    private func bindIsGestureEnabled() async {
+        self.isGestureEnabled
+            .subscribe(on: MainScheduler.instance)
+            .subscribe(onNext: {
+                self.textView.isEditable = $0
+                self.textView.isUserInteractionEnabled = $0
+                
+                if !$0 {
+                    self.textView.endEditing(true)
+                }
+            })
+            .disposed(by: disposeBag)
     }
     
 }

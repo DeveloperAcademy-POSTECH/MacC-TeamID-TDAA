@@ -162,11 +162,9 @@ class PageViewModel {
     }
     
     func hideStickerSubview(_ value: Bool) {
-//        stickerArrayObservable.forEach{
-//            $0.forEach{ stickerView in
-//                stickerView.changeLastEditor(lastEditor: nil)
-//            }
-//        }
+        
+        
+        
     }
     
     func bringStickerToFront(_ sticker: StickerView) {

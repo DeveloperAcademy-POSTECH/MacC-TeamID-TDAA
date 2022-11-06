@@ -14,7 +14,7 @@ class StickerControllerView: UIImageView {
     private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
     private let disposeBag = DisposeBag()
 
-    init(image: UIImage?, gestureRecognizer: UIGestureRecognizer, lastEditorObservable: Observable<String?>) {
+    init(image: UIImage?, gestureRecognizer: UIGestureRecognizer, isGestureEnabled: Observable<Bool>) {
         super.init(image: image)
 
         DispatchQueue.main.async {
@@ -26,7 +26,7 @@ class StickerControllerView: UIImageView {
             self.isUserInteractionEnabled = true
             self.contentMode = .scaleAspectFit
             
-            self.bindLastEditorObservable(lastEditorObservable: lastEditorObservable)
+            self.bindLastEditorObservable(isGestureEnabled: isGestureEnabled)
         }
     }
 
@@ -34,19 +34,14 @@ class StickerControllerView: UIImageView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func bindLastEditorObservable(lastEditorObservable: Observable<String?>) {
-        lastEditorObservable
+    private func bindLastEditorObservable(isGestureEnabled: Observable<Bool>) {
+        isGestureEnabled
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: {
                 
-                switch $0 {
-                case UserManager.shared.userUID:
+                if $0 {
                     self.isHidden = false
-
-                case nil:
-                    self.isHidden = true
-                    
-                default:
+                } else {
                     self.isHidden = true
                 }
 

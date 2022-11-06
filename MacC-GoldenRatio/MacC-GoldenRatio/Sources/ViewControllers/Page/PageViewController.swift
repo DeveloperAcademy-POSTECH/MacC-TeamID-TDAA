@@ -13,7 +13,8 @@ import UIKit
 
 // PageEditModeViewController
 class PageViewController: UIViewController {
-    private lazy var newStickerAppearPoint = CGPoint(x: self.view.center.x, y: self.view.center.y - 100)
+    private lazy var newStickerDefaultSize = CGSize(width: 100, height: 100)
+    private lazy var newStickerAppearPoint = CGPoint(x: self.view.center.x - ( self.newStickerDefaultSize.width * 0.5 ), y: self.view.center.y - self.newStickerDefaultSize.height * 0.5)
     
     private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
     private let imagePicker = UIImagePickerController()
@@ -440,26 +441,30 @@ extension PageViewController: UIGestureRecognizerDelegate {
             
             let point = gestureRecognizer.location(in: self.view)
             
-            self.backgroundImageView.subviews.forEach {
-                
-                let convertedPoint = $0.convert(point, from: self.view)
-                
-                if let stickerView = $0 as? StickerView {
+            do {
+                try self.backgroundImageView.subviews.forEach {
                     
-                    if stickerView.isGestureEnabled && stickerView.bounds.contains(convertedPoint) {
+                    let convertedPoint = $0.convert(point, from: self.view)
+                    
+                    if let stickerView = $0 as? StickerView {
                         
-                        result = false
-                        return
+                        if try stickerView.isGestureEnabled.value() && stickerView.bounds.contains(convertedPoint) {
+                            
+                            result = false
+                            return
+                        }
+                        
                     }
                     
                 }
-                
+            } catch {
+                print(error)
             }
 
             return result
         }
         
-        return false
+        return true
     }
 
 }

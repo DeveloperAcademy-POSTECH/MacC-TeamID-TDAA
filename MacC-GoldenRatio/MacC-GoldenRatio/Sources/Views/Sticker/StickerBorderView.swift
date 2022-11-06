@@ -13,10 +13,10 @@ class StickerBorderView: UIView {
     private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
     private let disposeBag = DisposeBag()
     
-    init(frame: CGRect, lastEditorObservable: Observable<String?>) {
+    init(frame: CGRect, isGestureEnabled: Observable<Bool>) {
         super.init(frame: frame)
         setupView()
-        bindLastEditorObservable(lastEditorObservable: lastEditorObservable)
+        bindLastEditorObservable(isGestureEnabled: isGestureEnabled)
     }
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -36,26 +36,17 @@ class StickerBorderView: UIView {
         layer.borderColor = UIColor.buttonColor.cgColor
     }
 
-    private func bindLastEditorObservable(lastEditorObservable: Observable<String?>) {
-        lastEditorObservable
+    private func bindLastEditorObservable(isGestureEnabled: Observable<Bool>) {
+        isGestureEnabled
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: {
                 
-                switch $0 {
-                case UserManager.shared.userUID:
+                if $0 {
                     self.isHidden = false
-                    self.layer.borderColor = UIColor.buttonColor.cgColor
-
-                case nil:
+                } else {
                     self.isHidden = true
-                    self.layer.borderColor = UIColor.clear.cgColor
-                    
-                default:
-                    self.isHidden = false
-                    self.layer.borderColor = UIColor.red.cgColor
-
                 }
-
+                
             })
             .disposed(by: disposeBag)
     }

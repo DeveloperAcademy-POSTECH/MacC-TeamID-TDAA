@@ -21,19 +21,16 @@ class StickerViewData {
     var transitionObservable: Observable<CGAffineTransform>!
     
     var contentsObservable: Observable<[String]>!
-    
-    var lastEditorObservable: Observable<String?>!
-    
+        
     init(itemType: ItemType, contents: [String], appearPoint: CGPoint, defaultSize: CGSize, lastEditor: String?) async {
         
         let id = UUID().uuidString + String(Date().timeIntervalSince1970)
-        let item = Item(itemUUID: id, itemType: itemType, contents: contents, itemFrame: [appearPoint.x, appearPoint.y, defaultSize.width, defaultSize.height], itemBounds: [0.0, 0.0, defaultSize.width, defaultSize.height], itemTransform: [1.0, 0.0, 0.0, 1.0, 0.0, 0.0], lastEditor: lastEditor)
+        let item = Item(itemUUID: id, itemType: itemType, contents: contents, itemFrame: [appearPoint.x, appearPoint.y, defaultSize.width, defaultSize.height], itemBounds: [0.0, 0.0, defaultSize.width, defaultSize.height], itemTransform: [1.0, 0.0, 0.0, 1.0, 0.0, 0.0])
         self.itemObservable = BehaviorSubject(value: item)
         self.frameObservable = await self.createFrameObservable()
         self.boundsObservable = await self.createBoundsObservable()
         self.transitionObservable = await self.createTransformObservable()
         self.contentsObservable = await self.createContentsObservable()
-        self.lastEditorObservable = await self.createLastEditorObservable()
     }
     
     init(item: Item) async {
@@ -42,7 +39,6 @@ class StickerViewData {
         self.boundsObservable = await self.createBoundsObservable()
         self.transitionObservable = await self.createTransformObservable()
         self.contentsObservable = await self.createContentsObservable()
-        self.lastEditorObservable = await self.createLastEditorObservable()
     }
     
     private func createFrameObservable() async -> Observable<CGRect> {
@@ -69,12 +65,6 @@ class StickerViewData {
         }
     }
     
-    private func createLastEditorObservable() async -> Observable<String?> {
-        itemObservable.map { item in
-            return item.lastEditor
-        }
-    }
-    
     func updateItem(sticker: StickerView, contents: [String], lastEditor: String?) async {
         let itemFrame: [Double] = await [sticker.frame.origin.x, sticker.frame.origin.y, sticker.frame.size.width, sticker.frame.size.height]
         let itemBounds: [Double] = await [sticker.bounds.origin.x, sticker.bounds.origin.y, sticker.bounds.size.width, sticker.bounds.size.height]
@@ -88,7 +78,6 @@ class StickerViewData {
                 newItem.itemBounds = itemBounds
                 newItem.itemTransform = itemTrasnform
                 newItem.contents = contents
-                newItem.lastEditor = lastEditor
                 
                 return newItem
             }
@@ -107,34 +96,6 @@ class StickerViewData {
                 var newItem = item
                 newItem.contents = contents
                 
-                return newItem
-            }
-            .take(1)
-            .subscribe(onNext: {
-                self.itemObservable.onNext($0)
-            })
-            .disposed(by: disposeBag)
-        
-    }
-    
-    func updateLastEditor(lastEditor: String?) async {
-        
-        self.itemObservable
-            .observe(on: MainScheduler.instance)
-            .debug()
-            .map { item in
-                var newItem = item
-                
-                if lastEditor == nil {
-                    newItem.lastEditor = lastEditor
-                } else {
-                    switch item.lastEditor {
-                    case nil:
-                        newItem.lastEditor = lastEditor
-                    default:
-                        break
-                    }
-                }
                 return newItem
             }
             .take(1)

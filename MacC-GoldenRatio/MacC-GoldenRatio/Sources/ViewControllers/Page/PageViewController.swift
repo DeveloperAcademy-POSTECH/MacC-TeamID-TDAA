@@ -140,16 +140,19 @@ class PageViewController: UIViewController {
                 return stickerViews
             }
             .subscribe(onNext: { stickerViews in
+                
                 self.backgroundImageView.subviews.forEach {
                     $0.removeFromSuperview()
                 }
+                
                 stickerViews.forEach { stickerView in
                     
                     stickerView.delegate = self
+                    debugPrint(stickerView.frame)
                     self.backgroundImageView.addSubview(stickerView)
 //                        self.backgroundImageView.bringSubviewToFront(stickerView)
-                    
                 }
+                
             })
             .disposed(by: self.pageViewModel.disposeBag)
             

@@ -67,8 +67,7 @@ class StickerView: UIView {
         self.stickerViewData?.frameObservable
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: {
-                self.center = $0.origin
-                self.frame.size = $0.size
+                self.frame = $0
             })
             .disposed(by: self.disposeBag)
         

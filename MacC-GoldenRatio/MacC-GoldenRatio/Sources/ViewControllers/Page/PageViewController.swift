@@ -390,20 +390,6 @@ extension PageViewController {
 
 // MARK: StickerViewDelegate
 extension PageViewController: StickerViewDelegate {
-    func stickerViewMoveStart() {
-        self.view.gestureRecognizers?.forEach {
-            $0.cancelsTouchesInView = false
-//            if let swipeAction = $0 as? UISwipeGestureRecognizer {
-//                swipeAction.cancelsTouchesInView = false
-//            }
-        }
-    }
-    
-    func stickerViewMoveEnd() {
-        self.view.gestureRecognizers?.forEach {
-            $0.cancelsTouchesInView = true
-        }
-    }
     
     func removeSticker(sticker: StickerView) {
         sticker.removeFromSuperview()
@@ -414,6 +400,7 @@ extension PageViewController: StickerViewDelegate {
         backgroundImageView.bringSubviewToFront(sticker)
         pageViewModel.bringStickerToFront(sticker)
     }
+    
 }
 
 // MARK: ImagePikcerDelegate
@@ -442,36 +429,34 @@ extension PageViewController: UIViewControllerTransitioningDelegate {
 // MARK: UIGestureRecognizerDelegate
 extension PageViewController: UIGestureRecognizerDelegate {
     
-//    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive event: UIEvent) -> Bool {
-//        if gestureRecognizer is UISwipeGestureRecognizer {
-//
-//            var result = true
-//
-//            let point = gestureRecognizer.location(ofTouch: 0, in: self.view)
-//
-//            self.backgroundImageView.subviews.forEach {
-//                let convertedPoint = $0.convert(point, from: self.view)
-//                print(convertedPoint)
-//                let hitTestView = $0.hitTest(convertedPoint, with: event)
-//
-//                if hitTestView != nil {
-//                    result = false
-//                    print("hey!!")
-//                }
-//            }
-//
-//            return result
-//        }
-//        return false
-//    }
-    
-//    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-//        var result = true
-//        self.backgroundImageView.subviews.forEach {
-//            if touch.view?.isDescendant(of: $0) == true {
-//                result = false
-//            }
-//        }
-//        return result
-//      }
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        
+        if gestureRecognizer is UISwipeGestureRecognizer {
+
+            var result = true
+            
+            let point = gestureRecognizer.location(in: self.view)
+            
+            self.backgroundImageView.subviews.forEach {
+                
+                let convertedPoint = $0.convert(point, from: self.view)
+                
+                if let stickerView = $0 as? StickerView {
+                    
+                    if stickerView.isGestureEnabled && stickerView.bounds.contains(convertedPoint) {
+                        
+                        result = false
+                        return
+                    }
+                    
+                }
+                
+            }
+
+            return result
+        }
+        
+        return false
+    }
+
 }

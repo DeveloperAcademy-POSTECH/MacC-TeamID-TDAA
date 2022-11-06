@@ -14,8 +14,6 @@ import UIKit
 protocol StickerViewDelegate {
     func removeSticker(sticker: StickerView)
     func bringStickerToFront(sticker: StickerView)
-    func stickerViewMoveStart()
-    func stickerViewMoveEnd()
 }
 
 class StickerView: UIView {
@@ -262,7 +260,6 @@ class StickerView: UIView {
         guard isGestureEnabled == true else { return }
 
         if sender.state == .began {
-            self.delegate.stickerViewMoveStart()
             oldTransform = transform
             enableTranslucency(state: true)
             previousPoint = sender.location(in: self)
@@ -270,7 +267,6 @@ class StickerView: UIView {
         } else if sender.state == .changed {
             transform = CGAffineTransformRotate(oldTransform, sender.rotation)
         } else if sender.state == .ended {
-            self.delegate.stickerViewMoveEnd()
             oldTransform = transform
             enableTranslucency(state: false)
             previousPoint = sender.location(in: self)

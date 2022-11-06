@@ -12,37 +12,6 @@ import RxCocoa
 import SnapKit
 import UIKit
 
-enum ConfigState {
-    case create
-    case modify
-    
-    var identifier: String {
-        switch self {
-        case .create:
-            return "추가"
-        case .modify:
-            return "수정"
-        }
-    }
-}
-
-enum ConfigContentType: CaseIterable {
-    case diaryName
-    case location
-    case diaryDate
-    
-    var title: String {
-        switch self {
-        case .diaryName:
-            return "다이어리 이름"
-        case .location:
-            return "여행지"
-        case .diaryDate:
-            return "날짜"
-        }
-    }
-}
-
 class DiaryConfigViewController: UIViewController {
     private var disposeBag = DisposeBag()
     private let device: UIScreen.DeviceSize = UIScreen.getDevice()
@@ -114,8 +83,9 @@ class DiaryConfigViewController: UIViewController {
                                     let locationName = mapItem.name
                                     let locationAddress = mapItem.placemark.countryCode
                                     let locationCoordinate = mapItem.placemark.location?.coordinate
-                
-                                    viewModel.location = Location(locationName: locationName ?? "", locationAddress: locationAddress ?? "", locationCoordinate: [Double(locationCoordinate?.latitude ?? 0.0), Double(locationCoordinate?.longitude ?? 0.0)])
+                                    let location = Location(locationName: locationName ?? "", locationAddress: locationAddress ?? "", locationCoordinate: [Double(locationCoordinate?.latitude ?? 0.0), Double(locationCoordinate?.longitude ?? 0.0)])
+                                    
+                                    viewModel.location = location
                                     
                                     cell.contentButton.setTitle(locationName, for: .normal)
                                     cell.contentButton.tintColor = .black

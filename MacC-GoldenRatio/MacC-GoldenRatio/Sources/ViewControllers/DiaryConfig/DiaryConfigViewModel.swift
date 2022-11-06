@@ -29,10 +29,10 @@ class DiaryConfigViewModel {
     let cancelButtonTapped = PublishRelay<Void>()
     var diaryTitle = PublishRelay<String?>()
     
+    // TODO: Model 관련 프로퍼티 / 메소드 분리
     // Model Observer
     let diaryData = PublishRelay<Diary>()
     
-    // TODO: Model 관련 프로퍼티 / 메소드 분리
     var diaryUUID: String?
     var title: String?
     var location: Location?
@@ -52,6 +52,14 @@ class DiaryConfigViewModel {
         
         if let diary = diary {
             self.diary = diary
+            self.diaryUUID = diary.diaryUUID
+            self.location = diary.diaryLocation
+            self.startDate = diary.diaryStartDate
+            self.endDate = diary.diaryEndDate
+            self.diaryCover = diary.diaryCover
+            self.userUIDs = diary.userUIDs
+            self.diaryPages = diary.diaryPages
+            self.thumbnails = diary.pageThumbnails
             self.configState = .modify
         } else {
             self.configState = .create
@@ -89,6 +97,25 @@ class DiaryConfigViewModel {
             .subscribe(onNext: { self.diaryTitle = $0.textFieldText })
             .disposed(by: disposeBag)
         
+        locationCell
+            .subscribe(onNext: {
+                $0.clearButtonTapped
+                    .subscribe( onNext: { _ in self.location = nil })
+                    .disposed(by: self.disposeBag)
+            })
+            .disposed(by: disposeBag)
+        
+        dateCell
+            .subscribe(onNext: {
+                $0.clearButtonTapped
+                    .subscribe( onNext: { _ in
+                        self.startDate = nil
+                        self.endDate = nil
+                    })
+                    .disposed(by: self.disposeBag)
+            })
+            .disposed(by: disposeBag)
+        
         self.diaryTitle
             .startWith(diary?.diaryName)
             .subscribe(onNext: { self.title = $0 })
@@ -122,23 +149,13 @@ class DiaryConfigViewModel {
     }
     
     func updateDiary() {
-        
-        setDiaryData()
-        
-        guard let diary = diary else { return }
-        firebaseClient.addDiary(diary: diary)
-    }
-    
-    func getDiaryData(diary: Diary?) {
-        self.diaryUUID = diary?.diaryUUID
-        // self.title = diary?.diaryName
-        self.location = diary?.diaryLocation
-        self.startDate = diary?.diaryStartDate
-        self.endDate = diary?.diaryEndDate
-        self.diaryCover = diary?.diaryCover
-        self.userUIDs = diary?.userUIDs
-        self.diaryPages = diary?.diaryPages ?? []
-        self.thumbnails = diary?.pageThumbnails ?? []
+        if checkAvailable() {
+            setDiaryData()
+            guard let diary = diary else { return }
+            firebaseClient.addDiary(diary: diary)
+        } else {
+            print("ERROR: Diary Update Failed - Available False")
+        }
     }
     
     func setDiaryData() {
@@ -148,14 +165,6 @@ class DiaryConfigViewModel {
     }
     
     func checkAvailable() -> Bool {
-        
-        switch configState {
-        case .modify:
-            getDiaryData(diary: diary)
-        case .create:
-            break
-        }
-        
         if let title = self.title, let _ = self.location, let _ = self.startDate, let _ = self.endDate {
             if title.isEmpty {
                 return false

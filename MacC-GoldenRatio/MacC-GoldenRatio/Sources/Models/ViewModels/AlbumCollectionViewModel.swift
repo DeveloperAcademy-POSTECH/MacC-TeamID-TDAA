@@ -11,8 +11,12 @@ import UIKit
 
 struct AlbumCollectionViewModel {
 	private let disposeBag = DisposeBag()
+	
 	let collectionDiaryData = PublishSubject<Diary>()
+	let paging = BehaviorRelay<Int>(value: 0)
+	
 	var collectionCellData = BehaviorRelay<[UIImage]>(value: [])
+	
 	
 	init() {
 		let collectionAlbumData = collectionDiaryData

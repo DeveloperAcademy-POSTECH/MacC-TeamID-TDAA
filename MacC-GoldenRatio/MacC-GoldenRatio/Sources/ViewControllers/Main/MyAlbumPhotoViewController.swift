@@ -5,9 +5,8 @@
 //  Created by woo0 on 2022/10/13.
 //
 
-import Combine
-import Firebase
-import FirebaseAuth
+import RxCocoa
+import RxSwift
 import SnapKit
 import UIKit
 
@@ -71,6 +70,7 @@ final class MyAlbumPhotoViewController: UIViewController {
 		super.viewDidLoad()
 		setupSubViews()
 		updatePageOffset()
+		setupNotification()
 	}
 	
 	private func setupSubViews() {
@@ -100,6 +100,17 @@ final class MyAlbumPhotoViewController: UIViewController {
 			$0.top.equalTo(titleLabel.snp.bottom).inset(20)
 			$0.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
 		}
+	}
+	
+	private func setupNotification() {
+		NotificationCenter.default.addObserver(self, selector: #selector(changePageIndex(notification:)), name: .paging, object: nil)
+	}
+	
+	@objc private func changePageIndex(notification: NSNotification) {
+		guard let data = notification.userInfo?["data"]  as? Int else{
+			return
+		}
+		photoPage = data
 	}
 	
 	@objc private func backButtonTapped() {
@@ -132,18 +143,17 @@ final class MyAlbumPhotoViewController: UIViewController {
 	}
 }
 
-extension MyAlbumPhotoViewController: UIScrollViewDelegate {
-	func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-		let cellWidthIncludeSpacing = self.view.bounds.width + 10
-
-		var offset = targetContentOffset.pointee
-		let index = (offset.x + scrollView.contentInset.left) / cellWidthIncludeSpacing
-		let roundedIndex: CGFloat = round(index)
-		
-		photoPage = Int(roundedIndex)
-
-		offset = CGPoint(x: roundedIndex * cellWidthIncludeSpacing - scrollView.contentInset.left, y: scrollView.contentInset.top)
-		targetContentOffset.pointee = offset
-	}
-}
-
+//extension MyAlbumPhotoViewController: UIScrollViewDelegate {
+//	func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+//		let cellWidthIncludeSpacing = self.view.bounds.width + 10
+//
+//		var offset = targetContentOffset.pointee
+//		let index = (offset.x + scrollView.contentInset.left) / cellWidthIncludeSpacing
+//		let roundedIndex: CGFloat = round(index)
+//
+//		photoPage = Int(roundedIndex)
+//
+//		offset = CGPoint(x: roundedIndex * cellWidthIncludeSpacing - scrollView.contentInset.left, y: scrollView.contentInset.top)
+//		targetContentOffset.pointee = offset
+//	}
+//}

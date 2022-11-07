@@ -10,4 +10,5 @@ import Foundation
 extension Notification.Name {
 	static let reloadDiary = Notification.Name("reloadDiary")
 	static let changeAddButtonImage = Notification.Name("changeAddButtonImage")
+	static let paging = Notification.Name("paging")
 }

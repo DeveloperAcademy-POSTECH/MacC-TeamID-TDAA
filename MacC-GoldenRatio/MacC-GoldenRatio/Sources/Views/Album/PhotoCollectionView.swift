@@ -47,3 +47,18 @@ extension PhotoCollectionView: UICollectionViewDelegateFlowLayout {
 		return CGSize(width: self.bounds.width, height: self.bounds.height)
 	}
 }
+
+extension PhotoCollectionView: UIScrollViewDelegate {
+	func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+		let cellWidthIncludeSpacing = self.bounds.width + 10
+
+		var offset = targetContentOffset.pointee
+		let index = (offset.x + scrollView.contentInset.left) / cellWidthIncludeSpacing
+		let roundedIndex: CGFloat = round(index)
+		
+		NotificationCenter.default.post(name: .paging, object: nil, userInfo: ["data": Int(roundedIndex)])
+
+		offset = CGPoint(x: roundedIndex * cellWidthIncludeSpacing - scrollView.contentInset.left, y: scrollView.contentInset.top)
+		targetContentOffset.pointee = offset
+	}
+}

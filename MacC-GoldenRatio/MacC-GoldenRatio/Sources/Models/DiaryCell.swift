@@ -11,5 +11,4 @@ struct DiaryCell {
 	let diaryUUID: String
 	let diaryName: String
 	let diaryCover: String
-	let userImageURLs: [String]
 }

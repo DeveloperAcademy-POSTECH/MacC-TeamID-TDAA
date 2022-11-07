@@ -94,7 +94,6 @@ class PageViewModel {
                     
                     self.diaryObservable.onNext(newDiary)
                     self.currentPageIndex.onNext(newPageIndex)
-                    print(newPageIndex)
                 } catch {
                     print(error)
                 }
@@ -218,33 +217,6 @@ class PageViewModel {
                 
             })
             .disposed(by: self.disposeBag)
-
-        
-//        DispatchQueue.main.async {
-//            do {
-//                var newItems: [Item] = []
-//
-//                for stickerView in stickerViews {
-//                    newItems.append(try stickerView.fetchItem())
-//                }
-//
-//                let selectedDay = try self.selectedDay.value()
-//                let currentPageIndex = try self.currentPageIndex.value()
-//
-//                self.diaryObservable
-//                    .observe(on: MainScheduler.instance)
-//                    .take(1)
-//                    .subscribe(onNext: {
-//                        var newDiary = $0
-//                        newDiary.diaryPages[selectedDay].pages[currentPageIndex].items = newItems
-//
-//                        self.diaryObservable.onNext(newDiary)
-//                    })
-//                    .disposed(by: self.disposeBag)
-//            } catch {
-//                print(error)
-//            }
-//        }
         
     }
 

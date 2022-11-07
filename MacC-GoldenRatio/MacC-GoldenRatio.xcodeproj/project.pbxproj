@@ -61,6 +61,7 @@
 		E25753BF28ED9E0600023619 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = E25753BE28ED9E0600023619 /* Kingfisher */; };
 		E265C8102914E9A4003380A5 /* HomeAddDiaryButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E265C80F2914E9A4003380A5 /* HomeAddDiaryButtonView.swift */; };
 		E26F0DB22916B33900B040C9 /* CollectionEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26F0DB12916B33900B040C9 /* CollectionEmptyView.swift */; };
+		E27469AB29199DAD00BC906A /* PhotoCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27469AA29199DAD00BC906A /* PhotoCollectionView.swift */; };
 		E276B91C28E46AE900163833 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E276B91B28E46AE900163833 /* User.swift */; };
 		E276B91E28E46B3700163833 /* DiaryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E276B91D28E46B3700163833 /* DiaryModel.swift */; };
 		E276B92028E4812E00163833 /* UIScreen+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E276B91F28E4812E00163833 /* UIScreen+.swift */; };
@@ -197,6 +198,7 @@
 		E21342E228F6B6BC0048D9CF /* MapData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapData.swift; sourceTree = "<group>"; };
 		E265C80F2914E9A4003380A5 /* HomeAddDiaryButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeAddDiaryButtonView.swift; sourceTree = "<group>"; };
 		E26F0DB12916B33900B040C9 /* CollectionEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionEmptyView.swift; sourceTree = "<group>"; };
+		E27469AA29199DAD00BC906A /* PhotoCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollectionView.swift; sourceTree = "<group>"; };
 		E276B91B28E46AE900163833 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		E276B91D28E46B3700163833 /* DiaryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryModel.swift; sourceTree = "<group>"; };
 		E276B91F28E4812E00163833 /* UIScreen+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+.swift"; sourceTree = "<group>"; };
@@ -564,6 +566,7 @@
 			isa = PBXGroup;
 			children = (
 				E2993A6529195AD600409C9B /* AlbumCollectionView.swift */,
+				E27469AA29199DAD00BC906A /* PhotoCollectionView.swift */,
 			);
 			path = Album;
 			sourceTree = "<group>";
@@ -829,6 +832,7 @@
 				E2EA7F1628E5711E00AC1C49 /* DiaryCollectionHeaderView.swift in Sources */,
 				B93EC22928F7BC8000BB89C5 /* String+.swift in Sources */,
 				E2B025BC28EB326C00B73891 /* MyHomeViewModel.swift in Sources */,
+				E27469AB29199DAD00BC906A /* PhotoCollectionView.swift in Sources */,
 				E2C2A76C28F97DB900D48F8F /* LoadingIndicator.swift in Sources */,
 				E2DA8F6428F857D80098DD94 /* MyAlbumPhotoCollectionViewCell.swift in Sources */,
 				E2993A6629195AD600409C9B /* AlbumCollectionView.swift in Sources */,

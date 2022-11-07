@@ -37,24 +37,7 @@ final class MyAlbumPhotoViewController: UIViewController {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
-	private lazy var collectionView: UICollectionView = {
-		let layout = UICollectionViewFlowLayout()
-		layout.minimumLineSpacing = 10
-		layout.scrollDirection = .horizontal
-		let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-		collectionView.showsVerticalScrollIndicator = false
-		
-		collectionView.delegate = self
-		collectionView.dataSource = self
-		
-		collectionView.showsHorizontalScrollIndicator = false
-		collectionView.backgroundColor = UIColor.clear
-		collectionView.register(MyAlbumPhotoCollectionViewCell.self, forCellWithReuseIdentifier: "MyAlbumPhotoCollectionViewCell")
-		collectionView.decelerationRate = .fast
-		collectionView.isPagingEnabled = false
-
-		return collectionView
-	}()
+	private lazy var collectionView = PhotoCollectionView()
 	
 	private lazy var titleLabel: UILabel = {
 		let label = UILabel()
@@ -112,6 +95,7 @@ final class MyAlbumPhotoViewController: UIViewController {
 			$0.trailing.equalToSuperview().inset(20)
 		}
 
+		collectionView.bind(viewModel)
 		collectionView.snp.makeConstraints {
 			$0.top.equalTo(titleLabel.snp.bottom).inset(20)
 			$0.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
@@ -145,30 +129,6 @@ final class MyAlbumPhotoViewController: UIViewController {
 				self.collectionView.setContentOffset(CGPoint(x: newXPoint, y: 0), animated: false)
 			}, completion: nil)
 		}
-	}
-}
-
-extension MyAlbumPhotoViewController: UICollectionViewDataSource {
-	func numberOfSections(in collectionView: UICollectionView) -> Int {
-		return 1
-	}
-	
-	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		return viewModel.collectionCellData.value.count
-	}
-
-	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-		if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MyAlbumPhotoCollectionViewCell", for: indexPath) as? MyAlbumPhotoCollectionViewCell {
-			cell.setup(image: viewModel.collectionCellData.value[indexPath.item])
-			return cell
-		}
-		return UICollectionViewCell()
-	}
-}
-
-extension MyAlbumPhotoViewController: UICollectionViewDelegateFlowLayout {
-	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-		return CGSize(width: self.view.bounds.width, height: self.view.bounds.height)
 	}
 }
 

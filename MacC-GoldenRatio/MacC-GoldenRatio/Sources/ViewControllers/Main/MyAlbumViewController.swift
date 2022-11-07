@@ -5,11 +5,13 @@
 //  Created by woo0 on 2022/09/29.
 //
 
-import Combine
+import RxCocoa
+import RxSwift
 import SnapKit
 import UIKit
 
 class MyAlbumViewController: UIViewController {
+	private let disposeBag = DisposeBag()
 	private let myDevice = UIScreen.getDevice()
 	
 	private var selectedAlbum = 0
@@ -36,5 +38,13 @@ class MyAlbumViewController: UIViewController {
 	
 	func bind(viewModel: AlbumCollectionViewModel) {
 		collectionView.bind(viewModel)
+		collectionView.rx
+			.itemSelected
+			.subscribe(onNext: { index in
+				let vc = MyAlbumPhotoViewController(photoPage: index.item, totalCount: viewModel.collectionCellData.value.count ?? 0, viewModel: viewModel)
+				vc.modalPresentationStyle = .fullScreen
+				self.present(vc, animated: true)
+			})
+			.disposed(by: disposeBag)
 	}
 }

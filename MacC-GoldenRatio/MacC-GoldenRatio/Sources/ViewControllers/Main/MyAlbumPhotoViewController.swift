@@ -14,7 +14,7 @@ import UIKit
 final class MyAlbumPhotoViewController: UIViewController {
 	private let myDevice = UIScreen.getDevice()
 	let totalCount: Int
-	let albumData: AlbumData
+	let viewModel: AlbumCollectionViewModel
 	
 	private var previousOffset: CGFloat = 0
 	var photoPage: Int {
@@ -26,10 +26,10 @@ final class MyAlbumPhotoViewController: UIViewController {
 		}
 	}
 	
-	init(photoPage: Int, totalCount: Int, albumData: AlbumData) {
+	init(photoPage: Int, totalCount: Int, viewModel: AlbumCollectionViewModel) {
 		self.photoPage = photoPage
 		self.totalCount = totalCount
-		self.albumData = albumData
+		self.viewModel = viewModel
 		super.init(nibName: nil, bundle: nil)
 	}
 	
@@ -125,7 +125,7 @@ final class MyAlbumPhotoViewController: UIViewController {
 	@objc private func menuButtonTapped() {
 		let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 		let downloadAction = UIAlertAction(title: "저장하기", style: .default) { (action) in
-			UIImageWriteToSavedPhotosAlbum(self.albumData.images?[self.photoPage] ?? UIImage(), self, nil, nil)
+			UIImageWriteToSavedPhotosAlbum(self.viewModel.collectionCellData.value[self.photoPage], self, nil, nil)
 			let saveAlert = UIAlertController(title: "사진 저장", message: "사진을 앨범에 저장했습니다.", preferredStyle: .alert)
 			let action = UIAlertAction(title: "확인", style: .default)
 			saveAlert.addAction(action)
@@ -139,6 +139,7 @@ final class MyAlbumPhotoViewController: UIViewController {
 	
 	private func updatePageOffset() {
 		let newXPoint = CGFloat(self.photoPage) * (self.view.bounds.width + 10)
+		print(newXPoint)
 		DispatchQueue.main.async {
 			UIView.animate(withDuration: 0.2, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.5, options: .allowUserInteraction, animations: {
 				self.collectionView.setContentOffset(CGPoint(x: newXPoint, y: 0), animated: false)
@@ -153,12 +154,12 @@ extension MyAlbumPhotoViewController: UICollectionViewDataSource {
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		return albumData.images?.count ?? 0
+		return viewModel.collectionCellData.value.count
 	}
 
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 		if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MyAlbumPhotoCollectionViewCell", for: indexPath) as? MyAlbumPhotoCollectionViewCell {
-			cell.setup(image: albumData.images?[indexPath.item] ?? UIImage())
+			cell.setup(image: viewModel.collectionCellData.value[indexPath.item])
 			return cell
 		}
 		return UICollectionViewCell()

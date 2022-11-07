@@ -31,10 +31,20 @@ class PageViewModel {
         self.currentPageItemObservable = await setCurrentPageItemObservable()
         self.pageIndexDescriptionObservable = await setPageIndexDescriptionObservable()
         self.maxPageIndexObservable = await setMaxPageIndexObservable()
+        await setDiaryUpdate()
     }
     
     func setDiaryObservable(diary: Diary) async -> BehaviorSubject<Diary> {
         return BehaviorSubject(value: diary)
+    }
+    
+    func setDiaryUpdate() async {
+        self.diaryObservable
+            .observe(on: ConcurrentDispatchQueueScheduler(qos: .default))
+            .subscribe { diary in
+                FirebaseClient().updatePage(diary: diary)
+            }
+            .disposed(by: disposeBag)
     }
     
     func setCurrentPageItemObservable() async -> Observable<[Item]> {
@@ -53,11 +63,11 @@ class PageViewModel {
     }
     
     func setMaxPageIndexObservable() async -> Observable<Int> {
-            return Observable.combineLatest(diaryObservable, selectedDay, currentPageIndex)
-                .map { (diary, selectedDay, currentPageIndex) in
-                    let pagesCount = diary.diaryPages[selectedDay].pages.count
-                    return pagesCount
-                }
+        return Observable.combineLatest(diaryObservable, selectedDay, currentPageIndex)
+            .map { (diary, selectedDay, currentPageIndex) in
+                let pagesCount = diary.diaryPages[selectedDay].pages.count
+                return pagesCount
+            }
     }
     
     func addNewPage(to: AddPage) {
@@ -65,7 +75,7 @@ class PageViewModel {
         let newPage = Page(pageUUID: pageUUID, items: [])
         
         diaryObservable
-            .subscribe(on: MainScheduler.instance)
+            .observe(on: MainScheduler.instance)
             .take(1)
             .subscribe(onNext: {
                 var newDiary = $0
@@ -90,7 +100,7 @@ class PageViewModel {
     func deletePage() {
         
         diaryObservable
-            .subscribe(on: MainScheduler.instance)
+            .observe(on: MainScheduler.instance)
             .take(1)
             .subscribe(onNext: {
                 var newDiary = $0
@@ -105,28 +115,27 @@ class PageViewModel {
 
     }
     
-    func moveToNextPage() {
+    func moveToNextPage() async {
         
         self.currentPageIndex
-            .subscribe(on: MainScheduler.instance)
+            .observe(on: MainScheduler.instance)
             .take(1)
             .subscribe(onNext: { currentPageIndex in
-                
-                DispatchQueue.main.async {
-                    var maxPageIndex = 0
-                    self.maxPageIndexObservable
-                        .subscribe(on: MainScheduler.instance)
-                        .take(1)
-                        .subscribe(onNext: {
-                            maxPageIndex = $0
-                        })
-                        .disposed(by: self.disposeBag)
 
-                    if currentPageIndex + 2 <= maxPageIndex {
-                        self.currentPageIndex.onNext(currentPageIndex + 1)
-                    } else {
-                        print("마지막 페이지입니다.")
-                    }
+                var maxPageIndex = 0
+
+                self.maxPageIndexObservable
+                    .take(1)
+                    .subscribe(onNext: {
+                        maxPageIndex = $0
+                    })
+                    .disposed(by: self.disposeBag)
+                
+                if currentPageIndex + 2 <= maxPageIndex {
+                    print(currentPageIndex)
+                    self.currentPageIndex.onNext(currentPageIndex + 1)
+                } else {
+                    print("마지막 페이지입니다.")
                 }
                 
             })
@@ -134,10 +143,10 @@ class PageViewModel {
 
     }
 
-    func moveToPreviousPage() {
+    func moveToPreviousPage() async {
         
         self.currentPageIndex
-            .observe(on:MainScheduler.asyncInstance)
+            .observe(on: MainScheduler.instance)
             .take(1)
             .subscribe(onNext: {
                 
@@ -151,23 +160,47 @@ class PageViewModel {
             .disposed(by: disposeBag)
 
     }
-    
-//
-//    func updateDBPages() {
-//        do {
-//            let items = try stickerArrayObservable.map{
-//                try $0.map{
-//                    guard let stickerViewData = $0.stickerViewData else { throw ErrorMessage.stickerViewDataDoesntExist }
-//                    return try stickerViewData.itemObservable.value()
-//                }
-//            }
-//            items.enumerated().forEach{
-//                diary.diaryPages[selectedDay].pages[$0].items = $1
-//            }
-//        } catch {
-//            print(error)
-//        }
-//
-//        FirebaseClient().updatePage(diary: diary)
-//    }
+
+    func updateCurrentPageDataToDiaryModel(stickerViews: [StickerView]) {
+        
+        DispatchQueue.global().async {
+            do {
+                var newItems: [Item] = []
+                
+                for stickerView in stickerViews {
+                    newItems.append(try stickerView.fetchItem())
+                }
+                
+                let selectedDay = try self.selectedDay.value()
+                let currentPageIndex = try self.currentPageIndex.value()
+                
+                self.diaryObservable
+                    .observe(on: MainScheduler.instance)
+                    .take(1)
+                    .subscribe(onNext: {
+                        var newDiary = $0
+                        newDiary.diaryPages[selectedDay].pages[currentPageIndex].items = newItems
+                        
+                        self.diaryObservable.onNext(newDiary)
+                    })
+                    .disposed(by: self.disposeBag)
+            } catch {
+                print(error)
+            }
+        }
+        
+    }
+        
+    func updateDBPages() {
+        DispatchQueue.global().async {
+            do {
+
+                let diary = try self.diaryObservable.value()
+                FirebaseClient().updatePage(diary: diary)
+                
+            } catch {
+                print(error)
+            }
+        }
+    }
 }

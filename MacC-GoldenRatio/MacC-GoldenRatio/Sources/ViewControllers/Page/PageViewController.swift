@@ -113,14 +113,14 @@ class PageViewController: UIViewController {
     
     private func setPageDescription() {
         self.pageViewModel.pageIndexDescriptionObservable
-            .subscribe(on: MainScheduler.instance)
+            .observe(on: MainScheduler.instance)
             .bind(to: self.pageDescriptionLabel.rx.text)
             .disposed(by: self.pageViewModel.disposeBag)
     }
     
     private func setStickerViews() {
         self.pageViewModel.currentPageItemObservable
-            .subscribe(on: MainScheduler.instance)
+            .observe(on: MainScheduler.instance)
             .map { items in
                 
                 let stickerViews: [StickerView] = items.map { item in
@@ -324,6 +324,22 @@ class PageViewController: UIViewController {
             self.backgroundImageView.bringSubviewToFront(stickerView)
         }
     }
+    
+    private func updateStickerViewsToDiaryModel() {
+
+        DispatchQueue.main.async {
+            var stickerViews: [StickerView] = []
+            
+            self.backgroundImageView.subviews.forEach {
+                if let stickerView = $0 as? StickerView {
+                    stickerViews.append(stickerView)
+                }
+            }
+
+            self.pageViewModel.updateCurrentPageDataToDiaryModel(stickerViews: stickerViews)
+        }
+        
+    }
 }
 
 // MARK: 페이지 편집 처리
@@ -358,10 +374,16 @@ extension PageViewController {
     @objc private func swipeAction(_ sender: UISwipeGestureRecognizer) {
         switch sender.direction {
         case .left:
-            self.pageViewModel.moveToNextPage()
-           
+            Task {
+                self.updateStickerViewsToDiaryModel()
+                await self.pageViewModel.moveToNextPage()
+            }
+            
         case .right:
-            self.pageViewModel.moveToPreviousPage()
+            Task {
+                self.updateStickerViewsToDiaryModel()
+                await self.pageViewModel.moveToPreviousPage()
+            }
             
         default:
             break
@@ -385,9 +407,11 @@ extension PageViewController {
     }
 
     @objc private func onTapNavigationComplete() {
-       
-        // TODO: diarySubject의 value를 서버에 올리기
-//        pageViewModel.updateDBPages()
+        print(1)
+        self.updateStickerViewsToDiaryModel()
+//        print(3)
+//        self.pageViewModel.updateDBPages()
+//        print(5)
     }
 }
 

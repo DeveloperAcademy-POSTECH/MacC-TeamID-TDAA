@@ -50,6 +50,17 @@ class StickerView: UIView {
         }
     }
 
+    func fetchItem() throws -> Item {
+        do {
+            guard let stickerViewData = self.stickerViewData else { throw ErrorMessage.stickerViewDataDoesntExist }
+            let stickerViewItem = try stickerViewData.itemObservable.value()
+
+            return stickerViewItem
+        } catch {
+            throw error
+        }
+    }
+
     func updateIsStickerViewActive(value: Bool) {
         
         if !value {

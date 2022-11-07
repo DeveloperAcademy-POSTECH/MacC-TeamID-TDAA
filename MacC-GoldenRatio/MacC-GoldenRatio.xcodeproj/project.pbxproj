@@ -72,6 +72,8 @@
 		E28F081928E4655200832F4A /* MacC_GoldenRatioTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28F081828E4655200832F4A /* MacC_GoldenRatioTests.swift */; };
 		E28F082328E4655200832F4A /* MacC_GoldenRatioUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28F082228E4655200832F4A /* MacC_GoldenRatioUITests.swift */; };
 		E28F082528E4655200832F4A /* MacC_GoldenRatioUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28F082428E4655200832F4A /* MacC_GoldenRatioUITestsLaunchTests.swift */; };
+		E2993A6629195AD600409C9B /* AlbumCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2993A6529195AD600409C9B /* AlbumCollectionView.swift */; };
+		E2993A6829195B9400409C9B /* AlbumCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2993A6729195B9400409C9B /* AlbumCollectionViewModel.swift */; };
 		E2B025BC28EB326C00B73891 /* MyHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B025BB28EB326C00B73891 /* MyHomeViewModel.swift */; };
 		E2B025C728EC163500B73891 /* FirestoreClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B025C628EC163500B73891 /* FirestoreClient.swift */; };
 		E2BEC45E28F806C40056E755 /* MyAlbumViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEC45D28F806C40056E755 /* MyAlbumViewModel.swift */; };
@@ -210,6 +212,8 @@
 		E28F081E28E4655200832F4A /* MacC-GoldenRatioUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "MacC-GoldenRatioUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E28F082228E4655200832F4A /* MacC_GoldenRatioUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacC_GoldenRatioUITests.swift; sourceTree = "<group>"; };
 		E28F082428E4655200832F4A /* MacC_GoldenRatioUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacC_GoldenRatioUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		E2993A6529195AD600409C9B /* AlbumCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumCollectionView.swift; sourceTree = "<group>"; };
+		E2993A6729195B9400409C9B /* AlbumCollectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumCollectionViewModel.swift; sourceTree = "<group>"; };
 		E2B025BB28EB326C00B73891 /* MyHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyHomeViewModel.swift; sourceTree = "<group>"; };
 		E2B025C628EC163500B73891 /* FirestoreClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreClient.swift; sourceTree = "<group>"; };
 		E2BEC45D28F806C40056E755 /* MyAlbumViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAlbumViewModel.swift; sourceTree = "<group>"; };
@@ -327,6 +331,7 @@
 				0A3ED14028F98956000D55D8 /* MyPageViewModel.swift */,
 				E2BEC45D28F806C40056E755 /* MyAlbumViewModel.swift */,
 				E2C27501290D62EB00319885 /* DiaryCollectionViewModel.swift */,
+				E2993A6729195B9400409C9B /* AlbumCollectionViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -555,6 +560,14 @@
 			path = "MacC-GoldenRatioUITests";
 			sourceTree = "<group>";
 		};
+		E2993A6429195ABE00409C9B /* Album */ = {
+			isa = PBXGroup;
+			children = (
+				E2993A6529195AD600409C9B /* AlbumCollectionView.swift */,
+			);
+			path = Album;
+			sourceTree = "<group>";
+		};
 		E2BEC46128F82DAB0056E755 /* MyAlbum */ = {
 			isa = PBXGroup;
 			children = (
@@ -580,6 +593,7 @@
 		E2EA7F1428E570F100AC1C49 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				E2993A6429195ABE00409C9B /* Album */,
 				E2FA41AE28F6A89000BBA354 /* Place */,
 				E25753B928ED8C0600023619 /* MyHome */,
 				0A5E904628E857BB00B381B8 /* Sticker */,
@@ -797,6 +811,7 @@
 				E276B91E28E46B3700163833 /* DiaryModel.swift in Sources */,
 				CC40BC1828EEADFD00DF48E1 /* CalendarPickerHeaderView.swift in Sources */,
 				E28F080228E4655100832F4A /* AppDelegate.swift in Sources */,
+				E2993A6829195B9400409C9B /* AlbumCollectionViewModel.swift in Sources */,
 				E276B91C28E46AE900163833 /* User.swift in Sources */,
 				E2DA8F6028F842310098DD94 /* MyAlbumCollectionViewCell.swift in Sources */,
 				E276B91C28E46AE900163833 /* User.swift in Sources */,
@@ -816,6 +831,7 @@
 				E2B025BC28EB326C00B73891 /* MyHomeViewModel.swift in Sources */,
 				E2C2A76C28F97DB900D48F8F /* LoadingIndicator.swift in Sources */,
 				E2DA8F6428F857D80098DD94 /* MyAlbumPhotoCollectionViewCell.swift in Sources */,
+				E2993A6629195AD600409C9B /* AlbumCollectionView.swift in Sources */,
 				E2CCF30128F74450008A12F9 /* CustomAnnotationView.swift in Sources */,
 				0A5E904828E857E200B381B8 /* StickerView.swift in Sources */,
 				E2ED4872290ABE46002FEC2B /* Notification+.swift in Sources */,

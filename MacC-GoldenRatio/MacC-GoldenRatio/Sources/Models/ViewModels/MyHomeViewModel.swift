@@ -19,6 +19,7 @@ class MyHomeViewModel {
 	private var myUID = Auth.auth().currentUser?.uid ?? ""
 	
 	let diaryCollectionViewModel = DiaryCollectionViewModel()
+	let albumCollectionViewModel = AlbumCollectionViewModel()
 	
 	var isEqual = false
 	var isInitializing = true {
@@ -49,6 +50,11 @@ class MyHomeViewModel {
 			.map(getCollectionSection)
 			.bind(to: diaryCollectionViewModel.collectionDiaryData)
 			.disposed(by: disposeBag)
+		
+		diaryValue
+			.map(getFirstDiary)
+			.bind(to: albumCollectionViewModel.collectionDiaryData)
+			.disposed(by: disposeBag)
 	}
 	
 	func getDiaryValue(_ result: Result<[Diary], Error>) -> [Diary] {
@@ -64,6 +70,10 @@ class MyHomeViewModel {
 		}
 		
 		return [DiarySection(header: "다이어리", items: value)]
+	}
+	
+	func getFirstDiary(_ value: [Diary]) -> Diary {
+		return value.first ?? Diary(diaryUUID: "", diaryName: "", diaryLocation: Location(locationName: "", locationAddress: "", locationCoordinate: []), diaryStartDate: "", diaryEndDate: "", diaryCover: "")
 	}
 	
 	func isDiaryCodeEqualTo(_ diaryUUID: String) {

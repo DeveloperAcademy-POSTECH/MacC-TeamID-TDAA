@@ -375,9 +375,8 @@ extension PageViewController {
     }
 
     @objc private func onTapNavigationCancel() {
-        // TODO: 이전 diary data를 diarySubject에 onNext로 심어주기
+        self.pageViewModel.restoreOldDiary()
         self.navigationController?.popViewController(animated: true)
-
     }
 
     @objc private func onTapNavigationComplete() {

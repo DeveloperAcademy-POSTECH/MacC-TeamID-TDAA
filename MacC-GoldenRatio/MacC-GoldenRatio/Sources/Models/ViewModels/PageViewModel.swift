@@ -17,6 +17,8 @@ class PageViewModel {
     
     var disposeBag = DisposeBag()
 
+    var oldDiary: Diary!
+    
     var diaryObservable: BehaviorSubject<Diary>!
     var selectedDay: BehaviorSubject<Int>!
     var currentPageIndex: BehaviorSubject<Int> = BehaviorSubject(value: 0)
@@ -26,6 +28,7 @@ class PageViewModel {
     var maxPageIndexObservable: Observable<Int>!
     
     init(diary: Diary, selectedDay: Int) async {
+        self.oldDiary = diary
         self.selectedDay = BehaviorSubject(value: selectedDay)
         self.diaryObservable = await setDiaryObservable(diary: diary)
         self.currentPageItemObservable = await setCurrentPageItemObservable()
@@ -69,6 +72,10 @@ class PageViewModel {
                 let pagesCount = diary.diaryPages[selectedDay].pages.count
                 return pagesCount - 1
             }
+    }
+    
+    func restoreOldDiary() {
+        self.diaryObservable.onNext(self.oldDiary)
     }
     
     func addNewPage(to: AddPage) {

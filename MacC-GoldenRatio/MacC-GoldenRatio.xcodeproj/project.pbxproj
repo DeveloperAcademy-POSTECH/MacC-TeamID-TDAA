@@ -40,6 +40,7 @@
 		36082B8829123A5B0092A139 /* FacebookCore in Frameworks */ = {isa = PBXBuildFile; productRef = 36082B8729123A5B0092A139 /* FacebookCore */; };
 		36082B8A29123A5B0092A139 /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 36082B8929123A5B0092A139 /* FacebookLogin */; };
 		36082B8C29123A5B0092A139 /* FacebookShare in Frameworks */ = {isa = PBXBuildFile; productRef = 36082B8B29123A5B0092A139 /* FacebookShare */; };
+		36082B8E29194FAC0092A139 /* Private.plist in Resources */ = {isa = PBXBuildFile; fileRef = 36082B8D29194FAC0092A139 /* Private.plist */; };
 		B93EC22928F7BC8000BB89C5 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93EC22828F7BC8000BB89C5 /* String+.swift */; };
 		CC0F434428F71E62003060D5 /* DiaryConfigViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0F434328F71E62003060D5 /* DiaryConfigViewModel.swift */; };
 		CC40BC1628EEADEB00DF48E1 /* CalendarPickerFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC40BC1528EEADEB00DF48E1 /* CalendarPickerFooterView.swift */; };
@@ -168,6 +169,7 @@
 		0AD6FD7D2903054D00939F3D /* MapSearchResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapSearchResultTableViewCell.swift; sourceTree = "<group>"; };
 		0AE27F2428F442B100D79208 /* FirebaseStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseStorage.swift; sourceTree = "<group>"; };
 		0AEC53EB28EF211D001B0169 /* StickerViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerViewData.swift; sourceTree = "<group>"; };
+		36082B8D29194FAC0092A139 /* Private.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Private.plist; sourceTree = "<group>"; };
 		B93EC22828F7BC8000BB89C5 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		CC0F434328F71E62003060D5 /* DiaryConfigViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryConfigViewModel.swift; sourceTree = "<group>"; };
 		CC40BC1328EEADD100DF48E1 /* CalendarPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPickerViewController.swift; sourceTree = "<group>"; };
@@ -526,6 +528,7 @@
 				E28F080A28E4655200832F4A /* Assets.xcassets */,
 				E28F080C28E4655200832F4A /* LaunchScreen.storyboard */,
 				E28F080F28E4655200832F4A /* Info.plist */,
+				36082B8D29194FAC0092A139 /* Private.plist */,
 				0A6F107C28FC6258002FB611 /* License.txt */,
 			);
 			path = "MacC-GoldenRatio";
@@ -723,6 +726,7 @@
 			files = (
 				E28F080E28E4655200832F4A /* LaunchScreen.storyboard in Resources */,
 				0A6F107D28FC6259002FB611 /* License.txt in Resources */,
+				36082B8E29194FAC0092A139 /* Private.plist in Resources */,
 				E21342DB28F6B0800048D9CF /* EF_Diary.ttf in Resources */,
 				E28F080B28E4655200832F4A /* Assets.xcassets in Resources */,
 				E2F5691928E5CE170039BE37 /* GoogleService-Info.plist in Resources */,

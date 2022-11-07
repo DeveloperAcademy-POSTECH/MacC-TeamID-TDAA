@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+   Private.plist
+   MacC-GoldenRatio
+
+   Created by 조성산 on 2022/11/07.
+   Copyright (c) 2022 ___ORGANIZATIONNAME___. All rights reserved.
+-->
+<plist version="1.0">
+    <dict>
+        <key>CFBundleURLTypes</key>
+        <array>
+          <dict>
+          <key>CFBundleURLSchemes</key>
+          <array>
+            <string>3426217104328944</string>
+          </array>
+          </dict>
+        </array>
+        <key>FacebookAppID</key>
+        <string>3426217104328944</string>
+        <key>FacebookClientToken</key>
+        <string>83f4a485e2bbc3fe96d3c6017b699274</string>
+        <key>FacebookDisplayName</key>
+        <string>트다(TDAA)</string>
+        <key>FacebookAutoLogAppEventsEnabled</key>
+        <false/>
+        <key>FacebookAdvertiserIDCollectionEnabled</key>
+        <false/>
+        
+        <key>LSApplicationQueriesSchemes</key>
+        <array>
+          <string>fbapi</string>
+          <string>fb-messenger-share-api</string>
+        </array>
+        
+    <dict/>
+</plist>

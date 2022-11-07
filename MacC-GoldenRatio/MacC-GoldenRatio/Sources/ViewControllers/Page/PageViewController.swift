@@ -31,6 +31,16 @@ class PageViewController: UIViewController {
         return backgroundImageView
     }()
     
+    private lazy var docsButton: UIButton = {
+        let button = UIButton()
+        let image = UIImage(systemName: "doc.on.doc")
+        button.setImage(image, for: .normal)
+        button.tintColor = .black
+        button.addTarget(self, action: #selector(onTapDocsButton), for: .touchUpInside)
+        
+        return button
+    }()
+    
     private lazy var pageDescriptionLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
@@ -149,7 +159,6 @@ class PageViewController: UIViewController {
                 stickerViews.forEach { stickerView in
                     
                     stickerView.delegate = self
-                    debugPrint(stickerView.frame)
                     self.backgroundImageView.addSubview(stickerView)
                 }
                 
@@ -216,7 +225,7 @@ class PageViewController: UIViewController {
         DispatchQueue.main.async {
             self.view.addSubview(self.backgroundImageView)
             self.view.addSubview(self.pageDescriptionLabel)
-            [self.mapToolButton, self.imageToolButton, self.stickerToolButton, self.textToolButton]
+            [self.mapToolButton, self.imageToolButton, self.stickerToolButton, self.textToolButton, self.docsButton]
                 .forEach{
                     self.view.addSubview($0)
                 }
@@ -253,6 +262,12 @@ class PageViewController: UIViewController {
             
             self.textToolButton.snp.makeConstraints { make in
                 make.leading.equalTo(self.stickerToolButton.snp.trailing).offset(self.myDevice.pageToolButtonInterval)
+                make.bottom.equalTo(self.backgroundImageView.snp.bottom).inset(self.myDevice.pagePadding)
+                make.size.equalTo(self.myDevice.pageToolButtonSize)
+            }
+            
+            self.docsButton.snp.makeConstraints { make in
+                make.trailing.equalToSuperview().offset( -self.myDevice.pagePadding )
                 make.bottom.equalTo(self.backgroundImageView.snp.bottom).inset(self.myDevice.pagePadding)
                 make.size.equalTo(self.myDevice.pageToolButtonSize)
             }
@@ -325,93 +340,71 @@ class PageViewController: UIViewController {
         }
     }
     
-    private func updateStickerViewsToDiaryModel() {
-
-        DispatchQueue.main.async {
-            var stickerViews: [StickerView] = []
-            
-            self.backgroundImageView.subviews.forEach {
-                if let stickerView = $0 as? StickerView {
-                    stickerViews.append(stickerView)
-                }
-            }
-
-            self.pageViewModel.updateCurrentPageDataToDiaryModel(stickerViews: stickerViews)
-        }
-        
-    }
 }
 
 // MARK: 페이지 편집 처리
 extension PageViewController {
-//    @objc private func onTapDocsButton() {
-//        let popUp = PopUpViewController(popUpPosition: .bottom2)
-//        popUp.addButton(buttonTitle: "페이지 추가", action: onTapAddPageToLastMenu)
-//        popUp.addButton(buttonTitle: "페이지 삭제", action: onTapDeletePageMenu)
-//        present(popUp, animated: false)
-//    }
-//
-//    private func onTapAddPageToLastMenu() {
-//        pageViewModel.addNewPage()
-//        pageViewModel.currentPageIndex = pageViewModel.diary.diaryPages[pageViewModel.selectedDay].pages.count - 1
-//        reloadStickers()
-//        reloadPageDescriptionLabel()
-//    }
-//
-//    private func onTapDeletePageMenu() {
-//        guard pageViewModel.diary.diaryPages[pageViewModel.selectedDay].pages.count > 1 else {
-//            print("한 장입니다.")
-//            return
-//        }
-//        pageViewModel.deletePage()
-//        if pageViewModel.currentPageIndex - 1 == pageViewModel.diary.diaryPages[pageViewModel.selectedDay].pages.count - 1 {
-//            pageViewModel.currentPageIndex -= 1
-//        }
-//        reloadStickers()
-//        reloadPageDescriptionLabel()
-//    }
+    @objc private func onTapDocsButton() {
+        let popUp = PopUpViewController(popUpPosition: .bottom2)
+        popUp.addButton(buttonTitle: "페이지 추가", action: onTapAddNextPageMenu)
+        popUp.addButton(buttonTitle: "페이지 삭제", action: onTapDeleteCurrentPageMenu)
+        present(popUp, animated: false)
+    }
+
+    @objc private func onTapAddNextPageMenu() {
+        self.pageViewModel.addNewPage(to: .nextToCurrentPage)
+    }
     
+    @objc private func onTapDeleteCurrentPageMenu() {
+        self.pageViewModel.deleteCurrentPage()
+    }
+
     @objc private func swipeAction(_ sender: UISwipeGestureRecognizer) {
         switch sender.direction {
         case .left:
-            Task {
-                self.updateStickerViewsToDiaryModel()
-                await self.pageViewModel.moveToNextPage()
-            }
+            self.updateStickerViewsToDiaryModel()
+            self.pageViewModel.moveToNextPage()
             
         case .right:
-            Task {
-                self.updateStickerViewsToDiaryModel()
-                await self.pageViewModel.moveToPreviousPage()
-            }
+            self.updateStickerViewsToDiaryModel()
+            self.pageViewModel.moveToPreviousPage()
             
         default:
             break
         }
     }
-    
-//    @objc private func onTapNavigationBack() {
-//        self.navigationController?.popViewController(animated: false)
-//        self.dismiss(animated: false)
-//    }
-//
-//    @objc private func onTapNavigationEdit() {
-//        pageViewModel.saveOldData()
-//        self.isEditMode = true
-//    }
 
     @objc private func onTapNavigationCancel() {
-//            self.pageViewModel.restoreOldData()
         // TODO: 이전 diary data를 diarySubject에 onNext로 심어주기
+        self.navigationController?.popViewController(animated: true)
 
     }
 
     @objc private func onTapNavigationComplete() {
-        print(1)
         self.updateStickerViewsToDiaryModel()
-//        print(3)
-//        self.pageViewModel.updateDBPages()
-//        print(5)
+    }
+    
+    private func updateStickerViewsToDiaryModel() {
+        
+        Observable.just(self.backgroundImageView.subviews)
+            .observe(on: MainScheduler.instance)
+            .take(1)
+            .map {
+                var stickerViews: [StickerView] = []
+                
+                $0.forEach {
+                    if let stickerView = $0 as? StickerView {
+                        stickerViews.append(stickerView)
+                    }
+                }
+                
+                return stickerViews
+            }
+            .subscribe(onNext: { stickerViews in
+                self.pageViewModel.updateCurrentPageDataToDiaryModel(stickerViews: stickerViews)
+            })
+            .disposed(by: self.pageViewModel.disposeBag)
+        
     }
 }
 

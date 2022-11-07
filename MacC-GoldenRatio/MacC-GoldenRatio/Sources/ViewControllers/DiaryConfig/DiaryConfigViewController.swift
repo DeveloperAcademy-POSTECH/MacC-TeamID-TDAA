@@ -16,6 +16,7 @@ class DiaryConfigViewController: UIViewController {
     private var disposeBag = DisposeBag()
     private let device: UIScreen.DeviceSize = UIScreen.getDevice()
     private var dateInterval: [Date] = []
+    var viewModel = DiaryConfigViewModel(diary: nil)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,6 +60,8 @@ class DiaryConfigViewController: UIViewController {
     
     // MARK: - bind, setup, layout methods
     func bind(_ viewModel: DiaryConfigViewModel) {
+        self.viewModel = viewModel
+        
         stateTitle.text = "다이어리 \(viewModel.configState.identifier)" // TODO: observer 연결
         
         viewModel.cellData
@@ -72,58 +75,14 @@ class DiaryConfigViewController: UIViewController {
                     return cell
                     
                 case 1: // 장소
-                    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DiaryConfigLocationCell", for: IndexPath(row: row, section: 0)) as! DiaryConfigCollectionViewCell
-                    cell.contentTap
-                        .subscribe(onNext: {
-                            self.view.endEditing(true)
-                            
-                            let mapSearchViewController = MapSearchViewController()
-                            mapSearchViewController.completion = { mapItem in
-                                UIView.performWithoutAnimation {
-                                    let locationName = mapItem.name
-                                    let locationAddress = mapItem.placemark.countryCode
-                                    let locationCoordinate = mapItem.placemark.location?.coordinate
-                                    let location = Location(locationName: locationName ?? "", locationAddress: locationAddress ?? "", locationCoordinate: [Double(locationCoordinate?.latitude ?? 0.0), Double(locationCoordinate?.longitude ?? 0.0)])
-                                    
-                                    viewModel.location = location
-                                    
-                                    cell.contentButton.setTitle(locationName, for: .normal)
-                                    cell.contentButton.tintColor = .black
-                                    cell.contentButton.layoutIfNeeded()
-                                }
-                            }
-                            self.present(mapSearchViewController, animated: true)
-                        })
-                        .disposed(by: self.disposeBag)
-                    
+                    var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DiaryConfigLocationCell", for: IndexPath(row: row, section: 0)) as! DiaryConfigCollectionViewCell
+                    cell = self.mapSearchViewPresent(cell: cell, viewModel: viewModel)
                     cell.bind(data)
                     return cell
                     
                 case 2: // 다이어리 날짜
-                    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DiaryConfigDateCell", for: IndexPath(row: row, section: 0)) as! DiaryConfigCollectionViewCell
-                    cell.contentTap
-                        .subscribe(onNext: {
-                            self.view.endEditing(true)
-                            
-                            let pickerController = CalendarPickerViewController(dateArray: self.dateInterval, selectedDateChanged: { date in
-                                UIView.performWithoutAnimation {
-                                    let startDate = date[0]
-                                    let endDate = date[1]
-                
-                                    self.dateInterval = [startDate, endDate]
-                                    viewModel.startDate = startDate.customFormat()
-                                    viewModel.endDate = endDate.customFormat()
-                
-                                    cell.contentButton.setTitle("\(startDate.customFormat()) \(startDate.dayOfTheWeek()) - \(endDate.customFormat()) \(endDate.dayOfTheWeek())", for: .normal)
-                                    cell.contentButton.tintColor = .black
-                                    cell.contentButton.layoutIfNeeded()
-                                }
-                            })
-                
-                            self.present(pickerController, animated: true, completion: nil)
-                        })
-                        .disposed(by: self.disposeBag)
-                    
+                    var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DiaryConfigDateCell", for: IndexPath(row: row, section: 0)) as! DiaryConfigCollectionViewCell
+                    cell = self.calendarViewPresent(cell: cell, viewModel: viewModel)
                     cell.bind(data)
                     return cell
                 default:
@@ -134,12 +93,19 @@ class DiaryConfigViewController: UIViewController {
         
         
         viewModel.presentAlert
-            .emit(to: self.rx.setAlert)
+            .emit(onNext: { _ in
+                let alertController = UIAlertController(title: nil, message: "변경사항은 저장되지 않습니다. 정말 취소하시겠습니까?", preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: { [weak self] _ in
+                    print(viewModel.diary?.diaryName)
+                    self?.dismiss(animated: true, completion: nil)
+                }))
+                alertController.addAction(UIAlertAction(title: "취소", style: .cancel))
+                self.present(alertController, animated: true)
+            })
             .disposed(by: disposeBag)
         
         viewModel.complete
             .emit(onNext: {
-
                  if viewModel.checkAvailable() {
                     
                     if let parentNavigationController: UINavigationController = self.presentingViewController as? UINavigationController {
@@ -229,15 +195,58 @@ extension DiaryConfigViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension Reactive where Base: DiaryConfigViewController {
-    var setAlert: Binder<Void> {
-        return Binder(base) { base, _ in
-            let alertController = UIAlertController(title: nil, message: "변경사항은 저장되지 않습니다. 정말 취소하시겠습니까?", preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: { [weak base] _ in
-                base?.dismiss(animated: true, completion: nil)
-            }))
-            alertController.addAction(UIAlertAction(title: "취소", style: .cancel))
-            base.present(alertController, animated: true)
-        }
+extension DiaryConfigViewController {
+    private func mapSearchViewPresent(cell: DiaryConfigCollectionViewCell, viewModel: DiaryConfigViewModel) -> DiaryConfigCollectionViewCell {
+        cell.contentTap
+            .subscribe(onNext: {
+                self.view.endEditing(true)
+                
+                let mapSearchViewController = MapSearchViewController()
+                mapSearchViewController.completion = { mapItem in
+                    UIView.performWithoutAnimation {
+                        let locationName = mapItem.name
+                        let locationAddress = mapItem.placemark.countryCode
+                        let locationCoordinate = mapItem.placemark.location?.coordinate
+                        let location = Location(locationName: locationName ?? "", locationAddress: locationAddress ?? "", locationCoordinate: [Double(locationCoordinate?.latitude ?? 0.0), Double(locationCoordinate?.longitude ?? 0.0)])
+                        
+                        viewModel.location = location
+                        
+                        cell.contentButton.setTitle(locationName, for: .normal)
+                        cell.contentButton.tintColor = .black
+                        cell.contentButton.layoutIfNeeded()
+                    }
+                }
+                self.present(mapSearchViewController, animated: true)
+            })
+            .disposed(by: self.disposeBag)
+        
+        return cell
+    }
+    
+    private func calendarViewPresent(cell: DiaryConfigCollectionViewCell, viewModel: DiaryConfigViewModel) -> DiaryConfigCollectionViewCell {
+        cell.contentTap
+            .subscribe(onNext: {
+                self.view.endEditing(true)
+                
+                let pickerController = CalendarPickerViewController(dateArray: self.dateInterval, selectedDateChanged: { date in
+                    UIView.performWithoutAnimation {
+                        let startDate = date[0]
+                        let endDate = date[1]
+    
+                        self.dateInterval = [startDate, endDate]
+                        viewModel.startDate = startDate.customFormat()
+                        viewModel.endDate = endDate.customFormat()
+    
+                        cell.contentButton.setTitle("\(startDate.customFormat()) \(startDate.dayOfTheWeek()) - \(endDate.customFormat()) \(endDate.dayOfTheWeek())", for: .normal)
+                        cell.contentButton.tintColor = .black
+                        cell.contentButton.layoutIfNeeded()
+                    }
+                })
+    
+                self.present(pickerController, animated: true, completion: nil)
+            })
+            .disposed(by: self.disposeBag)
+        
+        return cell
     }
 }

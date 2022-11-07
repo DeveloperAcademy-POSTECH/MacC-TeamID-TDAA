@@ -118,7 +118,12 @@ class DiaryConfigViewModel {
         
         self.diaryTitle
             .startWith(diary?.diaryName)
-            .subscribe(onNext: { self.title = $0 })
+            .subscribe(onNext: {
+                self.title = $0
+                self.cancelButtonTapped
+                    .subscribe(onNext: { _ in self.title = self.diary?.diaryName })
+                    .disposed(by: self.disposeBag)
+            })
             .disposed(by: disposeBag)
         
         [titleCellViewModel, locationCellViewModel, dateCellViewModel].forEach { viewModel in
@@ -168,9 +173,10 @@ class DiaryConfigViewModel {
         if let title = self.title, let _ = self.location, let _ = self.startDate, let _ = self.endDate {
             if title.isEmpty {
                 return false
+            } else {
+                setDiaryData()
+                return true
             }
-            setDiaryData()
-            return true
         } else {
             print("ERROR: Incomplete Value")
             return false

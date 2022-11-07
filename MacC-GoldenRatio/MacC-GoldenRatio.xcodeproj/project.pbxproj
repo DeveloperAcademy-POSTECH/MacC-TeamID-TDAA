@@ -35,6 +35,11 @@
 		0AD6FD7E2903054D00939F3D /* MapSearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD6FD7D2903054D00939F3D /* MapSearchResultTableViewCell.swift */; };
 		0AE27F2528F442B100D79208 /* FirebaseStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE27F2428F442B100D79208 /* FirebaseStorage.swift */; };
 		0AEC53EC28EF211D001B0169 /* StickerViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEC53EB28EF211D001B0169 /* StickerViewData.swift */; };
+		36082B8429123A5B0092A139 /* FacebookAEM in Frameworks */ = {isa = PBXBuildFile; productRef = 36082B8329123A5B0092A139 /* FacebookAEM */; };
+		36082B8629123A5B0092A139 /* FacebookBasics in Frameworks */ = {isa = PBXBuildFile; productRef = 36082B8529123A5B0092A139 /* FacebookBasics */; };
+		36082B8829123A5B0092A139 /* FacebookCore in Frameworks */ = {isa = PBXBuildFile; productRef = 36082B8729123A5B0092A139 /* FacebookCore */; };
+		36082B8A29123A5B0092A139 /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 36082B8929123A5B0092A139 /* FacebookLogin */; };
+		36082B8C29123A5B0092A139 /* FacebookShare in Frameworks */ = {isa = PBXBuildFile; productRef = 36082B8B29123A5B0092A139 /* FacebookShare */; };
 		B93EC22928F7BC8000BB89C5 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93EC22828F7BC8000BB89C5 /* String+.swift */; };
 		CC0F434428F71E62003060D5 /* DiaryConfigViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0F434328F71E62003060D5 /* DiaryConfigViewModel.swift */; };
 		CC40BC1628EEADEB00DF48E1 /* CalendarPickerFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC40BC1528EEADEB00DF48E1 /* CalendarPickerFooterView.swift */; };
@@ -230,13 +235,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				36082B8A29123A5B0092A139 /* FacebookLogin in Frameworks */,
 				E25753BF28ED9E0600023619 /* Kingfisher in Frameworks */,
+				36082B8829123A5B0092A139 /* FacebookCore in Frameworks */,
+				36082B8429123A5B0092A139 /* FacebookAEM in Frameworks */,
 				E2F5690F28E5CCDC0039BE37 /* FirebaseDatabaseSwift in Frameworks */,
 				E2F5690328E57E7B0039BE37 /* SnapKit in Frameworks */,
 				E2B025BF28EB335100B73891 /* RxCocoa in Frameworks */,
 				E2F5690B28E5CCDC0039BE37 /* FirebaseAuthCombine-Community in Frameworks */,
 				E2F5690D28E5CCDC0039BE37 /* FirebaseDatabase in Frameworks */,
+				36082B8629123A5B0092A139 /* FacebookBasics in Frameworks */,
 				E2F5690928E5CCDC0039BE37 /* FirebaseAuth in Frameworks */,
+				36082B8C29123A5B0092A139 /* FacebookShare in Frameworks */,
 				E2F5691528E5CCDC0039BE37 /* FirebaseStorage in Frameworks */,
 				E2F5691128E5CCDC0039BE37 /* FirebaseFirestore in Frameworks */,
 				E2F5691728E5CCDC0039BE37 /* FirebaseStorageCombine-Community in Frameworks */,
@@ -610,6 +620,11 @@
 				E2B025BE28EB335100B73891 /* RxCocoa */,
 				E2B025C028EB335100B73891 /* RxSwift */,
 				E25753BE28ED9E0600023619 /* Kingfisher */,
+				36082B8329123A5B0092A139 /* FacebookAEM */,
+				36082B8529123A5B0092A139 /* FacebookBasics */,
+				36082B8729123A5B0092A139 /* FacebookCore */,
+				36082B8929123A5B0092A139 /* FacebookLogin */,
+				36082B8B29123A5B0092A139 /* FacebookShare */,
 			);
 			productName = "MacC-GoldenRatio";
 			productReference = E28F07FE28E4655100832F4A /* MacC-GoldenRatio.app */;
@@ -688,6 +703,7 @@
 				E2F5690728E5CCDC0039BE37 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				E2B025BD28EB335100B73891 /* XCRemoteSwiftPackageReference "RxSwift" */,
 				E25753BD28ED9E0600023619 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				36082B8229123A5B0092A139 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
 			);
 			productRefGroup = E28F07FF28E4655100832F4A /* Products */;
 			projectDirPath = "";
@@ -1176,6 +1192,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		36082B8229123A5B0092A139 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/facebook/facebook-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 15.1.0;
+			};
+		};
 		E25753BD28ED9E0600023619 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher";
@@ -1211,6 +1235,31 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		36082B8329123A5B0092A139 /* FacebookAEM */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36082B8229123A5B0092A139 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
+			productName = FacebookAEM;
+		};
+		36082B8529123A5B0092A139 /* FacebookBasics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36082B8229123A5B0092A139 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
+			productName = FacebookBasics;
+		};
+		36082B8729123A5B0092A139 /* FacebookCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36082B8229123A5B0092A139 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
+			productName = FacebookCore;
+		};
+		36082B8929123A5B0092A139 /* FacebookLogin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36082B8229123A5B0092A139 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
+			productName = FacebookLogin;
+		};
+		36082B8B29123A5B0092A139 /* FacebookShare */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36082B8229123A5B0092A139 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
+			productName = FacebookShare;
+		};
 		E25753BE28ED9E0600023619 /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = E25753BD28ED9E0600023619 /* XCRemoteSwiftPackageReference "Kingfisher" */;

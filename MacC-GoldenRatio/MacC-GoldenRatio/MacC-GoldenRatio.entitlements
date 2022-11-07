@@ -6,5 +6,9 @@
 	<array>
 		<string>Default</string>
 	</array>
+	<key>keychain-access-groups</key>
+	<array>
+		<string>$(AppIdentifierPrefix)com.TwoInterval.MacC-GoldenRatio</string>
+	</array>
 </dict>
 </plist>

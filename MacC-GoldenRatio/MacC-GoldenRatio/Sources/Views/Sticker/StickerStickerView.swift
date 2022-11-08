@@ -5,10 +5,11 @@
 //  Created by 김상현 on 2022/10/05.
 //
 
+import RxCocoa
+import RxSwift
 import UIKit
 
 class StickerStickerView: StickerView {
-    
     private let stickerImageView: UIImageView = {
         let imageView = UIImageView(frame: CGRect(origin: .zero, size: UIScreen.getDevice().stickerDefaultSize))
         imageView.contentMode = .scaleAspectFit
@@ -17,15 +18,20 @@ class StickerStickerView: StickerView {
     }()
 
     /// StickerView를 새로 만듭니다.
-    init(sticker: String) {
+    init(sticker: String, appearPoint: CGPoint) {
         super.init(frame: stickerImageView.frame)
+        
+        self.configureNewStickerView()
 
-        DispatchQueue.main.async {
-            self.initializeStickerViewData(itemType: .sticker)
-            self.stickerViewData.item.contents = [sticker]
-            self.setStickerImage()
-            super.setupContentView(content: self.stickerImageView)
-            super.setupDefaultAttributes()
+        Task{
+            self.stickerViewData = await StickerViewData(itemType: .sticker, contents: [sticker], appearPoint: appearPoint, defaultSize: stickerImageView.frame.size)
+            await self.configureStickerViewData()
+            await self.setStickerImage()
+
+            DispatchQueue.main.async {
+                super.setupContentView(content: self.stickerImageView)
+                super.setupDefaultAttributes()
+            }
         }
     }
     
@@ -33,21 +39,38 @@ class StickerStickerView: StickerView {
     init(item: Item) {
         super.init(frame: CGRect())
 
-        DispatchQueue.main.async{
-            self.stickerViewData = StickerViewData(item: item)
-            self.configureStickerViewData()
-            self.setStickerImage()
-            super.setupContentView(content: self.stickerImageView)
-            super.setupDefaultAttributes()
+        Task{
+            self.stickerViewData = await StickerViewData(item: item)
+            await self.configureStickerViewData()
+            await self.setStickerImage()
+
+            DispatchQueue.main.async {
+                super.setupContentView(content: self.stickerImageView)
+                super.setupDefaultAttributes()
+                self.subviews.forEach{
+                    $0.isUserInteractionEnabled = true
+                }
+            }
         }
+       
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setStickerImage() {
-        guard let stickerString = super.stickerViewData.item.contents.first else { return }
-        stickerImageView.image = UIImage(named: stickerString)
+    private func setStickerImage() async {
+        
+        self.stickerViewData?.contentsObservable
+            .observe(on: MainScheduler.instance)
+            .map {
+                guard let imageName = $0.first else { return "" }
+                return imageName
+            }
+            .subscribe(onNext: {
+                self.stickerImageView.image = UIImage(named: $0)
+            })
+            .disposed(by: self.disposeBag)
+        
     }
 }

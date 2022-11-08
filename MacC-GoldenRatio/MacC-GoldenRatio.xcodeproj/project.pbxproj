@@ -34,6 +34,7 @@
 		0AAB2AE228EDA55D009FBD96 /* StickerStickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2AE128EDA55D009FBD96 /* StickerStickerView.swift */; };
 		0AD6FD7E2903054D00939F3D /* MapSearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD6FD7D2903054D00939F3D /* MapSearchResultTableViewCell.swift */; };
 		0AE27F2528F442B100D79208 /* FirebaseStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE27F2428F442B100D79208 /* FirebaseStorage.swift */; };
+		0AE94ABC291182090051A710 /* ErrorMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE94ABB291182090051A710 /* ErrorMessage.swift */; };
 		0AEC53EC28EF211D001B0169 /* StickerViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEC53EB28EF211D001B0169 /* StickerViewData.swift */; };
 		B93EC22928F7BC8000BB89C5 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93EC22828F7BC8000BB89C5 /* String+.swift */; };
 		CC0F434428F71E62003060D5 /* DiaryConfigViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0F434328F71E62003060D5 /* DiaryConfigViewModel.swift */; };
@@ -168,6 +169,7 @@
 		0AAB2AE128EDA55D009FBD96 /* StickerStickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerStickerView.swift; sourceTree = "<group>"; };
 		0AD6FD7D2903054D00939F3D /* MapSearchResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapSearchResultTableViewCell.swift; sourceTree = "<group>"; };
 		0AE27F2428F442B100D79208 /* FirebaseStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseStorage.swift; sourceTree = "<group>"; };
+		0AE94ABB291182090051A710 /* ErrorMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMessage.swift; sourceTree = "<group>"; };
 		0AEC53EB28EF211D001B0169 /* StickerViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerViewData.swift; sourceTree = "<group>"; };
 		B93EC22828F7BC8000BB89C5 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		CC0F434328F71E62003060D5 /* DiaryConfigViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryConfigViewModel.swift; sourceTree = "<group>"; };
@@ -485,6 +487,7 @@
 				E2FA41A228F48C1B00BBA354 /* DiaryCell.swift */,
 				E21342E228F6B6BC0048D9CF /* MapData.swift */,
 				E2BEC45F28F806F80056E755 /* AlbumData.swift */,
+				0AE94ABB291182090051A710 /* ErrorMessage.swift */,
 				E2E544302916D91400E611D0 /* DiarySection.swift */,
 			);
 			path = Models;
@@ -765,6 +768,7 @@
 				E2EA7F0628E56C0900AC1C49 /* TabBarController.swift in Sources */,
 				0AAB2AD128EAFF6D009FBD96 /* CollectionView+.swift in Sources */,
 				E2BEC46028F806F80056E755 /* AlbumData.swift in Sources */,
+				0AE94ABC291182090051A710 /* ErrorMessage.swift in Sources */,
 				E2EA7F0828E56CF600AC1C49 /* MyPlaceViewController.swift in Sources */,
 				E2FA41A528F496D100BBA354 /* UIImageView+.swift in Sources */,
 				CC0F434428F71E62003060D5 /* DiaryConfigViewModel.swift in Sources */,

@@ -16,8 +16,8 @@ class PageViewModeViewController: UIViewController {
 
     private lazy var pageCollectionView: UICollectionView = {
         let collectionViewFlowLayout = UICollectionViewFlowLayout()
-        collectionViewFlowLayout.minimumInteritemSpacing = 0
-        collectionViewFlowLayout.minimumLineSpacing = 0
+        collectionViewFlowLayout.minimumInteritemSpacing = 1
+        collectionViewFlowLayout.minimumLineSpacing = 1
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewFlowLayout)
         collectionView.register(PageViewModeCollectionViewCell.self, forCellWithReuseIdentifier: PageViewModeCollectionViewCell.identifier)
@@ -38,28 +38,12 @@ class PageViewModeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.configureSubView()
-               
-        Observable
-            .combineLatest(self.pageViewModel.allPageItemKeys, self.pageViewModel.allPageItemObservable) { (keys, itemDic) in
-            return keys.map {
-                itemDic[$0]
-            }
-        }
-        .debug()
-        .bind(to: pageCollectionView.rx.items(cellIdentifier: PageViewModeCollectionViewCell.identifier, cellType: PageViewModeCollectionViewCell.self)) { (index, items, cell) in
-            if let items = items {
-                cell.setStickerView(items: items)
-            }
-        }
-        .disposed(by: self.pageViewModel.disposeBag)
-    }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.configureNavigation()
+        self.view.backgroundColor = .white
 
+        self.configureSubView()
+        self.configureNavigationBar()
+        self.configurePageCollectionView()
     }
     
     private func configureSubView() {
@@ -70,7 +54,7 @@ class PageViewModeViewController: UIViewController {
         }
     }
     
-    private func configureNavigation() {
+    private func configureNavigationBar() {
         let leftBarButtonItem = UIBarButtonItem(title: "<", style: .plain, target: self, action: #selector(onTapNavigationBack))
         let rightBarButtonItem = UIBarButtonItem(title: "편집", style: .plain, target: self, action: #selector(onTapNavigationMenu))
         
@@ -79,6 +63,9 @@ class PageViewModeViewController: UIViewController {
         
         self.navigationItem.setLeftBarButton(leftBarButtonItem, animated: false)
         self.navigationItem.setRightBarButton(rightBarButtonItem, animated: false)
+        
+        self.navigationController?.navigationBar.barTintColor = .white
+        self.navigationController?.navigationBar.layer.addBorder([.bottom], color: .lightGray, width: 1)
         
         self.pageViewModel.selectedDay
             .subscribe(on: MainScheduler.instance)
@@ -89,6 +76,30 @@ class PageViewModeViewController: UIViewController {
             .disposed(by: self.pageViewModel.disposeBag)
         
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.navigationTitleFont, NSAttributedString.Key.foregroundColor:UIColor.black]
+    }
+    
+    private func configurePageCollectionView() {
+        var itemsCount = 0
+        Observable
+            .combineLatest(self.pageViewModel.allPageItemKeys, self.pageViewModel.allPageItemObservable) { (keys, itemDic) in
+                let items = keys.map {
+                    itemDic[$0]
+                }
+                itemsCount = items.count
+                
+                return items
+        }
+        .bind(to: pageCollectionView.rx.items(cellIdentifier: PageViewModeCollectionViewCell.identifier, cellType: PageViewModeCollectionViewCell.self)) { (index, items, cell) in
+            if let items = items {
+                cell.setStickerView(items: items)
+            }
+            if index == itemsCount - 1 {
+                cell.separatorView.backgroundColor = .white
+            } else {
+                cell.separatorView.backgroundColor = .lightGray
+            }
+        }
+        .disposed(by: self.pageViewModel.disposeBag)
     }
     
     @objc private func onTapNavigationBack() {
@@ -132,10 +143,14 @@ class PageViewModeCollectionViewCell: UICollectionViewCell {
     
     private let pageBackgroundView: UIView = {
         let view = UIView()
-        view.backgroundColor = .blue
-        // TODO: border 설정해주기
-        view.layer.borderColor = UIColor.black.cgColor
-        view.layer.borderWidth = 0.5
+        view.backgroundColor = .white
+        
+        return view
+    }()
+    
+    let separatorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .lightGray
         
         return view
     }()
@@ -158,12 +173,18 @@ class PageViewModeCollectionViewCell: UICollectionViewCell {
     
     private func configureSubView() {
         DispatchQueue.main.async {
-            [self.pageBackgroundView].forEach {
+            [self.pageBackgroundView, self.separatorView].forEach {
                 self.contentView.addSubview($0)
             }
             
             self.pageBackgroundView.snp.makeConstraints { make in
                 make.edges.equalTo(self.contentView)
+            }
+            
+            self.separatorView.snp.makeConstraints { make in
+                make.horizontalEdges.equalTo(self.contentView)
+                make.centerY.equalTo(self.contentView.snp.bottom)
+                make.height.equalTo(1)
             }
         }
     }
@@ -185,8 +206,9 @@ class PageViewModeCollectionViewCell: UICollectionViewCell {
                 
             }
             
-            stickerViews.forEach {
-                self.pageBackgroundView.addSubview($0)
+            stickerViews.forEach { stickerView in
+                stickerView.isStickerViewMode = true
+                self.pageBackgroundView.addSubview(stickerView)
             }
         }
     }

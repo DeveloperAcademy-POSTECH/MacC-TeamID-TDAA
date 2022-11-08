@@ -32,7 +32,6 @@ class PageViewModel {
     var maxPageIndexObservable: Observable<Int>!
     
     init(diary: Diary, selectedDay: Int) async {
-        self.oldDiary = diary
         self.selectedDay = BehaviorSubject(value: selectedDay)
         self.diaryObservable = await setDiaryObservable(diary: diary)
         
@@ -46,6 +45,16 @@ class PageViewModel {
         await setDiaryDBUpdate()
     }
 
+    func setOldDiary() {
+        self.diaryObservable
+            .observe(on: MainScheduler.instance)
+            .take(1)
+            .subscribe(onNext: {
+                self.oldDiary = $0
+            })
+            .disposed(by: disposeBag)
+    }
+    
     func setDiaryObservable(diary: Diary) async -> BehaviorSubject<Diary> {
         return BehaviorSubject(value: diary)
     }

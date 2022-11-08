@@ -93,6 +93,7 @@ class PageViewController: UIViewController {
     init(pageViewModel: PageViewModel) {
         super.init(nibName: nil, bundle: nil)
         self.pageViewModel = pageViewModel
+        self.pageViewModel.setOldDiary()
     }
     
     required init?(coder: NSCoder) {
@@ -118,7 +119,7 @@ class PageViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.configureNavigation()
+        self.configureNavigationBar()
     }
     
     private func setPageDescription() {
@@ -202,7 +203,7 @@ class PageViewController: UIViewController {
         self.imagePicker.delegate = self
     }
     
-    private func configureNavigation() {
+    private func configureNavigationBar() {
         let leftBarButtonItem = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(onTapNavigationCancel))
         let rightBarButtonItem = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(onTapNavigationComplete))
         leftBarButtonItem.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.navigationTitleFont, NSAttributedString.Key.foregroundColor:UIColor.navigationbarColor], for: .normal)

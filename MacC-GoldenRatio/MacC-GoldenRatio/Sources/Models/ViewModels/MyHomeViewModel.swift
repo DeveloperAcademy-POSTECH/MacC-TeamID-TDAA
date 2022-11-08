@@ -50,11 +50,6 @@ class MyHomeViewModel {
 			.map(getCollectionSection)
 			.bind(to: diaryCollectionViewModel.collectionDiaryData)
 			.disposed(by: disposeBag)
-		
-		diaryValue
-			.map(getFirstDiary)
-			.bind(to: albumCollectionViewModel.collectionDiaryData)
-			.disposed(by: disposeBag)
 	}
 	
 	func getDiaryValue(_ result: Result<[Diary], Error>) -> [Diary] {

@@ -18,13 +18,6 @@ final class MyHomeViewController: UIViewController, UICollectionViewDelegateFlow
 	private lazy var collectionView = DiaryCollectionView()
 	private lazy var addDiaryButton = HomeAddDiaryButtonView()
 	
-	private lazy var testAlbumButton: UIButton = {
-		let button = UIButton()
-		button.setTitle("앨범", for: .normal)
-		button.setTitleColor(UIColor.red, for: .normal)
-		return button
-	}()
-	
 	override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
 		super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
 		setupSubViews()
@@ -47,11 +40,6 @@ final class MyHomeViewController: UIViewController, UICollectionViewDelegateFlow
 		addDiaryButton.snp.makeConstraints {
 			$0.bottom.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(myDevice.MyDiariesViewAddDiaryButtonPadding)
 		}
-		
-		view.addSubview(testAlbumButton)
-		testAlbumButton.snp.makeConstraints {
-			$0.bottom.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(myDevice.MyDiariesViewAddDiaryButtonPadding+50)
-		}
 	}
 	
 	private func bind() {
@@ -73,16 +61,6 @@ final class MyHomeViewController: UIViewController, UICollectionViewDelegateFlow
 				self.present(popUp, animated: false)
 			}
 			.disposed(by: disposeBag)
-		
-		testAlbumButton.rx.tap
-			.bind {
-				self.viewModel.createCell()
-				let vc = MyAlbumViewController()
-				vc.bind(viewModel: self.viewModel.albumCollectionViewModel)
-				self.present(vc, animated: true)
-			}
-			.disposed(by: disposeBag)
-		
 	}
 	
 	private func setupNotification() {

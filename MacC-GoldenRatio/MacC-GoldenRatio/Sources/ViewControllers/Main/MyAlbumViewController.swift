@@ -41,7 +41,8 @@ class MyAlbumViewController: UIViewController {
 		collectionView.rx
 			.itemSelected
 			.subscribe(onNext: { index in
-				let vc = MyAlbumPhotoViewController(photoPage: index.item, totalCount: viewModel.collectionCellData.value.count ?? 0, viewModel: viewModel)
+				let vc = MyAlbumPhotoViewController(photoPage: index.item, totalCount: viewModel.collectionCellData.value.count)
+				vc.bind(viewModel: viewModel)
 				vc.modalPresentationStyle = .fullScreen
 				self.present(vc, animated: true)
 			})

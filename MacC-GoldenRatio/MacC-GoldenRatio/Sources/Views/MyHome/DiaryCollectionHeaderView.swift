@@ -5,8 +5,9 @@
 //  Created by woo0 on 2022/09/29.
 //
 
-import UIKit
+import RxSwift
 import SnapKit
+import UIKit
 
 final class DiaryCollectionHeaderView: UICollectionReusableView {
 	let myDevice = UIScreen.getDevice()
@@ -19,6 +20,15 @@ final class DiaryCollectionHeaderView: UICollectionReusableView {
 		
 		return label
 	}()
+	
+	override init(frame: CGRect) {
+		super.init(frame: frame)
+		setupViews()
+	}
+	
+	required init?(coder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
 	
 	func setupViews() {
 		addSubview(titleLabel)

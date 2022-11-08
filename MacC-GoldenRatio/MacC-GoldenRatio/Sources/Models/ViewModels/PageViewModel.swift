@@ -20,24 +20,26 @@ class PageViewModel {
     var oldDiary: Diary!
     
     var diaryObservable: BehaviorSubject<Diary>!
-    var selectedDay: BehaviorSubject<Int>!
+    var selectedDayIndex: BehaviorSubject<Int>!
     var currentPageIndex: BehaviorSubject<Int> = BehaviorSubject(value: 0)
     
     var allPageItemObservable: Observable<[String:[Item]]>!
     var maxPageIndexByDayObservable: Observable<[Int]>!
     var allPageItemKeys: Observable<[String]>!
+    var pageCollectionViewCurrentCellIndex: Observable<IndexPath>!
     
     var currentPageItemObservable: Observable<[Item]>!
     var pageIndexDescriptionObservable: Observable<String>!
     var maxPageIndexObservable: Observable<Int>!
     
-    init(diary: Diary, selectedDay: Int) async {
-        self.selectedDay = BehaviorSubject(value: selectedDay)
+    init(diary: Diary, selectedDayIndex: Int) async {
+        self.selectedDayIndex = BehaviorSubject(value: selectedDayIndex)
         self.diaryObservable = await setDiaryObservable(diary: diary)
         
         self.allPageItemObservable = await setAllPageItemObservable()
         self.maxPageIndexByDayObservable = await setMaxPageIndexByDayObservable()
         self.allPageItemKeys = await setAllPageItemKeys()
+        self.pageCollectionViewCurrentCellIndex  = await setPageCollectionViewCurrentCellIndex()
         
         self.currentPageItemObservable = await setCurrentPageItemObservable()
         self.pageIndexDescriptionObservable = await setPageIndexDescriptionObservable()
@@ -116,15 +118,31 @@ class PageViewModel {
             }
     }
     
+    func setPageCollectionViewCurrentCellIndex() async-> Observable<IndexPath>{
+        return Observable
+            .combineLatest(selectedDayIndex, currentPageIndex, maxPageIndexByDayObservable) { (selectedDayIndex, currentPageIndex, maxPageIndexes) in
+                
+                var cellIndex = currentPageIndex
+                
+                if selectedDayIndex != 0 {
+                    (0...selectedDayIndex).forEach {
+                        cellIndex += (maxPageIndexes[$0] + 1)
+                    }
+                }
+                
+                return IndexPath(item: cellIndex, section: 0)
+            }
+    }
+    
     func setCurrentPageItemObservable() async -> Observable<[Item]> {
-        return Observable.combineLatest(diaryObservable, selectedDay, currentPageIndex)
+        return Observable.combineLatest(diaryObservable, selectedDayIndex, currentPageIndex)
             .map { (diary, selectedDay, currentPageIndex) in
                 diary.diaryPages[selectedDay].pages[currentPageIndex].items
             }
     }
     
     func setPageIndexDescriptionObservable() async -> Observable<String> {
-        return Observable.combineLatest(diaryObservable, selectedDay, currentPageIndex)
+        return Observable.combineLatest(diaryObservable, selectedDayIndex, currentPageIndex)
             .map { (diary, selectedDay, currentPageIndex) in
                 let pagesCount = diary.diaryPages[selectedDay].pages.count
                 return (currentPageIndex + 1).description + "/" + pagesCount.description
@@ -132,7 +150,7 @@ class PageViewModel {
     }
     
     func setMaxPageIndexObservable() async -> Observable<Int> {
-        return Observable.combineLatest(diaryObservable, selectedDay, currentPageIndex)
+        return Observable.combineLatest(diaryObservable, selectedDayIndex, currentPageIndex)
             .map { (diary, selectedDay, currentPageIndex) in
                 let pagesCount = diary.diaryPages[selectedDay].pages.count
                 return pagesCount - 1
@@ -153,7 +171,7 @@ class PageViewModel {
             .subscribe(onNext: {
                 do {
                     var newDiary = $0
-                    let selectedDay = try self.selectedDay.value()
+                    let selectedDay = try self.selectedDayIndex.value()
                     let newPageIndex = try self.currentPageIndex.value() + 1
                     
                     switch to {
@@ -184,7 +202,7 @@ class PageViewModel {
                     var newDiary = $0
                     let currentPageIndex = try self.currentPageIndex.value()
                     
-                    newDiary.diaryPages[try self.selectedDay.value()].pages.remove(at: currentPageIndex)
+                    newDiary.diaryPages[try self.selectedDayIndex.value()].pages.remove(at: currentPageIndex)
                     
                     self.maxPageIndexObservable
                         .observe(on: MainScheduler.instance)
@@ -273,7 +291,7 @@ class PageViewModel {
                 return newItems
             }.subscribe(onNext: { newItems in
                 
-                let selectedDay = try! self.selectedDay.value()
+                let selectedDay = try! self.selectedDayIndex.value()
                 let currentPageIndex = try! self.currentPageIndex.value()
                 
                 self.diaryObservable

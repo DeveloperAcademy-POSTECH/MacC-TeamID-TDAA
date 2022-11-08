@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0A30BD47291A4DAF00079326 /* CALayer+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A30BD46291A4DAE00079326 /* CALayer+.swift */; };
+		0A30BD49291A93AE00079326 /* PageViewModeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A30BD48291A93AE00079326 /* PageViewModeCollectionViewCell.swift */; };
 		0A3ED14128F98956000D55D8 /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3ED14028F98956000D55D8 /* MyPageViewModel.swift */; };
 		0A3ED14428F99F11000D55D8 /* TravelsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3ED14328F99F11000D55D8 /* TravelsCollectionViewCell.swift */; };
 		0A3ED14628F99FBF000D55D8 /* SetProfileImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3ED14528F99FBF000D55D8 /* SetProfileImageViewController.swift */; };
@@ -145,6 +146,7 @@
 
 /* Begin PBXFileReference section */
 		0A30BD46291A4DAE00079326 /* CALayer+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+.swift"; sourceTree = "<group>"; };
+		0A30BD48291A93AE00079326 /* PageViewModeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewModeCollectionViewCell.swift; sourceTree = "<group>"; };
 		0A3ED14028F98956000D55D8 /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
 		0A3ED14328F99F11000D55D8 /* TravelsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelsCollectionViewCell.swift; sourceTree = "<group>"; };
 		0A3ED14528F99FBF000D55D8 /* SetProfileImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetProfileImageViewController.swift; sourceTree = "<group>"; };
@@ -306,6 +308,7 @@
 				0AAB2ACC28EAFD78009FBD96 /* MapSearchViewController.swift */,
 				0AAB2AD428EC1F11009FBD96 /* StickerPickerViewController.swift */,
 				0A939488291A1E0E007ADDAC /* PageViewModeViewController.swift */,
+				0A30BD48291A93AE00079326 /* PageViewModeCollectionViewCell.swift */,
 			);
 			path = Page;
 			sourceTree = "<group>";
@@ -789,6 +792,7 @@
 				0A30BD47291A4DAF00079326 /* CALayer+.swift in Sources */,
 				CC65515028F0874800E637A2 /* MyDiaryPagesViewController.swift in Sources */,
 				0AEC53EC28EF211D001B0169 /* StickerViewData.swift in Sources */,
+				0A30BD49291A93AE00079326 /* PageViewModeCollectionViewCell.swift in Sources */,
 				0A5E904F28E9948B00B381B8 /* PageViewModel.swift in Sources */,
 				0AAB2ADE28EDA511009FBD96 /* MapStickerView.swift in Sources */,
 				0AAB2AE028EDA553009FBD96 /* ImageStickerView.swift in Sources */,

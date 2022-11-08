@@ -27,9 +27,9 @@ class PageViewModeViewController: UIViewController {
     }()
     
     // MARK: init
-    init(diary: Diary, selectedDay: Int) async {
+    init(diary: Diary, selectedDayIndex: Int) async {
         super.init(nibName: nil, bundle: nil)
-        self.pageViewModel = await PageViewModel(diary: diary, selectedDay: selectedDay)
+        self.pageViewModel = await PageViewModel(diary: diary, selectedDayIndex: selectedDayIndex)
     }
     
     required init?(coder: NSCoder) {
@@ -44,6 +44,18 @@ class PageViewModeViewController: UIViewController {
         self.configureSubView()
         self.configureNavigationBar()
         self.configurePageCollectionView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.pageViewModel.pageCollectionViewCurrentCellIndex
+            .observe(on: MainScheduler.instance)
+            .take(1)
+            .subscribe(onNext: {
+                self.pageCollectionView.scrollToItem(at: $0, at: .top, animated: true)
+            })
+            .disposed(by: pageViewModel.disposeBag)
     }
     
     private func configureSubView() {
@@ -67,7 +79,7 @@ class PageViewModeViewController: UIViewController {
         self.navigationController?.navigationBar.barTintColor = .white
         self.navigationController?.navigationBar.layer.addBorder([.bottom], color: .lightGray, width: 1)
         
-        self.pageViewModel.selectedDay
+        self.pageViewModel.selectedDayIndex
             .subscribe(on: MainScheduler.instance)
             .map{
                 ($0 + 1).description + "일차"
@@ -88,18 +100,19 @@ class PageViewModeViewController: UIViewController {
                 itemsCount = items.count
                 
                 return items
-        }
-        .bind(to: pageCollectionView.rx.items(cellIdentifier: PageViewModeCollectionViewCell.identifier, cellType: PageViewModeCollectionViewCell.self)) { (index, items, cell) in
-            if let items = items {
-                cell.setStickerView(items: items)
             }
-            if index == itemsCount - 1 {
-                cell.separatorView.backgroundColor = .white
-            } else {
-                cell.separatorView.backgroundColor = .lightGray
+            .bind(to: pageCollectionView.rx.items(cellIdentifier: PageViewModeCollectionViewCell.identifier, cellType: PageViewModeCollectionViewCell.self)) { (index, items, cell) in
+                if let items = items {
+                    cell.setStickerView(items: items)
+                }
+                if index == itemsCount - 1 {
+                    cell.separatorView.backgroundColor = .white
+                } else {
+                    cell.separatorView.backgroundColor = .lightGray
+                }
             }
-        }
-        .disposed(by: self.pageViewModel.disposeBag)
+            .disposed(by: self.pageViewModel.disposeBag)
+        
     }
     
     @objc private func onTapNavigationBack() {
@@ -137,79 +150,4 @@ extension PageViewModeViewController: UICollectionViewDelegateFlowLayout {
         return 0
     }
     
-}
-
-class PageViewModeCollectionViewCell: UICollectionViewCell {
-    
-    private let pageBackgroundView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .white
-        
-        return view
-    }()
-    
-    let separatorView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .lightGray
-        
-        return view
-    }()
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        configureSubView()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func prepareForReuse() {
-        self.pageBackgroundView.subviews.forEach {
-            $0.removeFromSuperview()
-        }
-    }
-    
-    private func configureSubView() {
-        DispatchQueue.main.async {
-            [self.pageBackgroundView, self.separatorView].forEach {
-                self.contentView.addSubview($0)
-            }
-            
-            self.pageBackgroundView.snp.makeConstraints { make in
-                make.edges.equalTo(self.contentView)
-            }
-            
-            self.separatorView.snp.makeConstraints { make in
-                make.horizontalEdges.equalTo(self.contentView)
-                make.centerY.equalTo(self.contentView.snp.bottom)
-                make.height.equalTo(1)
-            }
-        }
-    }
-    
-    func setStickerView(items: [Item]) {
-        DispatchQueue.main.async {
-            let stickerViews: [StickerView] = items.map { item in
-                
-                switch item.itemType {
-                case .text:
-                    return TextStickerView(item: item)
-                case .image:
-                    return ImageStickerView(item: item)
-                case .sticker:
-                    return StickerStickerView(item: item)
-                case .location:
-                    return MapStickerView(item: item)
-                }
-                
-            }
-            
-            stickerViews.forEach { stickerView in
-                stickerView.isStickerViewMode = true
-                self.pageBackgroundView.addSubview(stickerView)
-            }
-        }
-    }
 }

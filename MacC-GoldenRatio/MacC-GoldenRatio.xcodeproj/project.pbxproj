@@ -59,7 +59,7 @@
 		E21342E128F6B6940048D9CF /* MyPlaceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21342E028F6B6940048D9CF /* MyPlaceViewModel.swift */; };
 		E21342E328F6B6BC0048D9CF /* MapData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21342E228F6B6BC0048D9CF /* MapData.swift */; };
 		E25753BF28ED9E0600023619 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = E25753BE28ED9E0600023619 /* Kingfisher */; };
-		E265C8102914E9A4003380A5 /* HomeAddDiaryButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E265C80F2914E9A4003380A5 /* HomeAddDiaryButtonView.swift */; };
+		E265C8102914E9A4003380A5 /* HomeButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E265C80F2914E9A4003380A5 /* HomeButtonView.swift */; };
 		E26F0DB22916B33900B040C9 /* CollectionEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26F0DB12916B33900B040C9 /* CollectionEmptyView.swift */; };
 		E27469AB29199DAD00BC906A /* PhotoCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27469AA29199DAD00BC906A /* PhotoCollectionView.swift */; };
 		E276B91C28E46AE900163833 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E276B91B28E46AE900163833 /* User.swift */; };
@@ -195,7 +195,7 @@
 		E21342DE28F6B31D0048D9CF /* MyHomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyHomeViewController.swift; sourceTree = "<group>"; };
 		E21342E028F6B6940048D9CF /* MyPlaceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPlaceViewModel.swift; sourceTree = "<group>"; };
 		E21342E228F6B6BC0048D9CF /* MapData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapData.swift; sourceTree = "<group>"; };
-		E265C80F2914E9A4003380A5 /* HomeAddDiaryButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeAddDiaryButtonView.swift; sourceTree = "<group>"; };
+		E265C80F2914E9A4003380A5 /* HomeButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeButtonView.swift; sourceTree = "<group>"; };
 		E26F0DB12916B33900B040C9 /* CollectionEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionEmptyView.swift; sourceTree = "<group>"; };
 		E27469AA29199DAD00BC906A /* PhotoCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollectionView.swift; sourceTree = "<group>"; };
 		E276B91B28E46AE900163833 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -401,7 +401,7 @@
 			children = (
 				E2EA7F1528E5711E00AC1C49 /* DiaryCollectionHeaderView.swift */,
 				E2C2750A290D950400319885 /* DiaryCollectionView.swift */,
-				E265C80F2914E9A4003380A5 /* HomeAddDiaryButtonView.swift */,
+				E265C80F2914E9A4003380A5 /* HomeButtonView.swift */,
 				E26F0DB12916B33900B040C9 /* CollectionEmptyView.swift */,
 			);
 			path = MyHome;
@@ -837,7 +837,7 @@
 				E2ED4872290ABE46002FEC2B /* Notification+.swift in Sources */,
 				0A3ED14628F99FBF000D55D8 /* SetProfileImageViewController.swift in Sources */,
 				0AAB2ACF28EAFF52009FBD96 /* TableView+.swift in Sources */,
-				E265C8102914E9A4003380A5 /* HomeAddDiaryButtonView.swift in Sources */,
+				E265C8102914E9A4003380A5 /* HomeButtonView.swift in Sources */,
 				CC40BC1C28EEAEB200DF48E1 /* Day.swift in Sources */,
 				0A3ED14428F99F11000D55D8 /* TravelsCollectionViewCell.swift in Sources */,
 				E2FA41B028F6A89900BBA354 /* MapView.swift in Sources */,

@@ -103,7 +103,7 @@ class MyPageViewController: UIViewController {
         super.viewDidLoad()
 
         DispatchQueue.main.async {
-            self.navigationController?.isNavigationBarHidden = true
+//            self.navigationController?.isNavigationBarHidden = true
             self.view.backgroundColor = .backgroundTexture
             self.setupViewModel()
             self.configureViews()

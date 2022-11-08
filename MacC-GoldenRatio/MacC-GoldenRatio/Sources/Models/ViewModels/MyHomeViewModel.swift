@@ -67,10 +67,6 @@ class MyHomeViewModel {
 		return [DiarySection(header: "다이어리", items: value)]
 	}
 	
-	func getFirstDiary(_ value: [Diary]) -> Diary {
-		return value.first ?? Diary(diaryUUID: "", diaryName: "", diaryLocation: Location(locationName: "", locationAddress: "", locationCoordinate: []), diaryStartDate: "", diaryEndDate: "", diaryCover: "")
-	}
-	
 	func isDiaryCodeEqualTo(_ diaryUUID: String) {
 		Task {
 			do {

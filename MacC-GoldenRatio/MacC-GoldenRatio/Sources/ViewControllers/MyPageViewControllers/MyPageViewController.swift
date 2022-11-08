@@ -18,14 +18,31 @@ class MyPageViewController: UIViewController {
     private let viewModel = MyPageViewModel.shared
     private var currentNonce: String?
 
-    private lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .darkgrayColor
-        label.text = "마이페이지"
-        label.font = .tabTitleFont
-        
-        return label
-    }()
+	private lazy var titleLabel: UILabel = {
+		let label = UILabel()
+		label.text = "마이페이지"
+		label.font = myDevice.myAlbumPhotoPageLabelFont
+		label.textColor = .black
+		
+		return label
+	}()
+	
+	private lazy var backButton: UIButton = {
+		let button = UIButton()
+		button.setImage(UIImage(systemName: "chevron.left")?.withTintColor(UIColor.black, renderingMode: .alwaysOriginal), for: .normal)
+		button.imageView?.contentMode = .scaleAspectFit
+		button.imageEdgeInsets = UIEdgeInsets(top: 22, left: 22, bottom: 22, right: 22)
+		button.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+		
+		return button
+	}()
+	
+	private lazy var lineView: UIView = {
+		let view = UIView()
+		view.backgroundColor = .placeholderText
+		
+		return view
+	}()
     
     private lazy var profileImageView: UIImageView = {
         let imageView = UIImageView()
@@ -103,7 +120,8 @@ class MyPageViewController: UIViewController {
         super.viewDidLoad()
 
         DispatchQueue.main.async {
-//            self.navigationController?.isNavigationBarHidden = true
+			self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+			self.navigationController?.interactivePopGestureRecognizer?.delegate = self
             self.view.backgroundColor = .backgroundTexture
             self.setupViewModel()
             self.configureViews()
@@ -113,16 +131,29 @@ class MyPageViewController: UIViewController {
             self.profileImageView.layer.cornerRadius = self.myDevice.myPageProfileImageSize.width * 0.5
         }
     }
-    
+	
     private func configureViews() {
-        [titleLabel, profileImageView, nickNameTitleLabel, nickNameLabel, profileSettingButton, travelsTitleLabel, travelsCollectionView, menuTableView].forEach{
+        [titleLabel, profileImageView, nickNameTitleLabel, nickNameLabel, profileSettingButton, travelsTitleLabel, travelsCollectionView, menuTableView, backButton, lineView].forEach{
             view.addSubview($0)
         }
         
-        titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(myDevice.myPageVerticalPadding2)
-            make.leading.equalTo(view.safeAreaLayoutGuide).offset(myDevice.myPageHorizontalPadding)
-        }
+		titleLabel.snp.makeConstraints {
+			$0.top.equalTo(view.safeAreaLayoutGuide).inset(11)
+			$0.centerX.equalToSuperview()
+		}
+		
+		backButton.snp.makeConstraints {
+			$0.top.equalTo(view.safeAreaLayoutGuide).inset(11)
+			$0.leading.equalToSuperview().inset(9)
+		}
+		
+		lineView.snp.makeConstraints {
+			$0.top.equalTo(titleLabel.snp.bottom).offset(9)
+			$0.width.equalTo(view.bounds.width)
+			$0.height.equalTo(1)
+			$0.centerX.equalToSuperview()
+		}
+		
         profileImageView.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(myDevice.myPageVerticalSpacing)
             make.leading.equalTo(view.safeAreaLayoutGuide).offset(myDevice.myPageHorizontalPadding)
@@ -174,6 +205,10 @@ class MyPageViewController: UIViewController {
         viewController.modalPresentationStyle = .fullScreen
         self.present(viewController, animated: true)
     }
+	
+	@objc private func backButtonTapped() {
+		self.navigationController?.popViewController(animated: true)
+	}
     
     private func onTapRateApp() {
         guard let reviewURL = URL(string: "itms-apps://itunes.apple.com/app/itunes-u/id6443840961?ls=1&mt=8&action=write-review") else { return }
@@ -415,4 +450,10 @@ extension MyPageViewController : ASAuthorizationControllerPresentationContextPro
 func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
     return self.view.window!
 }
+}
+
+extension MyPageViewController: UIGestureRecognizerDelegate {
+	func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+		return navigationController?.viewControllers.count ?? 0 > 2
+	}
 }

@@ -59,10 +59,18 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
         return button
     }()
     
-    private lazy var dividerView: UIView = {
+    lazy var dividerView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.placeholderText
         return view
+    }()
+    
+    lazy var diaryColorCollectionView: DiaryColorCollectionView = {
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.estimatedItemSize = CGSize(width: 28, height: 28)
+        let collectionView = DiaryColorCollectionView(frame: .zero, collectionViewLayout: flowLayout)
+        collectionView.register(DiaryColorCell.self, forCellWithReuseIdentifier: "DiaryColorCell")
+        return collectionView
     }()
     
     func bind(_ viewModel: DiaryConfigCellViewModel) {
@@ -98,6 +106,8 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
         contentButton.rx.tap
             .bind(to: viewModel.contentButtonTapped)
             .disposed(by: disposeBag)
+        
+        diaryColorCollectionView.bind(viewModel.diaryColorViewModel)
     }
     
     
@@ -119,7 +129,6 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
             
         } else {
             contentButton.tintColor = .placeholderText
-            
             diaryName = nil
             locationName = "여행지를 입력해주세요."
             dateText = "여행한 날짜를 선택해주세요."
@@ -143,6 +152,18 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
             contentButton.setTitle(locationName, for: .normal)
         case .diaryDate:
             contentButton.setTitle(dateText, for: .normal)
+        case .diaryColor:
+            contentButton.setTitle(nil, for: .normal)
+            diaryColorCollectionView.rx.setDelegate(self)
+                .disposed(by: disposeBag)
+            
+            diaryColorCollectionView.snp.makeConstraints {
+                $0.top.equalTo(contentTitle.snp.bottom)
+                $0.leading.equalToSuperview()
+                $0.width.equalTo(241)
+                $0.height.equalTo(104)
+            }
+
         }
     }
     
@@ -153,7 +174,7 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        [contentTitle, contentButton, clearButton, dividerView].forEach {
+        [contentTitle, contentButton, clearButton, dividerView, diaryColorCollectionView].forEach {
             contentView.addSubview($0)
         }
         
@@ -192,3 +213,12 @@ extension Reactive where Base: UIButton {
     }
 }
 
+extension DiaryConfigCollectionViewCell: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 32, height: 32)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+    }
+}

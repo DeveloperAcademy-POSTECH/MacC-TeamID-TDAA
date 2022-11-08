@@ -85,6 +85,15 @@ class DiaryConfigViewController: UIViewController {
                     cell = self.calendarViewPresent(cell: cell, viewModel: viewModel)
                     cell.bind(data)
                     return cell
+                    
+                case 3: // 다이어리 색상
+                    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DiaryConfigColorCell", for: IndexPath(row: row, section: 0)) as! DiaryConfigCollectionViewCell
+                    cell.contentButton.isHidden = true
+                    cell.clearButton.isHidden = true
+                    cell.dividerView.isHidden = true
+                    cell.bind(data)
+                    return cell
+                    
                 default:
                     fatalError()
                 }
@@ -96,7 +105,6 @@ class DiaryConfigViewController: UIViewController {
             .emit(onNext: { _ in
                 let alertController = UIAlertController(title: nil, message: "변경사항은 저장되지 않습니다. 정말 취소하시겠습니까?", preferredStyle: .alert)
                 alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: { [weak self] _ in
-                    print(viewModel.diary?.diaryName)
                     self?.dismiss(animated: true, completion: nil)
                 }))
                 alertController.addAction(UIAlertAction(title: "취소", style: .cancel))
@@ -142,6 +150,8 @@ class DiaryConfigViewController: UIViewController {
         doneButton.rx.tap
             .bind(to: viewModel.doneButtonTapped)
             .disposed(by: disposeBag)
+        
+        
     }
     
     private func setup() {
@@ -152,6 +162,7 @@ class DiaryConfigViewController: UIViewController {
         diaryConfigCollectionView.register(DiaryConfigCollectionViewCell.self, forCellWithReuseIdentifier: "DiaryConfigTitleCell")
         diaryConfigCollectionView.register(DiaryConfigCollectionViewCell.self, forCellWithReuseIdentifier: "DiaryConfigLocationCell")
         diaryConfigCollectionView.register(DiaryConfigCollectionViewCell.self, forCellWithReuseIdentifier: "DiaryConfigDateCell")
+        diaryConfigCollectionView.register(DiaryConfigCollectionViewCell.self, forCellWithReuseIdentifier: "DiaryConfigColorCell")
     }
     
     private func layout() {
@@ -182,6 +193,7 @@ class DiaryConfigViewController: UIViewController {
             $0.leading.equalTo(view.safeAreaLayoutGuide)
             $0.trailing.equalTo(view.safeAreaLayoutGuide)
         }
+        
     }
 }
 

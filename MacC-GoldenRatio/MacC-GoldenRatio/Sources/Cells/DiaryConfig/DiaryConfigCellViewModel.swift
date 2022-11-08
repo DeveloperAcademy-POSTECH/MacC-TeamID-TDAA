@@ -9,6 +9,8 @@ import RxSwift
 import RxCocoa
 
 class DiaryConfigCellViewModel {
+    let diaryColorViewModel = DiaryColorCollectionViewModel()
+    
     // ViewModel -> View
     let setContent: Driver<ConfigContentType>
     let resetContentLabel: Observable<ConfigContentType>

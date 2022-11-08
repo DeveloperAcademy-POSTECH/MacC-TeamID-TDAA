@@ -16,6 +16,7 @@ class DiaryConfigViewModel {
     let titleCellViewModel = DiaryConfigCellViewModel(type: .diaryName)
     let locationCellViewModel = DiaryConfigCellViewModel(type: .location)
     let dateCellViewModel = DiaryConfigCellViewModel(type: .diaryDate)
+    let colorCellViewModel = DiaryConfigCellViewModel(type: .diaryColor)
     var diaryConfigModel = DiaryConfigModel()
     
     // ViewModel -> View
@@ -68,10 +69,12 @@ class DiaryConfigViewModel {
         let titleCell = Observable<DiaryConfigCellViewModel>.just(titleCellViewModel)
         let locationCell = Observable<DiaryConfigCellViewModel>.just(locationCellViewModel)
         let dateCell = Observable<DiaryConfigCellViewModel>.just(dateCellViewModel)
+        let colorCell = Observable<DiaryConfigCellViewModel>.just(colorCellViewModel)
         
         switch self.configState {
         case .create:
             self.cellData = Observable
+                // .combineLatest(titleCell, locationCell, dateCell, colorCell) { [$0, $1, $2, $3] }
                 .combineLatest(titleCell, locationCell, dateCell) { [$0, $1, $2] }
                 .asDriver(onErrorJustReturn: [])
             

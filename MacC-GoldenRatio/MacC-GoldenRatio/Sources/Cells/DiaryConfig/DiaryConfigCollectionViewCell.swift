@@ -135,10 +135,9 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
         
         switch contentType {
         case .diaryName:
-            contentButton.setTitle(nil, for: .normal)
+            contentButton.isHidden = true
             titleInputField.text = diaryName
             contentView.addSubview(titleInputField)
-            
             titleInputField.snp.makeConstraints {
                 $0.leading.equalToSuperview().inset(device.diaryConfigCellLeftInset)
                 $0.trailing.equalToSuperview().inset(50)
@@ -148,19 +147,46 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
             
         case .location:
             contentButton.setTitle(locationName, for: .normal)
+            contentView.addSubview(contentButton)
+            contentButton.snp.makeConstraints{
+                $0.leading.equalTo(dividerView)
+                $0.trailing.equalToSuperview().inset(50)
+                $0.height.equalTo(44)
+                $0.bottom.equalToSuperview()
+            }
             
         case .diaryDate:
             contentButton.setTitle(dateText, for: .normal)
+            contentView.addSubview(contentButton)
+            contentButton.snp.makeConstraints{
+                $0.leading.equalTo(dividerView)
+                $0.trailing.equalToSuperview().inset(50)
+                $0.height.equalTo(44)
+                $0.bottom.equalToSuperview()
+            }
             
         case .diaryColor:
-            contentButton.setTitle(nil, for: .normal)
+            contentButton.isHidden = true
+            clearButton.isHidden = true
+            dividerView.isHidden = true
             contentView.addSubview(diaryColorCollectionView)
-            
             diaryColorCollectionView.snp.makeConstraints {
                 $0.top.equalTo(contentTitle.snp.bottom).offset(20)
                 $0.leading.equalToSuperview().inset(20)
                 $0.width.equalTo(241)
                 $0.height.equalTo(84)
+            }
+            
+        case .diaryImage:
+            clearButton.isHidden = true
+            dividerView.isHidden = true
+            contentButton.backgroundColor = UIColor(red: 0.742, green: 0.742, blue: 0.742, alpha: 0.25)
+            contentButton.layer.cornerRadius = 20
+            contentView.addSubview(contentButton)
+            contentButton.snp.makeConstraints{
+                $0.leading.equalTo(dividerView)
+                $0.width.height.equalTo(170)
+                $0.top.equalTo(contentTitle.snp.bottom).offset(10)
             }
         }
     }
@@ -172,20 +198,13 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        [contentTitle, contentButton, clearButton, dividerView].forEach {
+        [contentTitle, clearButton, dividerView].forEach {
             contentView.addSubview($0)
         }
         
         contentTitle.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(device.diaryConfigCellLeftInset+4)
             $0.top.equalToSuperview().inset(20)
-        }
-        
-        contentButton.snp.makeConstraints{
-            $0.leading.equalTo(dividerView)
-            $0.trailing.equalToSuperview().inset(50)
-            $0.height.equalTo(44)
-            $0.bottom.equalToSuperview()
         }
         
         clearButton.snp.makeConstraints {

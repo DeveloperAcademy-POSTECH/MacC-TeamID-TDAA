@@ -17,6 +17,7 @@ class DiaryConfigViewModel {
     let locationCellViewModel = DiaryConfigCellViewModel(type: .location)
     let dateCellViewModel = DiaryConfigCellViewModel(type: .diaryDate)
     var colorCellViewModel = DiaryConfigCellViewModel(type: .diaryColor)
+    var imageCellViewModel = DiaryConfigCellViewModel(type: .diaryImage)
     let diaryColorViewModel = DiaryColorCollectionViewModel()
     var diaryConfigModel = DiaryConfigModel()
     
@@ -71,16 +72,17 @@ class DiaryConfigViewModel {
         let locationCell = Observable<DiaryConfigCellViewModel>.just(locationCellViewModel)
         let dateCell = Observable<DiaryConfigCellViewModel>.just(dateCellViewModel)
         let colorCell = Observable<DiaryConfigCellViewModel>.just(colorCellViewModel)
+        let imageCell = Observable<DiaryConfigCellViewModel>.just(imageCellViewModel)
         
         switch self.configState {
         case .create:
             self.cellData = Observable
-                .combineLatest(titleCell, locationCell, dateCell, colorCell) { [$0, $1, $2, $3] }
+                .combineLatest(titleCell, locationCell, dateCell, colorCell, imageCell) { [$0, $1, $2, $3, $4] }
                 .asDriver(onErrorJustReturn: [])
             
         case .modify:
             self.cellData = Observable
-                .combineLatest(titleCell, locationCell, colorCell) { [$0, $1, $2] }
+                .combineLatest(titleCell, locationCell, colorCell, imageCell) { [$0, $1, $2, $3] }
                 .asDriver(onErrorJustReturn: [])
             
 //            colorCell.subscribe(onNext: { // TODO: 초깃값 설정

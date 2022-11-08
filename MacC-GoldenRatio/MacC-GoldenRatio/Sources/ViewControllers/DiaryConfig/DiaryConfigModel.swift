@@ -31,6 +31,7 @@ enum ConfigContentType: CaseIterable {
     case location
     case diaryDate
     case diaryColor
+    case diaryImage
     
     var title: String {
         switch self {
@@ -42,6 +43,8 @@ enum ConfigContentType: CaseIterable {
             return "날짜"
         case .diaryColor:
             return "다이어리 표지 색상 (*필수)"
+        case .diaryImage:
+            return "대표 이미지 (선택)"
         }
     }
 }

@@ -75,9 +75,7 @@ class DiaryConfigViewController: UIViewController {
                 switch data.configContentType {
                 case .diaryName: // 다이어리 제목
                     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DiaryConfigTitleCell", for: IndexPath(row: row, section: 0)) as! DiaryConfigCollectionViewCell
-                    cell.contentButton.isHidden = true
                     cell.bind(data)
-                    
                     return cell
                     
                 case .location: // 장소
@@ -94,10 +92,11 @@ class DiaryConfigViewController: UIViewController {
                     
                 case .diaryColor: // 다이어리 색상
                     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DiaryConfigColorCell", for: IndexPath(row: row, section: 0)) as! DiaryConfigCollectionViewCell
-                    cell.isSelected = false
-                    cell.contentButton.isHidden = true
-                    cell.clearButton.isHidden = true
-                    cell.dividerView.isHidden = true
+                    cell.bind(data)
+                    return cell
+                    
+                case .diaryImage:
+                    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DiaryConfigImageCell", for: IndexPath(row: row, section: 0)) as! DiaryConfigCollectionViewCell
                     cell.bind(data)
                     return cell
                 }
@@ -166,6 +165,7 @@ class DiaryConfigViewController: UIViewController {
         diaryConfigCollectionView.register(DiaryConfigCollectionViewCell.self, forCellWithReuseIdentifier: "DiaryConfigLocationCell")
         diaryConfigCollectionView.register(DiaryConfigCollectionViewCell.self, forCellWithReuseIdentifier: "DiaryConfigDateCell")
         diaryConfigCollectionView.register(DiaryConfigCollectionViewCell.self, forCellWithReuseIdentifier: "DiaryConfigColorCell")
+        diaryConfigCollectionView.register(DiaryConfigCollectionViewCell.self, forCellWithReuseIdentifier: "DiaryConfigImageCell")
     }
     
     private func layout() {
@@ -211,9 +211,11 @@ extension DiaryConfigViewController: UICollectionViewDelegateFlowLayout {
         
         switch viewModel.configState {
         case .create:
-            if indexPath.row == 3 { cellHeight = 146 }
+            if indexPath.row == 3 { cellHeight = 166 }
+            else if indexPath.row == 4 { cellHeight = 225 }
         case .modify:
-            if indexPath.row == 2 { cellHeight = 146 }
+            if indexPath.row == 2 { cellHeight = 166 }
+            else if indexPath.row == 3 { cellHeight = 225 }
         }
         return CGSize(width: UIScreen.main.bounds.width, height: cellHeight)
     }

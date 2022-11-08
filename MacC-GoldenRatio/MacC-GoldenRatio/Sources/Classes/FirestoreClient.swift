@@ -7,12 +7,13 @@
 
 import FirebaseFirestore
 import FirebaseFirestoreSwift
+import RxSwift
 import UIKit
 
 class FirestoreClient {
 	private var db = Firestore.firestore()
 	
-	func fetchMyDiaries(_ uid: String) async throws -> [Diary] {
+	func fetchDiaries(_ uid: String) async throws -> [Diary] {
 		var diaries = [Diary]()
 		
 		let query = db.collection("Diary").whereField("userUIDs", arrayContains: uid)
@@ -26,6 +27,27 @@ class FirestoreClient {
 		}
 		
 		return diaries
+	}
+	
+	func fetchMyDiaries(_ uid: String) -> Observable<Result<[Diary], Error>> {
+		var diaries = [Diary]()
+		return Observable<Result<[Diary], Error>>.create { observer in
+			self.db.collection("Diary").whereField("userUIDs", arrayContains: uid).getDocuments { (snapshot, error) in
+				if let error = error {
+					observer.onError(error)
+				}
+				snapshot?.documents.forEach { document in
+					do {
+						diaries.append(try document.data(as: Diary.self))
+					} catch {
+						observer.onError(error)
+					}
+				}
+				observer.onNext(.success(diaries))
+				observer.onCompleted()
+			}
+			return Disposables.create()
+		}
 	}
     
     func fetchDiaryLocationData(_ uid: String) async throws -> [Location] {
@@ -142,13 +164,9 @@ class FirestoreClient {
 	}
 	
 	func isDiaryCodeEqualTo(_ diaryUUID: String) async throws -> Bool {
-		var isResult = false
 		let query = db.collection("Diary").whereField("diaryUUID", isEqualTo: diaryUUID)
 		let querySnapshot = try await query.getDocuments()
-		querySnapshot.documents.forEach { document in
-			isResult = true
-		}
 		
-		return isResult
+		return !querySnapshot.documents.isEmpty
 	}
 }

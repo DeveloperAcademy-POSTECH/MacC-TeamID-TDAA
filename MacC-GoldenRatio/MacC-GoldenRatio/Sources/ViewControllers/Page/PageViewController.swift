@@ -90,9 +90,9 @@ class PageViewController: UIViewController {
     }()
     
     // MARK: init
-    init(diary: Diary, selectedDay: Int) async {
+    init(pageViewModel: PageViewModel) {
         super.init(nibName: nil, bundle: nil)
-        self.pageViewModel = await PageViewModel(diary: diary, selectedDay: selectedDay)
+        self.pageViewModel = pageViewModel
     }
     
     required init?(coder: NSCoder) {
@@ -381,6 +381,7 @@ extension PageViewController {
 
     @objc private func onTapNavigationComplete() {
         self.updateStickerViewsToDiaryModel()
+        self.navigationController?.popViewController(animated: true)
     }
     
     private func updateStickerViewsToDiaryModel() {

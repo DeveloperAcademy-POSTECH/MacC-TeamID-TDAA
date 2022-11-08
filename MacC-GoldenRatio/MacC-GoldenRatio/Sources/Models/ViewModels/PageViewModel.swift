@@ -23,6 +23,10 @@ class PageViewModel {
     var selectedDay: BehaviorSubject<Int>!
     var currentPageIndex: BehaviorSubject<Int> = BehaviorSubject(value: 0)
     
+    var allPageItemObservable: Observable<[String:[Item]]>!
+    var maxPageIndexByDayObservable: Observable<[Int]>!
+    var allPageItemKeys: Observable<[String]>!
+    
     var currentPageItemObservable: Observable<[Item]>!
     var pageIndexDescriptionObservable: Observable<String>!
     var maxPageIndexObservable: Observable<Int>!
@@ -31,12 +35,17 @@ class PageViewModel {
         self.oldDiary = diary
         self.selectedDay = BehaviorSubject(value: selectedDay)
         self.diaryObservable = await setDiaryObservable(diary: diary)
+        
+        self.allPageItemObservable = await setAllPageItemObservable()
+        self.maxPageIndexByDayObservable = await setMaxPageIndexByDayObservable()
+        self.allPageItemKeys = await setAllPageItemKeys()
+        
         self.currentPageItemObservable = await setCurrentPageItemObservable()
         self.pageIndexDescriptionObservable = await setPageIndexDescriptionObservable()
         self.maxPageIndexObservable = await setMaxPageIndexObservable()
         await setDiaryDBUpdate()
     }
-    
+
     func setDiaryObservable(diary: Diary) async -> BehaviorSubject<Diary> {
         return BehaviorSubject(value: diary)
     }
@@ -49,6 +58,53 @@ class PageViewModel {
                 FirebaseClient().updatePage(diary: diary)
             }
             .disposed(by: disposeBag)
+    }
+    
+    func setAllPageItemObservable() async -> Observable<[String:[Item]]> {
+        self.diaryObservable
+            .observe(on: MainScheduler.instance)
+            .map {
+                var returnVal: [String:[Item]] = [:]
+                
+                $0.diaryPages.enumerated().forEach { (pagesIndex, pages) in
+                    pages.pages.enumerated().forEach { (pageIndex, page) in
+                        let pageKey = pagesIndex.description + "." + pageIndex.description
+                        returnVal[pageKey] = page.items
+                    }
+                }
+
+                return returnVal
+            }
+    }
+    
+    func setMaxPageIndexByDayObservable() async -> Observable<[Int]> {
+        self.diaryObservable
+            .observe(on: MainScheduler.instance)
+            .map {
+                var resultVal: [Int] = []
+                
+                $0.diaryPages.forEach { (pages) in
+                    resultVal.append(pages.pages.count - 1)
+                }
+
+                return resultVal
+            }
+    }
+    
+    func setAllPageItemKeys() async -> Observable<[String]> {
+        return maxPageIndexByDayObservable
+            .map {
+                var resultVal: [String] = []
+                
+                $0.enumerated().forEach { (dayIndex, maxPageIndex) in
+                    for i in 0...maxPageIndex {
+                        let key = dayIndex.description + "." + i.description
+                        resultVal.append(key)
+                    }
+                }
+                
+                return resultVal
+            }
     }
     
     func setCurrentPageItemObservable() async -> Observable<[Item]> {

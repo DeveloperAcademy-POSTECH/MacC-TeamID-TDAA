@@ -320,8 +320,8 @@ extension MyDiaryPagesViewController: UICollectionViewDelegate {
         let selectedDay = indexPath.item
         
         self.viewModel.diaryDataSetup() {
-            DispatchQueue.main.async {
-                let pageViewController = PageViewController(diary: self.viewModel.diaryData, selectedDay: selectedDay)
+            Task{
+                let pageViewController = await PageViewModeViewController(diary: self.viewModel.diaryData, selectedDay: 0)
                 self.navigationController?.pushViewController(pageViewController, animated: false)
                 self.navigationController?.isNavigationBarHidden = false
             }

@@ -18,6 +18,8 @@ class DiaryConfigViewController: UIViewController {
     private var dateInterval: [Date] = []
     var viewModel = DiaryConfigViewModel(diary: nil)
     
+    let imagePicker = UIImagePickerController()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -96,7 +98,8 @@ class DiaryConfigViewController: UIViewController {
                     return cell
                     
                 case .diaryImage:
-                    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DiaryConfigImageCell", for: IndexPath(row: row, section: 0)) as! DiaryConfigCollectionViewCell
+                    var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DiaryConfigImageCell", for: IndexPath(row: row, section: 0)) as! DiaryConfigCollectionViewCell
+                    cell = self.imagePickerPresent(cell: cell, viewModel: viewModel)
                     cell.bind(data)
                     return cell
                 }
@@ -283,5 +286,39 @@ extension DiaryConfigViewController {
             .disposed(by: self.disposeBag)
         
         return cell
+    }
+    
+    private func imagePickerPresent(cell: DiaryConfigCollectionViewCell, viewModel: DiaryConfigViewModel) -> DiaryConfigCollectionViewCell {
+        cell.contentTap
+            .subscribe(onNext: {
+                self.view.endEditing(true)
+                self.imagePicker.sourceType = .photoLibrary
+                self.imagePicker.allowsEditing = true
+                self.imagePicker.delegate = self
+                self.imagePicker.modalPresentationStyle = .currentContext
+                self.present(self.imagePicker, animated: true)
+                
+            })
+            .disposed(by: self.disposeBag)
+        
+        return cell
+    }
+}
+
+// MARK: ImagePikcerDelegate
+extension DiaryConfigViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        var selectedImage: UIImage? = nil
+        
+        if let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+            selectedImage = image
+        } else if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            selectedImage = image
+        }
+        
+        // TODO: 이미지 ViewModel 전달
+        imagePicker.dismiss(animated: true, completion: {
+            print("이미지 전달")
+        })
     }
 }

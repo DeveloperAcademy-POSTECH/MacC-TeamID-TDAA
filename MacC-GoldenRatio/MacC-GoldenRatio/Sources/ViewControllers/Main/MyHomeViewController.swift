@@ -18,11 +18,27 @@ final class MyHomeViewController: UIViewController, UICollectionViewDelegateFlow
 	private lazy var collectionView = DiaryCollectionView()
 	private lazy var addDiaryButton = HomeAddDiaryButtonView()
 	
+	private lazy var testButton: UIButton = {
+		let button = UIButton()
+		button.setTitle("지도", for: .normal)
+		button.setTitleColor(UIColor.red, for: .normal)
+		
+		return button
+	}()
+	
 	override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
 		super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
 		setupSubViews()
 		bind()
 		setupNotification()
+		
+//		UIFont.familyNames.sorted().forEach { familyName in
+//			print("*** \(familyName) ***")
+//			UIFont.fontNames(forFamilyName: familyName).forEach { fontName in
+//				print("\(fontName)")
+//			}
+//			print("---------------------")
+//		}
 	}
 	
 	required init?(coder: NSCoder) {
@@ -32,13 +48,16 @@ final class MyHomeViewController: UIViewController, UICollectionViewDelegateFlow
 	private func setupSubViews() {
 		self.view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
 
-		[collectionView, addDiaryButton].forEach { view.addSubview($0) }
+		[collectionView, addDiaryButton, testButton].forEach { view.addSubview($0) }
 		collectionView.snp.makeConstraints {
 			$0.top.equalTo(view.safeAreaLayoutGuide)
 			$0.bottom.leading.trailing.equalTo(view.safeAreaLayoutGuide)
 		}
 		addDiaryButton.snp.makeConstraints {
 			$0.bottom.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(myDevice.MyDiariesViewAddDiaryButtonPadding)
+		}
+		testButton.snp.makeConstraints {
+			$0.bottom.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(myDevice.MyDiariesViewAddDiaryButtonPadding+100)
 		}
 	}
 	
@@ -62,6 +81,13 @@ final class MyHomeViewController: UIViewController, UICollectionViewDelegateFlow
 			}
 			.disposed(by: disposeBag)
 		
+		testButton.rx.tap
+			.bind {
+				let vc = MyPlaceViewController()
+				vc.bind(self.viewModel.mapViewModel)
+				self.present(vc, animated: false)
+			}
+			.disposed(by: disposeBag)
 	}
 	
 	private func setupNotification() {

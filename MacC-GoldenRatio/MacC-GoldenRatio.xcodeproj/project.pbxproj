@@ -92,7 +92,6 @@
 		E2DA8F6428F857D80098DD94 /* MyAlbumPhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DA8F6328F857D80098DD94 /* MyAlbumPhotoCollectionViewCell.swift */; };
 		E2E5442F2916C24600E611D0 /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = E2E5442E2916C24600E611D0 /* RxDataSources */; };
 		E2E544312916D91400E611D0 /* DiarySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E544302916D91400E611D0 /* DiarySection.swift */; };
-		E2EA7F0628E56C0900AC1C49 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EA7F0528E56C0900AC1C49 /* TabBarController.swift */; };
 		E2EA7F0828E56CF600AC1C49 /* MyPlaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EA7F0728E56CF600AC1C49 /* MyPlaceViewController.swift */; };
 		E2EA7F0A28E56CFE00AC1C49 /* MyAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EA7F0928E56CFE00AC1C49 /* MyAlbumViewController.swift */; };
 		E2EA7F1628E5711E00AC1C49 /* DiaryCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EA7F1528E5711E00AC1C49 /* DiaryCollectionHeaderView.swift */; };
@@ -230,7 +229,6 @@
 		E2DA8F6128F856A10098DD94 /* MyAlbumPhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAlbumPhotoViewController.swift; sourceTree = "<group>"; };
 		E2DA8F6328F857D80098DD94 /* MyAlbumPhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAlbumPhotoCollectionViewCell.swift; sourceTree = "<group>"; };
 		E2E544302916D91400E611D0 /* DiarySection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiarySection.swift; sourceTree = "<group>"; };
-		E2EA7F0528E56C0900AC1C49 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		E2EA7F0728E56CF600AC1C49 /* MyPlaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPlaceViewController.swift; sourceTree = "<group>"; };
 		E2EA7F0928E56CFE00AC1C49 /* MyAlbumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAlbumViewController.swift; sourceTree = "<group>"; };
 		E2EA7F1528E5711E00AC1C49 /* DiaryCollectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryCollectionHeaderView.swift; sourceTree = "<group>"; };
@@ -585,7 +583,6 @@
 			isa = PBXGroup;
 			children = (
 				E21342DE28F6B31D0048D9CF /* MyHomeViewController.swift */,
-				E2EA7F0528E56C0900AC1C49 /* TabBarController.swift */,
 				E2EA7F0728E56CF600AC1C49 /* MyPlaceViewController.swift */,
 				E2EA7F0928E56CFE00AC1C49 /* MyAlbumViewController.swift */,
 				E2DA8F6128F856A10098DD94 /* MyAlbumPhotoViewController.swift */,
@@ -779,7 +776,6 @@
 				E2FA41A328F48C1B00BBA354 /* DiaryCell.swift in Sources */,
 				0AAB2AD528EC1F11009FBD96 /* StickerPickerViewController.swift in Sources */,
 				E2BEC45E28F806C40056E755 /* MyAlbumViewModel.swift in Sources */,
-				E2EA7F0628E56C0900AC1C49 /* TabBarController.swift in Sources */,
 				0AAB2AD128EAFF6D009FBD96 /* CollectionView+.swift in Sources */,
 				E2BEC46028F806F80056E755 /* AlbumData.swift in Sources */,
 				E2EA7F0828E56CF600AC1C49 /* MyPlaceViewController.swift in Sources */,

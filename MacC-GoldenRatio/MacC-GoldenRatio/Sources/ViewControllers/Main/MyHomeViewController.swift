@@ -86,7 +86,8 @@ final class MyHomeViewController: UIViewController, UICollectionViewDelegateFlow
 	}
 	
 	@objc func createButtonTapped() {
-		let vc = DiaryConfigViewController(mode: .create, diary: nil)
+        let vc = DiaryConfigViewController()
+        vc.bind(DiaryConfigViewModel(diary: nil))
 		vc.modalPresentationStyle = .fullScreen
 		self.present(vc, animated: true, completion: nil)
 	}

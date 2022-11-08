@@ -323,9 +323,11 @@ extension MyDiaryPagesViewController: UICollectionViewDelegate {
         
         self.viewModel.diaryDataSetup() {
             DispatchQueue.main.async {
-                let pageViewController = PageViewController(diary: self.viewModel.diaryData, selectedDay: selectedDay)
-                self.navigationController?.pushViewController(pageViewController, animated: false)
-                self.navigationController?.isNavigationBarHidden = false
+                Task {
+                    let pageViewController = await PageViewController(diary: self.viewModel.diaryData, selectedDay: selectedDay)
+                    self.navigationController?.pushViewController(pageViewController, animated: false)
+                    self.navigationController?.isNavigationBarHidden = false
+                }
             }
         }
     }

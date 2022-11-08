@@ -137,7 +137,6 @@ class MyDiaryPagesViewController: UIViewController {
             let title = diaryConfigVC.viewModel.diary?.diaryName
             self.titleLabel.text = title
             self.viewModel.diaryData.diaryName = title ?? ""
-            print(self.viewModel.diaryData.diaryName)
         }
     }
     

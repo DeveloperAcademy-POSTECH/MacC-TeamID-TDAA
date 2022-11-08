@@ -16,7 +16,8 @@ class DiaryConfigViewModel {
     let titleCellViewModel = DiaryConfigCellViewModel(type: .diaryName)
     let locationCellViewModel = DiaryConfigCellViewModel(type: .location)
     let dateCellViewModel = DiaryConfigCellViewModel(type: .diaryDate)
-    let colorCellViewModel = DiaryConfigCellViewModel(type: .diaryColor)
+    var colorCellViewModel = DiaryConfigCellViewModel(type: .diaryColor)
+    let diaryColorViewModel = DiaryColorCollectionViewModel()
     var diaryConfigModel = DiaryConfigModel()
     
     // ViewModel -> View
@@ -74,14 +75,19 @@ class DiaryConfigViewModel {
         switch self.configState {
         case .create:
             self.cellData = Observable
-                // .combineLatest(titleCell, locationCell, dateCell, colorCell) { [$0, $1, $2, $3] }
-                .combineLatest(titleCell, locationCell, dateCell) { [$0, $1, $2] }
+                .combineLatest(titleCell, locationCell, dateCell, colorCell) { [$0, $1, $2, $3] }
                 .asDriver(onErrorJustReturn: [])
             
         case .modify:
             self.cellData = Observable
-                .combineLatest(titleCell, locationCell) { [$0, $1] }
+                .combineLatest(titleCell, locationCell, colorCell) { [$0, $1, $2] }
                 .asDriver(onErrorJustReturn: [])
+            
+//            colorCell.subscribe(onNext: { // TODO: 초깃값 설정
+//                var colorViewModel = $0.diaryColorViewModel
+//                let index = colorViewModel.colors.firstIndex(of: diary?.diaryCover ?? "diaryRed")
+//            })
+//            .disposed(by: disposeBag)
         }
         
         self.presentAlert = cancelButtonTapped
@@ -111,13 +117,25 @@ class DiaryConfigViewModel {
         dateCell
             .subscribe(onNext: {
                 $0.clearButtonTapped
-                    .subscribe( onNext: { _ in
+                    .subscribe(onNext: { _ in
                         self.startDate = nil
                         self.endDate = nil
                     })
                     .disposed(by: self.disposeBag)
             })
             .disposed(by: disposeBag)
+        
+        colorCell
+            .subscribe { configCellVM in
+                configCellVM.diaryColorViewModel.itemSelected
+                    .subscribe(onNext: { index in
+                        let diaryCoverArray = self.diaryColorViewModel.colors
+                        self.diaryCover = "\(diaryCoverArray[index])"
+                    })
+                    .disposed(by: self.disposeBag)
+            }
+            .disposed(by: disposeBag)
+        
         
         self.diaryTitle
             .startWith(diary?.diaryName)
@@ -129,18 +147,14 @@ class DiaryConfigViewModel {
             })
             .disposed(by: disposeBag)
         
-        [titleCellViewModel, locationCellViewModel, dateCellViewModel].forEach { viewModel in
+        [titleCellViewModel, locationCellViewModel, dateCellViewModel, colorCellViewModel].forEach { viewModel in
             viewModel.diary = self.diary
         }
-
     }
     
     func addDiary() {
         diaryUUID = UUID().uuidString + String(Date().timeIntervalSince1970)
-        let diaryCoverArray = ["Black", "Blue", "Brown", "Green", "Orange", "Pink", "Purple", "Red", "White", "Yellow"]
-        let diaryCover = "diary\(diaryCoverArray[Int.random(in: 0...9)])"
-        
-        guard let diaryUUID = self.diaryUUID, let title = self.title, let location = self.location, let startDate = self.startDate, let endDate = endDate else { return print("Upload Error") }
+        guard let diaryUUID = self.diaryUUID, let title = self.title, let location = self.location, let startDate = self.startDate, let endDate = endDate, let diaryCover = diaryCover else { return print("Upload Error") }
         
         for _ in 1...getPageCount() {
             thumbnails.append("NoURL")
@@ -173,7 +187,7 @@ class DiaryConfigViewModel {
     }
     
     func checkAvailable() -> Bool {
-        if let title = self.title, let _ = self.location, let _ = self.startDate, let _ = self.endDate {
+        if let title = self.title, let _ = self.location, let _ = self.startDate, let _ = self.endDate, let _ = self.diaryCover {
             if title.isEmpty {
                 return false
             } else {

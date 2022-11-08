@@ -32,7 +32,7 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
         return title
     }()
     
-    lazy var titleInputField: UITextField? = {
+    lazy var titleInputField: UITextField = {
         let textField = UITextField()
         textField.font = UIFont(name: "EF_Diary", size: 17)
         textField.returnKeyType = .done
@@ -67,7 +67,9 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
     
     lazy var diaryColorCollectionView: DiaryColorCollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.estimatedItemSize = CGSize(width: 28, height: 28)
+        flowLayout.estimatedItemSize = CGSize(width: 32, height: 32)
+        flowLayout.minimumInteritemSpacing = 20
+        flowLayout.minimumLineSpacing = 20
         let collectionView = DiaryColorCollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.register(DiaryColorCell.self, forCellWithReuseIdentifier: "DiaryColorCell")
         return collectionView
@@ -87,15 +89,12 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
         
         viewModel.resetContentLabel
             .subscribe(onNext: {
-                if let _ = self.titleInputField {
-                    viewModel.textFieldText
-                        .accept(nil)
-                }
+                viewModel.textFieldText.accept(nil)
                 self.contentAttribute($0, diary: nil)
             })
             .disposed(by: disposeBag)
         
-        titleInputField?.rx.text
+        titleInputField.rx.text
             .bind(to: viewModel.textFieldText)
             .disposed(by: disposeBag)
         
@@ -137,7 +136,6 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
         switch contentType {
         case .diaryName:
             contentButton.setTitle(nil, for: .normal)
-            guard let titleInputField = titleInputField else { return }
             titleInputField.text = diaryName
             contentView.addSubview(titleInputField)
             
@@ -150,20 +148,20 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
             
         case .location:
             contentButton.setTitle(locationName, for: .normal)
+            
         case .diaryDate:
             contentButton.setTitle(dateText, for: .normal)
+            
         case .diaryColor:
             contentButton.setTitle(nil, for: .normal)
-            diaryColorCollectionView.rx.setDelegate(self)
-                .disposed(by: disposeBag)
+            contentView.addSubview(diaryColorCollectionView)
             
             diaryColorCollectionView.snp.makeConstraints {
-                $0.top.equalTo(contentTitle.snp.bottom)
-                $0.leading.equalToSuperview()
+                $0.top.equalTo(contentTitle.snp.bottom).offset(20)
+                $0.leading.equalToSuperview().inset(20)
                 $0.width.equalTo(241)
-                $0.height.equalTo(104)
+                $0.height.equalTo(84)
             }
-
         }
     }
     
@@ -174,13 +172,13 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        [contentTitle, contentButton, clearButton, dividerView, diaryColorCollectionView].forEach {
+        [contentTitle, contentButton, clearButton, dividerView].forEach {
             contentView.addSubview($0)
         }
         
         contentTitle.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(device.diaryConfigCellLeftInset+4)
-            $0.bottom.equalTo(contentButton.snp.top)
+            $0.top.equalToSuperview().inset(20)
         }
         
         contentButton.snp.makeConstraints{
@@ -210,15 +208,5 @@ extension Reactive where Base: UIButton {
         return Binder(self.base) { button, title -> Void in
             button.setTitle(title, for: controlState)
         }
-    }
-}
-
-extension DiaryConfigCollectionViewCell: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 32, height: 32)
-    }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
     }
 }

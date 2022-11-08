@@ -28,10 +28,17 @@ class DiaryConfigViewController: UIViewController {
     lazy var diaryConfigCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.delegate = self
+        collectionView.rx.setDelegate(self)
+            .disposed(by: disposeBag)
         collectionView.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
         
         return collectionView
+    }()
+    
+    private lazy var divider: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.placeholderText
+        return view
     }()
     
     private lazy var stateTitle: UILabel = {
@@ -57,7 +64,6 @@ class DiaryConfigViewController: UIViewController {
         return button
     }()
     
-    
     // MARK: - bind, setup, layout methods
     func bind(_ viewModel: DiaryConfigViewModel) {
         self.viewModel = viewModel
@@ -66,36 +72,34 @@ class DiaryConfigViewController: UIViewController {
         
         viewModel.cellData
             .drive(diaryConfigCollectionView.rx.items) { collectionView, row, data in
-                switch row {
-                case 0: // 다이어리 제목
+                switch data.configContentType {
+                case .diaryName: // 다이어리 제목
                     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DiaryConfigTitleCell", for: IndexPath(row: row, section: 0)) as! DiaryConfigCollectionViewCell
                     cell.contentButton.isHidden = true
                     cell.bind(data)
-
+                    
                     return cell
                     
-                case 1: // 장소
+                case .location: // 장소
                     var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DiaryConfigLocationCell", for: IndexPath(row: row, section: 0)) as! DiaryConfigCollectionViewCell
                     cell = self.mapSearchViewPresent(cell: cell, viewModel: viewModel)
                     cell.bind(data)
                     return cell
                     
-                case 2: // 다이어리 날짜
+                case .diaryDate: // 다이어리 날짜
                     var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DiaryConfigDateCell", for: IndexPath(row: row, section: 0)) as! DiaryConfigCollectionViewCell
                     cell = self.calendarViewPresent(cell: cell, viewModel: viewModel)
                     cell.bind(data)
                     return cell
                     
-                case 3: // 다이어리 색상
+                case .diaryColor: // 다이어리 색상
                     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DiaryConfigColorCell", for: IndexPath(row: row, section: 0)) as! DiaryConfigCollectionViewCell
+                    cell.isSelected = false
                     cell.contentButton.isHidden = true
                     cell.clearButton.isHidden = true
                     cell.dividerView.isHidden = true
                     cell.bind(data)
                     return cell
-                    
-                default:
-                    fatalError()
                 }
             }
             .disposed(by: disposeBag)
@@ -114,7 +118,7 @@ class DiaryConfigViewController: UIViewController {
         
         viewModel.complete
             .emit(onNext: {
-                 if viewModel.checkAvailable() {
+                if viewModel.checkAvailable() {
                     
                     if let parentNavigationController: UINavigationController = self.presentingViewController as? UINavigationController {
                         self.presentingViewController?.dismiss(animated: true) {
@@ -150,13 +154,12 @@ class DiaryConfigViewController: UIViewController {
         doneButton.rx.tap
             .bind(to: viewModel.doneButtonTapped)
             .disposed(by: disposeBag)
-        
-        
     }
     
     private func setup() {
         let tapGesture = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
         view.addGestureRecognizer(tapGesture)
+        tapGesture.cancelsTouchesInView = false
         view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
         
         diaryConfigCollectionView.register(DiaryConfigCollectionViewCell.self, forCellWithReuseIdentifier: "DiaryConfigTitleCell")
@@ -166,7 +169,7 @@ class DiaryConfigViewController: UIViewController {
     }
     
     private func layout() {
-        [stateTitle, cancelButton, doneButton, diaryConfigCollectionView].forEach {
+        [stateTitle, cancelButton, doneButton, divider, diaryConfigCollectionView].forEach {
             view.addSubview($0)
         }
         
@@ -187,27 +190,45 @@ class DiaryConfigViewController: UIViewController {
             $0.top.equalTo(stateTitle)
         }
         
-        diaryConfigCollectionView.snp.makeConstraints {
-            $0.topMargin.equalTo(view.safeAreaLayoutGuide).inset(device.diaryConfigCollectionViewInset)
-            $0.bottom.equalTo(view.safeAreaLayoutGuide)
-            $0.leading.equalTo(view.safeAreaLayoutGuide)
-            $0.trailing.equalTo(view.safeAreaLayoutGuide)
+        divider.snp.makeConstraints {
+            $0.bottom.equalTo(stateTitle).offset(9)
+            $0.width.equalToSuperview()
+            $0.height.equalTo(1)
         }
         
+        diaryConfigCollectionView.snp.makeConstraints {
+            $0.top.equalTo(divider.snp.bottom).offset(16)
+            $0.leading.equalTo(view.safeAreaLayoutGuide)
+            $0.trailing.equalTo(view.safeAreaLayoutGuide)
+            $0.height.equalTo(view.safeAreaLayoutGuide)
+        }
     }
 }
 
 extension DiaryConfigViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: UIScreen.main.bounds.width, height: device.diaryConfigCollectionViewCellHeight)
+        var cellHeight: CGFloat = 86
+        
+        switch viewModel.configState {
+        case .create:
+            if indexPath.row == 3 { cellHeight = 146 }
+        case .modify:
+            if indexPath.row == 2 { cellHeight = 146 }
+        }
+        return CGSize(width: UIScreen.main.bounds.width, height: cellHeight)
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: device.diaryConfigCollectionViewCellInset, left: 0, bottom: device.diaryConfigCollectionViewCellInset, right: 0)
+        return UIEdgeInsets(top: -5, left: 0, bottom: -5, right: 0)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
     }
 }
 
 extension DiaryConfigViewController {
+    // MARK: Child View Presentation Related Methods
     private func mapSearchViewPresent(cell: DiaryConfigCollectionViewCell, viewModel: DiaryConfigViewModel) -> DiaryConfigCollectionViewCell {
         cell.contentTap
             .subscribe(onNext: {
@@ -244,17 +265,17 @@ extension DiaryConfigViewController {
                     UIView.performWithoutAnimation {
                         let startDate = date[0]
                         let endDate = date[1]
-    
+                        
                         self.dateInterval = [startDate, endDate]
                         viewModel.startDate = startDate.customFormat()
                         viewModel.endDate = endDate.customFormat()
-    
+                        
                         cell.contentButton.setTitle("\(startDate.customFormat()) \(startDate.dayOfTheWeek()) - \(endDate.customFormat()) \(endDate.dayOfTheWeek())", for: .normal)
                         cell.contentButton.tintColor = .black
                         cell.contentButton.layoutIfNeeded()
                     }
                 })
-    
+                
                 self.present(pickerController, animated: true, completion: nil)
             })
             .disposed(by: self.disposeBag)

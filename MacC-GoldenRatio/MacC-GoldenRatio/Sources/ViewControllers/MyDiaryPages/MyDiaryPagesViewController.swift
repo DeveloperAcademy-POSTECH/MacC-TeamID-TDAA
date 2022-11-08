@@ -133,11 +133,17 @@ class MyDiaryPagesViewController: UIViewController {
         // Full Modal dismiss 이후 호출, 업데이트된 다이어리 정보 반영
         super.viewWillAppear(animated)
         self.navigationController?.isNavigationBarHidden = true
-        self.viewModelSetup()
+        if let diaryConfigVC = self.presentedViewController as? DiaryConfigViewController {
+            let title = diaryConfigVC.viewModel.diary?.diaryName
+            self.titleLabel.text = title
+            self.viewModel.diaryData.diaryName = title ?? ""
+            print(self.viewModel.diaryData.diaryName)
+        }
     }
     
     // MARK: - Feature methods
     @objc private func backButtonTapped() {
+        NotificationCenter.default.post(name: .reloadDiary, object: nil)
         self.navigationController?.isNavigationBarHidden = true
         self.navigationController?.popViewController(animated: true)
     }
@@ -156,7 +162,8 @@ class MyDiaryPagesViewController: UIViewController {
     }
     
     @objc func modifyButtonTapped() {
-        let vc = DiaryConfigViewController(mode: .modify, diary: viewModel.diaryData)
+        let vc = DiaryConfigViewController()
+        vc.bind(DiaryConfigViewModel(diary: self.viewModel.diaryData))
         vc.modalPresentationStyle = .fullScreen
         self.present(vc, animated: true, completion: nil)
     }
@@ -217,11 +224,6 @@ class MyDiaryPagesViewController: UIViewController {
                     .store(in: &bag)
             } catch {
                 print(error.localizedDescription)
-            }
-   
-            if let diaryConfigVC = self.presentedViewController as? DiaryConfigViewController {
-                self.titleLabel.text = diaryConfigVC.contentTextField.text
-                self.viewModel.diaryData.diaryName = self.titleLabel.text ?? self.viewModel.diaryData.diaryName
             }
         }
     }
@@ -321,9 +323,11 @@ extension MyDiaryPagesViewController: UICollectionViewDelegate {
         
         self.viewModel.diaryDataSetup() {
             DispatchQueue.main.async {
-                let pageViewController = PageViewController(diary: self.viewModel.diaryData, selectedDay: selectedDay)
-                self.navigationController?.pushViewController(pageViewController, animated: false)
-                self.navigationController?.isNavigationBarHidden = false
+                Task {
+                    let pageViewController = await PageViewController(diary: self.viewModel.diaryData, selectedDay: selectedDay)
+                    self.navigationController?.pushViewController(pageViewController, animated: false)
+                    self.navigationController?.isNavigationBarHidden = false
+                }
             }
         }
     }

@@ -29,7 +29,7 @@ class MyDiaryPagesViewModel {
     func getDiaryData(uuid diaryUUID: String) async throws -> Diary {
         let query = db.collection("Diary").whereField("diaryUUID", isEqualTo: diaryUUID)
         let documents = try await query.getDocuments()
-        let data = try await documents.documents[0].data(as: Diary.self)
+        let data = try documents.documents[0].data(as: Diary.self)
         
         return data
     }

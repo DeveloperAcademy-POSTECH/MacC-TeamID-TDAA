@@ -22,7 +22,6 @@ class DiaryConfigViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setup()
         layout()
     }
@@ -101,9 +100,11 @@ class DiaryConfigViewController: UIViewController {
                 case .diaryImage: // 표지 이미지
                     var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DiaryConfigImageCell", for: IndexPath(row: row, section: 0)) as! DiaryConfigCollectionViewCell
                     cell = self.imagePickerPresent(cell: cell, viewModel: viewModel)
-                    viewModel.diaryImage
-                        .map{ $0.withCornerRadius(20) }
-                        .subscribe(onNext: { cell.contentButton.setImage($0?.withCornerRadius(20), for: .normal) })
+                    viewModel.diaryCoverImage
+                        .subscribe(onNext: {
+                            viewModel.coverImage = $0
+                            cell.contentButton.setImage($0.withCornerRadius($0.size.width / 8.5), for: .normal)
+                        })
                         .disposed(by: self.disposeBag)
                     cell.bind(data)
                     return cell
@@ -124,29 +125,14 @@ class DiaryConfigViewController: UIViewController {
             .disposed(by: disposeBag)
         
         viewModel.complete
-            .emit(onNext: {
-                if viewModel.checkAvailable() {
-                    
-                    if let parentNavigationController: UINavigationController = self.presentingViewController as? UINavigationController {
-                        self.presentingViewController?.dismiss(animated: true) {
-                            switch viewModel.configState {
-                            case .create:
-                                viewModel.addDiary()
-                                NotificationCenter.default.post(name: .reloadDiary, object: nil)
-                                guard let diary = viewModel.diary else { return }
-                                
-                                let myDiaryPagesVC = MyDiaryPagesViewController(diaryData: diary)
-                                parentNavigationController.isNavigationBarHidden = false
-                                parentNavigationController.pushViewController(myDiaryPagesVC, animated: true)
-                                
-                            case .modify:
-                                viewModel.updateDiary()
-                            }
+            .drive(onNext: {
+                    if viewModel.checkAvailable() {
+                        viewModel.uploadImage() {
+                            self.dismiss()
                         }
+                    } else {
+                        self.view.showToastMessage("작성이 완료되지 않았습니다.")
                     }
-                } else {
-                    self.view.showToastMessage("작성이 완료되지 않았습니다.")
-                }
             })
             .disposed(by: disposeBag)
         
@@ -238,7 +224,27 @@ extension DiaryConfigViewController: UICollectionViewDelegateFlowLayout {
 }
 
 extension DiaryConfigViewController {
-    // MARK: Child View Presentation Related Methods
+    // MARK: Parent & Child View Presentation Related Methods
+    
+    private func dismiss() {
+        if let parentNavigationController: UINavigationController = self.presentingViewController as? UINavigationController {
+            self.presentingViewController?.dismiss(animated: true) {
+                switch self.viewModel.configState {
+                case .create:
+                    self.viewModel.addDiary()
+                    NotificationCenter.default.post(name: .reloadDiary, object: nil)
+                    guard let diary = self.viewModel.diary else { return }
+                    let myDiaryPagesVC = MyDiaryPagesViewController(diaryData: diary)
+                    parentNavigationController.isNavigationBarHidden = false
+                    parentNavigationController.pushViewController(myDiaryPagesVC, animated: true)
+                    
+                case .modify:
+                    self.viewModel.updateDiary()
+                }
+            }
+        }
+    }
+    
     private func mapSearchViewPresent(cell: DiaryConfigCollectionViewCell, viewModel: DiaryConfigViewModel) -> DiaryConfigCollectionViewCell {
         cell.contentTap
             .subscribe(onNext: {
@@ -255,7 +261,7 @@ extension DiaryConfigViewController {
                         viewModel.location = location
                         
                         cell.contentButton.setTitle(locationName, for: .normal)
-                        cell.contentButton.tintColor = .black
+                        cell.contentButton.setTitleColor(.black, for: .normal)
                         cell.contentButton.layoutIfNeeded()
                     }
                 }
@@ -280,7 +286,7 @@ extension DiaryConfigViewController {
                         viewModel.startDate = startDate.customFormat()
                         viewModel.endDate = endDate.customFormat()
                         cell.contentButton.setTitle("\(startDate.customFormat()) (\(startDate.dayOfTheWeek())) - \(endDate.customFormat()) (\(endDate.dayOfTheWeek()))", for: .normal)
-                        cell.contentButton.tintColor = .black
+                        cell.contentButton.setTitleColor(.black, for: .normal)
                         cell.contentButton.layoutIfNeeded()
                     }
                 })
@@ -320,7 +326,8 @@ extension DiaryConfigViewController: UIImagePickerControllerDelegate, UINavigati
         }
 
         imagePicker.dismiss(animated: true, completion: {
-            self.viewModel.diaryImage.accept(selectImage ?? UIImage())
+            self.viewModel.diaryCoverImage.accept(selectImage ?? UIImage())
+            self.viewModel.coverImage = selectImage ?? UIImage()
         })
     }
 }

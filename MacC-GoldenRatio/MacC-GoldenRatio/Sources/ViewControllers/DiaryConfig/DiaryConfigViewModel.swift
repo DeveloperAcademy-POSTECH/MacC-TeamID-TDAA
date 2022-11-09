@@ -24,14 +24,14 @@ class DiaryConfigViewModel {
     // ViewModel -> View
     let cellData: Driver<[DiaryConfigCellViewModel]>
     let presentAlert: Signal<Void>
-    let complete: Signal<Void>
+    let complete: Driver<Void>
     let textfieldEndEdit: Signal<Void>
     
     // View -> ViewModel
     let doneButtonTapped = PublishRelay<Void>()
     let cancelButtonTapped = PublishRelay<Void>()
     var diaryTitle = PublishRelay<String?>()
-    let diaryImage = BehaviorRelay<UIImage>(value: UIImage(named: "selectImage") ?? UIImage())
+    let diaryCoverImage = ReplayRelay<UIImage>.create(bufferSize: 1)
     
     // TODO: Model 관련 프로퍼티 / 메소드 분리
     // Model Observer
@@ -50,11 +50,11 @@ class DiaryConfigViewModel {
     var myUID = Auth.auth().currentUser?.uid ?? ""
     
     var pageArray: [Page] = []
+    var coverImage: UIImage? = UIImage()
     var diary: Diary?
     let configState: ConfigState
     
     init(diary: Diary?) {
-        
         if let diary = diary {
             self.diary = diary
             self.diaryUUID = diary.diaryUUID
@@ -62,14 +62,16 @@ class DiaryConfigViewModel {
             self.startDate = diary.diaryStartDate
             self.endDate = diary.diaryEndDate
             self.diaryCover = diary.diaryCover
+            self.coverImageURL = diary.diaryCoverImage
             self.userUIDs = diary.userUIDs
             self.diaryPages = diary.diaryPages
             self.thumbnails = diary.pageThumbnails
             self.configState = .modify
         } else {
             self.configState = .create
+            self.diaryUUID = UUID().uuidString + String(Date().timeIntervalSince1970)
         }
-
+        
         let titleCell = Observable<DiaryConfigCellViewModel>.just(titleCellViewModel)
         let locationCell = Observable<DiaryConfigCellViewModel>.just(locationCellViewModel)
         let dateCell = Observable<DiaryConfigCellViewModel>.just(dateCellViewModel)
@@ -81,17 +83,25 @@ class DiaryConfigViewModel {
             self.cellData = Observable
                 .combineLatest(titleCell, locationCell, dateCell, colorCell, imageCell) { [$0, $1, $2, $3, $4] }
                 .asDriver(onErrorJustReturn: [])
-            
+            self.diaryCoverImage.accept((UIImage(named: "selectImage") ?? UIImage()))
         case .modify:
             self.cellData = Observable
                 .combineLatest(titleCell, locationCell, colorCell, imageCell) { [$0, $1, $2, $3] }
                 .asDriver(onErrorJustReturn: [])
+            if let coverImageURL = self.coverImageURL {
+                if let image = ImageManager.shared.searchImage(urlString: coverImageURL) {
+                    self.diaryCoverImage.accept(image)
+                } else {
+                    let diaryCoverImage = self.diaryCoverImage
+                    FirebaseStorageManager.downloadImage(urlString: coverImageURL) { image in
+                        diaryCoverImage.accept(image ?? (UIImage(named: "selectImage") ?? UIImage()))
+                    }
+                }
+            } else {
+                diaryCoverImage.accept((UIImage(named: "selectImage") ?? UIImage()))
+                print("diary Cover Image download Failed")
+            }
             
-//            colorCell.subscribe(onNext: { // TODO: 초깃값 설정
-//                var colorViewModel = $0.diaryColorViewModel
-//                let index = colorViewModel.colors.firstIndex(of: diary?.diaryCover ?? "diaryRed")
-//            })
-//            .disposed(by: disposeBag)
         }
         
         self.presentAlert = cancelButtonTapped
@@ -100,7 +110,7 @@ class DiaryConfigViewModel {
         
         self.complete = doneButtonTapped
             .map { _ in Void() }
-            .asSignal(onErrorSignalWith: .empty())
+            .asDriver(onErrorDriveWith: .empty())
         
         self.textfieldEndEdit = doneButtonTapped
             .map { _ in Void() }
@@ -130,14 +140,17 @@ class DiaryConfigViewModel {
             .disposed(by: disposeBag)
         
         colorCell
-            .subscribe { configCellVM in
-                configCellVM.diaryColorViewModel.itemSelected
+            .subscribe(onNext: {
+                let colorViewModel = $0.diaryColorViewModel
+                if let fisrtIndex = colorViewModel.colors.firstIndex(of: diary?.diaryCover ?? "") {
+                    colorViewModel.itemSelected.onNext(fisrtIndex)
+                }
+                colorViewModel.itemSelected
                     .subscribe(onNext: { index in
-                        let diaryCoverArray = self.diaryColorViewModel.colors
-                        self.diaryCover = "\(diaryCoverArray[index])"
+                        self.diaryCover = "\(self.diaryColorViewModel.colors[index])"
                     })
                     .disposed(by: self.disposeBag)
-            }
+            })
             .disposed(by: disposeBag)
         
         self.diaryTitle
@@ -156,8 +169,7 @@ class DiaryConfigViewModel {
     }
     
     func addDiary() {
-        diaryUUID = UUID().uuidString + String(Date().timeIntervalSince1970)
-        guard let diaryUUID = self.diaryUUID, let title = self.title, let location = self.location, let startDate = self.startDate, let endDate = endDate, let diaryCover = diaryCover else { return print("Upload Error") }
+        guard let diaryUUID = self.diaryUUID, let title = self.title, let location = self.location, let startDate = self.startDate, let endDate = endDate, let diaryCover = diaryCover else { return print("Check Data") }
         
         for _ in 1...getPageCount() {
             thumbnails.append("NoURL")
@@ -165,28 +177,24 @@ class DiaryConfigViewModel {
             let pages = [Page(pageUUID: pageUUID, items: [])]
             diaryPages.append(Pages(pages: pages))
         }
-
-        self.diary = Diary(diaryUUID: diaryUUID, diaryName: title, diaryLocation: location, diaryStartDate: startDate, diaryEndDate: endDate, diaryCover: diaryCover, userUIDs: [myUID], diaryPages: diaryPages, pageThumbnails: thumbnails)
+        
+        self.diary = Diary(diaryUUID: diaryUUID, diaryName: title, diaryLocation: location, diaryStartDate: startDate, diaryEndDate: endDate, diaryCover: diaryCover, diaryCoverImage: self.coverImageURL, userUIDs: [self.myUID], diaryPages: self.diaryPages, pageThumbnails: self.thumbnails)
         
         guard let diary = diary else { return }
-
+        
         firebaseClient.addDiary(diary: diary)
     }
     
     func updateDiary() {
-        if checkAvailable() {
-            setDiaryData()
-            guard let diary = diary else { return }
-            firebaseClient.addDiary(diary: diary)
-        } else {
-            print("ERROR: Diary Update Failed - Available False")
-        }
+        setDiaryData()
+        guard let diary = diary else { return }
+        firebaseClient.addDiary(diary: diary)
     }
     
     func setDiaryData() {
-        guard let diaryUUID = self.diaryUUID, let title = self.title, let location = self.location, let startDate = self.startDate, let endDate = self.endDate, let diaryCover = self.diaryCover, let UIDs = self.userUIDs else { return print("Upload Error") }
+        guard let diaryUUID = self.diaryUUID, let title = self.title, let location = self.location, let startDate = self.startDate, let endDate = self.endDate, let diaryCover = self.diaryCover, let UIDs = self.userUIDs else { return print("If in Modify: Diary Set Error") }
         
-        self.diary = Diary(diaryUUID: diaryUUID, diaryName: title, diaryLocation: location, diaryStartDate: startDate, diaryEndDate: endDate, diaryCover: diaryCover, userUIDs: UIDs, diaryPages: self.diaryPages, pageThumbnails: self.thumbnails)
+        self.diary = Diary(diaryUUID: diaryUUID, diaryName: title, diaryLocation: location, diaryStartDate: startDate, diaryEndDate: endDate, diaryCover: diaryCover, diaryCoverImage: self.coverImageURL, userUIDs: UIDs, diaryPages: self.diaryPages, pageThumbnails: self.thumbnails)
     }
     
     func checkAvailable() -> Bool {
@@ -213,6 +221,33 @@ class DiaryConfigViewModel {
         }
         
         return count
+    }
+    
+    func uploadImage(_ completion: @escaping () -> Void) {
+        if let coverImage = self.coverImage {
+            FirebaseStorageManager.uploadImage(image: coverImage, pathRoot: "Diary/" + self.diaryUUID! + "/diaryCoverImage") { url in
+                guard let url = url else { return }
+                self.coverImageURL = url.absoluteString
+                ImageManager.shared.cacheImage(urlString: url.absoluteString, image: coverImage)
+                completion()
+            }
+        } else {
+            self.coverImageURL = nil
+            print("ERROR: No Diary to uplaod image")
+            completion()
+        }
+    }
+    
+    func downLoadImage(urlString: String) {
+        guard let image = ImageManager.shared.searchImage(urlString: urlString) else {
+            FirebaseStorageManager.downloadImage(urlString: urlString) { image in
+                self.diaryCoverImage.accept(image ?? (UIImage(named: "selectImage") ?? UIImage()))
+                self.coverImage = image
+            }
+            return
+        }
+        self.diaryCoverImage.accept(image)
+        self.coverImage = image
     }
 }
 

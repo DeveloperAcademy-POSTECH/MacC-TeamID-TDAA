@@ -17,7 +17,7 @@ struct DiaryColorCollectionViewModel {
     var cellData: Observable<[Bool]>
     
     // View -> ViewModel
-    var itemSelected = PublishSubject<Int>()
+    var itemSelected = ReplaySubject<Int>.create(bufferSize: 1)
     
     init() {
         itemSelected
@@ -29,7 +29,6 @@ struct DiaryColorCollectionViewModel {
         
         cellData = itemSelected
             .map { index in
-                print(index)
                 var states = [Bool](repeating: false, count: 10)
                 states[index] = true
                 return states

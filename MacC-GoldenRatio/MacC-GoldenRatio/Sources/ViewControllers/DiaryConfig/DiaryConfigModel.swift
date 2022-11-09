@@ -36,15 +36,15 @@ enum ConfigContentType: CaseIterable {
     var title: String {
         switch self {
         case .diaryName:
-            return "다이어리 이름"
+            return "다이어리 이름 *"
         case .location:
-            return "여행지"
+            return "여행지 *"
         case .diaryDate:
-            return "날짜"
+            return "날짜 *"
         case .diaryColor:
-            return "다이어리 표지 색상 (*필수)"
+            return "다이어리 표지 색상 *"
         case .diaryImage:
-            return "대표 이미지 (선택)"
+            return "대표 이미지"
         }
     }
 }

@@ -162,9 +162,13 @@ class MyDiaryPagesViewController: UIViewController {
     
     @objc func modifyButtonTapped() {
         let vc = DiaryConfigViewController()
-        vc.bind(DiaryConfigViewModel(diary: self.viewModel.diaryData))
-        vc.modalPresentationStyle = .fullScreen
-        self.present(vc, animated: true, completion: nil)
+        viewModel.diaryDataSetup {
+            DispatchQueue.main.async {
+                vc.bind(DiaryConfigViewModel(diary: self.viewModel.diaryData))
+                vc.modalPresentationStyle = .fullScreen
+                self.present(vc, animated: true, completion: nil)
+            }
+        }
     }
     
     @objc func outButtonTapped() {

@@ -111,7 +111,9 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
     
     
     func contentAttribute(_ contentType: ConfigContentType, diary: Diary?) {
-        contentTitle.text = contentType.title
+        let attributedString = NSMutableAttributedString(string: contentType.title)
+        attributedString.setColor(color: UIColor.requiredItemsColor, forText: "*")
+        contentTitle.attributedText = attributedString
         
         var diaryName: String?
         var locationName: String
@@ -124,13 +126,11 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
             diaryName = diary.diaryName
             locationName = diary.diaryLocation.locationName
             dateText = "\(startDate.customFormat()) (\(startDate.dayOfTheWeek())) - \(endDate.customFormat()) (\(endDate.dayOfTheWeek()))"
-            // selectedImage = UIImage(named: "fireSticker")?.withCornerRadius(20) ?? UIImage()
         } else {
             contentButton.setTitleColor(.placeholderText, for: .normal)
             diaryName = nil
             locationName = "여행지를 입력해주세요."
             dateText = "여행한 날짜를 선택해주세요."
-            // selectedImage = UIImage(named: "selectImage")?.withCornerRadius(20) ?? UIImage()
         }
         
         switch contentType {

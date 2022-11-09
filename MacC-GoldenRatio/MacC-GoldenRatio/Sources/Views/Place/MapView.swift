@@ -12,7 +12,7 @@ import UIKit
 
 class MapView: UIView, MKMapViewDelegate, CLLocationManagerDelegate {
 	private let disposeBag = DisposeBag()
-	let map = MKMapView()
+	private let map = MKMapView()
 	private let myDevice = UIScreen.getDevice()
 	private let locationManager = CLLocationManager()
 	
@@ -84,13 +84,7 @@ class MapView: UIView, MKMapViewDelegate, CLLocationManagerDelegate {
 			$0.center.equalToSuperview()
 		}
 		
-		let stampName = UIImage(named: "\(annotation.iconImage)") ?? UIImage()
-		let size = myDevice.annotationSize
-		UIGraphicsBeginImageContext(size)
-		
-		stampName.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
-		let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
-		annotationView?.image = resizedImage
+		annotationView?.image = UIImage(named: "\(annotation.iconImage)") ?? UIImage()
 		
 		return annotationView
 	}

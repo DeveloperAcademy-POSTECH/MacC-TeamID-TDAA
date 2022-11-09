@@ -12,8 +12,7 @@ class CustomAnnotationView: MKAnnotationView {
 	
 	override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
 		super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
-		frame = CGRect(x: 0, y: 0, width: 40, height: 90)
-		centerOffset = CGPoint(x: 0, y: -frame.size.height / 2)
+		frame = CGRect(x: 0, y: 0, width: 20, height: 20)
 		setupUI()
 	}
 	

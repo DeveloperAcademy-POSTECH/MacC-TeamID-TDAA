@@ -10,7 +10,7 @@ import RxSwift
 import SnapKit
 import UIKit
 
-final class MyHomeViewController: UIViewController, UICollectionViewDelegateFlowLayout {
+final class MyHomeViewController: UIViewController, UICollectionViewDelegateFlowLayout, UISheetPresentationControllerDelegate {
 	private let disposeBag = DisposeBag()
 	private let viewModel = MyHomeViewModel()
 	private let myDevice = UIScreen.getDevice()
@@ -31,14 +31,6 @@ final class MyHomeViewController: UIViewController, UICollectionViewDelegateFlow
 		setupSubViews()
 		bind()
 		setupNotification()
-		
-//		UIFont.familyNames.sorted().forEach { familyName in
-//			print("*** \(familyName) ***")
-//			UIFont.fontNames(forFamilyName: familyName).forEach { fontName in
-//				print("\(fontName)")
-//			}
-//			print("---------------------")
-//		}
 	}
 	
 	required init?(coder: NSCoder) {
@@ -85,7 +77,7 @@ final class MyHomeViewController: UIViewController, UICollectionViewDelegateFlow
 			.bind {
 				let vc = MyPlaceViewController()
 				vc.bind(self.viewModel.mapViewModel)
-				self.present(vc, animated: false)
+				self.navigationController?.pushViewController(vc, animated: true)
 			}
 			.disposed(by: disposeBag)
 	}
@@ -93,6 +85,11 @@ final class MyHomeViewController: UIViewController, UICollectionViewDelegateFlow
 	private func setupNotification() {
 		NotificationCenter.default.addObserver(self, selector: #selector(reloadDiaryCell), name: .reloadDiary, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(changeAddButtonImage), name: .changeAddButtonImage, object: nil)
+		if #available(iOS 15.0, *) {
+			NotificationCenter.default.addObserver(self, selector: #selector(mapAnnotationTapped(notification:)), name: .mapAnnotationTapped, object: nil)
+		} else {
+			print("iOS 14")
+		}
 	}
 	
 	private func isIndicator() {
@@ -109,6 +106,30 @@ final class MyHomeViewController: UIViewController, UICollectionViewDelegateFlow
 	
 	@objc private func changeAddButtonImage() {
 		addDiaryButton.setImage(UIImage(named: "plusButton"), for: .normal)
+	}
+	
+	@available(iOS 15.0, *)
+	@objc private func mapAnnotationTapped(notification: NSNotification) {
+		guard let day = notification.userInfo?["day"] as? Int else {
+			return
+		}
+		
+		guard let location = notification.userInfo?["location"] as? Location else {
+			return
+		}
+		
+		let vc = MapListViewController()
+		vc.bind(viewModel.mapViewModel, day, location)
+		vc.view.backgroundColor = .white
+		vc.modalPresentationStyle = .pageSheet
+		
+		if let sheet = vc.sheetPresentationController {
+			sheet.detents = [.medium(), .large()]
+			sheet.delegate = self
+			sheet.prefersGrabberVisible = true
+		}
+		
+		self.present(vc, animated: true)
 	}
 	
 	@objc func createButtonTapped() {
@@ -142,5 +163,12 @@ final class MyHomeViewController: UIViewController, UICollectionViewDelegateFlow
 		joinDiaryAlert.addAction(joinAction)
 		joinDiaryAlert.addAction(cancelAction)
 		self.present(joinDiaryAlert, animated: true)
+	}
+}
+
+extension ViewController: UISheetPresentationControllerDelegate {
+	@available(iOS 15.0, *)
+	func sheetPresentationControllerDidChangeSelectedDetentIdentifier(_ sheetPresentationController: UISheetPresentationController) {
+		print(sheetPresentationController.selectedDetentIdentifier == .large ? "large" : "medium")
 	}
 }

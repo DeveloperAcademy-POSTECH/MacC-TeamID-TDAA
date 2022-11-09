@@ -194,12 +194,6 @@ extension UIScreen {
             }
         }
         
-        var annotationCountFont: UIFont {
-            switch self {
-            default: return UIFont.systemFont(ofSize: 10)
-            }
-        }
-        
         // MARK: Album
         var myAlbumPhotoPageLabelFont: UIFont {
             switch self {

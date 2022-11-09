@@ -76,7 +76,7 @@ class MapView: UIView, MKMapViewDelegate, CLLocationManagerDelegate {
 		
 		let countLabel = UILabel()
 		countLabel.text = "\(annotation.day)"
-		countLabel.font = myDevice.annotationCountFont
+		countLabel.font = UIFont.mapLabelFont
 		countLabel.textColor = UIColor.darkgrayColor
 		countLabel.textAlignment = .center
 		
@@ -89,5 +89,12 @@ class MapView: UIView, MKMapViewDelegate, CLLocationManagerDelegate {
 		annotationView?.image = UIImage(named: "\(annotation.iconImage)") ?? UIImage()
 		
 		return annotationView
+	}
+	
+	func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+		guard let view = view.annotation as? CustomAnnotation else {
+			return
+		}
+		NotificationCenter.default.post(name: .mapAnnotationTapped, object: nil, userInfo: ["day": view.day, "location": Location(locationName: view.title ?? "", locationAddress: view.address, locationCoordinate: [view.coordinate.latitude, view.coordinate.longitude])])
 	}
 }

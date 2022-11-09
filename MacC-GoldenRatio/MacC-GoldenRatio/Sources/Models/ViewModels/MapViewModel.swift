@@ -43,6 +43,13 @@ struct MapViewModel {
 			resultData.append(MapData(day: index+1, diaryLocation: diary.diaryLocation, locations: locations))
 			locations.removeAll()
 		}
+		print(resultData)
 		return resultData
+	}
+	
+	func convertMapDatasToLocations(_ mapDatas: [MapData], day: Int) -> MapData {
+		return mapDatas
+			.filter { $0.day == day }
+			.first ?? MapData(day: 0, diaryLocation: Location(locationName: "", locationAddress: "", locationCoordinate: []), locations: [])
 	}
 }

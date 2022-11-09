@@ -35,6 +35,8 @@ class MapView: UIView, MKMapViewDelegate, CLLocationManagerDelegate {
 		viewModel.mapData
 			.value
 			.forEach { data in
+				let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: data.diaryLocation.locationCoordinate[0], longitude: data.diaryLocation.locationCoordinate[1]), latitudinalMeters: CLLocationDistance(exactly: 15000) ?? 0, longitudinalMeters: CLLocationDistance(exactly: 15000) ?? 0)
+				self.map.setRegion(self.map.regionThatFits(region), animated: true)
 				data.locations.forEach { location in
 					if data.day <= 10 {
 						let pin = CustomAnnotation(coordinate: CLLocationCoordinate2D(latitude: location.locationCoordinate[0], longitude: location.locationCoordinate[1]), title: location.locationName, address: location.locationAddress, day: data.day, iconImage: "pin\(data.day)")

@@ -40,7 +40,7 @@ struct MapViewModel {
 					}
 				}
 			}
-			resultData.append(MapData(day: index+1, locations: locations))
+			resultData.append(MapData(day: index+1, diaryLocation: diary.diaryLocation, locations: locations))
 			locations.removeAll()
 		}
 		return resultData

@@ -211,10 +211,10 @@ class PageViewController: UIViewController {
         self.navigationItem.setLeftBarButton(leftBarButtonItem, animated: false)
         self.navigationItem.setRightBarButton(rightBarButtonItem, animated: false)
         
-        self.pageViewModel.selectedDayIndex
+        self.pageViewModel.selectedPageIndex
             .subscribe(on: MainScheduler.instance)
             .map{
-                ($0 + 1).description + "일차"
+                ($0.0 + 1).description + "일차"
             }
             .bind(to: self.navigationItem.rx.title)
             .disposed(by: self.pageViewModel.disposeBag)

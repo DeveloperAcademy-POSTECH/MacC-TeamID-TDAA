@@ -13,6 +13,8 @@ import SnapKit
 class PageViewModeViewController: UIViewController {
     
     private var pageViewModel: PageViewModel!
+    
+    private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
 
     private lazy var pageCollectionView: UICollectionView = {
         let collectionViewFlowLayout = UICollectionViewFlowLayout()
@@ -24,6 +26,14 @@ class PageViewModeViewController: UIViewController {
         collectionView.delegate = self
 
         return collectionView
+    }()
+    
+    private lazy var pageDescriptionLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .black
+        label.font = .navigationTitleFont
+        
+        return label
     }()
     
     // MARK: init
@@ -42,6 +52,7 @@ class PageViewModeViewController: UIViewController {
         self.view.backgroundColor = .white
 
         self.configureSubView()
+        self.setPageDescription()
         self.configureNavigationBar()
         self.configurePageCollectionView()
     }
@@ -59,11 +70,24 @@ class PageViewModeViewController: UIViewController {
     }
     
     private func configureSubView() {
-        self.view.addSubview(self.pageCollectionView)
+        [self.pageCollectionView, self.pageDescriptionLabel].forEach {
+            self.view.addSubview($0)
+        }
         
         self.pageCollectionView.snp.makeConstraints { make in
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
+        
+        self.pageDescriptionLabel.snp.makeConstraints { make in
+            make.trailing.top.equalTo(view.safeAreaLayoutGuide).inset(self.myDevice.pagePadding)
+        }
+    }
+    
+    private func setPageDescription() {
+        self.pageViewModel.pageIndexDescriptionObservable
+            .observe(on: MainScheduler.instance)
+            .bind(to: self.pageDescriptionLabel.rx.text)
+            .disposed(by: self.pageViewModel.disposeBag)
     }
     
     private func configureNavigationBar() {
@@ -79,15 +103,15 @@ class PageViewModeViewController: UIViewController {
         self.navigationController?.navigationBar.barTintColor = .white
         self.navigationController?.navigationBar.layer.addBorder([.bottom], color: .lightGray, width: 1)
         
-        self.pageViewModel.selectedDayIndex
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.navigationTitleFont, NSAttributedString.Key.foregroundColor:UIColor.black]
+        
+        self.pageViewModel.selectedPageIndex
             .subscribe(on: MainScheduler.instance)
             .map{
-                ($0 + 1).description + "일차"
+                ($0.0 + 1).description + "일차"
             }
             .bind(to: self.navigationItem.rx.title)
             .disposed(by: self.pageViewModel.disposeBag)
-        
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.navigationTitleFont, NSAttributedString.Key.foregroundColor:UIColor.black]
     }
     
     private func configurePageCollectionView() {
@@ -112,7 +136,6 @@ class PageViewModeViewController: UIViewController {
                 }
             }
             .disposed(by: self.pageViewModel.disposeBag)
-        
     }
     
     @objc private func onTapNavigationBack() {
@@ -148,6 +171,20 @@ extension PageViewModeViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        
+        guard let visibleCellIndex = collectionView.indexPathsForVisibleItems.first?.item else { return }
+        self.pageViewModel.collectionViewIndexPathHasChanged(targetIndexPath: visibleCellIndex)
+  
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        
+        guard let visibleCellIndex = collectionView.indexPathsForVisibleItems.first?.item else { return }
+        self.pageViewModel.collectionViewIndexPathHasChanged(targetIndexPath: visibleCellIndex)
+
     }
     
 }

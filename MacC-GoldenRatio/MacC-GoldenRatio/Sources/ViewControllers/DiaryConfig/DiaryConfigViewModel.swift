@@ -31,6 +31,7 @@ class DiaryConfigViewModel {
     let doneButtonTapped = PublishRelay<Void>()
     let cancelButtonTapped = PublishRelay<Void>()
     var diaryTitle = PublishRelay<String?>()
+    let diaryImage = BehaviorRelay<UIImage>(value: UIImage(named: "selectImage") ?? UIImage())
     
     // TODO: Model 관련 프로퍼티 / 메소드 분리
     // Model Observer
@@ -44,6 +45,7 @@ class DiaryConfigViewModel {
     var diaryCover: String?
     var userUIDs: [String]?
     var diaryPages: [Pages] = []
+    var coverImageURL: String?
     var thumbnails: [String] = []
     var myUID = Auth.auth().currentUser?.uid ?? ""
     
@@ -138,7 +140,6 @@ class DiaryConfigViewModel {
             }
             .disposed(by: disposeBag)
         
-        
         self.diaryTitle
             .startWith(diary?.diaryName)
             .subscribe(onNext: {
@@ -149,7 +150,7 @@ class DiaryConfigViewModel {
             })
             .disposed(by: disposeBag)
         
-        [titleCellViewModel, locationCellViewModel, dateCellViewModel, colorCellViewModel].forEach { viewModel in
+        [titleCellViewModel, locationCellViewModel, dateCellViewModel, colorCellViewModel, imageCellViewModel].forEach { viewModel in
             viewModel.diary = self.diary
         }
     }

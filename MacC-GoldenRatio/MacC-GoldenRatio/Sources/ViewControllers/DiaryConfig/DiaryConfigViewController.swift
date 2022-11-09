@@ -66,6 +66,7 @@ class DiaryConfigViewController: UIViewController {
         return button
     }()
     
+    
     // MARK: - bind, setup, layout methods
     func bind(_ viewModel: DiaryConfigViewModel) {
         self.viewModel = viewModel
@@ -97,9 +98,13 @@ class DiaryConfigViewController: UIViewController {
                     cell.bind(data)
                     return cell
                     
-                case .diaryImage:
+                case .diaryImage: // 표지 이미지
                     var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DiaryConfigImageCell", for: IndexPath(row: row, section: 0)) as! DiaryConfigCollectionViewCell
                     cell = self.imagePickerPresent(cell: cell, viewModel: viewModel)
+                    viewModel.diaryImage
+                        .map{ $0.withCornerRadius(20) }
+                        .subscribe(onNext: { cell.contentButton.setImage($0?.withCornerRadius(20), for: .normal) })
+                        .disposed(by: self.disposeBag)
                     cell.bind(data)
                     return cell
                 }
@@ -274,8 +279,7 @@ extension DiaryConfigViewController {
                         self.dateInterval = [startDate, endDate]
                         viewModel.startDate = startDate.customFormat()
                         viewModel.endDate = endDate.customFormat()
-                        
-                        cell.contentButton.setTitle("\(startDate.customFormat()) \(startDate.dayOfTheWeek()) - \(endDate.customFormat()) \(endDate.dayOfTheWeek())", for: .normal)
+                        cell.contentButton.setTitle("\(startDate.customFormat()) (\(startDate.dayOfTheWeek())) - \(endDate.customFormat()) (\(endDate.dayOfTheWeek()))", for: .normal)
                         cell.contentButton.tintColor = .black
                         cell.contentButton.layoutIfNeeded()
                     }
@@ -297,7 +301,6 @@ extension DiaryConfigViewController {
                 self.imagePicker.delegate = self
                 self.imagePicker.modalPresentationStyle = .currentContext
                 self.present(self.imagePicker, animated: true)
-                
             })
             .disposed(by: self.disposeBag)
         
@@ -308,17 +311,16 @@ extension DiaryConfigViewController {
 // MARK: ImagePikcerDelegate
 extension DiaryConfigViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        var selectedImage: UIImage? = nil
+        var selectImage = UIImage(named: "selectImage")
         
         if let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
-            selectedImage = image
+            selectImage = image
         } else if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-            selectedImage = image
+            selectImage = image
         }
-        
-        // TODO: 이미지 ViewModel 전달
+
         imagePicker.dismiss(animated: true, completion: {
-            print("이미지 전달")
+            self.viewModel.diaryImage.accept(selectImage ?? UIImage())
         })
     }
 }

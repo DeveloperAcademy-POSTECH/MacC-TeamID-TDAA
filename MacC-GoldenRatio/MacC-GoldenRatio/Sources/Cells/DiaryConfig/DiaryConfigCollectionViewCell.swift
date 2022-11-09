@@ -42,7 +42,7 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
     }()
     
     lazy var contentButton: UIButton = {
-        let button = UIButton(type: .system)
+        let button = UIButton(type: .custom)
         button.titleLabel?.font = device.diaryConfigCellContentFont
         button.contentHorizontalAlignment = .left
         return button
@@ -116,21 +116,21 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
         var diaryName: String?
         var locationName: String
         var dateText: String
-        
         if let diary = diary {
             let startDate = diary.diaryStartDate.toDate() ?? Date()
             let endDate = diary.diaryEndDate.toDate() ?? Date()
-            contentButton.tintColor = .black
+            contentButton.setTitleColor(.black, for: .normal)
             
             diaryName = diary.diaryName
             locationName = diary.diaryLocation.locationName
             dateText = "\(startDate.customFormat()) (\(startDate.dayOfTheWeek())) - \(endDate.customFormat()) (\(endDate.dayOfTheWeek()))"
-            
+            // selectedImage = UIImage(named: "fireSticker")?.withCornerRadius(20) ?? UIImage()
         } else {
-            contentButton.tintColor = .placeholderText
+            contentButton.setTitleColor(.placeholderText, for: .normal)
             diaryName = nil
             locationName = "여행지를 입력해주세요."
             dateText = "여행한 날짜를 선택해주세요."
+            // selectedImage = UIImage(named: "selectImage")?.withCornerRadius(20) ?? UIImage()
         }
         
         switch contentType {
@@ -180,7 +180,7 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
         case .diaryImage:
             clearButton.isHidden = true
             dividerView.isHidden = true
-            contentButton.backgroundColor = UIColor(red: 0.742, green: 0.742, blue: 0.742, alpha: 0.25)
+            contentButton.backgroundColor = .clear
             contentButton.layer.cornerRadius = 20
             contentView.addSubview(contentButton)
             contentButton.snp.makeConstraints{

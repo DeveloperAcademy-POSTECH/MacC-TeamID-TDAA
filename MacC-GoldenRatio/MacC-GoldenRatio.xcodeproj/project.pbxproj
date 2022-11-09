@@ -39,6 +39,7 @@
 		B93EC22928F7BC8000BB89C5 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93EC22828F7BC8000BB89C5 /* String+.swift */; };
 		B98A41DE291AEBF300B8C674 /* UIImagePickerController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B98A41DD291AEBF300B8C674 /* UIImagePickerController+.swift */; };
 		CC0F434428F71E62003060D5 /* DiaryConfigViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0F434328F71E62003060D5 /* DiaryConfigViewModel.swift */; };
+		CC242EBC291B8378002AB747 /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC242EBB291B8378002AB747 /* UIImage+.swift */; };
 		CC341406291930F800A1FD17 /* DiaryColorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC341405291930F800A1FD17 /* DiaryColorCell.swift */; };
 		CC3414082919310700A1FD17 /* DiaryColorCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3414072919310700A1FD17 /* DiaryColorCellViewModel.swift */; };
 		CC34140A29193C0A00A1FD17 /* DiaryColorCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC34140929193C0A00A1FD17 /* DiaryColorCollectionView.swift */; };
@@ -180,6 +181,7 @@
 		B93EC22828F7BC8000BB89C5 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		B98A41DD291AEBF300B8C674 /* UIImagePickerController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImagePickerController+.swift"; sourceTree = "<group>"; };
 		CC0F434328F71E62003060D5 /* DiaryConfigViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryConfigViewModel.swift; sourceTree = "<group>"; };
+		CC242EBB291B8378002AB747 /* UIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
 		CC341405291930F800A1FD17 /* DiaryColorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryColorCell.swift; sourceTree = "<group>"; };
 		CC3414072919310700A1FD17 /* DiaryColorCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryColorCellViewModel.swift; sourceTree = "<group>"; };
 		CC34140929193C0A00A1FD17 /* DiaryColorCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryColorCollectionView.swift; sourceTree = "<group>"; };
@@ -508,6 +510,7 @@
 				0A5235B128F854C200AC77AC /* UIColor+.swift */,
 				E2ED4871290ABE46002FEC2B /* Notification+.swift */,
 				B98A41DD291AEBF300B8C674 /* UIImagePickerController+.swift */,
+				CC242EBB291B8378002AB747 /* UIImage+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -875,6 +878,7 @@
 				CC34140A29193C0A00A1FD17 /* DiaryColorCollectionView.swift in Sources */,
 				CC40BC1628EEADEB00DF48E1 /* CalendarPickerFooterView.swift in Sources */,
 				CC65515828F544ED00E637A2 /* PopUpViewController.swift in Sources */,
+				CC242EBC291B8378002AB747 /* UIImage+.swift in Sources */,
 				E2C2750B290D950400319885 /* DiaryCollectionView.swift in Sources */,
 				E2B025C728EC163500B73891 /* FirestoreClient.swift in Sources */,
 			);

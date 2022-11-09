@@ -249,5 +249,10 @@ class DiaryConfigViewModel {
         self.diaryCoverImage.accept(image)
         self.coverImage = image
     }
+    
+    func resetCoverImage() {
+        self.diaryCoverImage.accept((UIImage(named: "selectImage") ?? UIImage()))
+        self.coverImage = nil
+    }
 }
 

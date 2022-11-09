@@ -99,7 +99,7 @@ class DiaryConfigViewController: UIViewController {
                     
                 case .diaryImage: // 표지 이미지
                     var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DiaryConfigImageCell", for: IndexPath(row: row, section: 0)) as! DiaryConfigCollectionViewCell
-                    cell = self.imagePickerPresent(cell: cell, viewModel: viewModel)
+                    cell = self.modalPresent(cell: cell, viewModel: viewModel)
                     viewModel.diaryCoverImage
                         .subscribe(onNext: {
                             viewModel.coverImage = $0
@@ -115,7 +115,7 @@ class DiaryConfigViewController: UIViewController {
         
         viewModel.presentAlert
             .emit(onNext: { _ in
-                let alertController = UIAlertController(title: nil, message: "변경사항은 저장되지 않습니다. 정말 취소하시겠습니까?", preferredStyle: .alert)
+                let alertController = UIAlertController(title: nil, message: viewModel.configState.alertMessage, preferredStyle: .alert)
                 alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: { [weak self] _ in
                     self?.dismiss(animated: true, completion: nil)
                 }))
@@ -124,15 +124,17 @@ class DiaryConfigViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        
+        
         viewModel.complete
             .drive(onNext: {
-                    if viewModel.checkAvailable() {
-                        viewModel.uploadImage() {
-                            self.dismiss()
-                        }
-                    } else {
-                        self.view.showToastMessage("작성이 완료되지 않았습니다.")
+                if viewModel.checkAvailable() {
+                    viewModel.uploadImage() {
+                        self.dismiss()
                     }
+                } else {
+                    self.view.showToastMessage("작성이 완료되지 않았습니다.")
+                }
             })
             .disposed(by: disposeBag)
         
@@ -247,7 +249,8 @@ extension DiaryConfigViewController {
     
     private func mapSearchViewPresent(cell: DiaryConfigCollectionViewCell, viewModel: DiaryConfigViewModel) -> DiaryConfigCollectionViewCell {
         cell.contentTap
-            .subscribe(onNext: {
+            .asDriver(onErrorJustReturn: Void())
+            .drive(onNext: {
                 self.view.endEditing(true)
                 
                 let mapSearchViewController = MapSearchViewController()
@@ -274,7 +277,8 @@ extension DiaryConfigViewController {
     
     private func calendarViewPresent(cell: DiaryConfigCollectionViewCell, viewModel: DiaryConfigViewModel) -> DiaryConfigCollectionViewCell {
         cell.contentTap
-            .subscribe(onNext: {
+            .asDriver(onErrorJustReturn: Void())
+            .drive(onNext: {
                 self.view.endEditing(true)
                 
                 let pickerController = CalendarPickerViewController(dateArray: self.dateInterval, selectedDateChanged: { date in
@@ -298,19 +302,34 @@ extension DiaryConfigViewController {
         return cell
     }
     
-    private func imagePickerPresent(cell: DiaryConfigCollectionViewCell, viewModel: DiaryConfigViewModel) -> DiaryConfigCollectionViewCell {
+    private func modalPresent(cell: DiaryConfigCollectionViewCell, viewModel: DiaryConfigViewModel) -> DiaryConfigCollectionViewCell {
+        
         cell.contentTap
-            .subscribe(onNext: {
-                self.view.endEditing(true)
-                self.imagePicker.sourceType = .photoLibrary
-                self.imagePicker.allowsEditing = true
-                self.imagePicker.delegate = self
-                self.imagePicker.modalPresentationStyle = .currentContext
-                self.present(self.imagePicker, animated: true)
+            .asDriver(onErrorJustReturn: Void())
+            .drive(onNext: {
+                let alertController = UIAlertController(title: "대표 이미지 설정", message: nil, preferredStyle: .actionSheet)
+
+                alertController.addAction(UIAlertAction(title: "앨범에서 사진 선택", style: .default, handler: { [weak self] _ in
+                    self?.view.endEditing(true)
+                    self?.presentImagePicker()
+                }))
+                alertController.addAction(UIAlertAction(title: "기본 이미지로 변경", style: .default, handler: { [weak self] _ in
+                    self?.viewModel.resetCoverImage()
+                }))
+                alertController.addAction(UIAlertAction(title: "취소", style: .cancel))
+                self.present(alertController, animated: true)
             })
             .disposed(by: self.disposeBag)
         
         return cell
+    }
+    
+    private func presentImagePicker() {
+        self.imagePicker.sourceType = .photoLibrary
+        self.imagePicker.allowsEditing = true
+        self.imagePicker.delegate = self
+        self.imagePicker.modalPresentationStyle = .currentContext
+        self.present(self.imagePicker, animated: true)
     }
 }
 
@@ -324,7 +343,7 @@ extension DiaryConfigViewController: UIImagePickerControllerDelegate, UINavigati
         } else if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             selectImage = image
         }
-
+        
         imagePicker.dismiss(animated: true, completion: {
             self.viewModel.diaryCoverImage.accept(selectImage ?? UIImage())
             self.viewModel.coverImage = selectImage ?? UIImage()

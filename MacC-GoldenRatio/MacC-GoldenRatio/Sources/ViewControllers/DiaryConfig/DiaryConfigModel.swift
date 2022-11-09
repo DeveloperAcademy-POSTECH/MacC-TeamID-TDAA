@@ -24,6 +24,15 @@ enum ConfigState {
             return "수정"
         }
     }
+    
+    var alertMessage: String {
+        switch self {
+        case .create:
+            return "다이어리 추가를 취소하시겠습니까?"
+        case .modify:
+            return "변경사항은 저장되지 않습니다. 정말 취소하시겠습니까?"
+        }
+    }
 }
 
 enum ConfigContentType: CaseIterable {

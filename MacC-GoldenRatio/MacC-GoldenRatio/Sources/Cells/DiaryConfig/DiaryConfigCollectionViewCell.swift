@@ -48,9 +48,9 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
         return button
     }()
     
-    var contentTap : Observable<Void>{
+    lazy var contentTap : Observable<Void> = {
         return self.contentButton.rx.tap.asObservable()
-    }
+    }()
     
     lazy var clearButton: UIButton = {
         let button = UIButton()

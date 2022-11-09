@@ -10,7 +10,7 @@ import RxSwift
 import SnapKit
 import UIKit
 
-final class MyHomeViewController: UIViewController, UICollectionViewDelegateFlowLayout, UISheetPresentationControllerDelegate {
+final class MyHomeViewController: UIViewController {
 	private let disposeBag = DisposeBag()
 	private let viewModel = MyHomeViewModel()
 	private let myDevice = UIScreen.getDevice()
@@ -85,11 +85,7 @@ final class MyHomeViewController: UIViewController, UICollectionViewDelegateFlow
 	private func setupNotification() {
 		NotificationCenter.default.addObserver(self, selector: #selector(reloadDiaryCell), name: .reloadDiary, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(changeAddButtonImage), name: .changeAddButtonImage, object: nil)
-		if #available(iOS 15.0, *) {
-			NotificationCenter.default.addObserver(self, selector: #selector(mapAnnotationTapped(notification:)), name: .mapAnnotationTapped, object: nil)
-		} else {
-			print("iOS 14")
-		}
+		NotificationCenter.default.addObserver(self, selector: #selector(mapListHalfModal(notification:)), name: .mapAnnotationTapped, object: nil)
 	}
 	
 	private func isIndicator() {
@@ -107,9 +103,8 @@ final class MyHomeViewController: UIViewController, UICollectionViewDelegateFlow
 	@objc private func changeAddButtonImage() {
 		addDiaryButton.setImage(UIImage(named: "plusButton"), for: .normal)
 	}
-	
-	@available(iOS 15.0, *)
-	@objc private func mapAnnotationTapped(notification: NSNotification) {
+
+	@objc private func mapListHalfModal(notification: NSNotification) {
 		guard let day = notification.userInfo?["day"] as? Int else {
 			return
 		}
@@ -120,14 +115,19 @@ final class MyHomeViewController: UIViewController, UICollectionViewDelegateFlow
 		
 		let vc = MapListViewController()
 		vc.bind(viewModel.mapViewModel, day, location)
-		vc.view.backgroundColor = .white
-		vc.modalPresentationStyle = .pageSheet
 		
-		if let sheet = vc.sheetPresentationController {
-			sheet.detents = [.medium(), .large()]
-			sheet.delegate = self
-			sheet.prefersGrabberVisible = true
+		if #available(iOS 15.0, *) {
+			vc.modalPresentationStyle = .pageSheet
+			if let sheet = vc.sheetPresentationController {
+				sheet.detents = [.medium(), .large()]
+				sheet.delegate = self
+				sheet.prefersGrabberVisible = true
+			}
+		} else {
+			vc.modalPresentationStyle = .custom
+			vc.transitioningDelegate = self
 		}
+		vc.view.backgroundColor = .white
 		
 		self.present(vc, animated: true)
 	}
@@ -166,9 +166,15 @@ final class MyHomeViewController: UIViewController, UICollectionViewDelegateFlow
 	}
 }
 
-extension ViewController: UISheetPresentationControllerDelegate {
+extension MyHomeViewController: UISheetPresentationControllerDelegate {
 	@available(iOS 15.0, *)
 	func sheetPresentationControllerDidChangeSelectedDetentIdentifier(_ sheetPresentationController: UISheetPresentationController) {
 		print(sheetPresentationController.selectedDetentIdentifier == .large ? "large" : "medium")
+	}
+}
+
+extension MyHomeViewController: UIViewControllerTransitioningDelegate {
+	func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+		MapHalfModalPresentationController(presentedViewController: presented, presenting: presenting)
 	}
 }

@@ -82,6 +82,7 @@
 		E294D2B8291B94FA00EC69EF /* MapListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E294D2B7291B94FA00EC69EF /* MapListViewController.swift */; };
 		E294D2BA291B955100EC69EF /* MapListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E294D2B9291B955100EC69EF /* MapListView.swift */; };
 		E294D2BD291B95A700EC69EF /* MapListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E294D2BC291B95A700EC69EF /* MapListCell.swift */; };
+		E294D2BF291C307400EC69EF /* MapHalfModalPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E294D2BE291C307400EC69EF /* MapHalfModalPresentationController.swift */; };
 		E2B025BC28EB326C00B73891 /* MyHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B025BB28EB326C00B73891 /* MyHomeViewModel.swift */; };
 		E2B025C728EC163500B73891 /* FirestoreClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B025C628EC163500B73891 /* FirestoreClient.swift */; };
 		E2BEC45E28F806C40056E755 /* MyAlbumViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEC45D28F806C40056E755 /* MyAlbumViewModel.swift */; };
@@ -229,6 +230,7 @@
 		E294D2B7291B94FA00EC69EF /* MapListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapListViewController.swift; sourceTree = "<group>"; };
 		E294D2B9291B955100EC69EF /* MapListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapListView.swift; sourceTree = "<group>"; };
 		E294D2BC291B95A700EC69EF /* MapListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapListCell.swift; sourceTree = "<group>"; };
+		E294D2BE291C307400EC69EF /* MapHalfModalPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapHalfModalPresentationController.swift; sourceTree = "<group>"; };
 		E2B025BB28EB326C00B73891 /* MyHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyHomeViewModel.swift; sourceTree = "<group>"; };
 		E2B025C628EC163500B73891 /* FirestoreClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreClient.swift; sourceTree = "<group>"; };
 		E2BEC45D28F806C40056E755 /* MyAlbumViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAlbumViewModel.swift; sourceTree = "<group>"; };
@@ -602,6 +604,7 @@
 			isa = PBXGroup;
 			children = (
 				E294D2B7291B94FA00EC69EF /* MapListViewController.swift */,
+				E294D2BE291C307400EC69EF /* MapHalfModalPresentationController.swift */,
 			);
 			path = Map;
 			sourceTree = "<group>";
@@ -887,6 +890,7 @@
 				E2ED4872290ABE46002FEC2B /* Notification+.swift in Sources */,
 				0A3ED14628F99FBF000D55D8 /* SetProfileImageViewController.swift in Sources */,
 				E294D2AF291AA6C400EC69EF /* MapViewModel.swift in Sources */,
+				E294D2BF291C307400EC69EF /* MapHalfModalPresentationController.swift in Sources */,
 				0AAB2ACF28EAFF52009FBD96 /* TableView+.swift in Sources */,
 				E265C8102914E9A4003380A5 /* HomeAddDiaryButtonView.swift in Sources */,
 				CC40BC1C28EEAEB200DF48E1 /* Day.swift in Sources */,

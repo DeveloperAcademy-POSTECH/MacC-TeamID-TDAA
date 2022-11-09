@@ -9,7 +9,7 @@ import UIKit
 
 class PageViewModeCollectionViewCell: UICollectionViewCell {
     
-    private let pageBackgroundView: UIView = {
+    let pageBackgroundView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
         

@@ -156,7 +156,33 @@ class PageViewModeViewController: UIViewController {
     }
 
     @objc private func onTapShareCurrentPage() {
-
+        
+        Observable
+            .combineLatest(self.pageViewModel.maxPageIndexByDayObservable, self.pageViewModel.selectedPageIndex) { (maxPageIndexes, selectedPageIndex) in
+                
+                var targetIndex = selectedPageIndex.1
+                
+                if selectedPageIndex.0 > 0 {
+                    (0...(selectedPageIndex.0 - 1)).forEach {
+                        targetIndex += (maxPageIndexes[$0] + 1)
+                    }
+                }
+                
+                return targetIndex
+            }
+            .take(1)
+            .subscribe(onNext: { targetIndex in
+                
+                guard let targetCell = self.pageCollectionView.cellForItem(at: IndexPath(item: targetIndex, section: 0)) as? PageViewModeCollectionViewCell else { return }
+                guard let targetImage = targetCell.pageBackgroundView.transformToImage() else { return }
+                
+                let activityViewController = UIActivityViewController(activityItems: [targetImage], applicationActivities: nil)
+                activityViewController.popoverPresentationController?.sourceView = self.view
+                self.present(activityViewController, animated: true, completion: nil)
+                
+            })
+            .disposed(by: self.pageViewModel.disposeBag)
+        
     }
 }
 

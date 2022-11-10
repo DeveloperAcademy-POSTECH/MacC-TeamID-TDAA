@@ -16,7 +16,8 @@ final class MyHomeViewController: UIViewController, UICollectionViewDelegateFlow
 	private let myDevice = UIScreen.getDevice()
 	
 	private lazy var collectionView = DiaryCollectionView()
-	private lazy var addDiaryButton = HomeAddDiaryButtonView()
+	private lazy var addDiaryButton = HomeButtonView()
+	private lazy var profileButton = HomeButtonView()
 	
 	override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
 		super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -32,13 +33,25 @@ final class MyHomeViewController: UIViewController, UICollectionViewDelegateFlow
 	private func setupSubViews() {
 		self.view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
 
-		[collectionView, addDiaryButton].forEach { view.addSubview($0) }
+		[collectionView, addDiaryButton, profileButton].forEach { view.addSubview($0) }
 		collectionView.snp.makeConstraints {
 			$0.top.equalTo(view.safeAreaLayoutGuide)
 			$0.bottom.leading.trailing.equalTo(view.safeAreaLayoutGuide)
 		}
+		
+		addDiaryButton.setupViews(UIImage(named: "plusButton"))
 		addDiaryButton.snp.makeConstraints {
-			$0.bottom.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(myDevice.MyDiariesViewAddDiaryButtonPadding)
+			$0.bottom.trailing.equalTo(view.safeAreaLayoutGuide).inset(myDevice.MyDiariesViewAddDiaryButtonPadding)
+		}
+		
+		let image = UIImage(
+			systemName: "person.circle",
+			withConfiguration: UIImage.SymbolConfiguration(pointSize: 35)
+		)?.withTintColor(UIColor.sandbrownColor, renderingMode: .alwaysOriginal)
+		profileButton.setupViews(image)
+		profileButton.snp.makeConstraints {
+			$0.top.equalTo(view.safeAreaLayoutGuide).inset(25)
+			$0.trailing.equalTo(view.safeAreaLayoutGuide).inset(20)
 		}
 	}
 	
@@ -62,6 +75,12 @@ final class MyHomeViewController: UIViewController, UICollectionViewDelegateFlow
 			}
 			.disposed(by: disposeBag)
 		
+		profileButton.rx.tap
+			.bind {
+				let vc = MyPageViewController()
+				self.navigationController?.pushViewController(vc, animated: true)
+			}
+			.disposed(by: disposeBag)
 	}
 	
 	private func setupNotification() {
@@ -86,7 +105,8 @@ final class MyHomeViewController: UIViewController, UICollectionViewDelegateFlow
 	}
 	
 	@objc func createButtonTapped() {
-		let vc = DiaryConfigViewController(mode: .create, diary: nil)
+        let vc = DiaryConfigViewController()
+        vc.bind(DiaryConfigViewModel(diary: nil))
 		vc.modalPresentationStyle = .fullScreen
 		self.present(vc, animated: true, completion: nil)
 	}

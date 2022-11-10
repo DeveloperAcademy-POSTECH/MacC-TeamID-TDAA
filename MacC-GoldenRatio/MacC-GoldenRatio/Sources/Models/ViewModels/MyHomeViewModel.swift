@@ -19,6 +19,7 @@ class MyHomeViewModel {
 	private var myUID = Auth.auth().currentUser?.uid ?? ""
 	
 	let diaryCollectionViewModel = DiaryCollectionViewModel()
+	let albumCollectionViewModel = AlbumCollectionViewModel()
 	
 	var isEqual = false
 	var isInitializing = true {

@@ -320,7 +320,6 @@
 				0AAB2ACC28EAFD78009FBD96 /* MapSearchViewController.swift */,
 				0AAB2AD428EC1F11009FBD96 /* StickerPickerViewController.swift */,
 				0A939488291A1E0E007ADDAC /* PageViewModeViewController.swift */,
-				0A30BD48291A93AE00079326 /* PageViewModeCollectionViewCell.swift */,
 			);
 			path = Page;
 			sourceTree = "<group>";
@@ -357,6 +356,7 @@
 		0AAB2AD828EC8C69009FBD96 /* Page */ = {
 			isa = PBXGroup;
 			children = (
+				0A30BD48291A93AE00079326 /* PageViewModeCollectionViewCell.swift */,
 				0AAB2AD928EC8C8D009FBD96 /* StickerPickerCollectionViewCell.swift */,
 				0AD6FD7D2903054D00939F3D /* MapSearchResultTableViewCell.swift */,
 			);

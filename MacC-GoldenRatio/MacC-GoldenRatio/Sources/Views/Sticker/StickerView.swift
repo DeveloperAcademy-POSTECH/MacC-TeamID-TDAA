@@ -86,21 +86,21 @@ class StickerView: UIView {
     internal func configureStickerViewData() async {
         
         self.stickerViewData?.frameObservable
-            .observe(on: MainScheduler.instance)
+            .observe(on: MainScheduler.asyncInstance)
             .subscribe(onNext: {
                 self.frame = $0
             })
             .disposed(by: self.disposeBag)
         
         self.stickerViewData?.boundsObservable
-            .observe(on: MainScheduler.instance)
+            .observe(on: MainScheduler.asyncInstance)
             .subscribe(onNext: {
                 self.bounds = $0
             })
             .disposed(by: self.disposeBag)
         
         self.stickerViewData?.transitionObservable
-            .observe(on: MainScheduler.instance)
+            .observe(on: MainScheduler.asyncInstance)
             .subscribe(onNext: {
                 self.transform = $0
             })

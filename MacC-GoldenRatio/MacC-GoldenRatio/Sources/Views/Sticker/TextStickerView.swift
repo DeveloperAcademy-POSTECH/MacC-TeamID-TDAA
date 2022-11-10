@@ -59,14 +59,13 @@ class TextStickerView: StickerView {
             targetPosition.y -= 20
             
             self.stickerViewData = await StickerViewData(itemType: .text, contents: [""], appearPoint: targetPosition, defaultSize: textView.frame.size)
-            await self.bindIsStickerViewActiveObservable()
+            await self.configureStickerViewData()
             await self.bindTextStickerContents()
 
-            await self.configureStickerViewData()
-            await self.setTextStickerPositionObservables()
-            await self.bindTextStickerPositionByTextStickerMode()
+            await self.bindIsStickerViewActiveObservable()
             await self.bindTextStickerDefaultPositionByStickerViewData()
-            
+            await self.setTextStickerEditModePositionObservable()
+            await self.bindTextStickerPositionByTextStickerMode()
             await self.bindTextStickerComponentByTextStickerEditMode()
             
             DispatchQueue.main.async {
@@ -74,6 +73,7 @@ class TextStickerView: StickerView {
                 super.setupContentView(content: self.textView)
                 super.setupDefaultAttributes()
             }
+
             self.isTextStickerViewEditMode.onNext(TextStickerViewMode.editText)
         }
     }
@@ -84,14 +84,13 @@ class TextStickerView: StickerView {
 
         Task {
             self.stickerViewData = await StickerViewData(item: item)
-            await self.bindIsStickerViewActiveObservable()
+            await self.configureStickerViewData()
             await self.bindTextStickerContents()
 
-            await self.configureStickerViewData()
-            await self.setTextStickerPositionObservables()
-            await self.bindTextStickerPositionByTextStickerMode()
+            await self.bindIsStickerViewActiveObservable()
             await self.bindTextStickerDefaultPositionByStickerViewData()
-
+            await self.setTextStickerEditModePositionObservable()
+            await self.bindTextStickerPositionByTextStickerMode()
             await self.bindTextStickerComponentByTextStickerEditMode()
             
             DispatchQueue.main.async {
@@ -104,6 +103,25 @@ class TextStickerView: StickerView {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func bindTextStickerContents() async {
+        
+        self.stickerViewData?.contentsObservable
+            .observe(on: MainScheduler.instance)
+            .map {
+                if $0[0] == "" {
+                    return self.placehloderText
+                } else {
+                    return $0[0]
+                }
+            }
+            .subscribe(onNext: {
+                self.textView.text = $0
+                self.textImageView.image = $0.image()
+            })
+            .disposed(by: self.disposeBag)
+
     }
     
     private func bindIsStickerViewActiveObservable() async {
@@ -121,9 +139,27 @@ class TextStickerView: StickerView {
         
     }
     
-    private func setTextStickerPositionObservables() async {
-        
-        self.textStickerDefaultPosition = (self.frame, self.transform)
+    private func bindTextStickerDefaultPositionByStickerViewData() async {
+        guard let stickerViewData = self.stickerViewData else { return }
+        Observable
+            .combineLatest(self.isTextStickerViewEditMode, stickerViewData.frameObservable, stickerViewData.transitionObservable)
+            .observe(on:MainScheduler.asyncInstance)
+            .subscribe(onNext: {
+                
+                switch $0 {
+                case .inActive:
+                    self.textStickerDefaultPosition = ($1, $2)
+                case .editUI:
+                    self.textStickerDefaultPosition = ($1, $2)
+                default:
+                    break
+                }
+
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func setTextStickerEditModePositionObservable() async {
         
         var targetFrame = self.frame
         targetFrame.origin.x = self.defaultPosition.x - ( targetFrame.width / 2 )
@@ -157,24 +193,6 @@ class TextStickerView: StickerView {
             })
             .disposed(by: self.disposeBag)
         
-    }
-    
-    private func bindTextStickerDefaultPositionByStickerViewData() async {
-        guard let stickerViewData = self.stickerViewData else { return }
-        Observable
-            .combineLatest(self.isTextStickerViewEditMode, stickerViewData.frameObservable, stickerViewData.transitionObservable)
-            .observe(on:MainScheduler.asyncInstance)
-            .subscribe(onNext: {
-                
-                switch $0 {
-                case .editUI:
-                    self.textStickerDefaultPosition = ($1, $2)
-                default:
-                    break
-                }
-
-            })
-            .disposed(by: self.disposeBag)
     }
 
     private func bindTextStickerComponentByTextStickerEditMode() async {
@@ -215,25 +233,6 @@ class TextStickerView: StickerView {
         self.textImageView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-    }
-    
-    private func bindTextStickerContents() async {
-        
-        self.stickerViewData?.contentsObservable
-            .observe(on: MainScheduler.instance)
-            .map {
-                if $0[0] == "" {
-                    return self.placehloderText
-                } else {
-                    return $0[0]
-                }
-            }
-            .subscribe(onNext: {
-                self.textView.text = $0
-                self.textImageView.image = $0.image()
-            })
-            .disposed(by: self.disposeBag)
-
     }
     
     override func stickerViewSingleTap(_ sender: UITapGestureRecognizer) {

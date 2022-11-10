@@ -109,12 +109,18 @@ final class MyHomeViewController: UIViewController {
 			return
 		}
 		
-		guard let location = notification.userInfo?["location"] as? Location else {
+		guard let selectedLocation = notification.userInfo?["selectedLocation"] as? Location else {
 			return
 		}
 		
-		let vc = MapListViewController()
-		vc.bind(viewModel.mapViewModel, day, location)
+		let vc = MapListViewController(viewMdoel: viewModel.mapViewModel, day: day, selectedLocation: selectedLocation)
+		let titles = viewModel.mapViewModel.mapData
+			.value
+			.map { data in
+				return "\(data.day)일차"
+			}
+		
+		vc.configureSegmentedControl(titles: titles)
 		
 		if #available(iOS 15.0, *) {
 			vc.modalPresentationStyle = .pageSheet

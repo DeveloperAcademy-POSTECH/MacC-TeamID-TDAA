@@ -17,13 +17,6 @@ class MapListCell: UICollectionViewCell {
 		return label
 	}()
 	
-	private lazy var imageView: UIImageView = {
-		let imageView =  UIImageView()
-		imageView.image = UIImage(systemName: "person.circle") ?? UIImage()
-		imageView.contentMode = .scaleAspectFit
-		return imageView
-	}()
-	
 	private lazy var categoryLabel: UILabel = {
 		let label =  UILabel()
 		label.font = UIFont(name: "EF_Diary", size: 15)
@@ -39,35 +32,37 @@ class MapListCell: UICollectionViewCell {
 		return label
 	}()
 	
+	private lazy var lineView: UIView = {
+		let view = UIView()
+		view.backgroundColor = .placeholderText
+		
+		return view
+	}()
+	
 	func setup(location: Location) {
-		self.layer.borderColor = UIColor.red.cgColor
-		self.layer.borderWidth = 1
-		[titleLabel, imageView, categoryLabel, addressLabel].forEach { self.addSubview($0) }
+		[titleLabel, categoryLabel, addressLabel, lineView].forEach { self.addSubview($0) }
 		titleLabel.text = location.locationName
-		titleLabel.textAlignment = .center
 		titleLabel.snp.makeConstraints {
-			$0.top.equalTo(self.safeAreaLayoutGuide)
-			$0.leading.equalTo(imageView.snp.trailing).offset(15)
+			$0.top.leading.trailing.equalTo(self.safeAreaLayoutGuide)
+			$0.bottom.equalToSuperview().inset(80)
 		}
 		
-		imageView.snp.makeConstraints {
-			$0.size.equalTo(80)
-			$0.leading.equalTo(self.safeAreaLayoutGuide)
-			$0.centerY.equalTo(self.safeAreaLayoutGuide)
-		}
-		
-		categoryLabel.text = location.locationName
+		categoryLabel.text = "카테고리"
 		categoryLabel.snp.makeConstraints {
-			$0.top.equalTo(titleLabel.snp.bottom).inset(5)
-			$0.leading.equalTo(imageView.snp.trailing).offset(15)
+			$0.top.equalTo(titleLabel.snp.bottom).inset(3)
+			$0.leading.trailing.equalTo(self.safeAreaLayoutGuide)
 		}
 		
 		addressLabel.text = location.locationAddress
 		addressLabel.snp.makeConstraints {
-			$0.top.equalTo(categoryLabel.snp.bottom).offset(5)
-			$0.leading.equalTo(imageView.snp.trailing).offset(15)
-			$0.trailing.equalTo(self.safeAreaLayoutGuide)
-			$0.bottom.equalTo(self.safeAreaLayoutGuide)
+			$0.leading.trailing.equalTo(self.safeAreaLayoutGuide)
+			$0.bottom.equalToSuperview().inset(20)
+		}
+		
+		lineView.snp.makeConstraints {
+			$0.height.equalTo(1)
+			$0.leading.trailing.equalTo(self.safeAreaLayoutGuide)
+			$0.bottom.equalToSuperview()
 		}
 	}
 }

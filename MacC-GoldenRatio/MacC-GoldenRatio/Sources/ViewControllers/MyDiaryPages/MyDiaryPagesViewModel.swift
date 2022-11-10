@@ -13,7 +13,7 @@ class MyDiaryPagesViewModel {
     private var db = Firestore.firestore()
     private var myUID = Auth.auth().currentUser?.uid ?? ""
     @Published var thumbnailURL: [String] = []
-    @Published var diaryData: Diary = Diary(diaryUUID: "", diaryName: "", diaryLocation: Location(locationName: "", locationAddress: "", locationCoordinate: []), diaryStartDate: "", diaryEndDate: "", diaryCover: "")
+    @Published var diaryData: Diary = Diary(diaryUUID: "", diaryName: "", diaryLocation: Location(locationName: "", locationAddress: "", locationCoordinate: [], locationCategory: nil), diaryStartDate: "", diaryEndDate: "", diaryCover: "")
     
     func diaryDataSetup(_ completion: @escaping () -> Void) {
         Task {

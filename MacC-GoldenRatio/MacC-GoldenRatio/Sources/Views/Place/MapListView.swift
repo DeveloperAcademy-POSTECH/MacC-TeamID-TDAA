@@ -21,18 +21,21 @@ class MapListView: UICollectionView {
 		self.showsVerticalScrollIndicator = false
 		self.backgroundColor = UIColor.clear
 		self.register(MapListCell.self, forCellWithReuseIdentifier: "MapListCell")
-		self.rx.setDelegate(self)
-					.disposed(by: disposeBag)
 	}
 
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
-	func bind(_ viewModel: MapViewModel, _ day: Int, _ location: Location) {
+	func bind(_ viewModel: MapViewModel,_ day: Int,_ selectedLocation: Location?) {
+		self.rx.setDelegate(self)
+			.disposed(by: disposeBag)
 		viewModel.mapData
 			.map {
 				return viewModel.convertMapDatasToLocations($0, day: day).locations
+			}
+			.map {
+				return selectedLocation != nil ? viewModel.changeIndex($0, selectedLocation: selectedLocation!) : $0
 			}
 			.bind(to: self.rx.items(cellIdentifier: "MapListCell", cellType: MapListCell.self)) { index, data, cell in
 				cell.setup(location: data)
@@ -43,6 +46,10 @@ class MapListView: UICollectionView {
 
 extension MapListView: UICollectionViewDelegateFlowLayout {
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-		return CGSize(width: self.bounds.width-40, height: 100)
+		return CGSize(width: self.bounds.width-40, height: 110)
+	}
+	
+	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+		return 20
 	}
 }

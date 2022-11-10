@@ -38,14 +38,11 @@ class MapView: UIView, MKMapViewDelegate, CLLocationManagerDelegate {
 				let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: data.diaryLocation.locationCoordinate[0], longitude: data.diaryLocation.locationCoordinate[1]), latitudinalMeters: CLLocationDistance(exactly: 15000) ?? 0, longitudinalMeters: CLLocationDistance(exactly: 15000) ?? 0)
 				self.map.setRegion(self.map.regionThatFits(region), animated: true)
 				data.locations.forEach { location in
-					if data.day <= 10 {
-						let pin = CustomAnnotation(coordinate: CLLocationCoordinate2D(latitude: location.locationCoordinate[0], longitude: location.locationCoordinate[1]), title: location.locationName, address: location.locationAddress, day: data.day, iconImage: "pin\(data.day)")
-						map.addAnnotation(pin)
-					} else if data.day % 10 == 0 {
-						let pin = CustomAnnotation(coordinate: CLLocationCoordinate2D(latitude: location.locationCoordinate[0], longitude: location.locationCoordinate[1]), title: location.locationName, address: location.locationAddress, day: data.day, iconImage: "pin10")
+					if data.day != 10 {
+						let pin = CustomAnnotation(coordinate: CLLocationCoordinate2D(latitude: location.locationCoordinate[0], longitude: location.locationCoordinate[1]), title: location.locationName, address: location.locationAddress, day: data.day, iconImage: "pin\(data.day%10)", category: location.locationCategory ?? "")
 						map.addAnnotation(pin)
 					} else {
-						let pin = CustomAnnotation(coordinate: CLLocationCoordinate2D(latitude: location.locationCoordinate[0], longitude: location.locationCoordinate[1]), title: location.locationName, address: location.locationAddress, day: data.day, iconImage: "pin\(data.day%10)")
+						let pin = CustomAnnotation(coordinate: CLLocationCoordinate2D(latitude: location.locationCoordinate[0], longitude: location.locationCoordinate[1]), title: location.locationName, address: location.locationAddress, day: data.day, iconImage: "pin10", category: location.locationCategory ?? "")
 						map.addAnnotation(pin)
 					}
 				}
@@ -95,6 +92,6 @@ class MapView: UIView, MKMapViewDelegate, CLLocationManagerDelegate {
 		guard let view = view.annotation as? CustomAnnotation else {
 			return
 		}
-		NotificationCenter.default.post(name: .mapAnnotationTapped, object: nil, userInfo: ["day": view.day, "location": Location(locationName: view.title ?? "", locationAddress: view.address, locationCoordinate: [view.coordinate.latitude, view.coordinate.longitude])])
+		NotificationCenter.default.post(name: .mapAnnotationTapped, object: nil, userInfo: ["day": view.day, "selectedLocation": Location(locationName: view.title ?? "", locationAddress: view.address, locationCoordinate: [view.coordinate.latitude, view.coordinate.longitude], locationCategory: view.category)])
 	}
 }

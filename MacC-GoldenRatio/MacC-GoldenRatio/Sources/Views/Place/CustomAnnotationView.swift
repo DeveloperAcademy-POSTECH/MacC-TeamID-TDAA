@@ -32,13 +32,15 @@ class CustomAnnotation: NSObject, MKAnnotation {
 	let coordinate: CLLocationCoordinate2D
 	let day: Int
 	let iconImage: String
+	let category: String
 	
-	init(coordinate: CLLocationCoordinate2D, title: String, address: String, day: Int, iconImage: String) {
+	init(coordinate: CLLocationCoordinate2D, title: String, address: String, day: Int, iconImage: String, category: String) {
 		self.coordinate = coordinate
 		self.title = title
 		self.address = address
 		self.day = day
 		self.iconImage = iconImage
+		self.category = category
 		
 		super.init()
 	}

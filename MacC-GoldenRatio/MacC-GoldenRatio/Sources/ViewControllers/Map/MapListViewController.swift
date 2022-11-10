@@ -15,41 +15,68 @@ class MapListViewController: UIViewController {
 	private let myDevice = UIScreen.getDevice()
 	
 	private lazy var mapListView = MapListView()
-	private lazy var closeButton: UIButton = {
-		let button = UIButton()
-		button.setImage(UIImage(systemName: "xmark")?.withTintColor(UIColor.black, renderingMode: .alwaysOriginal), for: .normal)
-		button.imageView?.contentMode = .scaleAspectFit
-		button.imageEdgeInsets = UIEdgeInsets(top: 22, left: 22, bottom: 22, right: 22)
-		return button
+	
+	private lazy var segmentedControlView: SegmentedControlView = {
+		let segmentedControlView = SegmentedControlView()
+		segmentedControlView.delegate = self
+		segmentedControlView.translatesAutoresizingMaskIntoConstraints = false
+		return segmentedControlView
 	}()
 	
-	override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-		super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+	let viewModel: MapViewModel
+	let day: Int
+	let selectedLocation: Location
+	
+	init(viewMdoel: MapViewModel, day: Int, selectedLocation: Location) {
+		self.viewModel = viewMdoel
+		self.day = day
+		self.selectedLocation = selectedLocation
+		super.init(nibName: nil, bundle: nil)
 		layout()
+		mapListView.bind(viewModel, day, selectedLocation)
 	}
 	
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
-	func bind(_ viewModel: MapViewModel, _ day: Int, _ location: Location) {
-		mapListView.bind(viewModel, day, location)
-		
-		closeButton.rx.tap
-			.bind(onNext: {
-				self.dismiss(animated: true)
-			})
-			.disposed(by: disposeBag)
+	
+	func configureSegmentedControl(titles: [String]) {
+		let config = SegmentedControlConfiguration(titles: titles,
+												   font: UIFont(name: "EF_Diary", size: 20)!,
+												   spacing: 10,
+												   selectedLabelColor: .black,
+												   unselectedLabelColor: .placeholderText,
+												   selectedLineColor: .black,
+												   day: day-1)
+		segmentedControlView.configure(config)
+	}
+	
+	func bind(_ viewModel: MapViewModel,_ day: Int,_ selectedLocation: Location?) {
+		mapListView.delegate = nil
+		mapListView.dataSource = nil
+		mapListView.bind(viewModel, day, selectedLocation)
 	}
 	
 	func layout() {
-		[mapListView, closeButton].forEach { view.addSubview($0) }
-		closeButton.snp.makeConstraints {
-			$0.top.trailing.equalTo(view.safeAreaLayoutGuide).inset(20)
+		view.backgroundColor = .white
+		[mapListView, segmentedControlView].forEach { view.addSubview($0) }
+		segmentedControlView.snp.makeConstraints {
+			$0.top.equalTo(view.safeAreaLayoutGuide).inset(30)
+			$0.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+			$0.bottom.equalTo(view.safeAreaLayoutGuide).inset(350)
 		}
 		mapListView.snp.makeConstraints {
-			$0.top.equalTo(closeButton.snp.bottom).offset(8)
+			$0.top.equalTo(view.safeAreaLayoutGuide).inset(80)
 			$0.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
 		}
 	}
+}
+
+extension MapListViewController: SegmentedControlViewDelegate {
+	
+	func segmentedControl(didChange index: Int) {
+		bind(viewModel, index+1, nil)
+	}
+
 }

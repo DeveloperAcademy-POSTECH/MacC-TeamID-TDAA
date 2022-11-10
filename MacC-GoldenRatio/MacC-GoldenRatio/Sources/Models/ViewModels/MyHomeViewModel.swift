@@ -74,10 +74,10 @@ class MyHomeViewModel {
 	
 	func getFirstDiaryData(_ value: [Diary]?) -> Diary {
 		guard let value = value else {
-			return Diary(diaryUUID: "", diaryName: "", diaryLocation: Location(locationName: "", locationAddress: "", locationCoordinate: []), diaryStartDate: "", diaryEndDate: "", diaryCover: "")
+			return Diary(diaryUUID: "", diaryName: "", diaryLocation: Location(locationName: "", locationAddress: "", locationCoordinate: [], locationCategory: nil), diaryStartDate: "", diaryEndDate: "", diaryCover: "")
 		}
 		
-		return value.first ?? Diary(diaryUUID: "", diaryName: "", diaryLocation: Location(locationName: "", locationAddress: "", locationCoordinate: []), diaryStartDate: "", diaryEndDate: "", diaryCover: "")
+		return value.first ?? Diary(diaryUUID: "", diaryName: "", diaryLocation: Location(locationName: "", locationAddress: "", locationCoordinate: [], locationCategory: nil), diaryStartDate: "", diaryEndDate: "", diaryCover: "")
 	}
 	
 	func isDiaryCodeEqualTo(_ diaryUUID: String) {

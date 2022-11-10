@@ -219,7 +219,8 @@ extension DiaryConfigViewController {
                         let locationName = mapItem.name
                         let locationAddress = mapItem.placemark.countryCode
                         let locationCoordinate = mapItem.placemark.location?.coordinate
-                        let location = Location(locationName: locationName ?? "", locationAddress: locationAddress ?? "", locationCoordinate: [Double(locationCoordinate?.latitude ?? 0.0), Double(locationCoordinate?.longitude ?? 0.0)])
+						let locationCategory = mapItem.pointOfInterestCategory?.rawValue.description ?? ""
+                        let location = Location(locationName: locationName ?? "", locationAddress: locationAddress ?? "", locationCoordinate: [Double(locationCoordinate?.latitude ?? 0.0), Double(locationCoordinate?.longitude ?? 0.0)], locationCategory: locationCategory)
                         
                         viewModel.location = location
                         

@@ -65,6 +65,13 @@ class ImageStickerView: StickerView {
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: {
                 guard let imageUrl = $0.first else { return }
+                
+                guard imageUrl.verifyUrl() else {
+                    self.removeFromSuperview()
+                    print("wrongURL")
+                    return
+                }
+                
                 let image = ImageManager.shared.searchImage(urlString: imageUrl)
                 
                 switch image {

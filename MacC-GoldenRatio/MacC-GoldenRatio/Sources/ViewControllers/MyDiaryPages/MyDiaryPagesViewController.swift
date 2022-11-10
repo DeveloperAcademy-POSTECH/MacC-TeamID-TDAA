@@ -322,6 +322,7 @@ extension MyDiaryPagesViewController: UICollectionViewDelegate {
         let selectedDay = indexPath.item
         
         self.viewModel.diaryDataSetup() {
+
             DispatchQueue.main.async {
                 Task {
                     let pageViewController = await PageViewController(diary: self.viewModel.diaryData, selectedDay: selectedDay)

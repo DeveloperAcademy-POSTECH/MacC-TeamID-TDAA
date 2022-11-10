@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A30BD47291A4DAF00079326 /* CALayer+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A30BD46291A4DAE00079326 /* CALayer+.swift */; };
+		0A30BD49291A93AE00079326 /* PageViewModeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A30BD48291A93AE00079326 /* PageViewModeCollectionViewCell.swift */; };
 		0A3ED14128F98956000D55D8 /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3ED14028F98956000D55D8 /* MyPageViewModel.swift */; };
 		0A3ED14428F99F11000D55D8 /* TravelsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3ED14328F99F11000D55D8 /* TravelsCollectionViewCell.swift */; };
 		0A3ED14628F99FBF000D55D8 /* SetProfileImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3ED14528F99FBF000D55D8 /* SetProfileImageViewController.swift */; };
@@ -22,6 +24,7 @@
 		0A6F107128FBFA7C002FB611 /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6F107028FBFA7C002FB611 /* MenuTableViewCell.swift */; };
 		0A6F107528FC3782002FB611 /* LicenseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6F107428FC3782002FB611 /* LicenseViewController.swift */; };
 		0A6F107D28FC6259002FB611 /* License.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0A6F107C28FC6258002FB611 /* License.txt */; };
+		0A939489291A1E0E007ADDAC /* PageViewModeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A939488291A1E0E007ADDAC /* PageViewModeViewController.swift */; };
 		0AAB2ACD28EAFD78009FBD96 /* MapSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2ACC28EAFD78009FBD96 /* MapSearchViewController.swift */; };
 		0AAB2ACF28EAFF52009FBD96 /* TableView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2ACE28EAFF52009FBD96 /* TableView+.swift */; };
 		0AAB2AD128EAFF6D009FBD96 /* CollectionView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2AD028EAFF6D009FBD96 /* CollectionView+.swift */; };
@@ -148,6 +151,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0A30BD46291A4DAE00079326 /* CALayer+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+.swift"; sourceTree = "<group>"; };
+		0A30BD48291A93AE00079326 /* PageViewModeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewModeCollectionViewCell.swift; sourceTree = "<group>"; };
 		0A3ED14028F98956000D55D8 /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
 		0A3ED14328F99F11000D55D8 /* TravelsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelsCollectionViewCell.swift; sourceTree = "<group>"; };
 		0A3ED14528F99FBF000D55D8 /* SetProfileImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetProfileImageViewController.swift; sourceTree = "<group>"; };
@@ -163,6 +168,7 @@
 		0A6F107028FBFA7C002FB611 /* MenuTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuTableViewCell.swift; sourceTree = "<group>"; };
 		0A6F107428FC3782002FB611 /* LicenseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LicenseViewController.swift; sourceTree = "<group>"; };
 		0A6F107C28FC6258002FB611 /* License.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = License.txt; sourceTree = "<group>"; };
+		0A939488291A1E0E007ADDAC /* PageViewModeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewModeViewController.swift; sourceTree = "<group>"; };
 		0AAB2ACC28EAFD78009FBD96 /* MapSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapSearchViewController.swift; sourceTree = "<group>"; };
 		0AAB2ACE28EAFF52009FBD96 /* TableView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TableView+.swift"; sourceTree = "<group>"; };
 		0AAB2AD028EAFF6D009FBD96 /* CollectionView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionView+.swift"; sourceTree = "<group>"; };
@@ -313,6 +319,8 @@
 				0A5E904428E8578400B381B8 /* PageViewController.swift */,
 				0AAB2ACC28EAFD78009FBD96 /* MapSearchViewController.swift */,
 				0AAB2AD428EC1F11009FBD96 /* StickerPickerViewController.swift */,
+				0A939488291A1E0E007ADDAC /* PageViewModeViewController.swift */,
+				0A30BD48291A93AE00079326 /* PageViewModeCollectionViewCell.swift */,
 			);
 			path = Page;
 			sourceTree = "<group>";
@@ -508,6 +516,7 @@
 				0A5235AF28F8510C00AC77AC /* UIFont+.swift */,
 				0A5235B128F854C200AC77AC /* UIColor+.swift */,
 				E2ED4871290ABE46002FEC2B /* Notification+.swift */,
+				0A30BD46291A4DAE00079326 /* CALayer+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -810,6 +819,7 @@
 				0AAB2AD128EAFF6D009FBD96 /* CollectionView+.swift in Sources */,
 				CC341406291930F800A1FD17 /* DiaryColorCell.swift in Sources */,
 				E2BEC46028F806F80056E755 /* AlbumData.swift in Sources */,
+				0A939489291A1E0E007ADDAC /* PageViewModeViewController.swift in Sources */,
 				CCD6D58E2914F6C600013367 /* DiaryConfigModel.swift in Sources */,
 				0AE94ABC291182090051A710 /* ErrorMessage.swift in Sources */,
 				E2EA7F0828E56CF600AC1C49 /* MyPlaceViewController.swift in Sources */,
@@ -822,8 +832,10 @@
 				CC40BC1F28EEB10800DF48E1 /* CalendarPickerViewController.swift in Sources */,
 				0A3ED14828FBE6EB000D55D8 /* MyPageViewController.swift in Sources */,
 				0A5E904C28E858D200B381B8 /* StickerBorderView.swift in Sources */,
+				0A30BD47291A4DAF00079326 /* CALayer+.swift in Sources */,
 				CC65515028F0874800E637A2 /* MyDiaryPagesViewController.swift in Sources */,
 				0AEC53EC28EF211D001B0169 /* StickerViewData.swift in Sources */,
+				0A30BD49291A93AE00079326 /* PageViewModeCollectionViewCell.swift in Sources */,
 				0A5E904F28E9948B00B381B8 /* PageViewModel.swift in Sources */,
 				0AAB2ADE28EDA511009FBD96 /* MapStickerView.swift in Sources */,
 				0AAB2AE028EDA553009FBD96 /* ImageStickerView.swift in Sources */,

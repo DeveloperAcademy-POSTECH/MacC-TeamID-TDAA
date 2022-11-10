@@ -43,4 +43,9 @@ extension UIFont {
         let font = UIFont(name: "EF_Diary", size: 12)!
         return font
     }
+    ///24
+    static var dayLabelFont: UIFont {
+        let font = UIFont(name: "EF_Diary", size: 24)!
+        return font
+    }
 }

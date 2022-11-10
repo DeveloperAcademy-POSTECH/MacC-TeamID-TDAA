@@ -12,5 +12,56 @@ import UIKit
 
 class DiaryDaysCollectionView: UICollectionView {
     
+    private let disposeBag = DisposeBag()
+    
+    override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        super.init(frame: frame, collectionViewLayout: layout)
+
+        attribute()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func bind(_ viewModel: DiaryDaysCollectionViewModel) {
+        viewModel.cellData
+            .observe(on: MainScheduler.instance)
+            .bind(to: self.rx.items(cellIdentifier: DiaryDaysCell.identifier, cellType: DiaryDaysCell.self)) { index, data, cell in
+                cell.dayLabel.text = data.dayLabel
+                cell.dateLabel.text = data.dateLabel
+                cell.backImageView.image = data.image
+            }
+            .disposed(by: disposeBag)
+        
+        // TODO: item row가 일차, 뷰 연결에서 활용
+        // self.rx.itemSelected
+    }
+    
+    private func attribute() {
+        self.register(DiaryDaysCell.self, forCellWithReuseIdentifier: DiaryDaysCell.identifier)
+        self.rx.setDelegate(self)
+            .disposed(by: disposeBag)
+        
+        // TODO: UIColor+ 추가 후 수정
+        self.backgroundColor = UIColor(named: "appBackgroundColor")!
+    }
+}
+
+extension DiaryDaysCollectionView: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width = UIScreen.main.bounds.width
+        return CGSize(width: width, height: 190)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForItemAt section: Int) -> CGFloat {
+        return 0
+    }
 }
 

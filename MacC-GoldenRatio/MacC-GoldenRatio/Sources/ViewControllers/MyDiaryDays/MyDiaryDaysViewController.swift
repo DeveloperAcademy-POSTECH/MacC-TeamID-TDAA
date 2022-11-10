@@ -12,7 +12,7 @@ import SnapKit
 import UIKit
 
 class MyDiaryDaysViewController: UIViewController {
-    
+    private var viewModel: MyDiaryDaysViewModel?
     private let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
@@ -24,8 +24,7 @@ class MyDiaryDaysViewController: UIViewController {
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "다이어리 이름"
-        label.font = UIFont(name: "EF_Diary", size: 17) ?? UIFont.systemFont(ofSize: 17)
+        label.font = UIFont.labelTtitleFont2
         return label
     }()
     
@@ -34,7 +33,6 @@ class MyDiaryDaysViewController: UIViewController {
         let configuration = UIImage.SymbolConfiguration(pointSize: 24, weight: .semibold, scale: .medium)
         button.tintColor = .black
         button.setImage(UIImage(systemName: "chevron.left", withConfiguration: configuration), for: .normal)
-        button.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside) // TODO: Button Action Rx 분리
         return button
     }()
     
@@ -58,16 +56,20 @@ class MyDiaryDaysViewController: UIViewController {
         let albumButton = UIImage(systemName: "photo", withConfiguration: configuration) ?? UIImage()
         let mapButton = UIImage(systemName: "mappin.and.ellipse", withConfiguration: configuration) ?? UIImage()
         let control = UISegmentedControl(items: [dayButton, albumButton, mapButton])
+        let selectedAttribute = [NSAttributedString.Key.foregroundColor: UIColor.sandbrownColor]
+        control.setTitleTextAttributes(selectedAttribute, for:.selected)
         control.selectedSegmentIndex = 0
+        control.backgroundColor = .clear
         return control
     }()
-    
-    let diaryDaysCollectionView = UIView()
+
+    let diaryDaysCollectionView = DiaryDaysCollectionView()
     let albumCollectionView = AlbumCollectionView()
     let mapView = MKMapView()
     
     // MARK: Bind
     func bind(_ viewModel: MyDiaryDaysViewModel) {
+        self.viewModel = viewModel
         
         self.segmentedControl.rx.selectedSegmentIndex
             .bind(to: viewModel.segmentIndex)
@@ -81,6 +83,7 @@ class MyDiaryDaysViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        self.diaryDaysCollectionView.bind(viewModel.diarydaysCollectoinViewModel)
         self.albumCollectionView.bind(viewModel.albumCollectionViewModel)
         
         self.albumCollectionView.rx
@@ -92,11 +95,22 @@ class MyDiaryDaysViewController: UIViewController {
                 self.present(vc, animated: true)
             })
             .disposed(by: disposeBag)
+        
+        self.backButton.rx.tap
+            .bind { self.backButtonTapped() }
+            .disposed(by: disposeBag)
+        
+        self.menuButton.rx.tap
+            .bind { self.menuButtonTapped() }
+            .disposed(by: disposeBag)
+        
+        self.titleLabel.text = viewModel.myDiaryDaysModel.diary.diaryName
     }
     
     // MARK: Attribute & Layout
     private func attribute() {
-        self.view.backgroundColor = .white
+        // TODO: UIColor+ 추가 후 수정
+        self.view.backgroundColor = UIColor(named: "appBackgroundColor")!
         self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         
@@ -148,10 +162,42 @@ class MyDiaryDaysViewController: UIViewController {
     }
     
     
-    @objc private func backButtonTapped() {
+    private func menuButtonTapped() {
+        let popUp = PopUpViewController(popUpPosition: .top)
+        popUp.addButton(buttonTitle: " 초대코드 복사", buttonSymbol: "envelope.arrow.triangle.branch", buttonSize: 15, action: copyButtonTapped)
+        popUp.addButton(buttonTitle: " 다이어리 수정", buttonSymbol: "square.and.pencil",  buttonSize: 17, action: modifyButtonTapped)
+        popUp.addButton(buttonTitle: " 다이어리 탈퇴", buttonSymbol: "door.right.hand.open",  buttonSize: 17, action: outButtonTapped)
+        present(popUp, animated: false)
+    }
+    
+    private func backButtonTapped() {
         NotificationCenter.default.post(name: .reloadDiary, object: nil)
         self.navigationController?.isNavigationBarHidden = true
         self.navigationController?.popViewController(animated: true)
+    }
+    
+    @objc private func copyButtonTapped() {
+        UIPasteboard.general.string = self.viewModel!.myDiaryDaysModel.diary.diaryUUID
+        self.view.showToastMessage("초대코드가 복사되었습니다.")
+    }
+    
+    @objc private func modifyButtonTapped() {
+        let vc = DiaryConfigViewController()
+        vc.bind(DiaryConfigViewModel(diary: self.viewModel!.myDiaryDaysModel.diary))
+        vc.modalPresentationStyle = .fullScreen
+        self.present(vc, animated: true, completion: nil)
+    }
+    
+    @objc private func outButtonTapped() {
+        let ac = UIAlertController(title: "다이어리를 나가시겠습니까?", message: "다이어리를 나가면 공동편집을 할 수 없습니다.", preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "다이어리 나가기", style: .destructive) { _ in
+            print("다이어리 나가기")
+            NotificationCenter.default.post(name: .reloadDiary, object: nil)
+            self.viewModel!.myDiaryDaysModel.outCurrentDiary()
+            self.backButtonTapped()
+        })
+        ac.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
+        present(ac, animated: true, completion: nil)
     }
 }
 

@@ -42,6 +42,7 @@
 		B9901C09291C2A3800AF92DE /* MyDiaryDaysModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9901C08291C2A3800AF92DE /* MyDiaryDaysModel.swift */; };
 		B9901C0B291CA42400AF92DE /* DiaryDaysCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9901C0A291CA42400AF92DE /* DiaryDaysCollectionView.swift */; };
 		CC0F434428F71E62003060D5 /* DiaryConfigViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0F434328F71E62003060D5 /* DiaryConfigViewModel.swift */; };
+		CC242EBE291CDC7F002AB747 /* DiaryDaysCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC242EBD291CDC7F002AB747 /* DiaryDaysCollectionViewModel.swift */; };
 		CC341406291930F800A1FD17 /* DiaryColorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC341405291930F800A1FD17 /* DiaryColorCell.swift */; };
 		CC3414082919310700A1FD17 /* DiaryColorCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3414072919310700A1FD17 /* DiaryColorCellViewModel.swift */; };
 		CC34140A29193C0A00A1FD17 /* DiaryColorCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC34140929193C0A00A1FD17 /* DiaryColorCollectionView.swift */; };
@@ -58,6 +59,9 @@
 		CC65515828F544ED00E637A2 /* PopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC65515728F544ED00E637A2 /* PopUpViewController.swift */; };
 		CC6BD74428EBFA80001ED665 /* DiaryConfigViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6BD74328EBFA80001ED665 /* DiaryConfigViewController.swift */; };
 		CC6BD74628EC18B8001ED665 /* DiaryConfigCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6BD74528EC18B8001ED665 /* DiaryConfigCollectionViewCell.swift */; };
+		CC6C7F1F291CE9FA00B88888 /* DiaryDaysCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6C7F1E291CE9FA00B88888 /* DiaryDaysCellViewModel.swift */; };
+		CC6C7F21291CEB3600B88888 /* DiaryDaysCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6C7F20291CEB3600B88888 /* DiaryDaysCell.swift */; };
+		CC6C7F23291D2A6300B88888 /* DiaryDayModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6C7F22291D2A6300B88888 /* DiaryDayModel.swift */; };
 		CC9F969628F7E0B100E4B68A /* MyDiaryPagesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC9F969528F7E0B100E4B68A /* MyDiaryPagesViewModel.swift */; };
 		CCD6D58C29135A7300013367 /* DiaryConfigCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD6D58B29135A7300013367 /* DiaryConfigCellViewModel.swift */; };
 		CCD6D58E2914F6C600013367 /* DiaryConfigModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD6D58D2914F6C600013367 /* DiaryConfigModel.swift */; };
@@ -187,6 +191,7 @@
 		B9901C08291C2A3800AF92DE /* MyDiaryDaysModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDiaryDaysModel.swift; sourceTree = "<group>"; };
 		B9901C0A291CA42400AF92DE /* DiaryDaysCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryDaysCollectionView.swift; sourceTree = "<group>"; };
 		CC0F434328F71E62003060D5 /* DiaryConfigViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryConfigViewModel.swift; sourceTree = "<group>"; };
+		CC242EBD291CDC7F002AB747 /* DiaryDaysCollectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryDaysCollectionViewModel.swift; sourceTree = "<group>"; };
 		CC341405291930F800A1FD17 /* DiaryColorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryColorCell.swift; sourceTree = "<group>"; };
 		CC3414072919310700A1FD17 /* DiaryColorCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryColorCellViewModel.swift; sourceTree = "<group>"; };
 		CC34140929193C0A00A1FD17 /* DiaryColorCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryColorCollectionView.swift; sourceTree = "<group>"; };
@@ -204,6 +209,9 @@
 		CC6BD73728E9790C001ED665 /* MacC-GoldenRatio.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "MacC-GoldenRatio.entitlements"; sourceTree = "<group>"; };
 		CC6BD74328EBFA80001ED665 /* DiaryConfigViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryConfigViewController.swift; sourceTree = "<group>"; };
 		CC6BD74528EC18B8001ED665 /* DiaryConfigCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryConfigCollectionViewCell.swift; sourceTree = "<group>"; };
+		CC6C7F1E291CE9FA00B88888 /* DiaryDaysCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryDaysCellViewModel.swift; sourceTree = "<group>"; };
+		CC6C7F20291CEB3600B88888 /* DiaryDaysCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryDaysCell.swift; sourceTree = "<group>"; };
+		CC6C7F22291D2A6300B88888 /* DiaryDayModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryDayModel.swift; sourceTree = "<group>"; };
 		CC9F969528F7E0B100E4B68A /* MyDiaryPagesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDiaryPagesViewModel.swift; sourceTree = "<group>"; };
 		CCD6D58B29135A7300013367 /* DiaryConfigCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryConfigCellViewModel.swift; sourceTree = "<group>"; };
 		CCD6D58D2914F6C600013367 /* DiaryConfigModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryConfigModel.swift; sourceTree = "<group>"; };
@@ -386,6 +394,9 @@
 			isa = PBXGroup;
 			children = (
 				B9901C0A291CA42400AF92DE /* DiaryDaysCollectionView.swift */,
+				CC242EBD291CDC7F002AB747 /* DiaryDaysCollectionViewModel.swift */,
+				CC6C7F1E291CE9FA00B88888 /* DiaryDaysCellViewModel.swift */,
+				CC6C7F20291CEB3600B88888 /* DiaryDaysCell.swift */,
 			);
 			path = DiaryDaysCollectionView;
 			sourceTree = "<group>";
@@ -550,6 +561,7 @@
 				E2BEC45F28F806F80056E755 /* AlbumData.swift */,
 				0AE94ABB291182090051A710 /* ErrorMessage.swift */,
 				E2E544302916D91400E611D0 /* DiarySection.swift */,
+				CC6C7F22291D2A6300B88888 /* DiaryDayModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -829,6 +841,7 @@
 				E28F080628E4655100832F4A /* ViewController.swift in Sources */,
 				CC40BC1E28EEAEDA00DF48E1 /* MonthMetadata.swift in Sources */,
 				0AAB2ADC28EDA067009FBD96 /* TextStickerView.swift in Sources */,
+				CC6C7F23291D2A6300B88888 /* DiaryDayModel.swift in Sources */,
 				E21342E328F6B6BC0048D9CF /* MapData.swift in Sources */,
 				0AAB2ACD28EAFD78009FBD96 /* MapSearchViewController.swift in Sources */,
 				0A5E904528E8578400B381B8 /* PageViewController.swift in Sources */,
@@ -853,6 +866,7 @@
 				CC65515028F0874800E637A2 /* MyDiaryPagesViewController.swift in Sources */,
 				0AEC53EC28EF211D001B0169 /* StickerViewData.swift in Sources */,
 				0A5E904F28E9948B00B381B8 /* PageViewModel.swift in Sources */,
+				CC242EBE291CDC7F002AB747 /* DiaryDaysCollectionViewModel.swift in Sources */,
 				0AAB2ADE28EDA511009FBD96 /* MapStickerView.swift in Sources */,
 				0AAB2AE028EDA553009FBD96 /* ImageStickerView.swift in Sources */,
 				E2E544312916D91400E611D0 /* DiarySection.swift in Sources */,
@@ -875,6 +889,7 @@
 				CC40BC1828EEADFD00DF48E1 /* CalendarPickerHeaderView.swift in Sources */,
 				E28F080228E4655100832F4A /* AppDelegate.swift in Sources */,
 				E2993A6829195B9400409C9B /* AlbumCollectionViewModel.swift in Sources */,
+				CC6C7F1F291CE9FA00B88888 /* DiaryDaysCellViewModel.swift in Sources */,
 				E276B91C28E46AE900163833 /* User.swift in Sources */,
 				E2DA8F6028F842310098DD94 /* MyAlbumCollectionViewCell.swift in Sources */,
 				E276B91C28E46AE900163833 /* User.swift in Sources */,
@@ -902,6 +917,7 @@
 				E2ED4872290ABE46002FEC2B /* Notification+.swift in Sources */,
 				0A3ED14628F99FBF000D55D8 /* SetProfileImageViewController.swift in Sources */,
 				0AAB2ACF28EAFF52009FBD96 /* TableView+.swift in Sources */,
+				CC6C7F21291CEB3600B88888 /* DiaryDaysCell.swift in Sources */,
 				B9901C0B291CA42400AF92DE /* DiaryDaysCollectionView.swift in Sources */,
 				E265C8102914E9A4003380A5 /* HomeButtonView.swift in Sources */,
 				CC40BC1C28EEAEB200DF48E1 /* Day.swift in Sources */,

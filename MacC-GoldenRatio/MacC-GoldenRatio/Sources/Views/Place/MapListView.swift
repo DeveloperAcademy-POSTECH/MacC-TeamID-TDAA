@@ -27,15 +27,15 @@ class MapListView: UICollectionView {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
-	func bind(_ viewModel: MapViewModel,_ day: Int,_ selectedLocation: Location?) {
+	func bind(_ viewModel: MapViewModel,_ model: MapModel,_ day: Int,_ selectedLocation: Location?) {
 		self.rx.setDelegate(self)
 			.disposed(by: disposeBag)
 		viewModel.mapData
 			.map {
-				return viewModel.convertMapDatasToLocations($0, day: day).locations
+				return model.convertMapDatasToLocations($0, day: day).locations
 			}
 			.map {
-				return selectedLocation != nil ? viewModel.changeIndex($0, selectedLocation: selectedLocation!) : $0
+				return selectedLocation != nil ? model.changeIndex($0, selectedLocation: selectedLocation!) : $0
 			}
 			.bind(to: self.rx.items(cellIdentifier: "MapListCell", cellType: MapListCell.self)) { index, data, cell in
 				cell.setup(location: data)

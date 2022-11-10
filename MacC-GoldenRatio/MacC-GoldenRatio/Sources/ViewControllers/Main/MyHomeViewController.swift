@@ -18,14 +18,6 @@ final class MyHomeViewController: UIViewController {
 	private lazy var collectionView = DiaryCollectionView()
 	private lazy var addDiaryButton = HomeAddDiaryButtonView()
 	
-	private lazy var testButton: UIButton = {
-		let button = UIButton()
-		button.setTitle("지도", for: .normal)
-		button.setTitleColor(UIColor.red, for: .normal)
-		
-		return button
-	}()
-	
 	override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
 		super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
 		setupSubViews()
@@ -40,16 +32,13 @@ final class MyHomeViewController: UIViewController {
 	private func setupSubViews() {
 		self.view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
 
-		[collectionView, addDiaryButton, testButton].forEach { view.addSubview($0) }
+		[collectionView, addDiaryButton].forEach { view.addSubview($0) }
 		collectionView.snp.makeConstraints {
 			$0.top.equalTo(view.safeAreaLayoutGuide)
 			$0.bottom.leading.trailing.equalTo(view.safeAreaLayoutGuide)
 		}
 		addDiaryButton.snp.makeConstraints {
 			$0.bottom.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(myDevice.MyDiariesViewAddDiaryButtonPadding)
-		}
-		testButton.snp.makeConstraints {
-			$0.bottom.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(myDevice.MyDiariesViewAddDiaryButtonPadding+100)
 		}
 	}
 	
@@ -70,14 +59,6 @@ final class MyHomeViewController: UIViewController {
 				popUp.addButton(buttonTitle: "다이어리 추가", action: self.createButtonTapped)
 				popUp.addButton(buttonTitle: "초대코드로 참가", action: self.joinButtonTapped)
 				self.present(popUp, animated: false)
-			}
-			.disposed(by: disposeBag)
-		
-		testButton.rx.tap
-			.bind {
-				let vc = MyPlaceViewController()
-				vc.bind(self.viewModel.mapViewModel)
-				self.navigationController?.pushViewController(vc, animated: true)
 			}
 			.disposed(by: disposeBag)
 	}

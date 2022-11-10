@@ -33,7 +33,7 @@ class MapListViewController: UIViewController {
 		self.selectedLocation = selectedLocation
 		super.init(nibName: nil, bundle: nil)
 		layout()
-		mapListView.bind(viewModel, day, selectedLocation)
+		mapListView.bind(viewModel, MapModel(), day, selectedLocation)
 	}
 	
 	required init?(coder: NSCoder) {
@@ -55,7 +55,7 @@ class MapListViewController: UIViewController {
 	func bind(_ viewModel: MapViewModel,_ day: Int,_ selectedLocation: Location?) {
 		mapListView.delegate = nil
 		mapListView.dataSource = nil
-		mapListView.bind(viewModel, day, selectedLocation)
+		mapListView.bind(viewModel, MapModel(), day, selectedLocation)
 	}
 	
 	func layout() {

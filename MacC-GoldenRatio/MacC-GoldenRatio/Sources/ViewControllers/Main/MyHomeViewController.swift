@@ -60,7 +60,9 @@ final class MyHomeViewController: UIViewController, UICollectionViewDelegateFlow
 		collectionView.rx
 			.modelSelected(Diary.self)
 			.subscribe(onNext: { diary in
-				let vc = MyDiaryPagesViewController(diaryData: diary)
+				// let vc = MyDiaryPagesViewController(diaryData: diary)
+                let vc = MyDiaryDaysViewController()
+                vc.bind(MyDiaryDaysViewModel(diary: diary))
 				self.navigationController?.pushViewController(vc, animated: true)
 			})
 			.disposed(by: disposeBag)

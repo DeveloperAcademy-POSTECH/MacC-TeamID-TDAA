@@ -125,11 +125,12 @@ class StickerView: UIView {
     
     internal func updateControlsPosition() {
         DispatchQueue.main.async {
+            guard let borderView = self.borderView, let deleteController = self.deleteController, let resizingController = self.resizingController else { return }
             let inset = self.myDevice.stickerBorderInset
-            self.borderView.frame = CGRect(x: -inset, y: -inset, width: self.bounds.size.width + inset * 2,
+            borderView.frame = CGRect(x: -inset, y: -inset, width: self.bounds.size.width + inset * 2,
                                            height: self.bounds.size.height + inset * 2)
-            self.deleteController.center = CGPoint(x: self.borderView.frame.maxX, y: self.borderView.frame.origin.y)
-            self.resizingController.center = CGPoint(x: self.borderView.frame.maxX, y: self.borderView.frame.maxY)
+            deleteController.center = CGPoint(x: self.borderView.frame.maxX, y: self.borderView.frame.origin.y)
+            resizingController.center = CGPoint(x: self.borderView.frame.maxX, y: self.borderView.frame.maxY)
         }
     }
     
@@ -237,15 +238,18 @@ class StickerView: UIView {
     }
 
     // MARK: 스티커 자체에 입력되는 제스처 관련 메서드
-    @objc private func stickerViewSingleTap(_ sender: UITapGestureRecognizer) {
+    @objc internal func stickerViewSingleTap(_ sender: UITapGestureRecognizer) {
         guard !isStickerViewMode else { return }
         
-        do {
-            let isStickerViewActive = try self.isStickerViewActive.value()
-            updateIsStickerViewActive(value: !isStickerViewActive)
-        } catch {
-            print(error)
-        }
+        self.isStickerViewActive
+            .observe(on: MainScheduler.instance)
+            .take(1)
+            .subscribe(onNext: {
+                if !$0 {
+                    self.updateIsStickerViewActive(value: !$0)
+                }
+            })
+            .disposed(by: self.disposeBag)
     }
     
     @objc private func pinch(_ sender: UIPinchGestureRecognizer) {

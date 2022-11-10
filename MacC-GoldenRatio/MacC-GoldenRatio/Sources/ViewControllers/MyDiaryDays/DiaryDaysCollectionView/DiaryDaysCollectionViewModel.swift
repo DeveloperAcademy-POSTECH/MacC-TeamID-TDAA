@@ -10,7 +10,6 @@ import RxSwift
 import UIKit
 
 struct DiaryDaysCollectionViewModel {
-    let diaryDaysCellViewModel = DiaryDaysCellViewModel()
     private let disposeBag = DisposeBag()
     
     // ViewModel -> View
@@ -27,11 +26,21 @@ struct DiaryDaysCollectionViewModel {
         for day in 1...days {
             
             // Model -> ViewModel
-            let dayLabelData = "\(day)일차"
-            let dateLabelData = model.makeDateString(day: day)
-            let imageData: UIImage? = UIImage(named: "manLong")
-            
-            dataForCellData.append(DiaryDayModel(dayLabel: dayLabelData, dateLabel: dateLabelData, image: imageData))
+            model.fetchImage(day: day)
+                .observe(on: MainScheduler.instance)
+                .subscribe(onNext: {
+                    let dayLabelData = "\(day)일차"
+                    let dateLabelData = model.makeDateString(day: day)
+                    let imageData: UIImage? = $0
+                    
+                    if let imageData = imageData {
+                        dataForCellData.append(DiaryDayModel(dayLabel: dayLabelData, dateLabel: dateLabelData, image: imageData))
+                    } else {
+                        dataForCellData.append(DiaryDayModel(dayLabel: dayLabelData, dateLabel: dateLabelData, image: UIImage(named: "manLong")!))
+                    }
+                    
+                })
+                .disposed(by: disposeBag)
         }
         
         self.cellData = Observable<[DiaryDayModel]>.just(dataForCellData)

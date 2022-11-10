@@ -13,7 +13,6 @@ import UIKit
 class DiaryDaysCell: UICollectionViewCell {
     let identifier = "DiaryDaysCell"
     let disposeBag = DisposeBag()
-    let cellViewModel = DiaryDaysCellViewModel()
     
     let backImageView = UIImageView()
     let dayLabel = UILabel()

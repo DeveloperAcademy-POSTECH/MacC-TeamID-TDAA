@@ -35,9 +35,6 @@ class DiaryDaysCollectionView: UICollectionView {
                 cell.backImageView.image = data.image
             }
             .disposed(by: disposeBag)
-        
-        // TODO: item row가 일차, 뷰 연결에서 활용
-        // self.rx.itemSelected
     }
     
     private func attribute() {

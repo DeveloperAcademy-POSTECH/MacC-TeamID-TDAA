@@ -22,6 +22,11 @@ class MyDiaryDaysViewController: UIViewController {
         layout()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+    
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.labelTtitleFont2
@@ -83,11 +88,21 @@ class MyDiaryDaysViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        self.diaryDaysCollectionView.bind(viewModel.diarydaysCollectoinViewModel)
+        self.diaryDaysCollectionView.bind(viewModel.diarydaysCollectionViewModel)
         self.albumCollectionView.bind(viewModel.albumCollectionViewModel)
         
-        self.albumCollectionView.rx
-            .itemSelected
+        self.diaryDaysCollectionView.rx.itemSelected
+            .map { $0.row }
+            .subscribe(onNext: { selectedDay in
+                Task {
+                    let vc = await PageViewController(diary: viewModel.myDiaryDaysModel.diary, selectedDay: selectedDay)
+                    self.navigationController?.setNavigationBarHidden(false, animated: false)
+                    self.navigationController?.pushViewController(vc, animated: true)
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        self.albumCollectionView.rx.itemSelected
             .subscribe(onNext: { index in
                 let vc = MyAlbumPhotoViewController(photoPage: index.item, totalCount: viewModel.albumCollectionViewModel.collectionCellData.value.count)
                 vc.bind(viewModel: viewModel.albumCollectionViewModel)
@@ -173,7 +188,7 @@ class MyDiaryDaysViewController: UIViewController {
     private func backButtonTapped() {
         NotificationCenter.default.post(name: .reloadDiary, object: nil)
         self.navigationController?.isNavigationBarHidden = true
-        self.navigationController?.popViewController(animated: true)
+        self.navigationController?.popViewController(animated: false)
     }
     
     @objc private func copyButtonTapped() {

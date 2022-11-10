@@ -10,7 +10,7 @@ import RxSwift
 
 class MyDiaryDaysViewModel {
     
-    let albumCollectoinViewModel = AlbumCollectionViewModel()
+    let albumCollectionViewModel = AlbumCollectionViewModel()
     
     let segmentIndex = BehaviorRelay<Int>(value: 0)
     let selectedViewType: Driver<[Bool]>
@@ -25,6 +25,6 @@ class MyDiaryDaysViewModel {
             }
             .asDriver(onErrorJustReturn: [Bool](repeating: false, count: 3))
         
-        self.albumCollectoinViewModel.collectionDiaryData.onNext(diary)
+        self.albumCollectionViewModel.collectionDiaryData.onNext(diary)
     }
 }

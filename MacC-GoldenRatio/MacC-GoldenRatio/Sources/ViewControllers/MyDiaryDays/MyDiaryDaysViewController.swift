@@ -81,7 +81,17 @@ class MyDiaryDaysViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        self.albumCollectionView.bind(viewModel.albumCollectoinViewModel)
+        self.albumCollectionView.bind(viewModel.albumCollectionViewModel)
+        
+        self.albumCollectionView.rx
+            .itemSelected
+            .subscribe(onNext: { index in
+                let vc = MyAlbumPhotoViewController(photoPage: index.item, totalCount: viewModel.albumCollectionViewModel.collectionCellData.value.count)
+                vc.bind(viewModel: viewModel.albumCollectionViewModel)
+                vc.modalPresentationStyle = .fullScreen
+                self.present(vc, animated: true)
+            })
+            .disposed(by: disposeBag)
     }
     
     // MARK: Attribute & Layout

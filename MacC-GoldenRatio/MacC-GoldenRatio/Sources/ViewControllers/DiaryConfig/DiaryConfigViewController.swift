@@ -129,9 +129,7 @@ class DiaryConfigViewController: UIViewController {
         viewModel.complete
             .drive(onNext: {
                 if viewModel.checkAvailable() {
-                    viewModel.uploadImage() {
-                        self.dismiss()
-                    }
+                    self.dismiss()
                 } else {
                     self.view.showToastMessage("작성이 완료되지 않았습니다.")
                 }
@@ -231,17 +229,20 @@ extension DiaryConfigViewController {
     private func dismiss() {
         if let parentNavigationController: UINavigationController = self.presentingViewController as? UINavigationController {
             self.presentingViewController?.dismiss(animated: true) {
-                switch self.viewModel.configState {
-                case .create:
-                    self.viewModel.addDiary()
-                    NotificationCenter.default.post(name: .reloadDiary, object: nil)
-                    guard let diary = self.viewModel.diary else { return }
-                    let myDiaryPagesVC = MyDiaryPagesViewController(diaryData: diary)
-                    parentNavigationController.isNavigationBarHidden = false
-                    parentNavigationController.pushViewController(myDiaryPagesVC, animated: true)
-                    
-                case .modify:
-                    self.viewModel.updateDiary()
+                
+                self.viewModel.uploadImage() {
+                    switch self.viewModel.configState {
+                    case .create:
+                        self.viewModel.addDiary()
+                        NotificationCenter.default.post(name: .reloadDiary, object: nil)
+                        guard let diary = self.viewModel.diary else { return }
+                        let myDiaryPagesVC = MyDiaryPagesViewController(diaryData: diary)
+                        parentNavigationController.isNavigationBarHidden = false
+                        parentNavigationController.pushViewController(myDiaryPagesVC, animated: true)
+                        
+                    case .modify:
+                        self.viewModel.updateDiary()
+                    }
                 }
             }
         }
@@ -308,7 +309,7 @@ extension DiaryConfigViewController {
             .asDriver(onErrorJustReturn: Void())
             .drive(onNext: {
                 let alertController = UIAlertController(title: "대표 이미지 설정", message: nil, preferredStyle: .actionSheet)
-
+                
                 alertController.addAction(UIAlertAction(title: "앨범에서 사진 선택", style: .default, handler: { [weak self] _ in
                     self?.view.endEditing(true)
                     self?.presentImagePicker()

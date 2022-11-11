@@ -37,13 +37,12 @@ struct Page: Codable {
 }
 
 struct Item: Codable {
-    let itemUUID: String
-    let itemType: ItemType
-    var contents: [String]
-    // map -> [이름, 주소, 위도, 경도]
-    // image ->
-    // sticker ->
-    // location ->
+	let itemUUID: String
+	let itemType: ItemType
+	var contents: [String]
+    // location -> [이름, 주소, 위도, 경도]
+    // image -> [이미지 URL]
+    // sticker -> [Asset 이름]
     
     /// 상위 뷰의 좌표 시스템에서 Sticker의 위치 좌표, 그리고 크기를 나타냅니다.
     var itemFrame: [Double]

@@ -31,7 +31,7 @@ class DiaryConfigViewController: UIViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.rx.setDelegate(self)
             .disposed(by: disposeBag)
-        collectionView.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
+        collectionView.backgroundColor = UIColor(named: "appBackgroundColor")!
         
         return collectionView
     }()
@@ -153,7 +153,7 @@ class DiaryConfigViewController: UIViewController {
         let tapGesture = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
         view.addGestureRecognizer(tapGesture)
         tapGesture.cancelsTouchesInView = false
-        view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
+        view.backgroundColor = UIColor(named: "appBackgroundColor")!
         
         diaryConfigCollectionView.register(DiaryConfigCollectionViewCell.self, forCellWithReuseIdentifier: "DiaryConfigTitleCell")
         diaryConfigCollectionView.register(DiaryConfigCollectionViewCell.self, forCellWithReuseIdentifier: "DiaryConfigLocationCell")
@@ -296,7 +296,6 @@ extension DiaryConfigViewController {
                         cell.contentButton.layoutIfNeeded()
                     }
                 })
-                
                 self.present(pickerController, animated: true, completion: nil)
             })
             .disposed(by: self.disposeBag)

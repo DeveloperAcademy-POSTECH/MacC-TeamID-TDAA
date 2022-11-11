@@ -63,8 +63,8 @@ class PopUpViewController: UIViewController {
     private lazy var buttonStackView: UIStackView = {
         let view = UIStackView()
         view.axis = .vertical
-        view.spacing = 6.0
-        view.distribution = .fillEqually
+        view.spacing = 22.0
+        view.distribution = .fill
         view.alignment = .center
         return view
     }()
@@ -114,7 +114,7 @@ class PopUpViewController: UIViewController {
             containerView.snp.makeConstraints {
                 $0.trailing.equalToSuperview().inset(20)
                 $0.top.equalToSuperview().inset(100)
-                $0.width.equalTo(155)
+                $0.width.equalTo(165)
             }
             
         default:
@@ -123,7 +123,7 @@ class PopUpViewController: UIViewController {
         
         
         buttonStackView.snp.makeConstraints {
-            $0.top.leading.bottom.trailing.equalTo(containerView).inset(10)
+            $0.top.leading.bottom.trailing.equalTo(containerView).inset(11)
         }
     }
     
@@ -136,6 +136,23 @@ class PopUpViewController: UIViewController {
     public func addButton(buttonTitle: String, action: (() -> Void)? = nil) {
         let button = UIButton()
         button.setTitle(buttonTitle, for: .normal)
+        button.titleLabel?.font = device.popUpModalFont
+        button.setTitleColor(.black, for: .normal)
+        button.isUserInteractionEnabled = true
+        button.addAction(for: .touchUpInside) { _ in
+            self.dismissController()
+            action?()
+        }
+        buttons.append(button)
+    }
+    
+    // SF Symbol 사용
+    public func addButton(buttonTitle: String, buttonSymbol: String, buttonSize: CGFloat, action: (() -> Void)? = nil) {
+        let button = UIButton()
+        let configuration = UIImage.SymbolConfiguration(pointSize: buttonSize)
+        button.setTitle(buttonTitle, for: .normal)
+        button.setImage(UIImage(systemName: buttonSymbol, withConfiguration: configuration) ?? UIImage(), for: .normal)
+        button.tintColor = .black
         button.titleLabel?.font = device.popUpModalFont
         button.setTitleColor(.black, for: .normal)
         button.isUserInteractionEnabled = true

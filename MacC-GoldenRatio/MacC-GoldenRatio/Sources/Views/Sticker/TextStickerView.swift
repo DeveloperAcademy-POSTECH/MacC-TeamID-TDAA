@@ -20,13 +20,13 @@ class TextStickerView: StickerView {
     let defaultPosition = CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 4)
     private let placehloderText = "텍스트를 입력해주세요."
 
-    var isTextStickerViewEditMode: BehaviorSubject<TextStickerViewMode> = BehaviorSubject(value: TextStickerViewMode.inActive)
-    
     var editModeDefaultFrame: CGRect!
 
-    private var textStickerDefaultPosition: (CGRect,CGAffineTransform)!
+    var textStickerViewMode: BehaviorSubject<TextStickerViewMode> = BehaviorSubject(value: TextStickerViewMode.inActive)
+    
+    private var textStickerDefaultUI: (CGRect,CGAffineTransform)!
 
-    private var textStickerEditTextModePosition: BehaviorSubject<(CGRect, CGAffineTransform)>!
+    private var textStickerEditTextModeUI: BehaviorSubject<(CGRect, CGAffineTransform)> = BehaviorSubject(value: (CGRect(), CGAffineTransform.identity))
 
     
     let textView: UITextView = {
@@ -66,7 +66,6 @@ class TextStickerView: StickerView {
             await self.bindTextStickerDefaultPositionByStickerViewData()
             await self.setTextStickerEditModePositionObservable()
             await self.bindTextStickerPositionByTextStickerMode()
-            await self.bindTextStickerComponentByTextStickerEditMode()
             
             DispatchQueue.main.async {
                 self.configureTextStickerConstraints()
@@ -74,7 +73,9 @@ class TextStickerView: StickerView {
                 super.setupDefaultAttributes()
             }
 
-            self.isTextStickerViewEditMode.onNext(TextStickerViewMode.editText)
+            await self.bindTextStickerComponentByTextStickerEditMode()
+            self.textStickerViewMode.onNext(TextStickerViewMode.editText)
+
         }
     }
     
@@ -91,13 +92,13 @@ class TextStickerView: StickerView {
             await self.bindTextStickerDefaultPositionByStickerViewData()
             await self.setTextStickerEditModePositionObservable()
             await self.bindTextStickerPositionByTextStickerMode()
-            await self.bindTextStickerComponentByTextStickerEditMode()
             
             DispatchQueue.main.async {
                 self.configureTextStickerConstraints()
                 super.setupContentView(content: self.textView)
                 super.setupDefaultAttributes()
             }
+            await self.bindTextStickerComponentByTextStickerEditMode()
         }
     }
     
@@ -108,7 +109,7 @@ class TextStickerView: StickerView {
     private func bindTextStickerContents() async {
         
         self.stickerViewData?.contentsObservable
-            .observe(on: MainScheduler.instance)
+            .observe(on: MainScheduler.asyncInstance)
             .map {
                 if $0[0] == "" {
                     return self.placehloderText
@@ -118,7 +119,9 @@ class TextStickerView: StickerView {
             }
             .subscribe(onNext: {
                 self.textView.text = $0
-                self.textImageView.image = $0.image()
+                
+                let attributes: [NSAttributedString.Key: Any] = [.font: UIFont.navigationTitleFont]
+                self.textImageView.image = $0.image(withAttributes: attributes)
             })
             .disposed(by: self.disposeBag)
 
@@ -130,9 +133,9 @@ class TextStickerView: StickerView {
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: {
                 if !$0 {
-                    self.isTextStickerViewEditMode.onNext(TextStickerViewMode.inActive)
+                    self.textStickerViewMode.onNext(TextStickerViewMode.inActive)
                 } else {
-                    self.isTextStickerViewEditMode.onNext(TextStickerViewMode.editUI)
+                    self.textStickerViewMode.onNext(TextStickerViewMode.editUI)
                 }
             })
             .disposed(by: self.disposeBag)
@@ -141,16 +144,26 @@ class TextStickerView: StickerView {
     
     private func bindTextStickerDefaultPositionByStickerViewData() async {
         guard let stickerViewData = self.stickerViewData else { return }
+        
+        // just 초기화
         Observable
-            .combineLatest(self.isTextStickerViewEditMode, stickerViewData.frameObservable, stickerViewData.transitionObservable)
+            .combineLatest(stickerViewData.frameObservable, stickerViewData.transitionObservable)
+            .observe(on:MainScheduler.asyncInstance)
+            .take(1)
+            .subscribe(onNext: {
+                self.textStickerDefaultUI = ($0, $1)
+                
+            })
+            .disposed(by: self.disposeBag)
+        
+        Observable
+            .combineLatest(self.textStickerViewMode, stickerViewData.frameObservable, stickerViewData.transitionObservable)
             .observe(on:MainScheduler.asyncInstance)
             .subscribe(onNext: {
                 
                 switch $0 {
-                case .inActive:
-                    self.textStickerDefaultPosition = ($1, $2)
                 case .editUI:
-                    self.textStickerDefaultPosition = ($1, $2)
+                    self.textStickerDefaultUI = ($1, $2)
                 default:
                     break
                 }
@@ -160,34 +173,36 @@ class TextStickerView: StickerView {
     }
     
     private func setTextStickerEditModePositionObservable() async {
-        
-        var targetFrame = self.frame
-        targetFrame.origin.x = self.defaultPosition.x - ( targetFrame.width / 2 )
-        targetFrame.origin.y = self.defaultPosition.y - ( targetFrame.height / 2 )
-        
-        self.editModeDefaultFrame = targetFrame
-        self.textStickerEditTextModePosition = BehaviorSubject(value: (targetFrame, CGAffineTransform.identity))
-        
+        self.stickerViewData?.frameObservable
+            .observe(on: MainScheduler.asyncInstance)
+            .take(1)
+            .subscribe(onNext: {
+                var targetFrame = $0
+                targetFrame.origin.x = self.defaultPosition.x - ( targetFrame.width / 2 )
+                targetFrame.origin.y = self.defaultPosition.y - ( targetFrame.height / 2 )
+                self.editModeDefaultFrame = targetFrame
+                self.textStickerEditTextModeUI.onNext((targetFrame, CGAffineTransform.identity))
+            })
+            .disposed(by: self.disposeBag)
     }
     
     private func bindTextStickerPositionByTextStickerMode() async {
         Observable
-            .combineLatest(isTextStickerViewEditMode, textStickerEditTextModePosition)
+            .combineLatest(textStickerViewMode, textStickerEditTextModeUI)
             .observe(on:MainScheduler.asyncInstance)
             .subscribe(onNext: {
                 
                 switch $0 {
                 case .inActive:
-                    let frame = CGRect(origin: self.textStickerDefaultPosition.0.origin, size: self.frame.size)
-                    self.stickerViewData?.updateUIItem(frame: frame, bounds: self.bounds, transform: self.textStickerDefaultPosition.1)
-
-                case .editUI:
-                    break
-                
+                    let frame = CGRect(origin: self.textStickerDefaultUI.0.origin, size: self.frame.size)
+                    self.stickerViewData?.updateUIItem(frame: frame, bounds: self.bounds, transform: self.textStickerDefaultUI.1)
                 case .editText:
                     let bounds = CGRect(origin: self.bounds.origin, size: $1.0.size)
                     self.stickerViewData?.updateUIItem(frame: $1.0, bounds: bounds, transform: $1.1)
+                case .editUI:
+                    break
                 }
+                
                 self.updateControlsPosition()
                 
             })
@@ -197,7 +212,7 @@ class TextStickerView: StickerView {
 
     private func bindTextStickerComponentByTextStickerEditMode() async {
 
-        self.isTextStickerViewEditMode
+        self.textStickerViewMode
             .observe(on: MainScheduler.asyncInstance)
             .subscribe(onNext: {
                 switch $0 {
@@ -208,6 +223,13 @@ class TextStickerView: StickerView {
                     
                     self.textView.isHidden = false
                     self.textImageView.isHidden = true
+
+                    super.enableTranslucency(state: false)
+                    
+                    guard let deleteController = super.deleteController, let resizingController = super.resizingController else { return }
+                    deleteController.isHidden = true
+                    resizingController.isHidden = true
+
                 default:
                     self.textView.isEditable = false
                     self.textView.isUserInteractionEnabled = false
@@ -243,7 +265,7 @@ class TextStickerView: StickerView {
             .take(1)
             .subscribe(onNext: {
                 if $0 {
-                    self.isTextStickerViewEditMode.onNext(TextStickerViewMode.editText)
+                    self.textStickerViewMode.onNext(TextStickerViewMode.editText)
                 } else {
                     self.updateIsStickerViewActive(value: !$0)
                 }
@@ -280,7 +302,7 @@ extension TextStickerView: UITextViewDelegate {
             let editModeFrame = CGRect(origin: editModePosition, size: estimatedSize)
             
             self.stickerViewData?.updateContents(contents: [self.textView.text])
-            self.textStickerEditTextModePosition.onNext((editModeFrame, editModeTransform))
+            self.textStickerEditTextModeUI.onNext((editModeFrame, editModeTransform))
         }
     }
     

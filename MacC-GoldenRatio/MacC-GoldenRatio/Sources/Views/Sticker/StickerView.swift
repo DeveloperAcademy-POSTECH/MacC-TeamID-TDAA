@@ -27,9 +27,9 @@ class StickerView: UIView {
     private var previousPoint: CGPoint?
     private var deltaAngle: CGFloat?
 
-    private var resizingController: StickerControllerView!
-    private var deleteController: StickerControllerView!
-    private var borderView: StickerBorderView!
+    internal var resizingController: StickerControllerView!
+    internal var deleteController: StickerControllerView!
+    internal var borderView: StickerBorderView!
 
     private var oldBounds: CGRect!
     private var oldTransform: CGAffineTransform!
@@ -138,7 +138,7 @@ class StickerView: UIView {
         DispatchQueue.main.async {
             let stickerSingleTap = UITapGestureRecognizer(target: self, action: #selector(self.stickerViewSingleTap(_:)))
             self.addGestureRecognizer(stickerSingleTap)
-                        
+            
             // stickerBorder
             self.borderView = StickerBorderView(frame: self.bounds, isStickerViewActive: self.isStickerViewActive)
             self.addSubview(self.borderView)
@@ -154,19 +154,18 @@ class StickerView: UIView {
             let panResizeGesture = UIPanGestureRecognizer(target: self, action: #selector(self.resizeTranslate(_:)))
             self.resizingController = StickerControllerView(image: resizingControlImage, gestureRecognizer: panResizeGesture, isStickerViewActive: self.isStickerViewActive)
             self.addSubview(self.resizingController)
-
+            
             let pinchResizeGesture = UIPinchGestureRecognizer(target: self, action: #selector(self.pinch(_:)))
             pinchResizeGesture.delegate = self
             self.addGestureRecognizer(pinchResizeGesture)
-
+            
             let rotateResizeGesture = UIRotationGestureRecognizer(target: self, action: #selector(self.rotate(_:)))
             rotateResizeGesture.delegate = self
             self.addGestureRecognizer(rotateResizeGesture)
             
             self.updateControlsPosition()
-
-            self.deltaAngle = atan2(self.frame.origin.y + self.frame.height - self.center.y, self.frame.origin.x + self.frame.width - self.center.x)
             
+            self.deltaAngle = atan2(self.frame.origin.y + self.frame.height - self.center.y, self.frame.origin.x + self.frame.width - self.center.x)
         }
     }
     
@@ -347,7 +346,7 @@ class StickerView: UIView {
         }
     }
 
-    private func enableTranslucency(state: Bool) {
+    internal func enableTranslucency(state: Bool) {
         UIView.animate(withDuration: 0.1) {
             if state == true {
                 self.alpha = 0.65

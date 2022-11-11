@@ -15,6 +15,12 @@ class DiaryColorCollectionView: UICollectionView {
     
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
+        
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.estimatedItemSize = CGSize(width: 28, height: 28)
+        flowLayout.scrollDirection = .horizontal
+        
+        self.collectionViewLayout = layout
         self.backgroundColor = UIColor.clear
         self.register(DiaryColorCell.self, forCellWithReuseIdentifier: "DiaryColorCell")
     }
@@ -26,28 +32,26 @@ class DiaryColorCollectionView: UICollectionView {
     func bind(_ viewModel: DiaryColorCollectionViewModel) {
         
         viewModel.cellData
-            .bind(to: self.rx.items(cellIdentifier: DiaryColorCell.identifier, cellType: DiaryColorCell.self)) { index, state, cell in
+            .observe(on: MainScheduler.instance)
+            .bind(to: self.rx.items(cellIdentifier: "DiaryColorCell", cellType: DiaryColorCell.self)) { index, state, cell in
                 let cellColor = viewModel.colors[index]
-                cell.circleForeground.backgroundColor = UIColor(named: "\(cellColor)Color")
-                Observable<Bool>
-                    .just(state)
-                    .bind(to: cell.cellViewModel.colorSelect)
-                    .disposed(by: self.disposeBag)
+                //cell.backgroundColor = UIColor(named: cellColor)
+                cell.simpleview.backgroundColor = state ? .white : .darkgrayColor
             }
             .disposed(by: disposeBag)
         
+
         self.rx.itemSelected
-            .map { $0.row }
-            .bind(to: viewModel.itemSelected)
-            .disposed(by: disposeBag)
-        
-        self.rx.didEndDisplayingCell
-            .subscribe(onNext: { _, indexPath in
-                guard let cell = self.dequeueReusableCell(withReuseIdentifier: DiaryColorCell.identifier, for: indexPath) as? DiaryColorCell else { return }
-                    cell.disposeBag = DisposeBag()
+            .subscribe(onNext: { indexPath in
+                print(indexPath.item)
             })
             .disposed(by: disposeBag)
+        
+//            .map { $0.item }
+//            .bind(to: viewModel.itemSelected)
+//            .disposed(by: disposeBag)
     }
-    
 }
+
+
 

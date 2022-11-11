@@ -32,7 +32,7 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
         return title
     }()
     
-    lazy var titleInputField: UITextField = {
+    lazy var titleInputField: UITextField? = {
         let textField = UITextField()
         textField.font = UIFont(name: "EF_Diary", size: 17)
         textField.returnKeyType = .done
@@ -42,15 +42,15 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
     }()
     
     lazy var contentButton: UIButton = {
-        let button = UIButton(type: .custom)
+        let button = UIButton(type: .system)
         button.titleLabel?.font = device.diaryConfigCellContentFont
         button.contentHorizontalAlignment = .left
         return button
     }()
     
-    lazy var contentTap : Observable<Void> = {
+    var contentTap : Observable<Void>{
         return self.contentButton.rx.tap.asObservable()
-    }()
+    }
     
     lazy var clearButton: UIButton = {
         let button = UIButton()
@@ -67,9 +67,7 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
     
     lazy var diaryColorCollectionView: DiaryColorCollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.estimatedItemSize = CGSize(width: 32, height: 32)
-        flowLayout.minimumInteritemSpacing = 20
-        flowLayout.minimumLineSpacing = 20
+        flowLayout.estimatedItemSize = CGSize(width: 28, height: 28)
         let collectionView = DiaryColorCollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.register(DiaryColorCell.self, forCellWithReuseIdentifier: "DiaryColorCell")
         return collectionView
@@ -89,12 +87,15 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
         
         viewModel.resetContentLabel
             .subscribe(onNext: {
-                viewModel.textFieldText.accept(nil)
+                if let _ = self.titleInputField {
+                    viewModel.textFieldText
+                        .accept(nil)
+                }
                 self.contentAttribute($0, diary: nil)
             })
             .disposed(by: disposeBag)
         
-        titleInputField.rx.text
+        titleInputField?.rx.text
             .bind(to: viewModel.textFieldText)
             .disposed(by: disposeBag)
         
@@ -111,23 +112,23 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
     
     
     func contentAttribute(_ contentType: ConfigContentType, diary: Diary?) {
-        let attributedString = NSMutableAttributedString(string: contentType.title)
-        attributedString.setColor(color: UIColor.requiredItemsColor, forText: "*")
-        contentTitle.attributedText = attributedString
+        contentTitle.text = contentType.title
         
         var diaryName: String?
         var locationName: String
         var dateText: String
+        
         if let diary = diary {
             let startDate = diary.diaryStartDate.toDate() ?? Date()
             let endDate = diary.diaryEndDate.toDate() ?? Date()
-            contentButton.setTitleColor(.black, for: .normal)
+            contentButton.tintColor = .black
             
             diaryName = diary.diaryName
             locationName = diary.diaryLocation.locationName
             dateText = "\(startDate.customFormat()) (\(startDate.dayOfTheWeek())) - \(endDate.customFormat()) (\(endDate.dayOfTheWeek()))"
+            
         } else {
-            contentButton.setTitleColor(.placeholderText, for: .normal)
+            contentButton.tintColor = .placeholderText
             diaryName = nil
             locationName = "여행지를 입력해주세요."
             dateText = "여행한 날짜를 선택해주세요."
@@ -135,9 +136,11 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
         
         switch contentType {
         case .diaryName:
-            contentButton.isHidden = true
+            contentButton.setTitle(nil, for: .normal)
+            guard let titleInputField = titleInputField else { return }
             titleInputField.text = diaryName
             contentView.addSubview(titleInputField)
+            
             titleInputField.snp.makeConstraints {
                 $0.leading.equalToSuperview().inset(device.diaryConfigCellLeftInset)
                 $0.trailing.equalToSuperview().inset(50)
@@ -147,47 +150,20 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
             
         case .location:
             contentButton.setTitle(locationName, for: .normal)
-            contentView.addSubview(contentButton)
-            contentButton.snp.makeConstraints{
-                $0.leading.equalTo(dividerView)
-                $0.trailing.equalToSuperview().inset(50)
-                $0.height.equalTo(44)
-                $0.bottom.equalToSuperview()
-            }
-            
         case .diaryDate:
             contentButton.setTitle(dateText, for: .normal)
-            contentView.addSubview(contentButton)
-            contentButton.snp.makeConstraints{
-                $0.leading.equalTo(dividerView)
-                $0.trailing.equalToSuperview().inset(50)
-                $0.height.equalTo(44)
-                $0.bottom.equalToSuperview()
-            }
-            
         case .diaryColor:
-            contentButton.isHidden = true
-            clearButton.isHidden = true
-            dividerView.isHidden = true
-            contentView.addSubview(diaryColorCollectionView)
-            diaryColorCollectionView.snp.makeConstraints {
-                $0.top.equalTo(contentTitle.snp.bottom).offset(20)
-                $0.leading.equalToSuperview().inset(20)
-                $0.width.equalTo(241)
-                $0.height.equalTo(84)
-            }
+            contentButton.setTitle(nil, for: .normal)
+            diaryColorCollectionView.rx.setDelegate(self)
+                .disposed(by: disposeBag)
             
-        case .diaryImage:
-            clearButton.isHidden = true
-            dividerView.isHidden = true
-            contentButton.backgroundColor = .clear
-            contentButton.layer.cornerRadius = 20
-            contentView.addSubview(contentButton)
-            contentButton.snp.makeConstraints{
-                $0.leading.equalTo(dividerView)
-                $0.width.height.equalTo(170)
-                $0.top.equalTo(contentTitle.snp.bottom).offset(10)
+            diaryColorCollectionView.snp.makeConstraints {
+                $0.top.equalTo(contentTitle.snp.bottom)
+                $0.leading.equalToSuperview()
+                $0.width.equalTo(241)
+                $0.height.equalTo(104)
             }
+
         }
     }
     
@@ -198,13 +174,20 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        [contentTitle, clearButton, dividerView].forEach {
+        [contentTitle, contentButton, clearButton, dividerView, diaryColorCollectionView].forEach {
             contentView.addSubview($0)
         }
         
         contentTitle.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(device.diaryConfigCellLeftInset+4)
-            $0.top.equalToSuperview().inset(20)
+            $0.bottom.equalTo(contentButton.snp.top)
+        }
+        
+        contentButton.snp.makeConstraints{
+            $0.leading.equalTo(dividerView)
+            $0.trailing.equalToSuperview().inset(50)
+            $0.height.equalTo(44)
+            $0.bottom.equalToSuperview()
         }
         
         clearButton.snp.makeConstraints {
@@ -227,5 +210,15 @@ extension Reactive where Base: UIButton {
         return Binder(self.base) { button, title -> Void in
             button.setTitle(title, for: controlState)
         }
+    }
+}
+
+extension DiaryConfigCollectionViewCell: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 32, height: 32)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
     }
 }

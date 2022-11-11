@@ -137,6 +137,7 @@ class MyDiaryPagesViewController: UIViewController {
             let title = diaryConfigVC.viewModel.diary?.diaryName
             self.titleLabel.text = title
             self.viewModel.diaryData.diaryName = title ?? ""
+            print(self.viewModel.diaryData.diaryName)
         }
     }
     
@@ -162,13 +163,9 @@ class MyDiaryPagesViewController: UIViewController {
     
     @objc func modifyButtonTapped() {
         let vc = DiaryConfigViewController()
-        viewModel.diaryDataSetup {
-            DispatchQueue.main.async {
-                vc.bind(DiaryConfigViewModel(diary: self.viewModel.diaryData))
-                vc.modalPresentationStyle = .fullScreen
-                self.present(vc, animated: true, completion: nil)
-            }
-        }
+        vc.bind(DiaryConfigViewModel(diary: self.viewModel.diaryData))
+        vc.modalPresentationStyle = .fullScreen
+        self.present(vc, animated: true, completion: nil)
     }
     
     @objc func outButtonTapped() {
@@ -325,9 +322,10 @@ extension MyDiaryPagesViewController: UICollectionViewDelegate {
         let selectedDay = indexPath.item
         
         self.viewModel.diaryDataSetup() {
+
             DispatchQueue.main.async {
                 Task {
-                    let pageViewController = await PageViewController(diary: self.viewModel.diaryData, selectedDay: selectedDay)
+                    let pageViewController = await PageViewModeViewController(diary: self.viewModel.diaryData, selectedDayIndex: selectedDay)
                     self.navigationController?.pushViewController(pageViewController, animated: false)
                     self.navigationController?.isNavigationBarHidden = false
                 }

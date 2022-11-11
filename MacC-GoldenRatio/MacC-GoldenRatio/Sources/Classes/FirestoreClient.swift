@@ -40,7 +40,8 @@ class FirestoreClient {
 					do {
 						diaries.append(try document.data(as: Diary.self))
 					} catch {
-						observer.onError(error)
+                        print(error)
+//						observer.onError(error)
 					}
 				}
 				observer.onNext(.success(diaries))

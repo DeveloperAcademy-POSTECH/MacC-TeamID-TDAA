@@ -11,10 +11,12 @@ struct DiaryColorCellViewModel {
     
     // ViewModel -> View
     let isSelected: Signal<Bool>
-    let colorSelect = PublishRelay<Bool>()
+    
+    let colorSelect = PublishRelay<Int>()
     
     init() {
         self.isSelected = colorSelect
+            .map { selectedIndex in true }
             .asSignal(onErrorJustReturn: false)
     }
 }

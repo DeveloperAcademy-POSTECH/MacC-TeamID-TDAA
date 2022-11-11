@@ -15,7 +15,6 @@ class DiaryCollectionViewCell: UICollectionViewCell {
 		let label =  UILabel()
 		label.font = UIFont.diaryTitleLabelFont
 		label.textColor = UIColor.darkgrayColor
-		
 		return label
 	}()
 	
@@ -23,7 +22,6 @@ class DiaryCollectionViewCell: UICollectionViewCell {
 		let label =  UILabel()
 		label.font = UIFont.diaryDateLabelFont
 		label.textColor = UIColor.darkgrayColor
-		
 		return label
 	}()
 	
@@ -31,19 +29,16 @@ class DiaryCollectionViewCell: UICollectionViewCell {
 		let label =  UILabel()
 		label.font = UIFont.diaryAddressLabelFont
 		label.textColor = UIColor.darkgrayColor
-		
 		return label
 	}()
 	
 	private lazy var cellCoverImageView: UIImageView = {
 		let imageView =  UIImageView()
-		
 		return imageView
 	}()
 	
 	private lazy var cellImageView: UIImageView = {
 		let imageView =  UIImageView()
-		imageView.contentMode = .scaleAspectFill
 		return imageView
 	}()
 	

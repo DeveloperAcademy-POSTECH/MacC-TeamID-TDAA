@@ -8,7 +8,7 @@
 import Foundation
 
 struct MapData {
-	let day: Int
-	let diaryLocation: Location
-	let locations: [Location]
+	let diaryName: String
+	let diaryCover: String
+	let location: Location
 }

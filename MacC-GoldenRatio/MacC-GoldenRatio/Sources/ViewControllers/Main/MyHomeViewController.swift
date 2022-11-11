@@ -10,7 +10,7 @@ import RxSwift
 import SnapKit
 import UIKit
 
-final class MyHomeViewController: UIViewController {
+final class MyHomeViewController: UIViewController, UICollectionViewDelegateFlowLayout {
 	private let disposeBag = DisposeBag()
 	private let viewModel = MyHomeViewModel()
 	private let myDevice = UIScreen.getDevice()
@@ -74,7 +74,7 @@ final class MyHomeViewController: UIViewController {
 				self.present(popUp, animated: false)
 			}
 			.disposed(by: disposeBag)
-      
+		
 		profileButton.rx.tap
 			.bind {
 				let vc = MyPageViewController()
@@ -86,7 +86,6 @@ final class MyHomeViewController: UIViewController {
 	private func setupNotification() {
 		NotificationCenter.default.addObserver(self, selector: #selector(reloadDiaryCell), name: .reloadDiary, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(changeAddButtonImage), name: .changeAddButtonImage, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(mapListHalfModal(notification:)), name: .mapAnnotationTapped, object: nil)
 	}
 	
 	private func isIndicator() {
@@ -103,40 +102,6 @@ final class MyHomeViewController: UIViewController {
 	
 	@objc private func changeAddButtonImage() {
 		addDiaryButton.setImage(UIImage(named: "plusButton"), for: .normal)
-	}
-
-	@objc private func mapListHalfModal(notification: NSNotification) {
-		guard let day = notification.userInfo?["day"] as? Int else {
-			return
-		}
-		
-		guard let selectedLocation = notification.userInfo?["selectedLocation"] as? Location else {
-			return
-		}
-		
-		let vc = MapListViewController(viewMdoel: viewModel.mapViewModel, day: day, selectedLocation: selectedLocation)
-		let titles = viewModel.mapViewModel.mapData
-			.value
-			.map { data in
-				return "\(data.day)일차"
-			}
-		
-		vc.configureSegmentedControl(titles: titles)
-		
-		if #available(iOS 15.0, *) {
-			vc.modalPresentationStyle = .pageSheet
-			if let sheet = vc.sheetPresentationController {
-				sheet.detents = [.medium(), .large()]
-				sheet.delegate = self
-				sheet.prefersGrabberVisible = true
-			}
-		} else {
-			vc.modalPresentationStyle = .custom
-			vc.transitioningDelegate = self
-		}
-		vc.view.backgroundColor = .white
-		
-		self.present(vc, animated: true)
 	}
 	
 	@objc func createButtonTapped() {
@@ -170,18 +135,5 @@ final class MyHomeViewController: UIViewController {
 		joinDiaryAlert.addAction(joinAction)
 		joinDiaryAlert.addAction(cancelAction)
 		self.present(joinDiaryAlert, animated: true)
-	}
-}
-
-extension MyHomeViewController: UISheetPresentationControllerDelegate {
-	@available(iOS 15.0, *)
-	func sheetPresentationControllerDidChangeSelectedDetentIdentifier(_ sheetPresentationController: UISheetPresentationController) {
-		print(sheetPresentationController.selectedDetentIdentifier == .large ? "large" : "medium")
-	}
-}
-
-extension MyHomeViewController: UIViewControllerTransitioningDelegate {
-	func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-		MapHalfModalPresentationController(presentedViewController: presented, presenting: presenting)
 	}
 }

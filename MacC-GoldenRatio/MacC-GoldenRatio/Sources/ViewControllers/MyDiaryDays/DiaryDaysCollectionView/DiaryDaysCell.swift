@@ -36,7 +36,7 @@ class DiaryDaysCell: UICollectionViewCell {
         backImageView.clipsToBounds = true
         
         gradientLayer.colors = [
-            UIColor.gradientColor(alpha: 0.7).cgColor,
+            UIColor.gradientColor(alpha: 1.0).cgColor,
             UIColor.gradientColor(alpha: 0.5).cgColor,
             UIColor.gradientColor(alpha: 0.0).cgColor
         ]

@@ -33,7 +33,7 @@ class DiaryDaysCollectionView: UICollectionView {
                 cell.dayLabel.text = data.dayLabel
                 cell.dateLabel.text = data.dateLabel
                 cell.backImageView.image = data.image
-                cell.gradientLayer.isHidden = (data.image == UIImage(named: "manLong")) ? true : false
+                cell.gradientLayer.isHidden = (data.image == UIImage(named: "diaryDaysDefault")) ? true : false
             }
             .disposed(by: disposeBag)
     }
@@ -43,8 +43,7 @@ class DiaryDaysCollectionView: UICollectionView {
         self.rx.setDelegate(self)
             .disposed(by: disposeBag)
         
-        // TODO: UIColor+ 추가 후 수정
-        self.backgroundColor = UIColor(named: "appBackgroundColor")!
+        self.backgroundColor = .clear
     }
 }
 

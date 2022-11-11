@@ -188,59 +188,11 @@ extension UIScreen {
         }
         
         // MARK: MyPlaceView
-        var mapViewTop: Int {
-            switch self {
-            default: return 30
-            }
-        }
-        
-        var mapViewBottom: Int {
-            switch self {
-            default: return 30
-            }
-        }
-        
         var annotationSize: CGSize {
             switch self {
-            default: return CGSize(width: 80, height: 160)
+            default: return CGSize(width: 20, height: 20)
             }
         }
-        
-        var annotationTitleFont: UIFont {
-            switch self {
-            default: return UIFont(name: "EF_Diary", size: 16) ?? UIFont.systemFont(ofSize: 16)
-            }
-        }
-        
-        var clusterAnnotationLabelFont: UIFont {
-            switch self {
-            default: return UIFont(name: "EF_Diary", size: 13) ?? UIFont.systemFont(ofSize: 13)
-            }
-        }
-        
-        var clusterAnnotationSize: CGSize {
-            switch self {
-            default: return CGSize(width: 80, height: 160)
-            }
-        }
-        
-        var clusterAnnotationImageFrame: CGRect {
-            switch self {
-            default: return CGRect(x: 0, y: 12, width: annotationSize.width, height: annotationSize.height)
-            }
-        }
-        
-        var clusterAnnotationCountLabelFrame: CGRect {
-            switch self {
-            default: return CGRect(x: annotationSize.width-26, y: 3, width: 25, height: 25)
-            }
-        }
-		
-		var clusterAnnotationTitleLabelFrame: CGRect {
-			switch self {
-			default: return CGRect(x: 10, y: (annotationSize.height/2)-37, width: annotationSize.width-20, height: 20)
-			}
-		}
         
         // MARK: Album
         var myAlbumPhotoPageLabelFont: UIFont {

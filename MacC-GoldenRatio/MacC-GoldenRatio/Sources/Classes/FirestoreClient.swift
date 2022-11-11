@@ -74,28 +74,28 @@ class FirestoreClient {
         return locations
     }
     
-	func fetchDiaryMapData(_ uid: String) async throws -> [MapData] {
-		var diaries = [Diary]()
-		
-		var mapDatas = [MapData]()
-		
-		let query = db.collection("Diary").whereField("userUIDs", arrayContains: uid)
-		
-		let querySnapshot = try await query.getDocuments()
-		querySnapshot.documents.forEach { document in
-			do {
-				diaries.append(try document.data(as: Diary.self))
-			} catch {
-				print(error)
-			}
-		}
-
-		for diary in diaries {
-			mapDatas.append(MapData(diaryName: diary.diaryName, diaryCover: diary.diaryCover, location: diary.diaryLocation))
-		}
-
-		return mapDatas
-	}
+//	func fetchDiaryMapData(_ uid: String) async throws -> [MapData] {
+//		var diaries = [Diary]()
+//
+//		var mapDatas = [MapData]()
+//
+//		let query = db.collection("Diary").whereField("userUIDs", arrayContains: uid)
+//
+//		let querySnapshot = try await query.getDocuments()
+//		querySnapshot.documents.forEach { document in
+//			do {
+//				diaries.append(try document.data(as: Diary.self))
+//			} catch {
+//				print(error)
+//			}
+//		}
+//
+//		for diary in diaries {
+//			mapDatas.append(MapData(diaryName: diary.diaryName, diaryCover: diary.diaryCover, location: diary.diaryLocation))
+//		}
+//
+//		return mapDatas
+//	}
     
     func isExistingUser(_ uid: String, completion: @escaping ((Bool)->Void)){
         let query = db.collection("User").whereField("userUID", isEqualTo: uid)

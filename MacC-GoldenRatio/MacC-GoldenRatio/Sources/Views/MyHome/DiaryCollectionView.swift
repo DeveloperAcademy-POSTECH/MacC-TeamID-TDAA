@@ -6,15 +6,12 @@
 //
 
 import RxCocoa
-import RxDataSources
 import RxSwift
 import UIKit
 
 class DiaryCollectionView: UICollectionView {
 	private let disposeBag = DisposeBag()
 	private let myDevice = UIScreen.getDevice()
-	
-	private var source: RxCollectionViewSectionedReloadDataSource<DiarySection>!
 	
 	override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
 		let layout = UICollectionViewFlowLayout()
@@ -23,7 +20,6 @@ class DiaryCollectionView: UICollectionView {
 		self.showsVerticalScrollIndicator = false
 		self.backgroundColor = UIColor.clear
 		self.register(DiaryCollectionViewCell.self, forCellWithReuseIdentifier: "DiaryCollectionViewCell")
-		self.register(DiaryCollectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "DiaryCollectionHeaderView")
 		self.rx.setDelegate(self)
 			.disposed(by: disposeBag)
 	}
@@ -33,15 +29,16 @@ class DiaryCollectionView: UICollectionView {
 	}
 	
 	func bind(_ viewModel: DiaryCollectionViewModel) {
-		configureCollectionViewDataSource()
 		viewModel.collectionDiaryData
-			.bind(to: self.rx.items(dataSource: source))
+			.bind(to: self.rx.items(cellIdentifier: "DiaryCollectionViewCell", cellType: DiaryCollectionViewCell.self)) { index, data, cell in
+				cell.setup(cellData: DiaryCell(diaryUUID: data.diaryUUID, diaryName: data.diaryName, diaryLocation: data.diaryLocation, diaryStartDate: data.diaryStartDate, diaryEndDate: data.diaryEndDate, diaryCover: data.diaryCover))
+			}
 			.disposed(by: disposeBag)
 		
 		viewModel.collectionDiaryData
 			.subscribe(onNext: { data in
 				DispatchQueue.main.async {
-					if data.first?.items.count == 0 {
+					if data.count == 0 {
 						let emptyView = CollectionEmptyView()
 						emptyView.setupViews(text: "다이어리를 추가해주세요.")
 						self.backgroundView = emptyView
@@ -52,45 +49,18 @@ class DiaryCollectionView: UICollectionView {
 			})
 			.disposed(by: disposeBag)
 	}
-	
-	private func configureCollectionViewDataSource() {
-		source = RxCollectionViewSectionedReloadDataSource<DiarySection>(configureCell: { dataSource, collectionView, indexPath, item in
-			if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DiaryCollectionViewCell", for: indexPath) as? DiaryCollectionViewCell {
-//				cell.setup(cellData: DiaryCell(diaryUUID: item.diaryUUID, diaryName: item.diaryName, diaryLocation: item.diaryLocation, diaryStartDate: item.diaryStartDate, diaryEndDate: item.diaryEndDate, diaryCover: item.diaryCover, diaryCoverImage: item.diaryCoverImage))
-				cell.setup(cellData: DiaryCell(diaryUUID: item.diaryUUID, diaryName: item.diaryName, diaryLocation: item.diaryLocation, diaryStartDate: item.diaryStartDate, diaryEndDate: item.diaryEndDate, diaryCover: item.diaryCover))
-				return cell
-			} else {
-				return UICollectionViewCell()
-			}
-		}, configureSupplementaryView: { (dataSource, collectionView, kind, indexPath) -> UICollectionReusableView in
-			switch kind {
-			case UICollectionView.elementKindSectionHeader:
-				if let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "DiaryCollectionHeaderView", for: indexPath) as? DiaryCollectionHeaderView {
-					return header
-				} else {
-					return UICollectionReusableView()
-				}
-			default:
-				fatalError()
-			}
-		})
-	}
 }
 
 extension DiaryCollectionView: UICollectionViewDelegateFlowLayout {
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 		return myDevice.diaryCollectionViewCellSize
 	}
-
-	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-		CGSize(width: collectionView.frame.width - myDevice.diaryCollectionViewCellHeaderWidthPadding, height: myDevice.diaryCollectionViewCellHeaderHeight+myDevice.diaryCollectionViewCellHeaderTop)
+	
+	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+		return 20
 	}
-
-	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-		return UIEdgeInsets(top: myDevice.diaryCollectionViewCellTop, left: myDevice.diaryCollectionViewCellLeading, bottom: myDevice.diaryCollectionViewCellBottom, right: myDevice.diaryCollectionViewCellTrailing)
-	}
-
+	
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-		return CGFloat(UIScreen.getDevice().diaryCollectionViewCellTop)
+		return 20
 	}
 }

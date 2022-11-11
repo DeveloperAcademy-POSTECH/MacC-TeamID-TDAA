@@ -11,8 +11,6 @@ import SnapKit
 import UIKit
 
 final class HomeButtonView: UIButton {
-	let myDevice = UIScreen.getDevice()
-	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
 	}

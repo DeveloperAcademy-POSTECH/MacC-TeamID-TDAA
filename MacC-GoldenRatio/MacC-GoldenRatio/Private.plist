@@ -14,7 +14,7 @@
           <dict>
           <key>CFBundleURLSchemes</key>
           <array>
-            <string>3426217104328944</string>
+            <string>fb3426217104328944</string>
           </array>
           </dict>
         </array>
@@ -23,12 +23,13 @@
         <key>FacebookClientToken</key>
         <string>83f4a485e2bbc3fe96d3c6017b699274</string>
         <key>FacebookDisplayName</key>
-        <string>트다(TDAA)</string>
+        <string>TDAA</string>
+        <!--
         <key>FacebookAutoLogAppEventsEnabled</key>
         <false/>
         <key>FacebookAdvertiserIDCollectionEnabled</key>
         <false/>
-        
+        -->
         <key>LSApplicationQueriesSchemes</key>
         <array>
           <string>fbapi</string>

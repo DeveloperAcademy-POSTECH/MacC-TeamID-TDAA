@@ -18,13 +18,6 @@ final class MyHomeViewController: UIViewController {
 	private lazy var addDiaryButton = HomeButtonView()
 	private lazy var profileButton = HomeButtonView()
 	
-	private lazy var testButton: UIButton = {
-		let button = UIButton()
-		button.setTitle("지도", for: .normal)
-		button.setTitleColor(UIColor.red, for: .normal)
-		return button
-	}()
-	
 	override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
 		super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
 		setupSubViews()
@@ -39,7 +32,7 @@ final class MyHomeViewController: UIViewController {
 	private func setupSubViews() {
 		self.view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
 
-		[collectionView, addDiaryButton, profileButton, testButton].forEach { view.addSubview($0) }
+		[collectionView, addDiaryButton, profileButton].forEach { view.addSubview($0) }
 		collectionView.snp.makeConstraints {
 			$0.top.equalTo(view.safeAreaLayoutGuide)
 			$0.bottom.leading.trailing.equalTo(view.safeAreaLayoutGuide)
@@ -58,10 +51,6 @@ final class MyHomeViewController: UIViewController {
 		profileButton.snp.makeConstraints {
 			$0.top.equalTo(view.safeAreaLayoutGuide).inset(25)
 			$0.trailing.equalTo(view.safeAreaLayoutGuide).inset(20)
-		}
-		
-		testButton.snp.makeConstraints {
-			$0.bottom.trailing.equalTo(view.safeAreaLayoutGuide).inset(myDevice.MyDiariesViewAddDiaryButtonPadding+50)
 		}
 	}
 	
@@ -93,20 +82,11 @@ final class MyHomeViewController: UIViewController {
 				self.navigationController?.pushViewController(vc, animated: true)
 			}
 			.disposed(by: disposeBag)
-		
-		testButton.rx.tap
-			.bind {
-				let vc = MyPlaceViewController()
-				vc.bind(self.viewModel.mapViewModel)
-				self.navigationController?.pushViewController(vc, animated: true)
-			}
-			.disposed(by: disposeBag)
 	}
 	
 	private func setupNotification() {
 		NotificationCenter.default.addObserver(self, selector: #selector(reloadDiaryCell), name: .reloadDiary, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(changeAddButtonImage), name: .changeAddButtonImage, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(mapListHalfModal(notification:)), name: .mapAnnotationTapped, object: nil)
 	}
 	
 	private func isIndicator() {
@@ -123,40 +103,6 @@ final class MyHomeViewController: UIViewController {
 	
 	@objc private func changeAddButtonImage() {
 		addDiaryButton.setImage(UIImage(named: "plusButton"), for: .normal)
-	}
-
-	@objc private func mapListHalfModal(notification: NSNotification) {
-		guard let day = notification.userInfo?["day"] as? Int else {
-			return
-		}
-		
-		guard let selectedLocation = notification.userInfo?["selectedLocation"] as? Location else {
-			return
-		}
-		
-		let vc = MapListViewController(viewMdoel: viewModel.mapViewModel, day: day, selectedLocation: selectedLocation)
-		let titles = viewModel.mapViewModel.mapData
-			.value
-			.map { data in
-				return "\(data.day)일차"
-			}
-		
-		vc.configureSegmentedControl(titles: titles)
-		
-		if #available(iOS 15.0, *) {
-			vc.modalPresentationStyle = .pageSheet
-			if let sheet = vc.sheetPresentationController {
-				sheet.detents = [.medium(), .large()]
-				sheet.delegate = self
-				sheet.prefersGrabberVisible = true
-			}
-		} else {
-			vc.modalPresentationStyle = .custom
-			vc.transitioningDelegate = self
-		}
-		vc.view.backgroundColor = .white
-		
-		self.present(vc, animated: true)
 	}
 	
 	@objc func createButtonTapped() {

@@ -242,6 +242,7 @@ extension DiaryConfigViewController {
                         
                     case .modify:
                         self.viewModel.updateDiary()
+                        NotificationCenter.default.post(name: .reloadDiary, object: nil)
                     }
                 }
             }

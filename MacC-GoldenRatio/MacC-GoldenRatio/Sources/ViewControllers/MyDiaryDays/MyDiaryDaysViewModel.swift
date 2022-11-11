@@ -9,9 +9,10 @@ import RxCocoa
 import RxSwift
 
 class MyDiaryDaysViewModel {
-    let myDiaryDaysModel: MyDiaryDaysModel
+    var myDiaryDaysModel: MyDiaryDaysModel
     let diarydaysCollectionViewModel: DiaryDaysCollectionViewModel
     let albumCollectionViewModel = AlbumCollectionViewModel()
+    let mapViewModel = MapViewModel()
     
     let segmentIndex = BehaviorRelay<Int>(value: 0)
     let selectedViewType: Driver<[Bool]>
@@ -29,5 +30,7 @@ class MyDiaryDaysViewModel {
             .asDriver(onErrorJustReturn: [Bool](repeating: false, count: 3))
         
         self.albumCollectionViewModel.collectionDiaryData.onNext(diary)
+        
+        self.mapViewModel.mapDiaryData.onNext(diary)
     }
 }

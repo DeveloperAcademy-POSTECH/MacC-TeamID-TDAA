@@ -70,7 +70,7 @@ class MyDiaryDaysViewController: UIViewController {
 
     let diaryDaysCollectionView = DiaryDaysCollectionView()
     let albumCollectionView = AlbumCollectionView()
-    let mapView = MKMapView()
+    let mapView = MapView()
     
     // MARK: Bind
     func bind(_ viewModel: MyDiaryDaysViewModel) {
@@ -90,6 +90,7 @@ class MyDiaryDaysViewController: UIViewController {
         
         self.diaryDaysCollectionView.bind(viewModel.diarydaysCollectionViewModel)
         self.albumCollectionView.bind(viewModel.albumCollectionViewModel)
+        self.mapView.bind(viewModel.mapViewModel)
         
         self.diaryDaysCollectionView.rx.itemSelected
             .map { $0.row }
@@ -128,7 +129,7 @@ class MyDiaryDaysViewController: UIViewController {
         self.view.backgroundColor = UIColor(named: "appBackgroundColor")!
         self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(mapListHalfModal(notification:)), name: .mapAnnotationTapped, object: nil)
         
     }
     
@@ -214,10 +215,57 @@ class MyDiaryDaysViewController: UIViewController {
         ac.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
         present(ac, animated: true, completion: nil)
     }
+    
+    @objc private func mapListHalfModal(notification: NSNotification) {
+        guard let day = notification.userInfo?["day"] as? Int else {
+            return
+        }
+        
+        guard let selectedLocation = notification.userInfo?["selectedLocation"] as? Location else {
+            return
+        }
+        
+        let vc = MapListViewController(viewMdoel: viewModel!.mapViewModel, day: day, selectedLocation: selectedLocation)
+        let titles = viewModel!.mapViewModel.mapData
+            .value
+            .map { data in
+                return "\(data.day)일차"
+            }
+        
+        vc.configureSegmentedControl(titles: titles)
+        
+        if #available(iOS 15.0, *) {
+            vc.modalPresentationStyle = .pageSheet
+            if let sheet = vc.sheetPresentationController {
+                sheet.detents = [.medium(), .large()]
+                sheet.delegate = self
+                sheet.prefersGrabberVisible = true
+            }
+        } else {
+            vc.modalPresentationStyle = .custom
+            vc.transitioningDelegate = self
+        }
+        vc.view.backgroundColor = .white
+        
+        self.present(vc, animated: true)
+    }
 }
 
 extension MyDiaryDaysViewController: UIGestureRecognizerDelegate {
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         return navigationController?.viewControllers.count ?? 0 > 2
+    }
+}
+
+extension MyDiaryDaysViewController: UISheetPresentationControllerDelegate {
+    @available(iOS 15.0, *)
+    func sheetPresentationControllerDidChangeSelectedDetentIdentifier(_ sheetPresentationController: UISheetPresentationController) {
+        print(sheetPresentationController.selectedDetentIdentifier == .large ? "large" : "medium")
+    }
+}
+
+extension MyDiaryDaysViewController: UIViewControllerTransitioningDelegate {
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        MapHalfModalPresentationController(presentedViewController: presented, presenting: presenting)
     }
 }

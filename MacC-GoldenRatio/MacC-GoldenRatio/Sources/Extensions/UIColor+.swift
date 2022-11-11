@@ -69,4 +69,9 @@ extension UIColor {
         let color = UIColor(named: "separatorColor2")!
         return color
     }
+    
+    static func gradientColor(alpha: CGFloat) -> UIColor {
+        let color = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: alpha)
+        return color
+    }
 }

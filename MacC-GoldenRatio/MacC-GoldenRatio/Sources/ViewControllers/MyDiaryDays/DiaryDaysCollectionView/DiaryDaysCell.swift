@@ -11,10 +11,10 @@ import SnapKit
 import UIKit
 
 class DiaryDaysCell: UICollectionViewCell {
-    let identifier = "DiaryDaysCell"
     let disposeBag = DisposeBag()
     
     let backImageView = UIImageView()
+    let gradientLayer = CAGradientLayer()
     let dayLabel = UILabel()
     let dateLabel = UILabel()
     
@@ -31,9 +31,20 @@ class DiaryDaysCell: UICollectionViewCell {
     
     private func attribute() {
         contentView.backgroundColor = UIColor.separatorColor2
-
+        
         backImageView.contentMode = .scaleAspectFill
         backImageView.clipsToBounds = true
+        
+        gradientLayer.colors = [
+            UIColor.gradientColor(alpha: 0.7).cgColor,
+            UIColor.gradientColor(alpha: 0.5).cgColor,
+            UIColor.gradientColor(alpha: 0.0).cgColor
+        ]
+        gradientLayer.locations = [0, 0.31, 0.73]
+        gradientLayer.startPoint = CGPoint(x: 1.0, y: 0.0)
+        gradientLayer.endPoint = CGPoint(x: 1.0, y: 0.73)
+        gradientLayer.bounds = contentView.bounds
+        gradientLayer.position = contentView.center
         
         dayLabel.textColor = .white
         dayLabel.font = UIFont.dayLabelFont
@@ -43,9 +54,10 @@ class DiaryDaysCell: UICollectionViewCell {
         dateLabel.font = UIFont.labelTitleFont
         dateLabel.backgroundColor = .clear
         
-        [backImageView, dayLabel, dateLabel].forEach {
-            contentView.addSubview($0)
-        }
+        contentView.addSubview(backImageView)
+        contentView.layer.addSublayer(gradientLayer)
+        contentView.addSubview(dayLabel)
+        contentView.addSubview(dateLabel)
     }
     
     private func layout() {

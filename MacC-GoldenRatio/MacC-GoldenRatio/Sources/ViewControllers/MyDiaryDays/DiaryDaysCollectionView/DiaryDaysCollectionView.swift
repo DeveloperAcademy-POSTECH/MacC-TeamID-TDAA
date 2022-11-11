@@ -33,6 +33,7 @@ class DiaryDaysCollectionView: UICollectionView {
                 cell.dayLabel.text = data.dayLabel
                 cell.dateLabel.text = data.dateLabel
                 cell.backImageView.image = data.image
+                cell.gradientLayer.isHidden = (data.image == UIImage(named: "manLong")) ? true : false
             }
             .disposed(by: disposeBag)
     }

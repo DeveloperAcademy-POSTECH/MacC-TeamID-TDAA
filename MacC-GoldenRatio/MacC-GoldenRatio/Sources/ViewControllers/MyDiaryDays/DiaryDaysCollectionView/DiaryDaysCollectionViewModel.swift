@@ -36,6 +36,7 @@ struct DiaryDaysCollectionViewModel {
                     if let imageData = imageData {
                         dataForCellData.append(DiaryDayModel(dayLabel: dayLabelData, dateLabel: dateLabelData, image: imageData))
                     } else {
+                        // TODO: 디폴트 이미지 사용 예정
                         dataForCellData.append(DiaryDayModel(dayLabel: dayLabelData, dateLabel: dateLabelData, image: UIImage(named: "manLong")!))
                     }
                     

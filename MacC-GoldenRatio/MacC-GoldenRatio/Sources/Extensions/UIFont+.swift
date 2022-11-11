@@ -45,7 +45,22 @@ extension UIFont {
 	}
 	
 	static var mapLabelFont: UIFont {
-		let font = UIFont(name: "GothicA1-Bold", size: 10)!
+		let font = UIFont(name: "GothicA1-Bold", size: 10) ?? UIFont.systemFont(ofSize: 10)
+		return font
+	}
+	
+	static var diaryTitleLabelFont: UIFont {
+		let font = UIFont(name: "EF_Diary", size: 20) ?? UIFont.systemFont(ofSize: 20)
+		return font
+	}
+	
+	static var diaryDateLabelFont: UIFont {
+		let font = UIFont(name: "EF_Diary", size: 10) ?? UIFont.systemFont(ofSize: 10)
+		return font
+	}
+	
+	static var diaryAddressLabelFont: UIFont {
+		let font = UIFont(name: "EF_Diary", size: 8) ?? UIFont.systemFont(ofSize: 8)
 		return font
 	}
 }

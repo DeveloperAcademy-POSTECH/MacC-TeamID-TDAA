@@ -47,7 +47,8 @@ final class MyHomeViewController: UIViewController {
 		
 		addDiaryButton.setupViews(UIImage(named: "plusButton"))
 		addDiaryButton.snp.makeConstraints {
-			$0.bottom.trailing.equalTo(view.safeAreaLayoutGuide).inset(myDevice.MyDiariesViewAddDiaryButtonPadding)
+			$0.trailing.equalTo(view.safeAreaLayoutGuide).inset(myDevice.MyDiariesViewAddDiaryButtonPadding)
+			$0.bottom.equalTo(view.safeAreaLayoutGuide).inset(67)
 		}
 		
 		let image = UIImage(

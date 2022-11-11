@@ -56,7 +56,8 @@ class DiaryCollectionView: UICollectionView {
 	private func configureCollectionViewDataSource() {
 		source = RxCollectionViewSectionedReloadDataSource<DiarySection>(configureCell: { dataSource, collectionView, indexPath, item in
 			if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DiaryCollectionViewCell", for: indexPath) as? DiaryCollectionViewCell {
-				cell.setup(cellData: DiaryCell(diaryUUID: item.diaryUUID, diaryName: item.diaryName, diaryCover: item.diaryCover))
+//				cell.setup(cellData: DiaryCell(diaryUUID: item.diaryUUID, diaryName: item.diaryName, diaryLocation: item.diaryLocation, diaryStartDate: item.diaryStartDate, diaryEndDate: item.diaryEndDate, diaryCover: item.diaryCover, diaryCoverImage: item.diaryCoverImage))
+				cell.setup(cellData: DiaryCell(diaryUUID: item.diaryUUID, diaryName: item.diaryName, diaryLocation: item.diaryLocation, diaryStartDate: item.diaryStartDate, diaryEndDate: item.diaryEndDate, diaryCover: item.diaryCover))
 				return cell
 			} else {
 				return UICollectionViewCell()

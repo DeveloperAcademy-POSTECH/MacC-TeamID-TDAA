@@ -61,6 +61,8 @@
 		CCD6D58C29135A7300013367 /* DiaryConfigCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD6D58B29135A7300013367 /* DiaryConfigCellViewModel.swift */; };
 		CCD6D58E2914F6C600013367 /* DiaryConfigModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD6D58D2914F6C600013367 /* DiaryConfigModel.swift */; };
 		CCE1806F28E5919B00AF06DB /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE1806E28E5919B00AF06DB /* SignInViewController.swift */; };
+		CCE5BE18291E425700D2DC8F /* NSMutableAttributedString+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE5BE17291E425700D2DC8F /* NSMutableAttributedString+.swift */; };
+		CCE5BE1A291E429F00D2DC8F /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE5BE19291E429F00D2DC8F /* UIImage+.swift */; };
 		E21342D928F6B0660048D9CF /* FirebaseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21342D828F6B0660048D9CF /* FirebaseClient.swift */; };
 		E21342DB28F6B0800048D9CF /* EF_Diary.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E21342DA28F6B07F0048D9CF /* EF_Diary.ttf */; };
 		E21342DD28F6B2740048D9CF /* HalfModalPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21342DC28F6B2740048D9CF /* HalfModalPresentationController.swift */; };
@@ -212,6 +214,8 @@
 		CCD6D58B29135A7300013367 /* DiaryConfigCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryConfigCellViewModel.swift; sourceTree = "<group>"; };
 		CCD6D58D2914F6C600013367 /* DiaryConfigModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryConfigModel.swift; sourceTree = "<group>"; };
 		CCE1806E28E5919B00AF06DB /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
+		CCE5BE17291E425700D2DC8F /* NSMutableAttributedString+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSMutableAttributedString+.swift"; sourceTree = "<group>"; };
+		CCE5BE19291E429F00D2DC8F /* UIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
 		E21342D828F6B0660048D9CF /* FirebaseClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseClient.swift; sourceTree = "<group>"; };
 		E21342DA28F6B07F0048D9CF /* EF_Diary.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = EF_Diary.ttf; sourceTree = "<group>"; };
 		E21342DC28F6B2740048D9CF /* HalfModalPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HalfModalPresentationController.swift; sourceTree = "<group>"; };
@@ -531,6 +535,8 @@
 				0A5235B128F854C200AC77AC /* UIColor+.swift */,
 				E2ED4871290ABE46002FEC2B /* Notification+.swift */,
 				0A30BD46291A4DAE00079326 /* CALayer+.swift */,
+				CCE5BE17291E425700D2DC8F /* NSMutableAttributedString+.swift */,
+				CCE5BE19291E429F00D2DC8F /* UIImage+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -862,6 +868,8 @@
 				CC0F434428F71E62003060D5 /* DiaryConfigViewModel.swift in Sources */,
 				E21342D928F6B0660048D9CF /* FirebaseClient.swift in Sources */,
 				E2BEC46328F82DC30056E755 /* MyAlbumTitleCollectionViewCell.swift in Sources */,
+				CCE5BE18291E425700D2DC8F /* NSMutableAttributedString+.swift in Sources */,
+				CCE5BE1A291E429F00D2DC8F /* UIImage+.swift in Sources */,
 				E26F0DB22916B33900B040C9 /* CollectionEmptyView.swift in Sources */,
 				E276B92028E4812E00163833 /* UIScreen+.swift in Sources */,
 				CC40BC1F28EEB10800DF48E1 /* CalendarPickerViewController.swift in Sources */,

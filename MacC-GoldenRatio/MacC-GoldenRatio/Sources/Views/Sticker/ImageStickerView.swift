@@ -102,9 +102,8 @@ class ImageStickerView: StickerView {
             }
             guard let url = url else { return }
             ImageManager.shared.cacheImage(urlString: url.absoluteString, image: image)
-            Task {
-                await self.stickerViewData?.updateContents(contents: [url.absoluteString])
-            }
+
+            self.stickerViewData?.updateContents(contents: [url.absoluteString])
         }
     }
 

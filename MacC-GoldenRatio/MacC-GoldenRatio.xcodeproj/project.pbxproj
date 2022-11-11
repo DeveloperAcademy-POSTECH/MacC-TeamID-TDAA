@@ -105,7 +105,6 @@
 		E2DA8F6028F842310098DD94 /* MyAlbumCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DA8F5F28F842310098DD94 /* MyAlbumCollectionViewCell.swift */; };
 		E2DA8F6228F856A10098DD94 /* MyAlbumPhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DA8F6128F856A10098DD94 /* MyAlbumPhotoViewController.swift */; };
 		E2DA8F6428F857D80098DD94 /* MyAlbumPhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DA8F6328F857D80098DD94 /* MyAlbumPhotoCollectionViewCell.swift */; };
-		E2E5442F2916C24600E611D0 /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = E2E5442E2916C24600E611D0 /* RxDataSources */; };
 		E2E544312916D91400E611D0 /* DiarySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E544302916D91400E611D0 /* DiarySection.swift */; };
 		E2EA7F0828E56CF600AC1C49 /* MyPlaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EA7F0728E56CF600AC1C49 /* MyPlaceViewController.swift */; };
 		E2EA7F1628E5711E00AC1C49 /* DiaryCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EA7F1528E5711E00AC1C49 /* DiaryCollectionHeaderView.swift */; };
@@ -274,7 +273,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E25753BF28ED9E0600023619 /* Kingfisher in Frameworks */,
-				E2E5442F2916C24600E611D0 /* RxDataSources in Frameworks */,
 				E2F5690F28E5CCDC0039BE37 /* FirebaseDatabaseSwift in Frameworks */,
 				E2C8FA26291432B4009C58C9 /* RxCocoa in Frameworks */,
 				E2F5690328E57E7B0039BE37 /* SnapKit in Frameworks */,
@@ -715,7 +713,6 @@
 				E25753BE28ED9E0600023619 /* Kingfisher */,
 				E2C8FA25291432B4009C58C9 /* RxCocoa */,
 				E2C8FA27291432B4009C58C9 /* RxSwift */,
-				E2E5442E2916C24600E611D0 /* RxDataSources */,
 			);
 			productName = "MacC-GoldenRatio";
 			productReference = E28F07FE28E4655100832F4A /* MacC-GoldenRatio.app */;
@@ -794,7 +791,6 @@
 				E2F5690728E5CCDC0039BE37 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				E25753BD28ED9E0600023619 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				E2C8FA24291432B4009C58C9 /* XCRemoteSwiftPackageReference "RxSwift" */,
-				E2E5442D2916C24600E611D0 /* XCRemoteSwiftPackageReference "RxDataSources" */,
 			);
 			productRefGroup = E28F07FF28E4655100832F4A /* Products */;
 			projectDirPath = "";
@@ -1320,14 +1316,6 @@
 				minimumVersion = 6.0.0;
 			};
 		};
-		E2E5442D2916C24600E611D0 /* XCRemoteSwiftPackageReference "RxDataSources" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/RxSwiftCommunity/RxDataSources";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.0;
-			};
-		};
 		E2F5690128E57E7B0039BE37 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
@@ -1361,11 +1349,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E2C8FA24291432B4009C58C9 /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxSwift;
-		};
-		E2E5442E2916C24600E611D0 /* RxDataSources */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E2E5442D2916C24600E611D0 /* XCRemoteSwiftPackageReference "RxDataSources" */;
-			productName = RxDataSources;
 		};
 		E2F5690228E57E7B0039BE37 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -9,30 +9,29 @@ import RxSwift
 import RxCocoa
 
 struct DiaryColorCollectionViewModel {
-    let colors: [String] = ["diaryRed", "diaryOrange", "diaryYellow", "diaryGreen", "diaryBlue", "diaryPurple", "diaryPink", "diaryBrown", "diaryBlack", "diaryWhite"]
-    var diaryColorCellViewModel = DiaryColorCellViewModel()
+    let colors = ["Red", "Orange", "Yellow", "Green", "Blue", "Purple", "Pink", "Brown", "Black", "White"]
+    let diaryColorCellViewModel = DiaryColorCellViewModel()
     private let disposeBag = DisposeBag()
     
     // ViewModel -> View
-    var cellData: Observable<[Bool]>
+    var cellData = BehaviorSubject<[Bool]>.init(value: [Bool](repeating: false, count: 10))
     
     // View -> ViewModel
-    var itemSelected = ReplaySubject<Int>.create(bufferSize: 1)
+    var itemSelected = PublishSubject<Int>()
     
     init() {
+        // TODO: 다이어리 수정의 경우 itemSelected를 초기에 담고 있어야 함 (diaryColor -> index추출 -> itemSelected)
+        
+        // 셀의 선택 여부 상태 전달
         itemSelected
             .subscribe(onNext: { index in
                 var states = [Bool](repeating: false, count: 10)
                 states[index] = true
+                print(states)
             })
             .disposed(by: disposeBag)
-        
-        cellData = itemSelected
-            .map { index in
-                var states = [Bool](repeating: false, count: 10)
-                states[index] = true
-                return states
-            }
-            .startWith([Bool](repeating: false, count: 10))
+
+        // itemSelected.accept(initial)
     }
+    
 }

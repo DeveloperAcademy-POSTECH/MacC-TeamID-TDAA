@@ -212,7 +212,7 @@ class PageViewController: UIViewController {
         self.navigationItem.setRightBarButton(rightBarButtonItem, animated: false)
         
         self.pageViewModel.selectedPageIndex
-            .subscribe(on: MainScheduler.instance)
+            .observe(on: MainScheduler.instance)
             .map{
                 ($0.0 + 1).description + "일차"
             }

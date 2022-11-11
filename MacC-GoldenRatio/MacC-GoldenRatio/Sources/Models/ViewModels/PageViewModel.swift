@@ -263,28 +263,18 @@ class PageViewModel {
     
     func moveToNextPage() {
         
-        self.selectedPageIndex
+        Observable
+            .combineLatest(self.selectedPageIndex, self.maxPageIndexObservable)
             .observe(on: MainScheduler.instance)
             .take(1)
-            .subscribe(onNext: { selectedPageIndex in
-
-                self.maxPageIndexObservable
-                    .observe(on: MainScheduler.instance)
-                    .take(1)
-                    .subscribe(onNext: {
-                        
-                        if selectedPageIndex.1 + 1 <= $0 {
-                            self.selectedPageIndex.onNext((selectedPageIndex.0, selectedPageIndex.1 + 1))
-                        } else {
-                            print("마지막 페이지입니다.")
-                        }
-                        
-                    })
-                    .disposed(by: self.disposeBag)
-                
-            })
-            .disposed(by: disposeBag)
-
+            .subscribe { (selectedPageIndex, maxPageIndex) in
+                if selectedPageIndex.1 + 1 <= maxPageIndex {
+                    self.selectedPageIndex.onNext((selectedPageIndex.0, selectedPageIndex.1 + 1))
+                } else {
+                    print("마지막 페이지입니다.")
+                }
+            }.disposed(by: self.disposeBag)
+        
     }
 
     func moveToPreviousPage() {

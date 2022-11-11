@@ -42,7 +42,12 @@ extension UIFont {
     static var toastMessageFont: UIFont {
         let font = UIFont(name: "EF_Diary", size: 12)!
         return font
-	}
+    }
+    ///24
+    static var dayLabelFont: UIFont {
+        let font = UIFont(name: "EF_Diary", size: 24)!
+        return font
+    }
 	
 	static var mapLabelFont: UIFont {
 		let font = UIFont(name: "GothicA1-Bold", size: 10) ?? UIFont.systemFont(ofSize: 10)

@@ -106,7 +106,7 @@ class PageViewModeViewController: UIViewController {
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.navigationTitleFont, NSAttributedString.Key.foregroundColor:UIColor.black]
         
         self.pageViewModel.selectedPageIndex
-            .subscribe(on: MainScheduler.instance)
+            .observe(on: MainScheduler.instance)
             .map{
                 ($0.0 + 1).description + "일차"
             }

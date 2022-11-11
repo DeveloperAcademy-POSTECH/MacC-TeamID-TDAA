@@ -18,7 +18,7 @@ enum TextStickerViewMode {
 
 class TextStickerView: StickerView {
     let defaultPosition = CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 4)
-    private let placehloderText = "텍스트를 입력해주세요."
+    private let placehloderText = "텍스트를 입력해주세요"
 
     var editModeDefaultFrame: CGRect!
 
@@ -34,7 +34,6 @@ class TextStickerView: StickerView {
         textView.backgroundColor = .clear
         textView.font = .navigationTitleFont
         textView.isEditable = false
-        textView.isScrollEnabled = false
         textView.isUserInteractionEnabled = false
         
         return textView
@@ -68,14 +67,15 @@ class TextStickerView: StickerView {
             await self.bindTextStickerPositionByTextStickerMode()
             
             DispatchQueue.main.async {
-                self.configureTextStickerConstraints()
                 super.setupContentView(content: self.textView)
                 super.setupDefaultAttributes()
+                self.configureTextStickerConstraints()
+
+                Task {
+                    await self.bindTextStickerComponentByTextStickerEditMode()
+                    self.textStickerViewMode.onNext(TextStickerViewMode.editText)
+                }
             }
-
-            await self.bindTextStickerComponentByTextStickerEditMode()
-            self.textStickerViewMode.onNext(TextStickerViewMode.editText)
-
         }
     }
     
@@ -94,9 +94,9 @@ class TextStickerView: StickerView {
             await self.bindTextStickerPositionByTextStickerMode()
             
             DispatchQueue.main.async {
-                self.configureTextStickerConstraints()
                 super.setupContentView(content: self.textView)
                 super.setupDefaultAttributes()
+                self.configureTextStickerConstraints()
             }
             await self.bindTextStickerComponentByTextStickerEditMode()
         }
@@ -218,23 +218,26 @@ class TextStickerView: StickerView {
                 switch $0 {
                 case .editText:
                     self.textView.isEditable = true
+                    self.textView.isSelectable = true
                     self.textView.isUserInteractionEnabled = true
-                    self.textView.becomeFirstResponder()
+                    self.textView.isExclusiveTouch = true
                     
+                    self.textView.becomeFirstResponder()
                     self.textView.isHidden = false
                     self.textImageView.isHidden = true
 
                     super.enableTranslucency(state: false)
-                    
                     guard let deleteController = super.deleteController, let resizingController = super.resizingController else { return }
                     deleteController.isHidden = true
                     resizingController.isHidden = true
 
                 default:
                     self.textView.isEditable = false
+                    self.textView.isSelectable = false
                     self.textView.isUserInteractionEnabled = false
+                    self.textView.isExclusiveTouch = false
+
                     self.textView.resignFirstResponder()
-                    
                     self.textView.isHidden = true
                     self.textImageView.isHidden = false
                 }
@@ -244,16 +247,18 @@ class TextStickerView: StickerView {
     }
     
     private func configureTextStickerConstraints() {
-        self.textView.delegate = self
-        
-        self.addSubview(textView)
-        self.textView.snp.makeConstraints { make in
-            make.center.top.equalToSuperview()
-        }
-        
-        self.addSubview(textImageView)
-        self.textImageView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        DispatchQueue.main.async {
+            self.textView.delegate = self
+            
+            self.borderView.addSubview(self.textView)
+            self.textView.snp.makeConstraints { make in
+                make.center.top.equalTo(self)
+            }
+            
+            self.addSubview(self.textImageView)
+            self.textImageView.snp.makeConstraints { make in
+                make.edges.equalToSuperview()
+            }
         }
     }
     
@@ -293,7 +298,7 @@ class TextStickerView: StickerView {
             }
             .disposed(by: self.disposeBag)
     }
-    
+
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.textStickerViewMode
             .take(1)
@@ -303,7 +308,7 @@ class TextStickerView: StickerView {
             }
             .disposed(by: self.disposeBag)
     }
-    
+
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.textStickerViewMode
             .take(1)
@@ -313,7 +318,7 @@ class TextStickerView: StickerView {
             }
             .disposed(by: self.disposeBag)
     }
-    
+
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.textStickerViewMode
             .take(1)
@@ -328,14 +333,18 @@ class TextStickerView: StickerView {
 extension TextStickerView: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.text == placehloderText {
-            textView.text = ""
+        DispatchQueue.main.async {
+            if textView.text == self.placehloderText {
+                textView.text = ""
+            }
         }
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
-        if textView.text == "" {
-            textView.text = placehloderText
+        DispatchQueue.main.async {
+            if textView.text == "" {
+                textView.text = self.placehloderText
+            }
         }
     }
     

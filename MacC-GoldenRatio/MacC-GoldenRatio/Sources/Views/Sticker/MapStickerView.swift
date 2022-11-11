@@ -104,8 +104,8 @@ class MapStickerView: StickerView {
         let locationAddress = mapItem.placemark.title ?? ""
         let latitude = mapItem.placemark.coordinate.latitude.description
         let longitude = mapItem.placemark.coordinate.longitude.description
-        let itemContents = [locationName, locationAddress, latitude, longitude]
-        
+		let category = mapItem.pointOfInterestCategory?.rawValue.description ?? ""
+		let itemContents = [locationName, locationAddress, latitude, longitude, category]
         return itemContents
     }
     

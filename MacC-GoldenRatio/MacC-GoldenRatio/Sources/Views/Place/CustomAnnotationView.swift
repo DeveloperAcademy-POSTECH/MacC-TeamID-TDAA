@@ -4,7 +4,6 @@
 //
 //  Created by woo0 on 2022/10/13.
 //
-
 import MapKit
 
 class CustomAnnotationView: MKAnnotationView {
@@ -12,8 +11,7 @@ class CustomAnnotationView: MKAnnotationView {
 	
 	override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
 		super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
-		frame = CGRect(x: 0, y: 0, width: 40, height: 90)
-		centerOffset = CGPoint(x: 0, y: -frame.size.height / 2)
+		frame = CGRect(x: 0, y: 0, width: 20, height: 20)
 		setupUI()
 	}
 	
@@ -27,16 +25,21 @@ class CustomAnnotationView: MKAnnotationView {
 	
 }
 
-
 class CustomAnnotation: NSObject, MKAnnotation {
 	let title: String?
+	let address: String
 	let coordinate: CLLocationCoordinate2D
-	let diaryTitle: String
+	let day: Int
+	let iconImage: String
+	let category: String
 	
-	init(coordinate: CLLocationCoordinate2D, diaryTitle: String, title: String) {
+	init(coordinate: CLLocationCoordinate2D, title: String, address: String, day: Int, iconImage: String, category: String) {
 		self.coordinate = coordinate
-		self.diaryTitle = diaryTitle
 		self.title = title
+		self.address = address
+		self.day = day
+		self.iconImage = iconImage
+		self.category = category
 		
 		super.init()
 	}

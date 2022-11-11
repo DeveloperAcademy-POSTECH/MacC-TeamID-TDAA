@@ -33,4 +33,5 @@ class MyDiaryDaysViewModel {
         
         self.mapViewModel.mapDiaryData.onNext(diary)
     }
+    
 }

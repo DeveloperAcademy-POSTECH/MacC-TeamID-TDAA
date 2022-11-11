@@ -189,7 +189,7 @@ class MyDiaryDaysViewController: UIViewController {
     private func backButtonTapped() {
         NotificationCenter.default.post(name: .reloadDiary, object: nil)
         self.navigationController?.isNavigationBarHidden = true
-        self.navigationController?.popViewController(animated: false)
+        self.navigationController?.popViewController(animated: true)
     }
     
     @objc private func copyButtonTapped() {
@@ -199,9 +199,13 @@ class MyDiaryDaysViewController: UIViewController {
     
     @objc private func modifyButtonTapped() {
         let vc = DiaryConfigViewController()
-        vc.bind(DiaryConfigViewModel(diary: self.viewModel!.myDiaryDaysModel.diary))
-        vc.modalPresentationStyle = .fullScreen
-        self.present(vc, animated: true, completion: nil)
+        self.viewModel?.myDiaryDaysModel.diaryDataSetup {
+            DispatchQueue.main.async {
+                vc.bind(DiaryConfigViewModel(diary: self.viewModel?.myDiaryDaysModel.diary))
+                vc.modalPresentationStyle = .fullScreen
+                self.present(vc, animated: true, completion: nil)
+            }
+        }
     }
     
     @objc private func outButtonTapped() {

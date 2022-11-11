@@ -10,7 +10,7 @@ import FirebaseAuth
 import RxSwift
 import UIKit
 
-struct MyDiaryDaysModel {
+class MyDiaryDaysModel {
     let db = Firestore.firestore()
     var diary: Diary
     let myUID = Auth.auth().currentUser?.uid ?? ""
@@ -19,7 +19,7 @@ struct MyDiaryDaysModel {
         self.diary = diary
     }
     
-    mutating func updateDiaryData() async throws -> Observable<Diary> {
+    func updateDiaryData() async throws -> Observable<Diary> {
         let query = db.collection("Diary").whereField("diaryUUID", isEqualTo: self.diary.diaryUUID)
         let documents = try await query.getDocuments()
         let data = try documents.documents[0].data(as: Diary.self)
@@ -80,5 +80,24 @@ struct MyDiaryDaysModel {
             let pagesFieldData = ["userUIDs" : userUIDs]
             diaryRef.updateData(pagesFieldData)
         }
+    }
+    
+    func diaryDataSetup(_ completion: @escaping () -> Void) {
+        Task {
+            do {
+                self.diary = try await getDiaryData(uuid: self.diary.diaryUUID)
+                completion()
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    func getDiaryData(uuid diaryUUID: String) async throws -> Diary {
+        let query = db.collection("Diary").whereField("diaryUUID", isEqualTo: diaryUUID)
+        let documents = try await query.getDocuments()
+        let data = try documents.documents[0].data(as: Diary.self)
+        
+        return data
     }
 }

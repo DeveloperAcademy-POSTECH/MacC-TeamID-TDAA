@@ -31,7 +31,7 @@ class DiaryCollectionView: UICollectionView {
 	func bind(_ viewModel: DiaryCollectionViewModel) {
 		viewModel.collectionDiaryData
 			.bind(to: self.rx.items(cellIdentifier: "DiaryCollectionViewCell", cellType: DiaryCollectionViewCell.self)) { index, data, cell in
-				cell.setup(cellData: DiaryCell(diaryUUID: data.diaryUUID, diaryName: data.diaryName, diaryLocation: data.diaryLocation, diaryStartDate: data.diaryStartDate, diaryEndDate: data.diaryEndDate, diaryCover: data.diaryCover))
+				cell.setup(cellData: DiaryCell(diaryUUID: data.diaryUUID, diaryName: data.diaryName, diaryLocation: data.diaryLocation, diaryStartDate: data.diaryStartDate, diaryEndDate: data.diaryEndDate, diaryCover: data.diaryCover, diaryCoverImage: data.diaryCoverImage))
 			}
 			.disposed(by: disposeBag)
 		

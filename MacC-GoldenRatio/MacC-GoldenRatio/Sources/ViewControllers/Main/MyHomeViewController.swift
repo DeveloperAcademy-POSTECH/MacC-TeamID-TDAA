@@ -38,7 +38,7 @@ final class MyHomeViewController: UIViewController {
 	}
 	
 	private func setupSubViews() {
-		self.view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
+		self.view.backgroundColor = UIColor(named: "appBackgroundColor") ?? UIColor.white
 
 		[collectionHeaderView, collectionView, addDiaryButton, profileButton, testButton].forEach { view.addSubview($0) }
 		collectionHeaderView.snp.makeConstraints {
@@ -55,7 +55,7 @@ final class MyHomeViewController: UIViewController {
 		addDiaryButton.setupViews(UIImage(named: "plusButton"))
 		addDiaryButton.snp.makeConstraints {
 			$0.trailing.equalTo(view.safeAreaLayoutGuide).inset(myDevice.MyDiariesViewAddDiaryButtonPadding)
-			$0.bottom.equalTo(view.safeAreaLayoutGuide).inset(67)
+			$0.bottom.equalTo(view.safeAreaLayoutGuide).inset(40)
 		}
 		
 		let image = UIImage(
@@ -68,9 +68,9 @@ final class MyHomeViewController: UIViewController {
 			$0.trailing.equalTo(view.safeAreaLayoutGuide).inset(20)
 		}
 		
-		testButton.snp.makeConstraints {
-			$0.bottom.trailing.equalTo(view.safeAreaLayoutGuide).inset(myDevice.MyDiariesViewAddDiaryButtonPadding+50)
-		}
+//		testButton.snp.makeConstraints {
+//			$0.bottom.trailing.equalTo(view.safeAreaLayoutGuide).inset(myDevice.MyDiariesViewAddDiaryButtonPadding+50)
+//		}
 	}
 	
 	private func bind() {
@@ -78,7 +78,6 @@ final class MyHomeViewController: UIViewController {
 		collectionView.rx
 			.modelSelected(Diary.self)
 			.subscribe(onNext: { diary in
-				// let vc = MyDiaryPagesViewController(diaryData: diary)
                 let vc = MyDiaryDaysViewController()
                 vc.bind(MyDiaryDaysViewModel(diary: diary))
 				self.navigationController?.pushViewController(vc, animated: true)
@@ -89,8 +88,8 @@ final class MyHomeViewController: UIViewController {
 			.bind {
 				self.addDiaryButton.setImage(UIImage(named: "closeButton"), for: .normal)
 				let popUp = PopUpViewController(popUpPosition: .bottom)
-				popUp.addButton(buttonTitle: "다이어리 추가", action: self.createButtonTapped)
-				popUp.addButton(buttonTitle: "초대코드로 참가", action: self.joinButtonTapped)
+				popUp.addButton(buttonTitle: " 다이어리 추가", buttonSymbol: "doc.badge.plus", buttonSize: 17, action: self.createButtonTapped)
+				popUp.addButton(buttonTitle: " 초대코드 참가", buttonSymbol: "envelope.open", buttonSize: 15, action: self.joinButtonTapped)
 				self.present(popUp, animated: false)
 			}
 			.disposed(by: disposeBag)

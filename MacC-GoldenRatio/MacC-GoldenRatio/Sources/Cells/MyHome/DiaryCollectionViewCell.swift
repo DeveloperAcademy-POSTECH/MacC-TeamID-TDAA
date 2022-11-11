@@ -34,6 +34,8 @@ class DiaryCollectionViewCell: UICollectionViewCell {
 	
 	private lazy var cellCoverImageView: UIImageView = {
 		let imageView =  UIImageView()
+		imageView.contentMode = .scaleAspectFill
+		imageView.clipsToBounds = true
 		return imageView
 	}()
 	
@@ -43,17 +45,16 @@ class DiaryCollectionViewCell: UICollectionViewCell {
 	}()
 	
 	func setup(cellData: DiaryCell) {
-		[cellCoverImageView, cellImageView, titleLabel, dateLabel, addressLabel].forEach { self.addSubview($0) }
+		[cellImageView, cellCoverImageView, titleLabel, dateLabel, addressLabel].forEach { self.addSubview($0) }
 		
-		cellCoverImageView.image = UIImage(named: cellData.diaryCover)
-		cellCoverImageView.snp.makeConstraints {
+		cellImageView.image = UIImage(named: cellData.diaryCover)
+		cellImageView.snp.makeConstraints {
 			$0.edges.equalToSuperview()
 		}
 		
-//		cellData.diaryCoverImage != nil ? cellCoverImageView.image = UIImage(named: "defaultBottomcover") : cellCoverImageView.setImage(with: cellData.diaryCoverImage!)
-		cellImageView.image = UIImage(named: "defaultBottomcover") ?? UIImage()
-		cellImageView.snp.makeConstraints {
-			$0.height.equalTo(110)
+		cellData.diaryCoverImage == nil || cellData.diaryCoverImage == "" ? cellCoverImageView.image = UIImage(named: "defaultBottomcover") : cellCoverImageView.setImage(with: cellData.diaryCoverImage ?? "")
+		cellCoverImageView.snp.makeConstraints {
+			$0.height.equalTo(116)
 			$0.bottom.leading.trailing.equalToSuperview()
 		}
 		

@@ -23,7 +23,6 @@ class SegmentedControlView: UIView, SegmentedControlViewDelegate {
 	
 	private lazy var scrollView: UIScrollView = {
 		let scrollView = UIScrollView()
-		scrollView.translatesAutoresizingMaskIntoConstraints = false
 		scrollView.contentSize = CGSize(width: .zero, height: 30)
 		scrollView.showsVerticalScrollIndicator = false
 		scrollView.showsHorizontalScrollIndicator = false
@@ -32,7 +31,6 @@ class SegmentedControlView: UIView, SegmentedControlViewDelegate {
 	
 	private lazy var hStack: UIStackView = {
 		let stackView = UIStackView()
-		stackView.translatesAutoresizingMaskIntoConstraints = false
 		stackView.axis = .horizontal
 		stackView.distribution = .fill
 		return stackView

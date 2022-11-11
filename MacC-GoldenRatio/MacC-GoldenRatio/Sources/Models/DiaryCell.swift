@@ -14,5 +14,5 @@ struct DiaryCell {
 	let diaryStartDate: String
 	let diaryEndDate: String
 	let diaryCover: String
-//	let diaryCoverImage: String?
+	let diaryCoverImage: String?
 }

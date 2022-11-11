@@ -35,6 +35,7 @@ class TextStickerView: StickerView {
         textView.font = .navigationTitleFont
         textView.isEditable = false
         textView.isUserInteractionEnabled = false
+        textView.isScrollEnabled = false
         
         return textView
     }()
@@ -70,7 +71,7 @@ class TextStickerView: StickerView {
                 super.setupContentView(content: self.textView)
                 super.setupDefaultAttributes()
                 self.configureTextStickerConstraints()
-
+                self.bindTextView()
                 Task {
                     await self.bindTextStickerComponentByTextStickerEditMode()
                     self.textStickerViewMode.onNext(TextStickerViewMode.editText)
@@ -97,6 +98,7 @@ class TextStickerView: StickerView {
                 super.setupContentView(content: self.textView)
                 super.setupDefaultAttributes()
                 self.configureTextStickerConstraints()
+                self.bindTextView()
             }
             await self.bindTextStickerComponentByTextStickerEditMode()
         }
@@ -120,7 +122,10 @@ class TextStickerView: StickerView {
             .subscribe(onNext: {
                 self.textView.text = $0
                 
-                let attributes: [NSAttributedString.Key: Any] = [.font: UIFont.navigationTitleFont]
+                var attributes: [NSAttributedString.Key: Any] = [.font: UIFont.navigationTitleFont, .foregroundColor: UIColor.black]
+                if self.textView.text == self.placehloderText {
+                    attributes[.foregroundColor] = UIColor.gray
+                }
                 self.textImageView.image = $0.image(withAttributes: attributes)
             })
             .disposed(by: self.disposeBag)
@@ -246,6 +251,19 @@ class TextStickerView: StickerView {
         
     }
     
+    private func bindTextView() {
+        self.textView.rx.text
+            .observe(on: MainScheduler.asyncInstance)
+            .subscribe { text in
+                if text == self.placehloderText {
+                    self.textView.textColor = .gray
+                } else {
+                    self.textView.textColor = .black
+                }
+            }
+            .disposed(by: disposeBag)
+    }
+    
     private func configureTextStickerConstraints() {
         DispatchQueue.main.async {
             self.textView.delegate = self
@@ -341,9 +359,21 @@ extension TextStickerView: UITextViewDelegate {
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
-        DispatchQueue.main.async {
-            if textView.text == "" {
+        if textView.text == "" {
+            DispatchQueue.main.async {
                 textView.text = self.placehloderText
+                let size = CGSize(width: 2000, height: 2000)
+                let estimatedSize = textView.sizeThatFits(size)
+                
+                let editModePositionX = self.defaultPosition.x - estimatedSize.width / 2
+                let editModePositionY = self.defaultPosition.y - estimatedSize.height / 2
+                let editModePosition = CGPoint(x: editModePositionX, y: editModePositionY)
+                let editModeTransform = self.transform
+                
+                let editModeFrame = CGRect(origin: editModePosition, size: estimatedSize)
+                
+                self.stickerViewData?.updateContents(contents: [self.textView.text])
+                self.textStickerEditTextModeUI.onNext((editModeFrame, editModeTransform))
             }
         }
     }

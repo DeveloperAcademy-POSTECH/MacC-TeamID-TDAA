@@ -252,7 +252,7 @@ class TextStickerView: StickerView {
             
             self.borderView.addSubview(self.textView)
             self.textView.snp.makeConstraints { make in
-                make.center.top.equalTo(self)
+                make.edges.equalTo(self)
             }
             
             self.addSubview(self.textImageView)

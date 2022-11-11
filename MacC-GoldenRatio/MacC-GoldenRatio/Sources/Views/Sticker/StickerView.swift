@@ -36,6 +36,7 @@ class StickerView: UIView {
 
     /// 스티커 뷰의 활성 상태를 나타내는 변수입니다. Local 상에서만 다뤄집니다. 즉, 서버 데이터에 업데이트 되지 않습니다.
     var isStickerViewActive: BehaviorSubject<Bool> = BehaviorSubject(value: false)
+    var isStickerViewMode: Bool = false
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -237,6 +238,8 @@ class StickerView: UIView {
 
     // MARK: 스티커 자체에 입력되는 제스처 관련 메서드
     @objc private func stickerViewSingleTap(_ sender: UITapGestureRecognizer) {
+        guard !isStickerViewMode else { return }
+        
         do {
             let isStickerViewActive = try self.isStickerViewActive.value()
             updateIsStickerViewActive(value: !isStickerViewActive)

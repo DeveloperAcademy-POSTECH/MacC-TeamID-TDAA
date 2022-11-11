@@ -10,19 +10,18 @@ import RxSwift
 import SnapKit
 import UIKit
 
-final class HomeAddDiaryButtonView: UIButton {
+final class HomeButtonView: UIButton {
 	let myDevice = UIScreen.getDevice()
 	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
-		setupViews()
 	}
 	
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
-	func setupViews() {
-		self.setImage(UIImage(named: "plusButton"), for: .normal)
+	func setupViews(_ image: UIImage?) {
+		self.setImage(image, for: .normal)
 	}
 }

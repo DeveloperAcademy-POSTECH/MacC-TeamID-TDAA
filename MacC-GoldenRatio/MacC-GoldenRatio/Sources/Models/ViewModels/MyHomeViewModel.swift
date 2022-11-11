@@ -20,6 +20,7 @@ class MyHomeViewModel {
 	
 	let diaryCollectionViewModel = DiaryCollectionViewModel()
 	let mapViewModel = MapViewModel()
+	let albumCollectionViewModel = AlbumCollectionViewModel()
 	
 	var isEqual = false
 	var isInitializing = true {

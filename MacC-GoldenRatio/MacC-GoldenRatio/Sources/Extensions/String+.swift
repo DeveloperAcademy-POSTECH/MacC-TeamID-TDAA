@@ -5,7 +5,7 @@
 //  Created by DongKyu Kim on 2022/10/13.
 //
 
-import Foundation
+import UIKit
 
 extension String {
     func toDate() -> Date? {
@@ -17,5 +17,12 @@ extension String {
         } else {
             return nil
         }
+    }
+    
+    func verifyUrl() -> Bool {
+        if let url = NSURL(string: self) {
+            return UIApplication.shared.canOpenURL(url as URL)
+        }
+        return false
     }
 }

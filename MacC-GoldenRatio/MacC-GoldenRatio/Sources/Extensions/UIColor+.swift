@@ -50,18 +50,23 @@ extension UIColor {
         return color
     }
     
-	static var subTextColor: UIColor {
-		let color = UIColor(named: "calendarSubTextColor")!
-		return color
-	}
-	
-	static var middleGrayColor: UIColor {
-		let color = UIColor(named: "calendarWeeklyGrayColor")!
-		return color
-	}
+    static var subTextColor: UIColor {
+        let color = UIColor(named: "calendarSubTextColor")!
+        return color
+    }
+    
+    static var middleGrayColor: UIColor {
+        let color = UIColor(named: "calendarWeeklyGrayColor")!
+        return color
+    }
 
     static var calendarWeeklyGrayColor: UIColor {
         let color = UIColor(named: "calendarWeeklyGrayColor")!
+        return color
+    }
+    
+    static var requiredItemsColor: UIColor {
+        let color = UIColor(named: "requiredItemsColor")!
         return color
     }
 }

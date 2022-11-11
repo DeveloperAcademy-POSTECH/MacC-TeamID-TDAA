@@ -18,9 +18,10 @@ class DiaryConfigViewController: UIViewController {
     private var dateInterval: [Date] = []
     var viewModel = DiaryConfigViewModel(diary: nil)
     
+    let imagePicker = UIImagePickerController()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setup()
         layout()
     }
@@ -28,10 +29,17 @@ class DiaryConfigViewController: UIViewController {
     lazy var diaryConfigCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.delegate = self
+        collectionView.rx.setDelegate(self)
+            .disposed(by: disposeBag)
         collectionView.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
         
         return collectionView
+    }()
+    
+    private lazy var divider: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.placeholderText
+        return view
     }()
     
     private lazy var stateTitle: UILabel = {
@@ -66,36 +74,40 @@ class DiaryConfigViewController: UIViewController {
         
         viewModel.cellData
             .drive(diaryConfigCollectionView.rx.items) { collectionView, row, data in
-                switch row {
-                case 0: // 다이어리 제목
+                switch data.configContentType {
+                case .diaryName: // 다이어리 제목
                     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DiaryConfigTitleCell", for: IndexPath(row: row, section: 0)) as! DiaryConfigCollectionViewCell
-                    cell.contentButton.isHidden = true
                     cell.bind(data)
-
                     return cell
                     
-                case 1: // 장소
+                case .location: // 장소
                     var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DiaryConfigLocationCell", for: IndexPath(row: row, section: 0)) as! DiaryConfigCollectionViewCell
                     cell = self.mapSearchViewPresent(cell: cell, viewModel: viewModel)
                     cell.bind(data)
                     return cell
                     
-                case 2: // 다이어리 날짜
+                case .diaryDate: // 다이어리 날짜
                     var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DiaryConfigDateCell", for: IndexPath(row: row, section: 0)) as! DiaryConfigCollectionViewCell
                     cell = self.calendarViewPresent(cell: cell, viewModel: viewModel)
                     cell.bind(data)
                     return cell
                     
-                case 3: // 다이어리 색상
+                case .diaryColor: // 다이어리 색상
                     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DiaryConfigColorCell", for: IndexPath(row: row, section: 0)) as! DiaryConfigCollectionViewCell
-                    cell.contentButton.isHidden = true
-                    cell.clearButton.isHidden = true
-                    cell.dividerView.isHidden = true
                     cell.bind(data)
                     return cell
                     
-                default:
-                    fatalError()
+                case .diaryImage: // 표지 이미지
+                    var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DiaryConfigImageCell", for: IndexPath(row: row, section: 0)) as! DiaryConfigCollectionViewCell
+                    cell = self.modalPresent(cell: cell, viewModel: viewModel)
+                    viewModel.diaryCoverImage
+                        .subscribe(onNext: {
+                            viewModel.coverImage = $0
+                            cell.contentButton.setImage($0.withCornerRadius($0.size.width / 8.5), for: .normal)
+                        })
+                        .disposed(by: self.disposeBag)
+                    cell.bind(data)
+                    return cell
                 }
             }
             .disposed(by: disposeBag)
@@ -103,7 +115,7 @@ class DiaryConfigViewController: UIViewController {
         
         viewModel.presentAlert
             .emit(onNext: { _ in
-                let alertController = UIAlertController(title: nil, message: "변경사항은 저장되지 않습니다. 정말 취소하시겠습니까?", preferredStyle: .alert)
+                let alertController = UIAlertController(title: nil, message: viewModel.configState.alertMessage, preferredStyle: .alert)
                 alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: { [weak self] _ in
                     self?.dismiss(animated: true, completion: nil)
                 }))
@@ -112,27 +124,12 @@ class DiaryConfigViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        
+        
         viewModel.complete
-            .emit(onNext: {
-                 if viewModel.checkAvailable() {
-                    
-                    if let parentNavigationController: UINavigationController = self.presentingViewController as? UINavigationController {
-                        self.presentingViewController?.dismiss(animated: true) {
-                            switch viewModel.configState {
-                            case .create:
-                                viewModel.addDiary()
-                                NotificationCenter.default.post(name: .reloadDiary, object: nil)
-                                guard let diary = viewModel.diary else { return }
-                                
-                                let myDiaryPagesVC = MyDiaryPagesViewController(diaryData: diary)
-                                parentNavigationController.isNavigationBarHidden = false
-                                parentNavigationController.pushViewController(myDiaryPagesVC, animated: true)
-                                
-                            case .modify:
-                                viewModel.updateDiary()
-                            }
-                        }
-                    }
+            .drive(onNext: {
+                if viewModel.checkAvailable() {
+                    self.dismiss()
                 } else {
                     self.view.showToastMessage("작성이 완료되지 않았습니다.")
                 }
@@ -150,23 +147,23 @@ class DiaryConfigViewController: UIViewController {
         doneButton.rx.tap
             .bind(to: viewModel.doneButtonTapped)
             .disposed(by: disposeBag)
-        
-        
     }
     
     private func setup() {
         let tapGesture = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
         view.addGestureRecognizer(tapGesture)
+        tapGesture.cancelsTouchesInView = false
         view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
         
         diaryConfigCollectionView.register(DiaryConfigCollectionViewCell.self, forCellWithReuseIdentifier: "DiaryConfigTitleCell")
         diaryConfigCollectionView.register(DiaryConfigCollectionViewCell.self, forCellWithReuseIdentifier: "DiaryConfigLocationCell")
         diaryConfigCollectionView.register(DiaryConfigCollectionViewCell.self, forCellWithReuseIdentifier: "DiaryConfigDateCell")
         diaryConfigCollectionView.register(DiaryConfigCollectionViewCell.self, forCellWithReuseIdentifier: "DiaryConfigColorCell")
+        diaryConfigCollectionView.register(DiaryConfigCollectionViewCell.self, forCellWithReuseIdentifier: "DiaryConfigImageCell")
     }
     
     private func layout() {
-        [stateTitle, cancelButton, doneButton, diaryConfigCollectionView].forEach {
+        [stateTitle, cancelButton, doneButton, divider, diaryConfigCollectionView].forEach {
             view.addSubview($0)
         }
         
@@ -187,30 +184,74 @@ class DiaryConfigViewController: UIViewController {
             $0.top.equalTo(stateTitle)
         }
         
-        diaryConfigCollectionView.snp.makeConstraints {
-            $0.topMargin.equalTo(view.safeAreaLayoutGuide).inset(device.diaryConfigCollectionViewInset)
-            $0.bottom.equalTo(view.safeAreaLayoutGuide)
-            $0.leading.equalTo(view.safeAreaLayoutGuide)
-            $0.trailing.equalTo(view.safeAreaLayoutGuide)
+        divider.snp.makeConstraints {
+            $0.bottom.equalTo(stateTitle).offset(9)
+            $0.width.equalToSuperview()
+            $0.height.equalTo(1)
         }
         
+        diaryConfigCollectionView.snp.makeConstraints {
+            $0.top.equalTo(divider.snp.bottom).offset(16)
+            $0.leading.equalTo(view.safeAreaLayoutGuide)
+            $0.trailing.equalTo(view.safeAreaLayoutGuide)
+            $0.height.equalTo(view.safeAreaLayoutGuide)
+        }
     }
 }
 
 extension DiaryConfigViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: UIScreen.main.bounds.width, height: device.diaryConfigCollectionViewCellHeight)
+        var cellHeight: CGFloat = 86
+        
+        switch viewModel.configState {
+        case .create:
+            if indexPath.row == 3 { cellHeight = 166 }
+            else if indexPath.row == 4 { cellHeight = 225 }
+        case .modify:
+            if indexPath.row == 2 { cellHeight = 166 }
+            else if indexPath.row == 3 { cellHeight = 225 }
+        }
+        return CGSize(width: UIScreen.main.bounds.width, height: cellHeight)
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: device.diaryConfigCollectionViewCellInset, left: 0, bottom: device.diaryConfigCollectionViewCellInset, right: 0)
+        return UIEdgeInsets(top: -5, left: 0, bottom: -5, right: 0)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
     }
 }
 
 extension DiaryConfigViewController {
+    // MARK: Parent & Child View Presentation Related Methods
+    
+    private func dismiss() {
+        if let parentNavigationController: UINavigationController = self.presentingViewController as? UINavigationController {
+            self.presentingViewController?.dismiss(animated: true) {
+                
+                self.viewModel.uploadImage() {
+                    switch self.viewModel.configState {
+                    case .create:
+                        self.viewModel.addDiary()
+                        NotificationCenter.default.post(name: .reloadDiary, object: nil)
+                        guard let diary = self.viewModel.diary else { return }
+                        let myDiaryPagesVC = MyDiaryPagesViewController(diaryData: diary)
+                        parentNavigationController.isNavigationBarHidden = false
+                        parentNavigationController.pushViewController(myDiaryPagesVC, animated: true)
+                        
+                    case .modify:
+                        self.viewModel.updateDiary()
+                    }
+                }
+            }
+        }
+    }
+    
     private func mapSearchViewPresent(cell: DiaryConfigCollectionViewCell, viewModel: DiaryConfigViewModel) -> DiaryConfigCollectionViewCell {
         cell.contentTap
-            .subscribe(onNext: {
+            .asDriver(onErrorJustReturn: Void())
+            .drive(onNext: {
                 self.view.endEditing(true)
                 
                 let mapSearchViewController = MapSearchViewController()
@@ -219,12 +260,13 @@ extension DiaryConfigViewController {
                         let locationName = mapItem.name
                         let locationAddress = mapItem.placemark.countryCode
                         let locationCoordinate = mapItem.placemark.location?.coordinate
-                        let location = Location(locationName: locationName ?? "", locationAddress: locationAddress ?? "", locationCoordinate: [Double(locationCoordinate?.latitude ?? 0.0), Double(locationCoordinate?.longitude ?? 0.0)])
+                        let locationCategory = mapItem.pointOfInterestCategory?.rawValue.description ?? ""
+                        let location = Location(locationName: locationName ?? "", locationAddress: locationAddress ?? "", locationCoordinate: [Double(locationCoordinate?.latitude ?? 0.0), Double(locationCoordinate?.longitude ?? 0.0)], locationCategory: locationCategory)
                         
                         viewModel.location = location
                         
                         cell.contentButton.setTitle(locationName, for: .normal)
-                        cell.contentButton.tintColor = .black
+                        cell.contentButton.setTitleColor(.black, for: .normal)
                         cell.contentButton.layoutIfNeeded()
                     }
                 }
@@ -237,28 +279,82 @@ extension DiaryConfigViewController {
     
     private func calendarViewPresent(cell: DiaryConfigCollectionViewCell, viewModel: DiaryConfigViewModel) -> DiaryConfigCollectionViewCell {
         cell.contentTap
-            .subscribe(onNext: {
+            .asDriver(onErrorJustReturn: Void())
+            .drive(onNext: {
                 self.view.endEditing(true)
                 
                 let pickerController = CalendarPickerViewController(dateArray: self.dateInterval, selectedDateChanged: { date in
                     UIView.performWithoutAnimation {
                         let startDate = date[0]
                         let endDate = date[1]
-    
+                        
                         self.dateInterval = [startDate, endDate]
                         viewModel.startDate = startDate.customFormat()
                         viewModel.endDate = endDate.customFormat()
-    
-                        cell.contentButton.setTitle("\(startDate.customFormat()) \(startDate.dayOfTheWeek()) - \(endDate.customFormat()) \(endDate.dayOfTheWeek())", for: .normal)
-                        cell.contentButton.tintColor = .black
+                        cell.contentButton.setTitle("\(startDate.customFormat()) (\(startDate.dayOfTheWeek())) - \(endDate.customFormat()) (\(endDate.dayOfTheWeek()))", for: .normal)
+                        cell.contentButton.setTitleColor(.black, for: .normal)
                         cell.contentButton.layoutIfNeeded()
                     }
                 })
-    
+                
                 self.present(pickerController, animated: true, completion: nil)
             })
             .disposed(by: self.disposeBag)
         
         return cell
+    }
+    
+    private func modalPresent(cell: DiaryConfigCollectionViewCell, viewModel: DiaryConfigViewModel) -> DiaryConfigCollectionViewCell {
+        
+        cell.contentTap
+            .asDriver(onErrorJustReturn: Void())
+            .drive(onNext: {
+                if viewModel.coverImage != UIImage(named: "selectImage") {
+                    let alertController = UIAlertController(title: "대표 이미지 설정", message: nil, preferredStyle: .actionSheet)
+                    
+                    alertController.addAction(UIAlertAction(title: "앨범에서 사진 선택", style: .default, handler: { [weak self] _ in
+                        self?.view.endEditing(true)
+                        self?.presentImagePicker()
+                    }))
+                    alertController.addAction(UIAlertAction(title: "기본 이미지로 변경", style: .default, handler: { [weak self] _ in
+                        self?.viewModel.resetCoverImage()
+                        self?.viewModel.coverImage = UIImage(named: "selectImage") ?? UIImage()
+                    }))
+                    alertController.addAction(UIAlertAction(title: "취소", style: .cancel))
+                    self.present(alertController, animated: true)
+                } else {
+                    self.view.endEditing(true)
+                    self.presentImagePicker()
+                }
+            })
+            .disposed(by: self.disposeBag)
+        
+        return cell
+    }
+    
+    private func presentImagePicker() {
+        self.imagePicker.sourceType = .photoLibrary
+        self.imagePicker.allowsEditing = true
+        self.imagePicker.delegate = self
+        self.imagePicker.modalPresentationStyle = .currentContext
+        self.present(self.imagePicker, animated: true)
+    }
+}
+
+// MARK: ImagePikcerDelegate
+extension DiaryConfigViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        var selectImage = UIImage(named: "selectImage")
+        
+        if let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+            selectImage = image
+        } else if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            selectImage = image
+        }
+        
+        imagePicker.dismiss(animated: true, completion: {
+            self.viewModel.diaryCoverImage.accept(selectImage ?? UIImage())
+            self.viewModel.coverImage = selectImage ?? UIImage()
+        })
     }
 }

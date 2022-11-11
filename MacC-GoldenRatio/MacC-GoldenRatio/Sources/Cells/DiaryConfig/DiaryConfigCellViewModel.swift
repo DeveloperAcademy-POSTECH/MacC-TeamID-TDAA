@@ -28,9 +28,11 @@ class DiaryConfigCellViewModel {
     let diaryData = PublishRelay<Diary?>()
     
     var diary: Diary?
+    let configContentType: ConfigContentType
     
     init(type configContetType: ConfigContentType) {
         self.setContent = Driver.just(configContetType)
+        self.configContentType = configContetType
         
         self.resetContentLabel = clearButtonTapped
             .map { _ in configContetType }

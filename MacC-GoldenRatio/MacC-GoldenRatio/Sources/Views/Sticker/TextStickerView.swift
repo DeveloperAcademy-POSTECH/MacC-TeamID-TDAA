@@ -362,6 +362,7 @@ extension TextStickerView: UITextViewDelegate {
         if textView.text == "" {
             DispatchQueue.main.async {
                 textView.text = self.placehloderText
+                
                 let size = CGSize(width: 2000, height: 2000)
                 let estimatedSize = textView.sizeThatFits(size)
                 
@@ -380,6 +381,9 @@ extension TextStickerView: UITextViewDelegate {
     
     func textViewDidChange(_ textView: UITextView) {
         DispatchQueue.main.async {
+            if textView.text == "" {
+                textView.text = self.placehloderText
+            }
             let size = CGSize(width: 2000, height: 2000)
             let estimatedSize = textView.sizeThatFits(size)
             

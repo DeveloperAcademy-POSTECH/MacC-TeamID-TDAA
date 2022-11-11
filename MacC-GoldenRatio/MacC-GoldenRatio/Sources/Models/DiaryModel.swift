@@ -23,7 +23,6 @@ struct Location: Codable {
 	let locationName: String
 	let locationAddress: String
 	let locationCoordinate: [Double]
-	let locationCategory: String?
 }
 
 struct Pages: Codable {

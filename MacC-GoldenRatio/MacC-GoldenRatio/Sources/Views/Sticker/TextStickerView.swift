@@ -257,6 +257,7 @@ class TextStickerView: StickerView {
         }
     }
     
+    // Override Gesture Event Method
     override func stickerViewSingleTap(_ sender: UITapGestureRecognizer) {
         guard !isStickerViewMode else { return }
 
@@ -273,6 +274,55 @@ class TextStickerView: StickerView {
             .disposed(by: self.disposeBag)
     }
     
+    override func pinch(_ sender: UIPinchGestureRecognizer) {
+        self.textStickerViewMode
+            .take(1)
+            .subscribe {
+                guard $0 == .editUI else { return }
+                super.pinch(sender)
+            }
+            .disposed(by: self.disposeBag)
+    }
+    
+    override func rotate(_ sender: UIRotationGestureRecognizer) {
+        self.textStickerViewMode
+            .take(1)
+            .subscribe {
+                guard $0 == .editUI else { return }
+                super.rotate(sender)
+            }
+            .disposed(by: self.disposeBag)
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.textStickerViewMode
+            .take(1)
+            .subscribe {
+                guard $0 == .editUI else { return }
+                super.touchesBegan(touches, with: event)
+            }
+            .disposed(by: self.disposeBag)
+    }
+    
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.textStickerViewMode
+            .take(1)
+            .subscribe {
+                guard $0 == .editUI else { return }
+                super.touchesMoved(touches, with: event)
+            }
+            .disposed(by: self.disposeBag)
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.textStickerViewMode
+            .take(1)
+            .subscribe {
+                guard $0 == .editUI else { return }
+                super.touchesEnded(touches, with: event)
+            }
+            .disposed(by: self.disposeBag)
+    }
 }
 
 extension TextStickerView: UITextViewDelegate {

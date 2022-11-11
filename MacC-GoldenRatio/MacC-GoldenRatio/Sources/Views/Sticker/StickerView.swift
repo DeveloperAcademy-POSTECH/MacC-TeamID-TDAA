@@ -251,7 +251,7 @@ class StickerView: UIView {
             .disposed(by: self.disposeBag)
     }
     
-    @objc private func pinch(_ sender: UIPinchGestureRecognizer) {
+    @objc internal func pinch(_ sender: UIPinchGestureRecognizer) {
         
         guard let isStickerViewActive = try? self.isStickerViewActive.value(), isStickerViewActive == true else { return }
         
@@ -275,7 +275,7 @@ class StickerView: UIView {
         updateControlsPosition()
     }
 
-    @objc private func rotate(_ sender: UIRotationGestureRecognizer) {
+    @objc internal func rotate(_ sender: UIRotationGestureRecognizer) {
         
         guard let isStickerViewActive = try? self.isStickerViewActive.value(), isStickerViewActive == true else { return }
 
@@ -299,7 +299,7 @@ class StickerView: UIView {
         
     }
 
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    override internal func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         guard let isStickerViewActive = try? self.isStickerViewActive.value(), isStickerViewActive == true else { return }
         
@@ -313,7 +313,7 @@ class StickerView: UIView {
         
     }
     
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+    override internal func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
 
         guard let isStickerViewActive = try? self.isStickerViewActive.value(), isStickerViewActive == true else { return }
 
@@ -328,7 +328,7 @@ class StickerView: UIView {
         
     }
     
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+    override internal func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
      
         guard let isStickerViewActive = try? self.isStickerViewActive.value(), isStickerViewActive == true else { return }
 

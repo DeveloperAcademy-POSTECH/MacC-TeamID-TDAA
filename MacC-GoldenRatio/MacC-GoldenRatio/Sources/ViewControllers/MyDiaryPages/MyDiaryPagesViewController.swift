@@ -137,7 +137,6 @@ class MyDiaryPagesViewController: UIViewController {
             let title = diaryConfigVC.viewModel.diary?.diaryName
             self.titleLabel.text = title
             self.viewModel.diaryData.diaryName = title ?? ""
-            print(self.viewModel.diaryData.diaryName)
         }
     }
     
@@ -163,9 +162,13 @@ class MyDiaryPagesViewController: UIViewController {
     
     @objc func modifyButtonTapped() {
         let vc = DiaryConfigViewController()
-        vc.bind(DiaryConfigViewModel(diary: self.viewModel.diaryData))
-        vc.modalPresentationStyle = .fullScreen
-        self.present(vc, animated: true, completion: nil)
+        viewModel.diaryDataSetup {
+            DispatchQueue.main.async {
+                vc.bind(DiaryConfigViewModel(diary: self.viewModel.diaryData))
+                vc.modalPresentationStyle = .fullScreen
+                self.present(vc, animated: true, completion: nil)
+            }
+        }
     }
     
     @objc func outButtonTapped() {

@@ -42,7 +42,9 @@ class DiaryCollectionView: UICollectionView {
 			.subscribe(onNext: { data in
 				DispatchQueue.main.async {
 					if data.first?.items.count == 0 {
-						self.backgroundView = DiaryCollectionEmptyView()
+						let emptyView = CollectionEmptyView()
+						emptyView.setupViews(text: "다이어리를 추가해주세요.")
+						self.backgroundView = emptyView
 					} else {
 						self.backgroundView = nil
 					}

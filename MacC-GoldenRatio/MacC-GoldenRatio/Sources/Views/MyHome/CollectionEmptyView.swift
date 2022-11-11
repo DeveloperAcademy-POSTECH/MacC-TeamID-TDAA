@@ -10,12 +10,11 @@ import RxSwift
 import SnapKit
 import UIKit
 
-final class DiaryCollectionEmptyView: UIView {
-	let myDevice = UIScreen.getDevice()
+final class CollectionEmptyView: UIView {
+	private let myDevice = UIScreen.getDevice()
 	
 	private lazy var textLabel: UILabel = {
 		let label = UILabel()
-		label.text = "다이어리를 추가해주세요."
 		label.font = myDevice.collectionBackgoundViewFont
 		label.textColor = UIColor.calendarWeeklyGrayColor
 		label.textAlignment = .center
@@ -24,14 +23,14 @@ final class DiaryCollectionEmptyView: UIView {
 	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
-		setupViews()
 	}
 	
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
-	func setupViews() {
+	func setupViews(text: String) {
+		textLabel.text = text
 		addSubview(textLabel)
 		textLabel.snp.makeConstraints {
 			$0.edges.equalToSuperview()

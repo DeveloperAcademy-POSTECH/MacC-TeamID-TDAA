@@ -9,7 +9,7 @@ import RxSwift
 import RxCocoa
 
 class DiaryConfigCellViewModel {
-    var diaryColorViewModel = DiaryColorCollectionViewModel()
+    let diaryColorViewModel = DiaryColorCollectionViewModel()
     
     // ViewModel -> View
     let setContent: Driver<ConfigContentType>

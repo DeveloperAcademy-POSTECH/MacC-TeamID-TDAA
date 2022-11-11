@@ -9,4 +9,5 @@ import Foundation
 
 enum ErrorMessage: Error {
     case stickerViewDataDoesntExist
+    case wrongURL
 }

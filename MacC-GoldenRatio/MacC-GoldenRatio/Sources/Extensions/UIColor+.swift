@@ -50,15 +50,15 @@ extension UIColor {
         return color
     }
     
-	static var subTextColor: UIColor {
-		let color = UIColor(named: "calendarSubTextColor")!
-		return color
-	}
-	
-	static var middleGrayColor: UIColor {
-		let color = UIColor(named: "calendarWeeklyGrayColor")!
-		return color
-	}
+    static var subTextColor: UIColor {
+        let color = UIColor(named: "calendarSubTextColor")!
+        return color
+    }
+    
+    static var middleGrayColor: UIColor {
+        let color = UIColor(named: "calendarWeeklyGrayColor")!
+        return color
+    }
 
     static var calendarWeeklyGrayColor: UIColor {
         let color = UIColor(named: "calendarWeeklyGrayColor")!
@@ -72,6 +72,11 @@ extension UIColor {
     
     static func gradientColor(alpha: CGFloat) -> UIColor {
         let color = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: alpha)
+        return color
+    }
+  
+    static var requiredItemsColor: UIColor {
+        let color = UIColor(named: "requiredItemsColor")!
         return color
     }
 }

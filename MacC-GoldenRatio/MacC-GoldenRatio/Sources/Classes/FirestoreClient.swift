@@ -4,7 +4,6 @@
 //
 //  Created by woo0 on 2022/10/04.
 //
-
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 import RxSwift
@@ -40,7 +39,7 @@ class FirestoreClient {
 					do {
 						diaries.append(try document.data(as: Diary.self))
 					} catch {
-						observer.onError(error)
+						print(error)
 					}
 				}
 				observer.onNext(.success(diaries))
@@ -49,38 +48,15 @@ class FirestoreClient {
 			return Disposables.create()
 		}
 	}
-    
-    func fetchDiaryLocationData(_ uid: String) async throws -> [Location] {
-        var diaries = [Diary]()
-        var locations = [Location]()
-        
-        let query = db.collection("Diary").whereField("userUIDs", arrayContains: uid)
-        
-        let querySnapshot = try await query.getDocuments()
-        
-        querySnapshot.documents.forEach { document in
-            do {
-                diaries.append(try document.data(as: Diary.self))
-            } catch {
-                print(error)
-            }
-        }
-
-        for diary in diaries {
-            locations.append(diary.diaryLocation)
-        }
-
-        return locations
-    }
-    
-	func fetchDiaryMapData(_ uid: String) async throws -> [MapData] {
+	
+	func fetchDiaryLocationData(_ uid: String) async throws -> [Location] {
 		var diaries = [Diary]()
-		
-		var mapDatas = [MapData]()
+		var locations = [Location]()
 		
 		let query = db.collection("Diary").whereField("userUIDs", arrayContains: uid)
 		
 		let querySnapshot = try await query.getDocuments()
+		
 		querySnapshot.documents.forEach { document in
 			do {
 				diaries.append(try document.data(as: Diary.self))
@@ -90,47 +66,47 @@ class FirestoreClient {
 		}
 
 		for diary in diaries {
-			mapDatas.append(MapData(diaryName: diary.diaryName, diaryCover: diary.diaryCover, location: diary.diaryLocation))
+			locations.append(diary.diaryLocation)
 		}
 
-		return mapDatas
+		return locations
 	}
-    
-    func isExistingUser(_ uid: String, completion: @escaping ((Bool)->Void)){
-        let query = db.collection("User").whereField("userUID", isEqualTo: uid)
-        query.getDocuments { querySnapshot, error in
-            if querySnapshot?.documents == [] {
-                completion(false)
-            }else{
-                completion(true)
-            }
-        }
-    }
-    
-    func fetchMyUser(_ uid: String) async throws -> User {
-        var user: User!
-        
-        let query = db.collection("User").whereField("userUID", isEqualTo: uid)
-        let querySnapshot = try await query.getDocuments()
-        
-        querySnapshot.documents.forEach { document in
-            do {
-                user = try document.data(as: User.self)
-            } catch {
-                print(error)
-            }
-        }
-        return user
-    }
-    
-    func setMyUser(myUser: User, completion: (() -> Void)?) {
-        do {
-            try db.collection("User").document(myUser.userUID).setData(from: myUser)
-            (completion ?? {})()
-        } catch {
-            print(error)
-        }
-    }
+	
+	func isExistingUser(_ uid: String, completion: @escaping ((Bool)->Void)){
+		let query = db.collection("User").whereField("userUID", isEqualTo: uid)
+		query.getDocuments { querySnapshot, error in
+			if querySnapshot?.documents == [] {
+				completion(false)
+			}else{
+				completion(true)
+			}
+		}
+	}
+	
+	func fetchMyUser(_ uid: String) async throws -> User {
+		var user: User!
+		
+		let query = db.collection("User").whereField("userUID", isEqualTo: uid)
+		let querySnapshot = try await query.getDocuments()
+		
+		querySnapshot.documents.forEach { document in
+			do {
+				user = try document.data(as: User.self)
+			} catch {
+				print(error)
+			}
+		}
+		return user
+	}
+	
+	func setMyUser(myUser: User, completion: (() -> Void)?) {
+		do {
+			try db.collection("User").document(myUser.userUID).setData(from: myUser)
+			(completion ?? {})()
+		} catch {
+			print(error)
+		}
+	}
 	
 	func fetchDiaryAlbumData(_ uid: String) async throws -> [AlbumData] {
 		var diaries = [Diary]()

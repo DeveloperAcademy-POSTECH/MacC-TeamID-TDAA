@@ -90,9 +90,10 @@ class PageViewController: UIViewController {
     }()
     
     // MARK: init
-    init(diary: Diary, selectedDay: Int) async {
+    init(pageViewModel: PageViewModel) {
         super.init(nibName: nil, bundle: nil)
-        self.pageViewModel = await PageViewModel(diary: diary, selectedDay: selectedDay)
+        self.pageViewModel = pageViewModel
+        self.pageViewModel.setOldDiary()
     }
     
     required init?(coder: NSCoder) {
@@ -118,7 +119,7 @@ class PageViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.configureNavigation()
+        self.configureNavigationBar()
     }
     
     private func setPageDescription() {
@@ -202,7 +203,7 @@ class PageViewController: UIViewController {
         self.imagePicker.delegate = self
     }
     
-    private func configureNavigation() {
+    private func configureNavigationBar() {
         let leftBarButtonItem = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(onTapNavigationCancel))
         let rightBarButtonItem = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(onTapNavigationComplete))
         leftBarButtonItem.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.navigationTitleFont, NSAttributedString.Key.foregroundColor:UIColor.navigationbarColor], for: .normal)
@@ -210,10 +211,10 @@ class PageViewController: UIViewController {
         self.navigationItem.setLeftBarButton(leftBarButtonItem, animated: false)
         self.navigationItem.setRightBarButton(rightBarButtonItem, animated: false)
         
-        self.pageViewModel.selectedDay
-            .subscribe(on: MainScheduler.instance)
+        self.pageViewModel.selectedPageIndex
+            .observe(on: MainScheduler.instance)
             .map{
-                ($0 + 1).description + "일차"
+                ($0.0 + 1).description + "일차"
             }
             .bind(to: self.navigationItem.rx.title)
             .disposed(by: self.pageViewModel.disposeBag)
@@ -381,6 +382,7 @@ extension PageViewController {
 
     @objc private func onTapNavigationComplete() {
         self.updateStickerViewsToDiaryModel()
+        self.navigationController?.popViewController(animated: true)
     }
     
     private func updateStickerViewsToDiaryModel() {

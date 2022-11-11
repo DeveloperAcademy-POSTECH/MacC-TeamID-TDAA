@@ -65,7 +65,6 @@
 		E21342DB28F6B0800048D9CF /* EF_Diary.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E21342DA28F6B07F0048D9CF /* EF_Diary.ttf */; };
 		E21342DD28F6B2740048D9CF /* HalfModalPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21342DC28F6B2740048D9CF /* HalfModalPresentationController.swift */; };
 		E21342DF28F6B31D0048D9CF /* MyHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21342DE28F6B31D0048D9CF /* MyHomeViewController.swift */; };
-		E21342E128F6B6940048D9CF /* MyPlaceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21342E028F6B6940048D9CF /* MyPlaceViewModel.swift */; };
 		E21342E328F6B6BC0048D9CF /* MapData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21342E228F6B6BC0048D9CF /* MapData.swift */; };
 		E25753BF28ED9E0600023619 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = E25753BE28ED9E0600023619 /* Kingfisher */; };
 		E265C8102914E9A4003380A5 /* HomeButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E265C80F2914E9A4003380A5 /* HomeButtonView.swift */; };
@@ -74,6 +73,14 @@
 		E276B91C28E46AE900163833 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E276B91B28E46AE900163833 /* User.swift */; };
 		E276B91E28E46B3700163833 /* DiaryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E276B91D28E46B3700163833 /* DiaryModel.swift */; };
 		E276B92028E4812E00163833 /* UIScreen+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E276B91F28E4812E00163833 /* UIScreen+.swift */; };
+		E2838BE4291E38250013DD82 /* MapListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2838BE3291E38250013DD82 /* MapListCell.swift */; };
+		E2838BE6291E38EE0013DD82 /* MapModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2838BE5291E38EE0013DD82 /* MapModel.swift */; };
+		E2838BE8291E3A4C0013DD82 /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2838BE7291E3A4C0013DD82 /* MapViewModel.swift */; };
+		E2838BEA291E3B3B0013DD82 /* MapListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2838BE9291E3B3B0013DD82 /* MapListView.swift */; };
+		E2838BEC291E3B490013DD82 /* SegmentedControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2838BEB291E3B490013DD82 /* SegmentedControlView.swift */; };
+		E2838BEF291E3CF20013DD82 /* MapListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2838BEE291E3CF20013DD82 /* MapListViewController.swift */; };
+		E2838BF1291E3D010013DD82 /* MapHalfModalPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2838BF0291E3D010013DD82 /* MapHalfModalPresentationController.swift */; };
+		E2838BF3291E3E820013DD82 /* GothicA1-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E2838BF2291E3E820013DD82 /* GothicA1-Bold.ttf */; };
 		E28F080228E4655100832F4A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28F080128E4655100832F4A /* AppDelegate.swift */; };
 		E28F080428E4655100832F4A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28F080328E4655100832F4A /* SceneDelegate.swift */; };
 		E28F080628E4655100832F4A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28F080528E4655100832F4A /* ViewController.swift */; };
@@ -95,7 +102,6 @@
 		E2C8FA26291432B4009C58C9 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = E2C8FA25291432B4009C58C9 /* RxCocoa */; };
 		E2C8FA28291432B4009C58C9 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E2C8FA27291432B4009C58C9 /* RxSwift */; };
 		E2CCF30128F74450008A12F9 /* CustomAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CCF30028F74450008A12F9 /* CustomAnnotationView.swift */; };
-		E2CCF30328F7534E008A12F9 /* CustomClusterAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CCF30228F7534E008A12F9 /* CustomClusterAnnotationView.swift */; };
 		E2DA8F6028F842310098DD94 /* MyAlbumCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DA8F5F28F842310098DD94 /* MyAlbumCollectionViewCell.swift */; };
 		E2DA8F6228F856A10098DD94 /* MyAlbumPhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DA8F6128F856A10098DD94 /* MyAlbumPhotoViewController.swift */; };
 		E2DA8F6428F857D80098DD94 /* MyAlbumPhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DA8F6328F857D80098DD94 /* MyAlbumPhotoCollectionViewCell.swift */; };
@@ -210,7 +216,6 @@
 		E21342DA28F6B07F0048D9CF /* EF_Diary.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = EF_Diary.ttf; sourceTree = "<group>"; };
 		E21342DC28F6B2740048D9CF /* HalfModalPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HalfModalPresentationController.swift; sourceTree = "<group>"; };
 		E21342DE28F6B31D0048D9CF /* MyHomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyHomeViewController.swift; sourceTree = "<group>"; };
-		E21342E028F6B6940048D9CF /* MyPlaceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPlaceViewModel.swift; sourceTree = "<group>"; };
 		E21342E228F6B6BC0048D9CF /* MapData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapData.swift; sourceTree = "<group>"; };
 		E265C80F2914E9A4003380A5 /* HomeButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeButtonView.swift; sourceTree = "<group>"; };
 		E26F0DB12916B33900B040C9 /* CollectionEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionEmptyView.swift; sourceTree = "<group>"; };
@@ -218,6 +223,14 @@
 		E276B91B28E46AE900163833 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		E276B91D28E46B3700163833 /* DiaryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryModel.swift; sourceTree = "<group>"; };
 		E276B91F28E4812E00163833 /* UIScreen+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+.swift"; sourceTree = "<group>"; };
+		E2838BE3291E38250013DD82 /* MapListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapListCell.swift; sourceTree = "<group>"; };
+		E2838BE5291E38EE0013DD82 /* MapModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapModel.swift; sourceTree = "<group>"; };
+		E2838BE7291E3A4C0013DD82 /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
+		E2838BE9291E3B3B0013DD82 /* MapListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapListView.swift; sourceTree = "<group>"; };
+		E2838BEB291E3B490013DD82 /* SegmentedControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControlView.swift; sourceTree = "<group>"; };
+		E2838BEE291E3CF20013DD82 /* MapListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapListViewController.swift; sourceTree = "<group>"; };
+		E2838BF0291E3D010013DD82 /* MapHalfModalPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapHalfModalPresentationController.swift; sourceTree = "<group>"; };
+		E2838BF2291E3E820013DD82 /* GothicA1-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GothicA1-Bold.ttf"; sourceTree = "<group>"; };
 		E28F07FE28E4655100832F4A /* MacC-GoldenRatio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MacC-GoldenRatio.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E28F080128E4655100832F4A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E28F080328E4655100832F4A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -241,7 +254,6 @@
 		E2C2750A290D950400319885 /* DiaryCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryCollectionView.swift; sourceTree = "<group>"; };
 		E2C2A76B28F97DB900D48F8F /* LoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingIndicator.swift; sourceTree = "<group>"; };
 		E2CCF30028F74450008A12F9 /* CustomAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotationView.swift; sourceTree = "<group>"; };
-		E2CCF30228F7534E008A12F9 /* CustomClusterAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomClusterAnnotationView.swift; sourceTree = "<group>"; };
 		E2DA8F5F28F842310098DD94 /* MyAlbumCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAlbumCollectionViewCell.swift; sourceTree = "<group>"; };
 		E2DA8F6128F856A10098DD94 /* MyAlbumPhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAlbumPhotoViewController.swift; sourceTree = "<group>"; };
 		E2DA8F6328F857D80098DD94 /* MyAlbumPhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAlbumPhotoCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -345,11 +357,11 @@
 			children = (
 				0A5E904E28E9948B00B381B8 /* PageViewModel.swift */,
 				E2B025BB28EB326C00B73891 /* MyHomeViewModel.swift */,
-				E21342E028F6B6940048D9CF /* MyPlaceViewModel.swift */,
 				0A3ED14028F98956000D55D8 /* MyPageViewModel.swift */,
 				E2BEC45D28F806C40056E755 /* MyAlbumViewModel.swift */,
 				E2C27501290D62EB00319885 /* DiaryCollectionViewModel.swift */,
 				E2993A6729195B9400409C9B /* AlbumCollectionViewModel.swift */,
+				E2838BE7291E3A4C0013DD82 /* MapViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -367,6 +379,7 @@
 			isa = PBXGroup;
 			children = (
 				E21342DA28F6B07F0048D9CF /* EF_Diary.ttf */,
+				E2838BF2291E3E820013DD82 /* GothicA1-Bold.ttf */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -494,6 +507,7 @@
 		E276B91728E4692B00163833 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				E2838BE2291E381C0013DD82 /* Map */,
 				CC3FEA222906CDAA005EE514 /* DiaryConfig */,
 				0A3ED14228F99EEF000D55D8 /* MyPage */,
 				E2BEC46128F82DAB0056E755 /* MyAlbum */,
@@ -532,6 +546,7 @@
 				E2BEC45F28F806F80056E755 /* AlbumData.swift */,
 				0AE94ABB291182090051A710 /* ErrorMessage.swift */,
 				E2E544302916D91400E611D0 /* DiarySection.swift */,
+				E2838BE5291E38EE0013DD82 /* MapModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -539,6 +554,7 @@
 		E276B91A28E4697E00163833 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				E2838BED291E3CEB0013DD82 /* Map */,
 				0A3ED13F28F937EB000D55D8 /* MyPageViewControllers */,
 				CC65514E28F086D900E637A2 /* MyDiaryPages */,
 				CC6BD74228EBFA6C001ED665 /* DiaryConfig */,
@@ -548,6 +564,23 @@
 				E28F080528E4655100832F4A /* ViewController.swift */,
 			);
 			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		E2838BE2291E381C0013DD82 /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				E2838BE3291E38250013DD82 /* MapListCell.swift */,
+			);
+			path = Map;
+			sourceTree = "<group>";
+		};
+		E2838BED291E3CEB0013DD82 /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				E2838BEE291E3CF20013DD82 /* MapListViewController.swift */,
+				E2838BF0291E3D010013DD82 /* MapHalfModalPresentationController.swift */,
+			);
+			path = Map;
 			sourceTree = "<group>";
 		};
 		E28F07F528E4655100832F4A = {
@@ -646,7 +679,8 @@
 			children = (
 				E2FA41AF28F6A89900BBA354 /* MapView.swift */,
 				E2CCF30028F74450008A12F9 /* CustomAnnotationView.swift */,
-				E2CCF30228F7534E008A12F9 /* CustomClusterAnnotationView.swift */,
+				E2838BE9291E3B3B0013DD82 /* MapListView.swift */,
+				E2838BEB291E3B490013DD82 /* SegmentedControlView.swift */,
 			);
 			path = Place;
 			sourceTree = "<group>";
@@ -781,6 +815,7 @@
 				E28F080E28E4655200832F4A /* LaunchScreen.storyboard in Resources */,
 				0A6F107D28FC6259002FB611 /* License.txt in Resources */,
 				E21342DB28F6B0800048D9CF /* EF_Diary.ttf in Resources */,
+				E2838BF3291E3E820013DD82 /* GothicA1-Bold.ttf in Resources */,
 				E28F080B28E4655200832F4A /* Assets.xcassets in Resources */,
 				E2F5691928E5CE170039BE37 /* GoogleService-Info.plist in Resources */,
 			);
@@ -833,6 +868,7 @@
 				0A3ED14828FBE6EB000D55D8 /* MyPageViewController.swift in Sources */,
 				0A5E904C28E858D200B381B8 /* StickerBorderView.swift in Sources */,
 				0A30BD47291A4DAF00079326 /* CALayer+.swift in Sources */,
+				E2838BE4291E38250013DD82 /* MapListCell.swift in Sources */,
 				CC65515028F0874800E637A2 /* MyDiaryPagesViewController.swift in Sources */,
 				0AEC53EC28EF211D001B0169 /* StickerViewData.swift in Sources */,
 				0A30BD49291A93AE00079326 /* PageViewModeCollectionViewCell.swift in Sources */,
@@ -846,10 +882,10 @@
 				CC3414082919310700A1FD17 /* DiaryColorCellViewModel.swift in Sources */,
 				CC6BD74428EBFA80001ED665 /* DiaryConfigViewController.swift in Sources */,
 				CCE1806F28E5919B00AF06DB /* SignInViewController.swift in Sources */,
-				E21342E128F6B6940048D9CF /* MyPlaceViewModel.swift in Sources */,
 				CC40BC1A28EEAE2400DF48E1 /* CalendarDateCollectionViewCell.swift in Sources */,
 				E21342DF28F6B31D0048D9CF /* MyHomeViewController.swift in Sources */,
 				0AD6FD7E2903054D00939F3D /* MapSearchResultTableViewCell.swift in Sources */,
+				E2838BF1291E3D010013DD82 /* MapHalfModalPresentationController.swift in Sources */,
 				CCD6D58C29135A7300013367 /* DiaryConfigCellViewModel.swift in Sources */,
 				CC6BD74628EC18B8001ED665 /* DiaryConfigCollectionViewCell.swift in Sources */,
 				0A5E904A28E858C000B381B8 /* StickerContollerView.swift in Sources */,
@@ -860,23 +896,26 @@
 				E276B91C28E46AE900163833 /* User.swift in Sources */,
 				E2DA8F6028F842310098DD94 /* MyAlbumCollectionViewCell.swift in Sources */,
 				E276B91C28E46AE900163833 /* User.swift in Sources */,
-				E2CCF30328F7534E008A12F9 /* CustomClusterAnnotationView.swift in Sources */,
 				0AE27F2528F442B100D79208 /* FirebaseStorage.swift in Sources */,
 				E276B91C28E46AE900163833 /* User.swift in Sources */,
 				CC34140C29193E6E00A1FD17 /* DiaryColorCollectionViewModel.swift in Sources */,
 				0AAB2AE228EDA55D009FBD96 /* StickerStickerView.swift in Sources */,
 				0A6F107528FC3782002FB611 /* LicenseViewController.swift in Sources */,
 				0A5E904828E857E200B381B8 /* StickerView.swift in Sources */,
+				E2838BE8291E3A4C0013DD82 /* MapViewModel.swift in Sources */,
 				CC9F969628F7E0B100E4B68A /* MyDiaryPagesViewModel.swift in Sources */,
 				0A5235B228F854C200AC77AC /* UIColor+.swift in Sources */,
 				0A6F107128FBFA7C002FB611 /* MenuTableViewCell.swift in Sources */,
 				CC65514728EEBF7C00E637A2 /* Date+.swift in Sources */,
 				E21342DD28F6B2740048D9CF /* HalfModalPresentationController.swift in Sources */,
+				E2838BEF291E3CF20013DD82 /* MapListViewController.swift in Sources */,
+				E2838BEA291E3B3B0013DD82 /* MapListView.swift in Sources */,
 				E2EA7F1628E5711E00AC1C49 /* DiaryCollectionHeaderView.swift in Sources */,
 				B93EC22928F7BC8000BB89C5 /* String+.swift in Sources */,
 				E2B025BC28EB326C00B73891 /* MyHomeViewModel.swift in Sources */,
 				E27469AB29199DAD00BC906A /* PhotoCollectionView.swift in Sources */,
 				E2C2A76C28F97DB900D48F8F /* LoadingIndicator.swift in Sources */,
+				E2838BEC291E3B490013DD82 /* SegmentedControlView.swift in Sources */,
 				E2DA8F6428F857D80098DD94 /* MyAlbumPhotoCollectionViewCell.swift in Sources */,
 				E2993A6629195AD600409C9B /* AlbumCollectionView.swift in Sources */,
 				E2CCF30128F74450008A12F9 /* CustomAnnotationView.swift in Sources */,
@@ -894,6 +933,7 @@
 				0AAB2AD328EB14A8009FBD96 /* UIView+.swift in Sources */,
 				E28F080428E4655100832F4A /* SceneDelegate.swift in Sources */,
 				E2DA8F6228F856A10098DD94 /* MyAlbumPhotoViewController.swift in Sources */,
+				E2838BE6291E38EE0013DD82 /* MapModel.swift in Sources */,
 				E2FA41A128F4752D00BBA354 /* DiaryCollectionViewCell.swift in Sources */,
 				CC34140A29193C0A00A1FD17 /* DiaryColorCollectionView.swift in Sources */,
 				CC40BC1628EEADEB00DF48E1 /* CalendarPickerFooterView.swift in Sources */,

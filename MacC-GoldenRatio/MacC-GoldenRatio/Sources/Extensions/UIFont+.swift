@@ -43,4 +43,9 @@ extension UIFont {
         let font = UIFont(name: "EF_Diary", size: 12)!
         return font
     }
+	
+	static var mapLabelFont: UIFont {
+		let font = UIFont(name: "GothicA1-Bold", size: 10)!
+		return font
+	}
 }

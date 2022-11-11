@@ -65,7 +65,6 @@
 		E21342DB28F6B0800048D9CF /* EF_Diary.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E21342DA28F6B07F0048D9CF /* EF_Diary.ttf */; };
 		E21342DD28F6B2740048D9CF /* HalfModalPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21342DC28F6B2740048D9CF /* HalfModalPresentationController.swift */; };
 		E21342DF28F6B31D0048D9CF /* MyHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21342DE28F6B31D0048D9CF /* MyHomeViewController.swift */; };
-		E21342E128F6B6940048D9CF /* MyPlaceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21342E028F6B6940048D9CF /* MyPlaceViewModel.swift */; };
 		E21342E328F6B6BC0048D9CF /* MapData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21342E228F6B6BC0048D9CF /* MapData.swift */; };
 		E25753BF28ED9E0600023619 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = E25753BE28ED9E0600023619 /* Kingfisher */; };
 		E265C8102914E9A4003380A5 /* HomeButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E265C80F2914E9A4003380A5 /* HomeButtonView.swift */; };
@@ -82,6 +81,14 @@
 		E28F081928E4655200832F4A /* MacC_GoldenRatioTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28F081828E4655200832F4A /* MacC_GoldenRatioTests.swift */; };
 		E28F082328E4655200832F4A /* MacC_GoldenRatioUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28F082228E4655200832F4A /* MacC_GoldenRatioUITests.swift */; };
 		E28F082528E4655200832F4A /* MacC_GoldenRatioUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28F082428E4655200832F4A /* MacC_GoldenRatioUITestsLaunchTests.swift */; };
+		E294D2AF291AA6C400EC69EF /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E294D2AE291AA6C400EC69EF /* MapViewModel.swift */; };
+		E294D2B3291B856D00EC69EF /* GothicA1-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E294D2B2291B856C00EC69EF /* GothicA1-Bold.ttf */; };
+		E294D2B8291B94FA00EC69EF /* MapListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E294D2B7291B94FA00EC69EF /* MapListViewController.swift */; };
+		E294D2BA291B955100EC69EF /* MapListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E294D2B9291B955100EC69EF /* MapListView.swift */; };
+		E294D2BD291B95A700EC69EF /* MapListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E294D2BC291B95A700EC69EF /* MapListCell.swift */; };
+		E294D2BF291C307400EC69EF /* MapHalfModalPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E294D2BE291C307400EC69EF /* MapHalfModalPresentationController.swift */; };
+		E294D2C1291CD1FF00EC69EF /* SegmentedControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E294D2C0291CD1FF00EC69EF /* SegmentedControlView.swift */; };
+		E294D2C5291D730000EC69EF /* MapModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E294D2C4291D730000EC69EF /* MapModel.swift */; };
 		E2993A6629195AD600409C9B /* AlbumCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2993A6529195AD600409C9B /* AlbumCollectionView.swift */; };
 		E2993A6829195B9400409C9B /* AlbumCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2993A6729195B9400409C9B /* AlbumCollectionViewModel.swift */; };
 		E2B025BC28EB326C00B73891 /* MyHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B025BB28EB326C00B73891 /* MyHomeViewModel.swift */; };
@@ -95,7 +102,6 @@
 		E2C8FA26291432B4009C58C9 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = E2C8FA25291432B4009C58C9 /* RxCocoa */; };
 		E2C8FA28291432B4009C58C9 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E2C8FA27291432B4009C58C9 /* RxSwift */; };
 		E2CCF30128F74450008A12F9 /* CustomAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CCF30028F74450008A12F9 /* CustomAnnotationView.swift */; };
-		E2CCF30328F7534E008A12F9 /* CustomClusterAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CCF30228F7534E008A12F9 /* CustomClusterAnnotationView.swift */; };
 		E2DA8F6028F842310098DD94 /* MyAlbumCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DA8F5F28F842310098DD94 /* MyAlbumCollectionViewCell.swift */; };
 		E2DA8F6228F856A10098DD94 /* MyAlbumPhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DA8F6128F856A10098DD94 /* MyAlbumPhotoViewController.swift */; };
 		E2DA8F6428F857D80098DD94 /* MyAlbumPhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DA8F6328F857D80098DD94 /* MyAlbumPhotoCollectionViewCell.swift */; };
@@ -210,7 +216,6 @@
 		E21342DA28F6B07F0048D9CF /* EF_Diary.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = EF_Diary.ttf; sourceTree = "<group>"; };
 		E21342DC28F6B2740048D9CF /* HalfModalPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HalfModalPresentationController.swift; sourceTree = "<group>"; };
 		E21342DE28F6B31D0048D9CF /* MyHomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyHomeViewController.swift; sourceTree = "<group>"; };
-		E21342E028F6B6940048D9CF /* MyPlaceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPlaceViewModel.swift; sourceTree = "<group>"; };
 		E21342E228F6B6BC0048D9CF /* MapData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapData.swift; sourceTree = "<group>"; };
 		E265C80F2914E9A4003380A5 /* HomeButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeButtonView.swift; sourceTree = "<group>"; };
 		E26F0DB12916B33900B040C9 /* CollectionEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionEmptyView.swift; sourceTree = "<group>"; };
@@ -230,6 +235,14 @@
 		E28F081E28E4655200832F4A /* MacC-GoldenRatioUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "MacC-GoldenRatioUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E28F082228E4655200832F4A /* MacC_GoldenRatioUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacC_GoldenRatioUITests.swift; sourceTree = "<group>"; };
 		E28F082428E4655200832F4A /* MacC_GoldenRatioUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacC_GoldenRatioUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		E294D2AE291AA6C400EC69EF /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
+		E294D2B2291B856C00EC69EF /* GothicA1-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GothicA1-Bold.ttf"; sourceTree = "<group>"; };
+		E294D2B7291B94FA00EC69EF /* MapListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapListViewController.swift; sourceTree = "<group>"; };
+		E294D2B9291B955100EC69EF /* MapListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapListView.swift; sourceTree = "<group>"; };
+		E294D2BC291B95A700EC69EF /* MapListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapListCell.swift; sourceTree = "<group>"; };
+		E294D2BE291C307400EC69EF /* MapHalfModalPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapHalfModalPresentationController.swift; sourceTree = "<group>"; };
+		E294D2C0291CD1FF00EC69EF /* SegmentedControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControlView.swift; sourceTree = "<group>"; };
+		E294D2C4291D730000EC69EF /* MapModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapModel.swift; sourceTree = "<group>"; };
 		E2993A6529195AD600409C9B /* AlbumCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumCollectionView.swift; sourceTree = "<group>"; };
 		E2993A6729195B9400409C9B /* AlbumCollectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumCollectionViewModel.swift; sourceTree = "<group>"; };
 		E2B025BB28EB326C00B73891 /* MyHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyHomeViewModel.swift; sourceTree = "<group>"; };
@@ -241,7 +254,6 @@
 		E2C2750A290D950400319885 /* DiaryCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryCollectionView.swift; sourceTree = "<group>"; };
 		E2C2A76B28F97DB900D48F8F /* LoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingIndicator.swift; sourceTree = "<group>"; };
 		E2CCF30028F74450008A12F9 /* CustomAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotationView.swift; sourceTree = "<group>"; };
-		E2CCF30228F7534E008A12F9 /* CustomClusterAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomClusterAnnotationView.swift; sourceTree = "<group>"; };
 		E2DA8F5F28F842310098DD94 /* MyAlbumCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAlbumCollectionViewCell.swift; sourceTree = "<group>"; };
 		E2DA8F6128F856A10098DD94 /* MyAlbumPhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAlbumPhotoViewController.swift; sourceTree = "<group>"; };
 		E2DA8F6328F857D80098DD94 /* MyAlbumPhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAlbumPhotoCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -345,10 +357,10 @@
 			children = (
 				0A5E904E28E9948B00B381B8 /* PageViewModel.swift */,
 				E2B025BB28EB326C00B73891 /* MyHomeViewModel.swift */,
-				E21342E028F6B6940048D9CF /* MyPlaceViewModel.swift */,
 				0A3ED14028F98956000D55D8 /* MyPageViewModel.swift */,
 				E2BEC45D28F806C40056E755 /* MyAlbumViewModel.swift */,
 				E2C27501290D62EB00319885 /* DiaryCollectionViewModel.swift */,
+				E294D2AE291AA6C400EC69EF /* MapViewModel.swift */,
 				E2993A6729195B9400409C9B /* AlbumCollectionViewModel.swift */,
 			);
 			path = ViewModels;
@@ -367,6 +379,7 @@
 			isa = PBXGroup;
 			children = (
 				E21342DA28F6B07F0048D9CF /* EF_Diary.ttf */,
+				E294D2B2291B856C00EC69EF /* GothicA1-Bold.ttf */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -494,6 +507,7 @@
 		E276B91728E4692B00163833 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				E294D2BB291B959800EC69EF /* Map */,
 				CC3FEA222906CDAA005EE514 /* DiaryConfig */,
 				0A3ED14228F99EEF000D55D8 /* MyPage */,
 				E2BEC46128F82DAB0056E755 /* MyAlbum */,
@@ -532,6 +546,7 @@
 				E2BEC45F28F806F80056E755 /* AlbumData.swift */,
 				0AE94ABB291182090051A710 /* ErrorMessage.swift */,
 				E2E544302916D91400E611D0 /* DiarySection.swift */,
+				E294D2C4291D730000EC69EF /* MapModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -539,6 +554,7 @@
 		E276B91A28E4697E00163833 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				E294D2B6291B94E500EC69EF /* Map */,
 				0A3ED13F28F937EB000D55D8 /* MyPageViewControllers */,
 				CC65514E28F086D900E637A2 /* MyDiaryPages */,
 				CC6BD74228EBFA6C001ED665 /* DiaryConfig */,
@@ -601,6 +617,21 @@
 			path = "MacC-GoldenRatioUITests";
 			sourceTree = "<group>";
 		};
+		E294D2B6291B94E500EC69EF /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				E294D2B7291B94FA00EC69EF /* MapListViewController.swift */,
+				E294D2BE291C307400EC69EF /* MapHalfModalPresentationController.swift */,
+			);
+			path = Map;
+			sourceTree = "<group>";
+		};
+		E294D2BB291B959800EC69EF /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				E294D2BC291B95A700EC69EF /* MapListCell.swift */,
+			);
+			path = Map;
 		E2993A6429195ABE00409C9B /* Album */ = {
 			isa = PBXGroup;
 			children = (
@@ -646,7 +677,8 @@
 			children = (
 				E2FA41AF28F6A89900BBA354 /* MapView.swift */,
 				E2CCF30028F74450008A12F9 /* CustomAnnotationView.swift */,
-				E2CCF30228F7534E008A12F9 /* CustomClusterAnnotationView.swift */,
+				E294D2B9291B955100EC69EF /* MapListView.swift */,
+				E294D2C0291CD1FF00EC69EF /* SegmentedControlView.swift */,
 			);
 			path = Place;
 			sourceTree = "<group>";
@@ -781,6 +813,7 @@
 				E28F080E28E4655200832F4A /* LaunchScreen.storyboard in Resources */,
 				0A6F107D28FC6259002FB611 /* License.txt in Resources */,
 				E21342DB28F6B0800048D9CF /* EF_Diary.ttf in Resources */,
+				E294D2B3291B856D00EC69EF /* GothicA1-Bold.ttf in Resources */,
 				E28F080B28E4655200832F4A /* Assets.xcassets in Resources */,
 				E2F5691928E5CE170039BE37 /* GoogleService-Info.plist in Resources */,
 			);
@@ -813,6 +846,7 @@
 				E21342E328F6B6BC0048D9CF /* MapData.swift in Sources */,
 				0AAB2ACD28EAFD78009FBD96 /* MapSearchViewController.swift in Sources */,
 				0A5E904528E8578400B381B8 /* PageViewController.swift in Sources */,
+				E294D2C5291D730000EC69EF /* MapModel.swift in Sources */,
 				E2FA41A328F48C1B00BBA354 /* DiaryCell.swift in Sources */,
 				0AAB2AD528EC1F11009FBD96 /* StickerPickerViewController.swift in Sources */,
 				E2BEC45E28F806C40056E755 /* MyAlbumViewModel.swift in Sources */,
@@ -825,6 +859,7 @@
 				E2EA7F0828E56CF600AC1C49 /* MyPlaceViewController.swift in Sources */,
 				E2FA41A528F496D100BBA354 /* UIImageView+.swift in Sources */,
 				CC0F434428F71E62003060D5 /* DiaryConfigViewModel.swift in Sources */,
+				E294D2BD291B95A700EC69EF /* MapListCell.swift in Sources */,
 				E21342D928F6B0660048D9CF /* FirebaseClient.swift in Sources */,
 				E2BEC46328F82DC30056E755 /* MyAlbumTitleCollectionViewCell.swift in Sources */,
 				E26F0DB22916B33900B040C9 /* CollectionEmptyView.swift in Sources */,
@@ -834,6 +869,7 @@
 				0A5E904C28E858D200B381B8 /* StickerBorderView.swift in Sources */,
 				0A30BD47291A4DAF00079326 /* CALayer+.swift in Sources */,
 				CC65515028F0874800E637A2 /* MyDiaryPagesViewController.swift in Sources */,
+				E294D2C1291CD1FF00EC69EF /* SegmentedControlView.swift in Sources */,
 				0AEC53EC28EF211D001B0169 /* StickerViewData.swift in Sources */,
 				0A30BD49291A93AE00079326 /* PageViewModeCollectionViewCell.swift in Sources */,
 				0A5E904F28E9948B00B381B8 /* PageViewModel.swift in Sources */,
@@ -846,7 +882,6 @@
 				CC3414082919310700A1FD17 /* DiaryColorCellViewModel.swift in Sources */,
 				CC6BD74428EBFA80001ED665 /* DiaryConfigViewController.swift in Sources */,
 				CCE1806F28E5919B00AF06DB /* SignInViewController.swift in Sources */,
-				E21342E128F6B6940048D9CF /* MyPlaceViewModel.swift in Sources */,
 				CC40BC1A28EEAE2400DF48E1 /* CalendarDateCollectionViewCell.swift in Sources */,
 				E21342DF28F6B31D0048D9CF /* MyHomeViewController.swift in Sources */,
 				0AD6FD7E2903054D00939F3D /* MapSearchResultTableViewCell.swift in Sources */,
@@ -854,16 +889,17 @@
 				CC6BD74628EC18B8001ED665 /* DiaryConfigCollectionViewCell.swift in Sources */,
 				0A5E904A28E858C000B381B8 /* StickerContollerView.swift in Sources */,
 				E276B91E28E46B3700163833 /* DiaryModel.swift in Sources */,
+				E294D2B8291B94FA00EC69EF /* MapListViewController.swift in Sources */,
 				CC40BC1828EEADFD00DF48E1 /* CalendarPickerHeaderView.swift in Sources */,
 				E28F080228E4655100832F4A /* AppDelegate.swift in Sources */,
 				E2993A6829195B9400409C9B /* AlbumCollectionViewModel.swift in Sources */,
 				E276B91C28E46AE900163833 /* User.swift in Sources */,
 				E2DA8F6028F842310098DD94 /* MyAlbumCollectionViewCell.swift in Sources */,
 				E276B91C28E46AE900163833 /* User.swift in Sources */,
-				E2CCF30328F7534E008A12F9 /* CustomClusterAnnotationView.swift in Sources */,
 				0AE27F2528F442B100D79208 /* FirebaseStorage.swift in Sources */,
 				E276B91C28E46AE900163833 /* User.swift in Sources */,
 				CC34140C29193E6E00A1FD17 /* DiaryColorCollectionViewModel.swift in Sources */,
+				E294D2BA291B955100EC69EF /* MapListView.swift in Sources */,
 				0AAB2AE228EDA55D009FBD96 /* StickerStickerView.swift in Sources */,
 				0A6F107528FC3782002FB611 /* LicenseViewController.swift in Sources */,
 				0A5E904828E857E200B381B8 /* StickerView.swift in Sources */,
@@ -883,6 +919,8 @@
 				0A5E904828E857E200B381B8 /* StickerView.swift in Sources */,
 				E2ED4872290ABE46002FEC2B /* Notification+.swift in Sources */,
 				0A3ED14628F99FBF000D55D8 /* SetProfileImageViewController.swift in Sources */,
+				E294D2AF291AA6C400EC69EF /* MapViewModel.swift in Sources */,
+				E294D2BF291C307400EC69EF /* MapHalfModalPresentationController.swift in Sources */,
 				0AAB2ACF28EAFF52009FBD96 /* TableView+.swift in Sources */,
 				E265C8102914E9A4003380A5 /* HomeButtonView.swift in Sources */,
 				CC40BC1C28EEAEB200DF48E1 /* Day.swift in Sources */,

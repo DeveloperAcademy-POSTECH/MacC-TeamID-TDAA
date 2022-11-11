@@ -95,7 +95,7 @@ class MyDiaryDaysViewController: UIViewController {
             .map { $0.row }
             .subscribe(onNext: { selectedDay in
                 Task {
-                    let vc = await PageViewController(diary: viewModel.myDiaryDaysModel.diary, selectedDay: selectedDay)
+                    let vc = await PageViewModeViewController(diary: viewModel.myDiaryDaysModel.diary, selectedDayIndex: selectedDay)
                     self.navigationController?.setNavigationBarHidden(false, animated: false)
                     self.navigationController?.pushViewController(vc, animated: true)
                 }

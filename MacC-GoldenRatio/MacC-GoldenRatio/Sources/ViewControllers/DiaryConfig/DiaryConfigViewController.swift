@@ -308,17 +308,23 @@ extension DiaryConfigViewController {
         cell.contentTap
             .asDriver(onErrorJustReturn: Void())
             .drive(onNext: {
-                let alertController = UIAlertController(title: "대표 이미지 설정", message: nil, preferredStyle: .actionSheet)
-                
-                alertController.addAction(UIAlertAction(title: "앨범에서 사진 선택", style: .default, handler: { [weak self] _ in
-                    self?.view.endEditing(true)
-                    self?.presentImagePicker()
-                }))
-                alertController.addAction(UIAlertAction(title: "기본 이미지로 변경", style: .default, handler: { [weak self] _ in
-                    self?.viewModel.resetCoverImage()
-                }))
-                alertController.addAction(UIAlertAction(title: "취소", style: .cancel))
-                self.present(alertController, animated: true)
+                if viewModel.coverImage != UIImage(named: "selectImage") {
+                    let alertController = UIAlertController(title: "대표 이미지 설정", message: nil, preferredStyle: .actionSheet)
+                    
+                    alertController.addAction(UIAlertAction(title: "앨범에서 사진 선택", style: .default, handler: { [weak self] _ in
+                        self?.view.endEditing(true)
+                        self?.presentImagePicker()
+                    }))
+                    alertController.addAction(UIAlertAction(title: "기본 이미지로 변경", style: .default, handler: { [weak self] _ in
+                        self?.viewModel.resetCoverImage()
+                        self?.viewModel.coverImage = UIImage(named: "selectImage") ?? UIImage()
+                    }))
+                    alertController.addAction(UIAlertAction(title: "취소", style: .cancel))
+                    self.present(alertController, animated: true)
+                } else {
+                    self.view.endEditing(true)
+                    self.presentImagePicker()
+                }
             })
             .disposed(by: self.disposeBag)
         

@@ -32,7 +32,7 @@ class TextStickerView: StickerView {
     let textView: UITextView = {
         let textView = UITextView(frame: .init(origin: .zero, size: .init(width: 200, height: 40)))
         textView.font = .navigationTitleFont
-        textView.backgroundColor = .white
+        textView.backgroundColor = .clear
         textView.isEditable = false
         textView.isUserInteractionEnabled = false
         textView.isScrollEnabled = false
@@ -229,24 +229,25 @@ class TextStickerView: StickerView {
                     self.textView.isUserInteractionEnabled = true
                     self.textView.isExclusiveTouch = true
                     
-                    self.textView.becomeFirstResponder()
                     self.textView.isHidden = false
                     self.textImageView.isHidden = true
 
                     super.enableTranslucency(state: false)
-                    guard let deleteController = super.deleteController, let resizingController = super.resizingController else { return }
-                    deleteController.isHidden = true
-                    resizingController.isHidden = true
+                    super.borderView?.backgroundColor = .white
+                    super.deleteController?.isHidden = true
+                    super.resizingController?.isHidden = true
+                    self.textView.becomeFirstResponder()
 
                 default:
                     self.textView.isEditable = false
                     self.textView.isSelectable = false
                     self.textView.isUserInteractionEnabled = false
                     self.textView.isExclusiveTouch = false
-
-                    self.textView.resignFirstResponder()
+                    
+                    super.borderView?.backgroundColor = .clear
                     self.textView.isHidden = true
                     self.textImageView.isHidden = false
+                    self.textView.resignFirstResponder()
                 }
             })
             .disposed(by: disposeBag)

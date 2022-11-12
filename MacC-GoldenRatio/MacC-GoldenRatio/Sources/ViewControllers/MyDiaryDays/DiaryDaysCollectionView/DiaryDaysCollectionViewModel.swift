@@ -10,10 +10,10 @@ import RxSwift
 import UIKit
 
 struct DiaryDaysCollectionViewModel {
-    private let disposeBag = DisposeBag()
+    let disposeBag = DisposeBag()
     
     // ViewModel -> View
-    let cellData: Observable<[DiaryDayModel]>
+    var cellData = PublishSubject<[DiaryDayModel]>()
     
     // View -> ViewModel
     let selectedDay = PublishRelay<Int>()
@@ -24,7 +24,7 @@ struct DiaryDaysCollectionViewModel {
         var dataForCellData: [DiaryDayModel] = []
         
         for day in 1...days {
-            
+
             // Model -> ViewModel
             model.fetchImage(day: day)
                 .observe(on: MainScheduler.instance)
@@ -43,6 +43,35 @@ struct DiaryDaysCollectionViewModel {
                 .disposed(by: disposeBag)
         }
         
-        self.cellData = Observable<[DiaryDayModel]>.just(dataForCellData)
+        self.cellData.onNext(dataForCellData)
     }
+    
+    func arrayToDays(model: MyDiaryDaysModel) {
+        let days = model.diary.diaryPages.count
+        var dataForCellData: [DiaryDayModel] = []
+        
+        for day in 1...days {
+
+            // Model -> ViewModel
+            model.fetchImage(day: day)
+                .observe(on: MainScheduler.instance)
+                .subscribe(onNext: {
+                    let dayLabelData = "\(day)일차"
+                    let dateLabelData = model.makeDateString(day: day)
+                    let imageData: UIImage? = $0
+                    
+                    if let imageData = imageData {
+                        dataForCellData.append(DiaryDayModel(dayLabel: dayLabelData, dateLabel: dateLabelData, image: imageData))
+                    } else {
+                        dataForCellData.append(DiaryDayModel(dayLabel: dayLabelData, dateLabel: dateLabelData, image: UIImage(named: "diaryDaysDefault")!))
+                    }
+                    
+                })
+                .disposed(by: self.disposeBag)
+        }
+        self.cellData.onNext(dataForCellData)
+    }
+
 }
+
+

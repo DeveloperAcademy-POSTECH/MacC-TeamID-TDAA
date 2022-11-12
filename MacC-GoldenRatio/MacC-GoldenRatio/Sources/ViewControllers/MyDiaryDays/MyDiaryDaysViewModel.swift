@@ -9,8 +9,10 @@ import RxCocoa
 import RxSwift
 
 class MyDiaryDaysViewModel {
+    let disposeBag = DisposeBag()
+    
     var myDiaryDaysModel: MyDiaryDaysModel
-    let diarydaysCollectionViewModel: DiaryDaysCollectionViewModel
+    var diarydaysCollectionViewModel: DiaryDaysCollectionViewModel
     let albumCollectionViewModel = AlbumCollectionViewModel()
     let mapViewModel = MapViewModel()
     
@@ -34,4 +36,18 @@ class MyDiaryDaysViewModel {
         self.mapViewModel.mapDiaryData.onNext(diary)
     }
     
+    
+//    func updateModel() {
+//        Task {
+//            try await self.myDiaryDaysModel.updateDiaryData()
+//                .subscribe(onNext: {
+//                    self.myDiaryDaysModel = MyDiaryDaysModel(diary: $0)
+//                    let daysModel = self.diarydaysCollectionViewModel.arrayToDays(model: self.myDiaryDaysModel)
+//                    self.diarydaysCollectionViewModel.cellData.onNext(daysModel)
+//                    self.albumCollectionViewModel.collectionDiaryData.onNext($0)
+//                    self.mapViewModel.mapDiaryData.onNext($0)
+//                })
+//                .disposed(by: disposeBag)
+//        }
+//    }
 }

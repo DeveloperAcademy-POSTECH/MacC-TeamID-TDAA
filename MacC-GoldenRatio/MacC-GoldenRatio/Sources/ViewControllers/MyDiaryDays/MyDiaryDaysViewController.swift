@@ -23,8 +23,21 @@ class MyDiaryDaysViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(true, animated: animated)
+        
+        // TODO: View Model에 넣기
+        Task {
+            try await viewModel?.myDiaryDaysModel.updateDiaryData()
+                .subscribe(onNext: {
+                    self.viewModel?.myDiaryDaysModel = MyDiaryDaysModel(diary: $0)
+                    self.viewModel?.diarydaysCollectionViewModel.arrayToDays(model: MyDiaryDaysModel(diary: $0))
+                    self.viewModel?.albumCollectionViewModel.collectionDiaryData.onNext($0)
+                    self.viewModel?.mapViewModel.mapDiaryData.onNext($0)
+                })
+                .disposed(by: disposeBag)
+        }
+        
+        super.viewWillAppear(animated)
     }
     
     private lazy var titleLabel: UILabel = {

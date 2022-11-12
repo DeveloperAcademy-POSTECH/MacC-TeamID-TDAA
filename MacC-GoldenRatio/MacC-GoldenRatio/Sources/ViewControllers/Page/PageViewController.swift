@@ -42,8 +42,12 @@ class PageViewController: UIViewController {
     
     private lazy var pageDescriptionLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.backgroundColor = UIColor.stickerBackgroundColor
+        label.textColor = .white
+        label.textAlignment = .center
         label.font = .navigationTitleFont
+        label.layer.cornerRadius = 12.5
+        label.clipsToBounds = true
         
         return label
     }()
@@ -228,6 +232,8 @@ class PageViewController: UIViewController {
             
             self.pageDescriptionLabel.snp.makeConstraints { make in
                 make.trailing.top.equalTo(self.backgroundImageView).inset(self.myDevice.pagePadding)
+                make.width.equalTo(47)
+                make.height.equalTo(25)
             }
             
             self.mapToolButton.snp.makeConstraints { make in

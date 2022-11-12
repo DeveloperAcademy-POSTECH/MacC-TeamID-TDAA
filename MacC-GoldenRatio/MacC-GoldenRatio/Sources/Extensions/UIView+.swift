@@ -24,6 +24,20 @@ extension UIView {
         imageView.frame = self.frame
         return imageView
     }
+    
+    func convertViewToImageView(completion: @escaping (UIView) -> Void) {
+        DispatchQueue.main.async {
+            let renderer = UIGraphicsImageRenderer(bounds: self.bounds)
+            let image = renderer.image { rendererContext in
+                self.layer.render(in: rendererContext.cgContext)
+            }
+            
+            let imageView = UIImageView(image: image)
+            imageView.frame = self.frame
+            
+            completion(imageView)
+        }
+    }
 	
 	func showToastMessage(_ message: String, font: UIFont = UIFont(name: "EF_Diary", size: 12) ?? UIFont.systemFont(ofSize: 12)) {
 		let toastLabel = UILabel(frame: CGRect(x: self.bounds.midX-90, y: self.frame.height - 150, width: 180, height: 30))

@@ -23,17 +23,16 @@ class PageViewController: UIViewController {
     
     private let backgroundImageView: UIImageView = {
         let backgroundImageView = UIImageView()
-        backgroundImageView.backgroundColor = .gray
         backgroundImageView.clipsToBounds = true
         backgroundImageView.isUserInteractionEnabled = true
-        backgroundImageView.backgroundColor = .diaryInnerTexture
+        backgroundImageView.backgroundColor = .appBackgroundColor
         
         return backgroundImageView
     }()
     
     private lazy var docsButton: UIButton = {
         let button = UIButton()
-        let image = UIImage(systemName: "doc.on.doc")
+        let image = UIImage(systemName: "doc.on.doc", withConfiguration: UIImage.SymbolConfiguration(pointSize: 22, weight: .semibold))
         button.setImage(image, for: .normal)
         button.tintColor = .black
         button.addTarget(self, action: #selector(onTapDocsButton), for: .touchUpInside)
@@ -51,7 +50,7 @@ class PageViewController: UIViewController {
     
     private lazy var mapToolButton: UIButton = {
         let button = UIButton()
-        let image = UIImage(systemName: "map")
+        let image = UIImage(systemName: "mappin.square", withConfiguration: UIImage.SymbolConfiguration(pointSize: 24, weight: .semibold))
         button.setImage(image, for: .normal)
         button.tintColor = .black
         button.addTarget(self, action: #selector(onTapMapButton), for: .touchUpInside)
@@ -61,7 +60,7 @@ class PageViewController: UIViewController {
     
     private lazy var imageToolButton: UIButton = {
         let button = UIButton()
-        let image = UIImage(systemName: "photo")
+        let image = UIImage(systemName: "photo", withConfiguration: UIImage.SymbolConfiguration(pointSize: 24, weight: .semibold))
         button.setImage(image, for: .normal)
         button.tintColor = .black
         button.addTarget(self, action: #selector(onTapImageButton), for: .touchUpInside)
@@ -71,7 +70,7 @@ class PageViewController: UIViewController {
     
     private lazy var stickerToolButton: UIButton = {
         let button = UIButton()
-        let image = UIImage(systemName: "s.circle.fill")
+        let image = UIImage(systemName: "s.square", withConfiguration: UIImage.SymbolConfiguration(pointSize: 24, weight: .semibold))
         button.setImage(image, for: .normal)
         button.tintColor = .black
         button.addTarget(self, action: #selector(onTapStickerButton), for: .touchUpInside)
@@ -81,7 +80,7 @@ class PageViewController: UIViewController {
     
     private lazy var textToolButton: UIButton = {
         let button = UIButton()
-        let image = UIImage(systemName: "t.square")
+        let image = UIImage(systemName: "t.square", withConfiguration: UIImage.SymbolConfiguration(pointSize: 24, weight: .semibold))
         button.setImage(image, for: .normal)
         button.tintColor = .black
         button.addTarget(self, action: #selector(onTapTextButton), for: .touchUpInside)
@@ -103,14 +102,13 @@ class PageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         DispatchQueue.main.async {
-            self.view.backgroundColor = .backgroundTexture
+            self.view.backgroundColor = .appBackgroundColor
             self.configureImagePicker()
                         
             self.addSubviews()
             self.configureConstraints()
 
             self.configureGestureRecognizer()
-            self.configureToolButton()
             
             self.setPageDescription()
             self.setStickerViews()
@@ -182,21 +180,6 @@ class PageViewController: UIViewController {
         }
     }
     
-    private func configureToolButton() {
-        [mapToolButton, imageToolButton, stickerToolButton, textToolButton].forEach{
-            
-            let imageConfig = UIImage.SymbolConfiguration(pointSize: myDevice.pageToolButtonPointSize)
-            if #available(iOS 15.0, *) {
-                var config = UIButton.Configuration.plain()
-                config.preferredSymbolConfigurationForImage = imageConfig
-                $0.configuration = config
-            } else {
-                $0.setPreferredSymbolConfiguration(imageConfig, forImageIn: .normal)
-            }
-            
-        }
-    }
-    
     private func configureImagePicker() {
         self.imagePicker.sourceType = .photoLibrary
         self.imagePicker.allowsEditing = true
@@ -206,10 +189,14 @@ class PageViewController: UIViewController {
     private func configureNavigationBar() {
         let leftBarButtonItem = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(onTapNavigationCancel))
         let rightBarButtonItem = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(onTapNavigationComplete))
-        leftBarButtonItem.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.navigationTitleFont, NSAttributedString.Key.foregroundColor:UIColor.navigationbarColor], for: .normal)
-        rightBarButtonItem.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.navigationTitleFont, NSAttributedString.Key.foregroundColor:UIColor.navigationbarColor], for: .normal)
+        
+        leftBarButtonItem.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.navigationTitleFont, NSAttributedString.Key.foregroundColor:UIColor.sandbrownColor], for: .normal)
+        rightBarButtonItem.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.navigationTitleFont, NSAttributedString.Key.foregroundColor:UIColor.sandbrownColor], for: .normal)
+        
         self.navigationItem.setLeftBarButton(leftBarButtonItem, animated: false)
         self.navigationItem.setRightBarButton(rightBarButtonItem, animated: false)
+        
+        self.navigationController?.navigationBar.barTintColor = UIColor.appBackgroundColor
         
         self.pageViewModel.selectedPageIndex
             .observe(on: MainScheduler.instance)
@@ -251,8 +238,8 @@ class PageViewController: UIViewController {
             
             self.imageToolButton.snp.makeConstraints { make in
                 make.leading.equalTo(self.mapToolButton.snp.trailing).offset(self.myDevice.pageToolButtonInterval)
-                make.bottom.equalTo(self.backgroundImageView.snp.bottom).inset(self.myDevice.pagePadding)
-                make.size.equalTo(self.myDevice.pageToolButtonSize)
+                make.centerY.equalTo(self.mapToolButton.snp.centerY)
+                make.size.equalTo(self.myDevice.pagePhotoToolButtonSize)
             }
             
             self.stickerToolButton.snp.makeConstraints { make in
@@ -269,8 +256,8 @@ class PageViewController: UIViewController {
             
             self.docsButton.snp.makeConstraints { make in
                 make.trailing.equalToSuperview().offset( -self.myDevice.pagePadding )
-                make.bottom.equalTo(self.backgroundImageView.snp.bottom).inset(self.myDevice.pagePadding)
-                make.size.equalTo(self.myDevice.pageToolButtonSize)
+                make.centerY.equalTo(self.mapToolButton.snp.centerY)
+                make.size.equalTo(self.myDevice.pageDocsToolButtonSize)
             }
         }
     }
@@ -347,8 +334,8 @@ class PageViewController: UIViewController {
 extension PageViewController {
     @objc private func onTapDocsButton() {
         let popUp = PopUpViewController(popUpPosition: .bottom2)
-        popUp.addButton(buttonTitle: "페이지 추가", action: onTapAddNextPageMenu)
-        popUp.addButton(buttonTitle: "페이지 삭제", action: onTapDeleteCurrentPageMenu)
+        popUp.addButton(buttonTitle: " 페이지 추가", buttonSymbol: "plus.square", buttonSize: 17, action: onTapAddNextPageMenu)
+        popUp.addButton(buttonTitle: " 페이지 삭제", buttonSymbol: "minus.square", buttonSize: 17, action: onTapDeleteCurrentPageMenu)
         present(popUp, animated: false)
     }
 

@@ -31,8 +31,8 @@ class TextStickerView: StickerView {
     
     let textView: UITextView = {
         let textView = UITextView(frame: .init(origin: .zero, size: .init(width: 200, height: 40)))
-        textView.backgroundColor = .clear
         textView.font = .navigationTitleFont
+        textView.backgroundColor = .white
         textView.isEditable = false
         textView.isUserInteractionEnabled = false
         textView.isScrollEnabled = false

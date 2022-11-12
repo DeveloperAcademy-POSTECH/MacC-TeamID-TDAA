@@ -57,12 +57,12 @@ class PageViewModeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        
+        self.configureNavigationBar()
         self.view.backgroundColor = UIColor.appBackgroundColor
 
         self.configureSubView()
         self.setPageDescription()
-        self.configureNavigationBar()
         self.configurePageCollectionView()
     }
     

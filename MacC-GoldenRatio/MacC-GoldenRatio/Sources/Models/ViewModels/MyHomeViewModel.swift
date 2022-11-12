@@ -43,17 +43,9 @@ class MyHomeViewModel {
 			.flatMapLatest(client.fetchMyDiaries)
 			.share()
 		
-		let diaryValue = diaryResult
+		diaryResult
 			.map(getDiaryValue)
-		
-		diaryValue
-			.map(getCollectionSection)
 			.bind(to: diaryCollectionViewModel.collectionDiaryData)
-			.disposed(by: disposeBag)
-		
-		diaryValue
-			.map(getFirstDiaryData)
-			.bind(to: mapViewModel.mapDiaryData)
 			.disposed(by: disposeBag)
 	}
 	
@@ -62,14 +54,6 @@ class MyHomeViewModel {
 			return []
 		}
 		return value
-	}
-	
-	func getCollectionSection(_ value: [Diary]?) -> [DiarySection] {
-		guard let value = value else {
-			return []
-		}
-		
-		return [DiarySection(header: "다이어리", items: value)]
 	}
 	
 	func getFirstDiaryData(_ value: [Diary]?) -> Diary {

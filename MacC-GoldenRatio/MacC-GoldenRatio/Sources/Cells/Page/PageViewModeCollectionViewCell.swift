@@ -11,14 +11,14 @@ class PageViewModeCollectionViewCell: UICollectionViewCell {
     
     let pageBackgroundView: UIView = {
         let view = UIView()
-        view.backgroundColor = .white
-        
+        view.backgroundColor = UIColor.appBackgroundColor
+
         return view
     }()
     
     let separatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = .lightGray
+        view.backgroundColor = UIColor.separatorColor
         
         return view
     }()

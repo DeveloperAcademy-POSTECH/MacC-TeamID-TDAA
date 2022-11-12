@@ -79,4 +79,21 @@ extension UIColor {
         let color = UIColor(named: "requiredItemsColor")!
         return color
     }
+    
+    static var appBackgroundColor: UIColor {
+        let color = UIColor(named: "appBackgroundColor")!
+        return color
+    }
+    
+    /// #DBCFC1 지도 스티커 배경색
+    static var stickerBackgroundColor: UIColor {
+        let color = UIColor(named: "stickerBackgroundColor")!
+        return color
+    }
+    
+    ///#C6C6C8
+    static var separatorColor: UIColor {
+        let color = UIColor(named: "separatorColor")!
+        return color
+    }
 }

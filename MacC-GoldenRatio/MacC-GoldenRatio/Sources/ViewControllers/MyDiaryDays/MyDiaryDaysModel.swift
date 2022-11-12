@@ -20,11 +20,11 @@ class MyDiaryDaysModel {
     }
     
     func updateDiaryData() async throws -> Observable<Diary> {
-        Task {
-            let data = try await getDiaryData()
-            return Observable.just(data)
-        }
-        return Observable.just(self.diary)
+        let query = db.collection("Diary").whereField("diaryUUID", isEqualTo: self.diary.diaryUUID)
+        let documents = try await query.getDocuments()
+        let data = try documents.documents[0].data(as: Diary.self)
+        self.diary = data
+        return Observable.just(data)
     }
     
     func diaryDataSetup(_ completion: @escaping () -> Void) {

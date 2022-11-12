@@ -12,7 +12,7 @@ import SnapKit
 import UIKit
 
 class MyDiaryDaysViewController: UIViewController {
-    private var viewModel: MyDiaryDaysViewModel?
+    var viewModel: MyDiaryDaysViewModel?
     private let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
@@ -24,18 +24,8 @@ class MyDiaryDaysViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.setNavigationBarHidden(true, animated: animated)
-        
-        // TODO: View Model에 넣기
-        Task {
-            try await viewModel?.myDiaryDaysModel.updateDiaryData()
-                .subscribe(onNext: {
-                    self.viewModel?.myDiaryDaysModel = MyDiaryDaysModel(diary: $0)
-                    self.viewModel?.diarydaysCollectionViewModel.arrayToDays(model: MyDiaryDaysModel(diary: $0))
-                    self.viewModel?.albumCollectionViewModel.collectionDiaryData.onNext($0)
-                    self.viewModel?.mapViewModel.mapDiaryData.onNext($0)
-                })
-                .disposed(by: disposeBag)
-        }
+
+        viewModel?.updateModel()
         
         super.viewWillAppear(animated)
     }
@@ -101,6 +91,11 @@ class MyDiaryDaysViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        viewModel.titleLabelText
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { text in self.titleLabel.text = text })
+            .disposed(by: disposeBag)
+        
         self.diaryDaysCollectionView.bind(viewModel.diarydaysCollectionViewModel)
         self.albumCollectionView.bind(viewModel.albumCollectionViewModel)
         self.mapView.bind(viewModel.mapViewModel)
@@ -133,7 +128,7 @@ class MyDiaryDaysViewController: UIViewController {
             .bind { self.menuButtonTapped() }
             .disposed(by: disposeBag)
         
-        self.titleLabel.text = viewModel.myDiaryDaysModel.diary.diaryName
+        // self.titleLabel.text = viewModel.myDiaryDaysModel.diary.diaryName
     }
     
     // MARK: Attribute & Layout

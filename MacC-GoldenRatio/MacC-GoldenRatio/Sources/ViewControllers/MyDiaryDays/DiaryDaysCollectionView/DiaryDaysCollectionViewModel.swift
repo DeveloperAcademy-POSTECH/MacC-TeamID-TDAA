@@ -38,7 +38,6 @@ struct DiaryDaysCollectionViewModel {
                     } else {
                         dataForCellData.append(DiaryDayModel(dayLabel: dayLabelData, dateLabel: dateLabelData, image: UIImage(named: "diaryDaysDefault")!))
                     }
-                    
                 })
                 .disposed(by: disposeBag)
         }
@@ -46,15 +45,13 @@ struct DiaryDaysCollectionViewModel {
         self.cellData.onNext(dataForCellData)
     }
     
-    func arrayToDays(model: MyDiaryDaysModel) {
+    func arrayToDays(model: MyDiaryDaysModel) -> [DiaryDayModel] {
         let days = model.diary.diaryPages.count
         var dataForCellData: [DiaryDayModel] = []
         
         for day in 1...days {
-
             // Model -> ViewModel
             model.fetchImage(day: day)
-                .observe(on: MainScheduler.instance)
                 .subscribe(onNext: {
                     let dayLabelData = "\(day)일차"
                     let dateLabelData = model.makeDateString(day: day)
@@ -69,7 +66,7 @@ struct DiaryDaysCollectionViewModel {
                 })
                 .disposed(by: self.disposeBag)
         }
-        self.cellData.onNext(dataForCellData)
+        return dataForCellData
     }
 
 }

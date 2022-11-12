@@ -18,6 +18,7 @@ class MyDiaryDaysViewModel {
     
     let segmentIndex = BehaviorRelay<Int>(value: 0)
     let selectedViewType: Driver<[Bool]>
+    var titleLabelText = PublishRelay<String>()
     
     init(diary: Diary) {
         self.myDiaryDaysModel = MyDiaryDaysModel(diary: diary)
@@ -31,23 +32,22 @@ class MyDiaryDaysViewModel {
             }
             .asDriver(onErrorJustReturn: [Bool](repeating: false, count: 3))
         
-        self.albumCollectionViewModel.collectionDiaryData.onNext(diary)
-        
-        self.mapViewModel.mapDiaryData.onNext(diary)
+        self.titleLabelText.accept(diary.diaryName)
     }
     
     
-//    func updateModel() {
-//        Task {
-//            try await self.myDiaryDaysModel.updateDiaryData()
-//                .subscribe(onNext: {
-//                    self.myDiaryDaysModel = MyDiaryDaysModel(diary: $0)
-//                    let daysModel = self.diarydaysCollectionViewModel.arrayToDays(model: self.myDiaryDaysModel)
-//                    self.diarydaysCollectionViewModel.cellData.onNext(daysModel)
-//                    self.albumCollectionViewModel.collectionDiaryData.onNext($0)
-//                    self.mapViewModel.mapDiaryData.onNext($0)
-//                })
-//                .disposed(by: disposeBag)
-//        }
-//    }
+    func updateModel() {
+        Task {
+            try await self.myDiaryDaysModel.updateDiaryData()
+                .subscribe(onNext: {
+                    self.titleLabelText.accept($0.diaryName)
+                    let array = self.diarydaysCollectionViewModel.arrayToDays(model: self.myDiaryDaysModel)
+                    self.diarydaysCollectionViewModel.cellData.onNext(array)
+                    self.albumCollectionViewModel.collectionDiaryData.onNext($0)
+                    self.mapViewModel.mapDiaryData.onNext($0)
+                })
+                .disposed(by: disposeBag)
+        }
+    }
+    
 }

@@ -144,7 +144,7 @@ class MyPageViewController: UIViewController {
 		
 		backButton.snp.makeConstraints {
 			$0.top.equalTo(view.safeAreaLayoutGuide).inset(11)
-			$0.leading.equalToSuperview().inset(9)
+			$0.leading.equalToSuperview().offset(9)
 		}
 		
 		lineView.snp.makeConstraints {
@@ -155,17 +155,19 @@ class MyPageViewController: UIViewController {
 		}
 		
         profileImageView.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(myDevice.myPageVerticalSpacing)
+            make.top.equalTo(lineView.snp.bottom).offset(myDevice.myPageVerticalSpacing4)
             make.leading.equalTo(view.safeAreaLayoutGuide).offset(myDevice.myPageHorizontalPadding)
             make.size.equalTo(myDevice.myPageProfileImageSize)
         }
         nickNameTitleLabel.snp.makeConstraints { make in
             make.leading.equalTo(profileImageView.snp.trailing).offset(myDevice.myPageHorizontalSpacing2)
-            make.top.equalTo(titleLabel.snp.bottom).offset(myDevice.myPageVerticalPadding)
+            make.top.equalTo(profileImageView.snp.top)
+            make.bottom.equalTo(profileImageView.snp.centerY)
         }
         nickNameLabel.snp.makeConstraints { make in
             make.leading.equalTo(profileImageView.snp.trailing).offset(myDevice.myPageHorizontalSpacing2)
-            make.top.equalTo(nickNameTitleLabel.snp.bottom).offset(myDevice.myPageVerticalSpacing2)
+            make.top.equalTo(profileImageView.snp.centerY)
+            make.bottom.equalTo(profileImageView.snp.bottom)
         }
         profileSettingButton.snp.makeConstraints { make in
             make.top.equalTo(profileImageView.snp.bottom).offset(myDevice.myPageVerticalSpacing)

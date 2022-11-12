@@ -511,7 +511,7 @@ extension UIScreen {
         /// 10
         var myPageVerticalSpacing: CGFloat {
             switch self {
-            default: return 30
+            default: return 10
             }
         }
         /// 15
@@ -524,6 +524,12 @@ extension UIScreen {
         var myPageVerticalSpacing3: CGFloat {
             switch self {
             default: return 50
+            }
+        }
+        /// 30
+        var myPageVerticalSpacing4: CGFloat {
+            switch self {
+            default: return 30
             }
         }
         /// 62*62

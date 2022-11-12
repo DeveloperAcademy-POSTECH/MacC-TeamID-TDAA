@@ -62,7 +62,7 @@ extension UIView {
 	
     func setUnderLine(width: CGFloat) {
         let view = UIView()
-        view.backgroundColor = .buttonColor
+        view.backgroundColor = .separatorColor
         self.addSubview(view)
         view.snp.makeConstraints { make in
             make.bottom.horizontalEdges.equalToSuperview()

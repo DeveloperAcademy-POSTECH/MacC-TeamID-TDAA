@@ -55,9 +55,9 @@ class SetProfileImageViewController: UIViewController {
     private lazy var nickNameTextField: UITextField = {
         let textField = UITextField()
         textField.font = .labelTtitleFont2
-        textField.textColor = .buttonColor
+        textField.textColor = .calendarWeeklyGrayColor
         textField.setUnderLine(width: 1)
-        textField.tintColor = .buttonColor
+        textField.tintColor = .calendarWeeklyGrayColor
         textField.clearButtonMode = .always
         
         return textField
@@ -85,7 +85,7 @@ class SetProfileImageViewController: UIViewController {
             self.navigationController?.isNavigationBarHidden = true
             self.view.backgroundColor = .backgroundTexture
             self.profileImageView.layer.cornerRadius = self.myDevice.setProfileProfileImageSize.width * 0.5
-            self.profileCameraButton.layer.cornerRadius = self.myDevice.setProfileProfileImageSize.width * 0.25 * 0.5
+            self.profileCameraButton.layer.cornerRadius = self.myDevice.setProfileProfileImageSize.width * 0.28 * 0.5
             self.configureImagePicker()
             self.configureViews()
             self.configureUserData()
@@ -108,7 +108,7 @@ class SetProfileImageViewController: UIViewController {
         }
         profileCameraButton.snp.makeConstraints { make in
             make.bottom.trailing.equalTo(profileImageView)
-            make.size.equalTo(profileImageView.snp.size).multipliedBy(0.25)
+            make.size.equalTo(profileImageView.snp.size).multipliedBy(0.28)
         }
         nickNameTitleLabel.snp.makeConstraints { make in
             make.leading.equalTo(view.safeAreaLayoutGuide).offset(myDevice.myPageHorizontalPadding)

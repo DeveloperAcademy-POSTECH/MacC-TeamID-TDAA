@@ -26,12 +26,12 @@ class MyDiaryDaysViewController: UIViewController {
         self.navigationController?.setNavigationBarHidden(true, animated: animated)
 
         viewModel?.updateModel()
-        
         super.viewWillAppear(animated)
     }
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
+        label.textAlignment = .center
         label.font = UIFont.labelTtitleFont2
         return label
     }()
@@ -127,8 +127,6 @@ class MyDiaryDaysViewController: UIViewController {
         self.menuButton.rx.tap
             .bind { self.menuButtonTapped() }
             .disposed(by: disposeBag)
-        
-        // self.titleLabel.text = viewModel.myDiaryDaysModel.diary.diaryName
     }
     
     // MARK: Attribute & Layout
@@ -150,6 +148,7 @@ class MyDiaryDaysViewController: UIViewController {
         titleLabel.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.centerY.equalTo(backButton)
+            $0.width.equalToSuperview().inset(100)
         }
         
         backButton.snp.makeConstraints {
@@ -208,10 +207,13 @@ class MyDiaryDaysViewController: UIViewController {
     @objc private func modifyButtonTapped() {
         let vc = DiaryConfigViewController()
         self.viewModel?.myDiaryDaysModel.diaryDataSetup {
-            DispatchQueue.main.async {
-                vc.bind(DiaryConfigViewModel(diary: self.viewModel?.myDiaryDaysModel.diary))
-                vc.modalPresentationStyle = .fullScreen
-                self.present(vc, animated: true, completion: nil)
+            self.viewModel?.diaryConfigViewModel = DiaryConfigViewModel(diary: self.viewModel?.myDiaryDaysModel.diary)
+            if let viewModel = self.viewModel?.diaryConfigViewModel {
+                DispatchQueue.main.async {
+                    vc.bind(viewModel)
+                    vc.modalPresentationStyle = .fullScreen
+                    self.present(vc, animated: true, completion: nil)
+                }
             }
         }
     }

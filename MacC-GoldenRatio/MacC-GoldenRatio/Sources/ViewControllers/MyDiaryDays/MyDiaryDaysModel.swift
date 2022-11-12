@@ -20,11 +20,25 @@ class MyDiaryDaysModel {
     }
     
     func updateDiaryData() async throws -> Observable<Diary> {
+        Task {
+            let data = try await getDiaryData()
+            return Observable.just(data)
+        }
+        return Observable.just(self.diary)
+    }
+    
+    func diaryDataSetup(_ completion: @escaping () -> Void) {
+        Task {
+            self.diary = try await getDiaryData()
+            completion()
+        }
+    }
+    
+    func getDiaryData() async throws -> Diary {
         let query = db.collection("Diary").whereField("diaryUUID", isEqualTo: self.diary.diaryUUID)
         let documents = try await query.getDocuments()
         let data = try documents.documents[0].data(as: Diary.self)
-        self.diary = data
-        return Observable.just(data)
+        return data
     }
     
     func fetchImage(day: Int) -> Observable<UIImage?> {
@@ -82,22 +96,5 @@ class MyDiaryDaysModel {
         }
     }
     
-    func diaryDataSetup(_ completion: @escaping () -> Void) {
-        Task {
-            do {
-                self.diary = try await getDiaryData(uuid: self.diary.diaryUUID)
-                completion()
-            } catch {
-                print(error)
-            }
-        }
-    }
     
-    func getDiaryData(uuid diaryUUID: String) async throws -> Diary {
-        let query = db.collection("Diary").whereField("diaryUUID", isEqualTo: diaryUUID)
-        let documents = try await query.getDocuments()
-        let data = try documents.documents[0].data(as: Diary.self)
-        
-        return data
-    }
 }

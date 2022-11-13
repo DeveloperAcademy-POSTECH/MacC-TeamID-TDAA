@@ -62,7 +62,7 @@ class MapListViewController: UIViewController {
 		segmentedControlView.snp.makeConstraints {
 			$0.top.equalTo(view.safeAreaLayoutGuide).inset(30)
 			$0.leading.trailing.equalTo(view.safeAreaLayoutGuide)
-			$0.bottom.equalTo(view.safeAreaLayoutGuide).inset(350)
+			$0.height.equalTo(40)
 		}
 		mapListView.snp.makeConstraints {
 			$0.top.equalTo(view.safeAreaLayoutGuide).inset(80)

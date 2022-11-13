@@ -236,12 +236,16 @@ extension DiaryConfigViewController {
                         self.viewModel.addDiary()
                         NotificationCenter.default.post(name: .reloadDiary, object: nil)
                         guard let diary = self.viewModel.diary else { return }
-                        let myDiaryPagesVC = MyDiaryPagesViewController(diaryData: diary)
+                
+                        let myDiaryDaysVC = MyDiaryDaysViewController()
+                        let myDiaryDaysVM = MyDiaryDaysViewModel(diary: diary)
+                        myDiaryDaysVC.bind(myDiaryDaysVM)
                         parentNavigationController.isNavigationBarHidden = false
-                        parentNavigationController.pushViewController(myDiaryPagesVC, animated: true)
+                        parentNavigationController.pushViewController(myDiaryDaysVC, animated: true)
                         
                     case .modify:
-                        self.viewModel.updateDiary()
+                        self.viewModel.updateDiary { print("다이어리 업로드 완료: \(self.viewModel.diary?.diaryName ?? "이름없음")") }
+                        NotificationCenter.default.post(name: .reloadDiary, object: nil)
                     }
                 }
             }

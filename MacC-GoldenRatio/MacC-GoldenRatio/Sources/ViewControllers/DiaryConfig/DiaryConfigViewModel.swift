@@ -185,10 +185,11 @@ class DiaryConfigViewModel {
         firebaseClient.addDiary(diary: diary)
     }
     
-    func updateDiary() {
+    func updateDiary(_ completion: @escaping () -> Void) {
         setDiaryData()
         guard let diary = diary else { return }
         firebaseClient.addDiary(diary: diary)
+        completion()
     }
     
     func setDiaryData() {

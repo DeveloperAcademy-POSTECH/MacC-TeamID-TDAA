@@ -12,7 +12,7 @@ import SnapKit
 import UIKit
 
 class MyDiaryDaysViewController: UIViewController {
-    private var viewModel: MyDiaryDaysViewModel?
+    var viewModel: MyDiaryDaysViewModel?
     private let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
@@ -23,12 +23,15 @@ class MyDiaryDaysViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(true, animated: animated)
+
+        viewModel?.updateModel()
+        super.viewWillAppear(animated)
     }
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
+        label.textAlignment = .center
         label.font = UIFont.labelTtitleFont2
         return label
     }()
@@ -70,7 +73,7 @@ class MyDiaryDaysViewController: UIViewController {
 
     let diaryDaysCollectionView = DiaryDaysCollectionView()
     let albumCollectionView = AlbumCollectionView()
-    let mapView = MKMapView()
+    let mapView = MapView()
     
     // MARK: Bind
     func bind(_ viewModel: MyDiaryDaysViewModel) {
@@ -88,8 +91,14 @@ class MyDiaryDaysViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        viewModel.titleLabelText
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { text in self.titleLabel.text = text })
+            .disposed(by: disposeBag)
+        
         self.diaryDaysCollectionView.bind(viewModel.diarydaysCollectionViewModel)
         self.albumCollectionView.bind(viewModel.albumCollectionViewModel)
+        self.mapView.bind(viewModel.mapViewModel)
         
         self.diaryDaysCollectionView.rx.itemSelected
             .map { $0.row }
@@ -118,8 +127,6 @@ class MyDiaryDaysViewController: UIViewController {
         self.menuButton.rx.tap
             .bind { self.menuButtonTapped() }
             .disposed(by: disposeBag)
-        
-        self.titleLabel.text = viewModel.myDiaryDaysModel.diary.diaryName
     }
     
     // MARK: Attribute & Layout
@@ -128,7 +135,7 @@ class MyDiaryDaysViewController: UIViewController {
         self.view.backgroundColor = UIColor(named: "appBackgroundColor")!
         self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(mapListHalfModal(notification:)), name: .mapAnnotationTapped, object: nil)
         
     }
     
@@ -141,6 +148,7 @@ class MyDiaryDaysViewController: UIViewController {
         titleLabel.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.centerY.equalTo(backButton)
+            $0.width.equalToSuperview().inset(100)
         }
         
         backButton.snp.makeConstraints {
@@ -188,7 +196,7 @@ class MyDiaryDaysViewController: UIViewController {
     private func backButtonTapped() {
         NotificationCenter.default.post(name: .reloadDiary, object: nil)
         self.navigationController?.isNavigationBarHidden = true
-        self.navigationController?.popViewController(animated: false)
+        self.navigationController?.popViewController(animated: true)
     }
     
     @objc private func copyButtonTapped() {
@@ -198,9 +206,16 @@ class MyDiaryDaysViewController: UIViewController {
     
     @objc private func modifyButtonTapped() {
         let vc = DiaryConfigViewController()
-        vc.bind(DiaryConfigViewModel(diary: self.viewModel!.myDiaryDaysModel.diary))
-        vc.modalPresentationStyle = .fullScreen
-        self.present(vc, animated: true, completion: nil)
+        self.viewModel?.myDiaryDaysModel.diaryDataSetup {
+            self.viewModel?.diaryConfigViewModel = DiaryConfigViewModel(diary: self.viewModel?.myDiaryDaysModel.diary)
+            if let viewModel = self.viewModel?.diaryConfigViewModel {
+                DispatchQueue.main.async {
+                    vc.bind(viewModel)
+                    vc.modalPresentationStyle = .fullScreen
+                    self.present(vc, animated: true, completion: nil)
+                }
+            }
+        }
     }
     
     @objc private func outButtonTapped() {
@@ -214,10 +229,57 @@ class MyDiaryDaysViewController: UIViewController {
         ac.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
         present(ac, animated: true, completion: nil)
     }
+    
+    @objc private func mapListHalfModal(notification: NSNotification) {
+        guard let day = notification.userInfo?["day"] as? Int else {
+            return
+        }
+        
+        guard let selectedLocation = notification.userInfo?["selectedLocation"] as? Location else {
+            return
+        }
+        
+        let vc = MapListViewController(viewMdoel: viewModel!.mapViewModel, day: day, selectedLocation: selectedLocation)
+        let titles = viewModel!.mapViewModel.mapData
+            .value
+            .map { data in
+                return "\(data.day)일차"
+            }
+        
+        vc.configureSegmentedControl(titles: titles)
+        
+        if #available(iOS 15.0, *) {
+            vc.modalPresentationStyle = .pageSheet
+            if let sheet = vc.sheetPresentationController {
+                sheet.detents = [.medium(), .large()]
+                sheet.delegate = self
+                sheet.prefersGrabberVisible = true
+            }
+        } else {
+            vc.modalPresentationStyle = .custom
+            vc.transitioningDelegate = self
+        }
+        vc.view.backgroundColor = .white
+        
+        self.present(vc, animated: true)
+    }
 }
 
 extension MyDiaryDaysViewController: UIGestureRecognizerDelegate {
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         return navigationController?.viewControllers.count ?? 0 > 2
+    }
+}
+
+extension MyDiaryDaysViewController: UISheetPresentationControllerDelegate {
+    @available(iOS 15.0, *)
+    func sheetPresentationControllerDidChangeSelectedDetentIdentifier(_ sheetPresentationController: UISheetPresentationController) {
+        print(sheetPresentationController.selectedDetentIdentifier == .large ? "large" : "medium")
+    }
+}
+
+extension MyDiaryDaysViewController: UIViewControllerTransitioningDelegate {
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        MapHalfModalPresentationController(presentedViewController: presented, presenting: presenting)
     }
 }

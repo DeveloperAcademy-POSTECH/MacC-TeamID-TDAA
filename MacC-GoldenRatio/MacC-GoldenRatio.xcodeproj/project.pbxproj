@@ -114,6 +114,8 @@
 		E2DA8F6028F842310098DD94 /* MyAlbumCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DA8F5F28F842310098DD94 /* MyAlbumCollectionViewCell.swift */; };
 		E2DA8F6228F856A10098DD94 /* MyAlbumPhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DA8F6128F856A10098DD94 /* MyAlbumPhotoViewController.swift */; };
 		E2DA8F6428F857D80098DD94 /* MyAlbumPhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DA8F6328F857D80098DD94 /* MyAlbumPhotoCollectionViewCell.swift */; };
+		E2E5442F2916C24600E611D0 /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = E2E5442E2916C24600E611D0 /* RxDataSources */; };
+		E2E544312916D91400E611D0 /* DiarySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E544302916D91400E611D0 /* DiarySection.swift */; };
 		E2EA7F0828E56CF600AC1C49 /* MyPlaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EA7F0728E56CF600AC1C49 /* MyPlaceViewController.swift */; };
 		E2EA7F1628E5711E00AC1C49 /* DiaryCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EA7F1528E5711E00AC1C49 /* DiaryCollectionHeaderView.swift */; };
 		E2ED4872290ABE46002FEC2B /* Notification+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2ED4871290ABE46002FEC2B /* Notification+.swift */; };
@@ -273,6 +275,7 @@
 		E2DA8F5F28F842310098DD94 /* MyAlbumCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAlbumCollectionViewCell.swift; sourceTree = "<group>"; };
 		E2DA8F6128F856A10098DD94 /* MyAlbumPhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAlbumPhotoViewController.swift; sourceTree = "<group>"; };
 		E2DA8F6328F857D80098DD94 /* MyAlbumPhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAlbumPhotoCollectionViewCell.swift; sourceTree = "<group>"; };
+		E2E544302916D91400E611D0 /* DiarySection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiarySection.swift; sourceTree = "<group>"; };
 		E2EA7F0728E56CF600AC1C49 /* MyPlaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPlaceViewController.swift; sourceTree = "<group>"; };
 		E2EA7F1528E5711E00AC1C49 /* DiaryCollectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryCollectionHeaderView.swift; sourceTree = "<group>"; };
 		E2ED4871290ABE46002FEC2B /* Notification+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+.swift"; sourceTree = "<group>"; };
@@ -475,6 +478,14 @@
 			path = DiaryConfig;
 			sourceTree = "<group>";
 		};
+		CCBF6891291E8FD600AD2B63 /* Album */ = {
+			isa = PBXGroup;
+			children = (
+				E2DA8F6128F856A10098DD94 /* MyAlbumPhotoViewController.swift */,
+			);
+			path = Album;
+			sourceTree = "<group>";
+		};
 		CCE1806D28E5917A00AF06DB /* SignIn */ = {
 			isa = PBXGroup;
 			children = (
@@ -591,6 +602,7 @@
 		E276B91A28E4697E00163833 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				CCBF6891291E8FD600AD2B63 /* Album */,
 				E2838BED291E3CEB0013DD82 /* Map */,
 				0A3ED13F28F937EB000D55D8 /* MyPageViewControllers */,
 				B9901C03291C29FE00AF92DE /* MyDiaryDays */,
@@ -695,8 +707,6 @@
 			isa = PBXGroup;
 			children = (
 				E21342DE28F6B31D0048D9CF /* MyHomeViewController.swift */,
-				E2EA7F0728E56CF600AC1C49 /* MyPlaceViewController.swift */,
-				E2DA8F6128F856A10098DD94 /* MyAlbumPhotoViewController.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -894,7 +904,6 @@
 				0A939489291A1E0E007ADDAC /* PageViewModeViewController.swift in Sources */,
 				CCD6D58E2914F6C600013367 /* DiaryConfigModel.swift in Sources */,
 				0AE94ABC291182090051A710 /* ErrorMessage.swift in Sources */,
-				E2EA7F0828E56CF600AC1C49 /* MyPlaceViewController.swift in Sources */,
 				E2FA41A528F496D100BBA354 /* UIImageView+.swift in Sources */,
 				CC0F434428F71E62003060D5 /* DiaryConfigViewModel.swift in Sources */,
 				E21342D928F6B0660048D9CF /* FirebaseClient.swift in Sources */,

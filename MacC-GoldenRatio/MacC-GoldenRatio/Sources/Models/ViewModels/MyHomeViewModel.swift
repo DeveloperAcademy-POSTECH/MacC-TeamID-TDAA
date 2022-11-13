@@ -18,7 +18,6 @@ class MyHomeViewModel {
 	private var myUID = Auth.auth().currentUser?.uid ?? ""
 	
 	let diaryCollectionViewModel = DiaryCollectionViewModel()
-	let mapViewModel = MapViewModel()
 	let albumCollectionViewModel = AlbumCollectionViewModel()
 	
 	var isEqual = false
@@ -54,14 +53,6 @@ class MyHomeViewModel {
 			return []
 		}
 		return value
-	}
-	
-	func getFirstDiaryData(_ value: [Diary]?) -> Diary {
-		guard let value = value else {
-			return Diary(diaryUUID: "", diaryName: "", diaryLocation: Location(locationName: "", locationAddress: "", locationCoordinate: [], locationCategory: nil), diaryStartDate: "", diaryEndDate: "", diaryCover: "")
-		}
-		
-		return value.first ?? Diary(diaryUUID: "", diaryName: "", diaryLocation: Location(locationName: "", locationAddress: "", locationCoordinate: [], locationCategory: nil), diaryStartDate: "", diaryEndDate: "", diaryCover: "")
 	}
 	
 	func isDiaryCodeEqualTo(_ diaryUUID: String) {

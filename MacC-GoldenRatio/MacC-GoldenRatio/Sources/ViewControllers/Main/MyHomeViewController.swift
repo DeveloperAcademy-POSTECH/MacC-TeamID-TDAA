@@ -14,6 +14,7 @@ final class MyHomeViewController: UIViewController {
 	private let viewModel = MyHomeViewModel()
 	private let myDevice = UIScreen.getDevice()
 	
+	private lazy var collectionHeaderView = DiaryCollectionHeaderView()
 	private lazy var collectionView = DiaryCollectionView()
 	private lazy var addDiaryButton = HomeButtonView()
 	private lazy var profileButton = HomeButtonView()
@@ -30,17 +31,25 @@ final class MyHomeViewController: UIViewController {
 	}
 	
 	private func setupSubViews() {
-		self.view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
+		self.view.backgroundColor = UIColor(named: "appBackgroundColor") ?? UIColor.white
 
 		[collectionView, addDiaryButton, profileButton].forEach { view.addSubview($0) }
 		collectionView.snp.makeConstraints {
+
 			$0.top.equalTo(view.safeAreaLayoutGuide)
-			$0.bottom.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+			$0.height.equalTo(25)
+		}
+		
+		collectionView.snp.makeConstraints {
+			$0.top.equalTo(collectionHeaderView.snp.bottom).offset(60)
+			$0.bottom.equalTo(view.safeAreaLayoutGuide)
+			$0.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(20)
 		}
 		
 		addDiaryButton.setupViews(UIImage(named: "plusButton"))
 		addDiaryButton.snp.makeConstraints {
-			$0.bottom.trailing.equalTo(view.safeAreaLayoutGuide).inset(myDevice.MyDiariesViewAddDiaryButtonPadding)
+			$0.trailing.equalTo(view.safeAreaLayoutGuide).inset(myDevice.MyDiariesViewAddDiaryButtonPadding)
+			$0.bottom.equalTo(view.safeAreaLayoutGuide).inset(40)
 		}
 		
 		let image = UIImage(
@@ -52,6 +61,7 @@ final class MyHomeViewController: UIViewController {
 			$0.top.equalTo(view.safeAreaLayoutGuide).inset(25)
 			$0.trailing.equalTo(view.safeAreaLayoutGuide).inset(20)
 		}
+
 	}
 	
 	private func bind() {
@@ -59,7 +69,6 @@ final class MyHomeViewController: UIViewController {
 		collectionView.rx
 			.modelSelected(Diary.self)
 			.subscribe(onNext: { diary in
-				// let vc = MyDiaryPagesViewController(diaryData: diary)
                 let vc = MyDiaryDaysViewController()
                 vc.bind(MyDiaryDaysViewModel(diary: diary))
 				self.navigationController?.pushViewController(vc, animated: true)
@@ -70,8 +79,8 @@ final class MyHomeViewController: UIViewController {
 			.bind {
 				self.addDiaryButton.setImage(UIImage(named: "closeButton"), for: .normal)
 				let popUp = PopUpViewController(popUpPosition: .bottom)
-				popUp.addButton(buttonTitle: "다이어리 추가", action: self.createButtonTapped)
-				popUp.addButton(buttonTitle: "초대코드로 참가", action: self.joinButtonTapped)
+				popUp.addButton(buttonTitle: " 다이어리 추가", buttonSymbol: "doc.badge.plus", buttonSize: 17, action: self.createButtonTapped)
+				popUp.addButton(buttonTitle: " 초대코드 참가", buttonSymbol: "envelope.open", buttonSize: 15, action: self.joinButtonTapped)
 				self.present(popUp, animated: false)
 			}
 			.disposed(by: disposeBag)

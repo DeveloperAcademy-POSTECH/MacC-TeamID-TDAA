@@ -39,7 +39,7 @@ class MyPageViewController: UIViewController {
 	
 	private lazy var lineView: UIView = {
 		let view = UIView()
-		view.backgroundColor = .placeholderText
+		view.backgroundColor = UIColor(named: "separatorColor") ?? .placeholderText
 		
 		return view
 	}()

@@ -101,7 +101,7 @@ class PopUpViewController: UIViewController {
         switch popUpPosition {
         case .bottom:
             containerView.snp.makeConstraints {
-                $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(device.MyDiariesViewAddDiaryButtonPadding + 130)
+                $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(device.MyDiariesViewAddDiaryButtonPadding + 90)
                 $0.trailing.equalTo(view.safeAreaLayoutGuide).inset(device.MyDiariesViewAddDiaryButtonPadding)
             }
         case .bottom2:

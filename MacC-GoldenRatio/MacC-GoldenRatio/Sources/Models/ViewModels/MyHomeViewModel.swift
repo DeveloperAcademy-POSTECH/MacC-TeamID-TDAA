@@ -42,14 +42,10 @@ class MyHomeViewModel {
 			.flatMapLatest(client.fetchMyDiaries)
 			.share()
 		
-		let diaryValue = diaryResult
+		diaryResult
 			.map(getDiaryValue)
-		
-		diaryValue
-			.map(getCollectionSection)
 			.bind(to: diaryCollectionViewModel.collectionDiaryData)
 			.disposed(by: disposeBag)
-		
 	}
 	
 	func getDiaryValue(_ result: Result<[Diary], Error>) -> [Diary] {
@@ -65,6 +61,7 @@ class MyHomeViewModel {
 		}
 		
 		return [DiarySection(header: "다이어리", items: value)]
+
 	}
 	
 	func isDiaryCodeEqualTo(_ diaryUUID: String) {

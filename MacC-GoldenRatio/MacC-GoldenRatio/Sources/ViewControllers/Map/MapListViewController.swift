@@ -18,7 +18,6 @@ class MapListViewController: UIViewController {
 	private lazy var segmentedControlView: SegmentedControlView = {
 		let segmentedControlView = SegmentedControlView()
 		segmentedControlView.delegate = self
-		segmentedControlView.translatesAutoresizingMaskIntoConstraints = false
 		return segmentedControlView
 	}()
 	
@@ -45,7 +44,7 @@ class MapListViewController: UIViewController {
 												   font: UIFont(name: "EF_Diary", size: 20)!,
 												   spacing: 10,
 												   selectedLabelColor: .black,
-												   unselectedLabelColor: .placeholderText,
+												   unselectedLabelColor: UIColor(named: "separatorColor") ?? .placeholderText,
 												   selectedLineColor: .black,
 												   day: day-1)
 		segmentedControlView.configure(config)

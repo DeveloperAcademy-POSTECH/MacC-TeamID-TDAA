@@ -40,7 +40,7 @@ extension UIScreen {
         case iPhone8
         case iPhoneSE
         
-        // MARK: MyDiariesView
+        // MARK: MyHomeView
         var TabBarTitleLabelLeading: Int {
             switch self {
             default: return 20
@@ -117,7 +117,7 @@ extension UIScreen {
         
         var diaryCollectionViewCellSize: CGSize {
             switch self {
-			default: return CGSize(width: (UIScreen.main.bounds.size.width-60)/2, height: ((UIScreen.main.bounds.size.width-60)/2)*1.151515)
+			default: return CGSize(width: (UIScreen.main.bounds.size.width-60)/2, height: ((UIScreen.main.bounds.size.width-60)/2)*1.2121)
             }
         }
         

@@ -33,6 +33,9 @@ class MyDiaryDaysViewModel {
                 return array
             }
             .asDriver(onErrorJustReturn: [Bool](repeating: false, count: 3))
+        
+        self.albumCollectionViewModel.collectionDiaryData.onNext(diary)
+        self.mapViewModel.mapDiaryData.onNext(diary)
     }
     
     func updateModel() {

@@ -76,7 +76,7 @@ class StickerView: UIView {
         self.isStickerViewActive.onNext(true)
     }
     
-    internal func stickerUIDidChange() async {
+    internal func stickerUIDidChange()  {
         Task {
             await self.stickerViewData?.updateUIItem(frame: self.frame, bounds: self.bounds, transform: self.transform)
         }

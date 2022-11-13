@@ -23,9 +23,8 @@ class StickerViewData {
     var contentsObservable: Observable<[String]>!
         
     init(itemType: ItemType, contents: [String], appearPoint: CGPoint, defaultSize: CGSize) async {
-        
         let id = UUID().uuidString + String(Date().timeIntervalSince1970)
-        let item = Item(itemUUID: id, itemType: itemType, contents: contents, itemFrame: [appearPoint.x, appearPoint.y, defaultSize.width, defaultSize.height], itemBounds: [0.0, 0.0, defaultSize.width, defaultSize.height], itemTransform: [1.0, 0.0, 0.0, 1.0, 0.0, 0.0])
+        let item = await createNewItem(id: id, itemType: itemType, contents: contents, appearPoint: appearPoint, defaultSize: defaultSize)
         self.itemObservable = BehaviorSubject(value: item)
         self.frameObservable = await self.createFrameObservable()
         self.boundsObservable = await self.createBoundsObservable()
@@ -39,6 +38,10 @@ class StickerViewData {
         self.boundsObservable = await self.createBoundsObservable()
         self.transitionObservable = await self.createTransformObservable()
         self.contentsObservable = await self.createContentsObservable()
+    }
+    
+    private func createNewItem(id: String, itemType: ItemType, contents: [String], appearPoint: CGPoint, defaultSize: CGSize) async -> Item {
+        return Item(itemUUID: id, itemType: itemType, contents: contents, itemFrame: [appearPoint.x, appearPoint.y, defaultSize.width, defaultSize.height], itemBounds: [0.0, 0.0, defaultSize.width, defaultSize.height], itemTransform: [1.0, 0.0, 0.0, 1.0, 0.0, 0.0])
     }
     
     private func createFrameObservable() async -> Observable<CGRect> {
@@ -92,13 +95,13 @@ class StickerViewData {
         
         self.itemObservable
             .observe(on: MainScheduler.instance)
+            .take(1)
             .map { item in
                 var newItem = item
                 newItem.contents = contents
                 
                 return newItem
             }
-            .take(1)
             .subscribe(onNext: {
                 self.itemObservable.onNext($0)
             })
@@ -107,13 +110,14 @@ class StickerViewData {
     }
     
     func updateUIItem(frame: CGRect, bounds: CGRect, transform: CGAffineTransform) {
-        let itemFrame: [Double] = [frame.origin.x, frame.origin.y, frame.size.width, frame.size.height]
-        let itemBounds: [Double] = [0, 0, bounds.size.width, bounds.size.height]
-        let itemTrasnform: [Double] = [transform.a, transform.b, transform.c, transform.d, transform.tx, transform.ty]
-
         self.itemObservable
-            .observe(on: MainScheduler.instance)
+            .observe(on: MainScheduler.asyncInstance)
+            .take(1)
             .map { item in
+                let itemFrame: [Double] = [frame.origin.x, frame.origin.y, frame.size.width, frame.size.height]
+                let itemBounds: [Double] = [0, 0, bounds.size.width, bounds.size.height]
+                let itemTrasnform: [Double] = [transform.a, transform.b, transform.c, transform.d, transform.tx, transform.ty]
+                
                 var newItem = item
                 newItem.itemFrame = itemFrame
                 newItem.itemBounds = itemBounds
@@ -121,7 +125,6 @@ class StickerViewData {
                 
                 return newItem
             }
-            .take(1)
             .subscribe(onNext: {
                 self.itemObservable.onNext($0)
             })

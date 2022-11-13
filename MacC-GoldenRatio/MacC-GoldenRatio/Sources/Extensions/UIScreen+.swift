@@ -309,7 +309,19 @@ extension UIScreen {
         
         var pageToolButtonSize: CGSize {
             switch self {
-            default: return CGSize(width: 30, height: 30)
+            default: return CGSize(width: 28, height: 28)
+            }
+        }
+        
+        var pagePhotoToolButtonSize: CGSize {
+            switch self {
+            default: return CGSize(width: 34, height: 28)
+            }
+        }
+        
+        var pageDocsToolButtonSize: CGSize {
+            switch self {
+            default: return CGSize(width: 26, height: 28)
             }
         }
         
@@ -499,7 +511,7 @@ extension UIScreen {
         /// 10
         var myPageVerticalSpacing: CGFloat {
             switch self {
-            default: return 30
+            default: return 10
             }
         }
         /// 15
@@ -512,6 +524,12 @@ extension UIScreen {
         var myPageVerticalSpacing3: CGFloat {
             switch self {
             default: return 50
+            }
+        }
+        /// 30
+        var myPageVerticalSpacing4: CGFloat {
+            switch self {
+            default: return 30
             }
         }
         /// 62*62

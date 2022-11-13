@@ -17,7 +17,14 @@ class MyPageViewModel {
     @Published var myUser: User = User(userUID: "", userName: "", userImageURL: "", diaryUUIDs: [""])
     @Published var myProfileImage: UIImage = UIImage()
     @Published var myTravelLocations: [String] = []
-    let menuArray: [(String, String?)] = [("앱 버전", "1.0.1"), ("오픈소스",">"), ("앱 평가하기",">"), ("로그아웃", ">"), ("회원탈퇴", ">")]
+    lazy var menuArray: [(String, String?)] = [("앱 버전", version?.description), ("오픈소스",">"), ("앱 평가하기",">"), ("로그아웃", ">"), ("회원탈퇴", ">")]
+    
+    var version: String? {
+        guard let dictionary = Bundle.main.infoDictionary,
+            let version = dictionary["CFBundleShortVersionString"] as? String else { return nil }
+
+        return version
+    }
     
     init() {
         Task{
@@ -35,7 +42,12 @@ class MyPageViewModel {
         let url = myUser.userImageURL
         
         if url == "" {
-            self.myProfileImage = UIImage(named: "profileImage")!
+            
+            self.myProfileImage = UIImage(
+                systemName: "person.circle",
+                withConfiguration: UIImage.SymbolConfiguration(pointSize: 62)
+            )!.withTintColor(UIColor.sandbrownColor, renderingMode: .alwaysOriginal)
+            
             return
         }
         

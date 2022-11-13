@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A1C3FE3291E9C2D009A8C31 /* PageCollectionViewHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1C3FE2291E9C2D009A8C31 /* PageCollectionViewHeaderCell.swift */; };
 		0A30BD47291A4DAF00079326 /* CALayer+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A30BD46291A4DAE00079326 /* CALayer+.swift */; };
 		0A30BD49291A93AE00079326 /* PageViewModeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A30BD48291A93AE00079326 /* PageViewModeCollectionViewCell.swift */; };
 		0A3ED14128F98956000D55D8 /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3ED14028F98956000D55D8 /* MyPageViewModel.swift */; };
@@ -166,6 +167,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0A1C3FE2291E9C2D009A8C31 /* PageCollectionViewHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageCollectionViewHeaderCell.swift; sourceTree = "<group>"; };
 		0A30BD46291A4DAE00079326 /* CALayer+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+.swift"; sourceTree = "<group>"; };
 		0A30BD48291A93AE00079326 /* PageViewModeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewModeCollectionViewCell.swift; sourceTree = "<group>"; };
 		0A3ED14028F98956000D55D8 /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
@@ -388,6 +390,7 @@
 				0A30BD48291A93AE00079326 /* PageViewModeCollectionViewCell.swift */,
 				0AAB2AD928EC8C8D009FBD96 /* StickerPickerCollectionViewCell.swift */,
 				0AD6FD7D2903054D00939F3D /* MapSearchResultTableViewCell.swift */,
+				0A1C3FE2291E9C2D009A8C31 /* PageCollectionViewHeaderCell.swift */,
 			);
 			path = Page;
 			sourceTree = "<group>";
@@ -911,6 +914,7 @@
 				CCE5BE18291E425700D2DC8F /* NSMutableAttributedString+.swift in Sources */,
 				CCE5BE1A291E429F00D2DC8F /* UIImage+.swift in Sources */,
 				E26F0DB22916B33900B040C9 /* CollectionEmptyView.swift in Sources */,
+				0A1C3FE3291E9C2D009A8C31 /* PageCollectionViewHeaderCell.swift in Sources */,
 				E276B92028E4812E00163833 /* UIScreen+.swift in Sources */,
 				CC40BC1F28EEB10800DF48E1 /* CalendarPickerViewController.swift in Sources */,
 				0A3ED14828FBE6EB000D55D8 /* MyPageViewController.swift in Sources */,
@@ -1183,7 +1187,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.TwoInterval.MacC-GoldenRatio";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = DiaryAppForDevelopment;
@@ -1225,7 +1229,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.TwoInterval.MacC-GoldenRatio";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = DiaryAppForDistribution;

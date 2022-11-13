@@ -9,12 +9,15 @@ import RxCocoa
 import RxSwift
 import UIKit
 import SnapKit
+import RxDataSources
 
 class PageViewModeViewController: UIViewController {
     
     private var pageViewModel: PageViewModel!
     
     private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
+    
+    private var source: RxCollectionViewSectionedReloadDataSource<PageSection>!
 
     private lazy var pageCollectionView: UICollectionView = {
         let collectionViewFlowLayout = UICollectionViewFlowLayout()
@@ -23,15 +26,21 @@ class PageViewModeViewController: UIViewController {
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewFlowLayout)
         collectionView.register(PageViewModeCollectionViewCell.self, forCellWithReuseIdentifier: PageViewModeCollectionViewCell.identifier)
+        collectionView.register(PageCollectionViewHeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "PageCollectionViewHeaderCell")
         collectionView.delegate = self
-
+        collectionView.backgroundColor = UIColor.appBackgroundColor
+        
         return collectionView
     }()
     
     private lazy var pageDescriptionLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.backgroundColor = UIColor.stickerBackgroundColor
+        label.textColor = .white
+        label.textAlignment = .center
         label.font = .navigationTitleFont
+        label.layer.cornerRadius = 12.5
+        label.clipsToBounds = true
         
         return label
     }()
@@ -48,23 +57,23 @@ class PageViewModeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    
-        self.view.backgroundColor = .white
+        
+        self.configureNavigationBar()
+        self.view.backgroundColor = UIColor.appBackgroundColor
 
         self.configureSubView()
         self.setPageDescription()
-        self.configureNavigationBar()
         self.configurePageCollectionView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.pageViewModel.pageCollectionViewCurrentCellIndex
+        self.pageViewModel.selectedPageIndex
             .observe(on: MainScheduler.instance)
             .take(1)
             .subscribe(onNext: {
-                self.pageCollectionView.scrollToItem(at: $0, at: .top, animated: true)
+                self.pageCollectionView.scrollToItem(at: IndexPath(item: $0.1, section: $0.0), at: .top, animated: true)
             })
             .disposed(by: pageViewModel.disposeBag)
     }
@@ -80,6 +89,8 @@ class PageViewModeViewController: UIViewController {
         
         self.pageDescriptionLabel.snp.makeConstraints { make in
             make.trailing.top.equalTo(view.safeAreaLayoutGuide).inset(self.myDevice.pagePadding)
+            make.width.equalTo(47)
+            make.height.equalTo(25)
         }
     }
     
@@ -91,17 +102,23 @@ class PageViewModeViewController: UIViewController {
     }
     
     private func configureNavigationBar() {
-        let leftBarButtonItem = UIBarButtonItem(title: "<", style: .plain, target: self, action: #selector(onTapNavigationBack))
-        let rightBarButtonItem = UIBarButtonItem(title: "편집", style: .plain, target: self, action: #selector(onTapNavigationMenu))
+        let leftBarButtonImage = UIImage(systemName: "chevron.left")
+        let leftBarButtonItem = UIBarButtonItem(image: leftBarButtonImage, style: .plain, target: self, action: #selector(onTapNavigationBack))
+        leftBarButtonItem.tintColor = .black
+        
+        let rightBarButtonImage = UIImage(systemName: "ellipsis")
+        let rightBarButtonItem = UIBarButtonItem(image: rightBarButtonImage, style: .plain, target: self, action: #selector(onTapNavigationMenu))
+        rightBarButtonItem.tintColor = .black
         
         leftBarButtonItem.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.navigationTitleFont, NSAttributedString.Key.foregroundColor:UIColor.navigationbarColor], for: .normal)
+        
         rightBarButtonItem.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.navigationTitleFont, NSAttributedString.Key.foregroundColor:UIColor.navigationbarColor], for: .normal)
         
         self.navigationItem.setLeftBarButton(leftBarButtonItem, animated: false)
         self.navigationItem.setRightBarButton(rightBarButtonItem, animated: false)
         
-        self.navigationController?.navigationBar.barTintColor = .white
-        self.navigationController?.navigationBar.layer.addBorder([.bottom], color: .lightGray, width: 1)
+        self.navigationController?.navigationBar.barTintColor = UIColor.appBackgroundColor
+        self.navigationController?.navigationBar.layer.addBorder([.bottom], color: UIColor.separatorColor, width: 1)
         
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.navigationTitleFont, NSAttributedString.Key.foregroundColor:UIColor.black]
         
@@ -115,27 +132,37 @@ class PageViewModeViewController: UIViewController {
     }
     
     private func configurePageCollectionView() {
-        var itemsCount = 0
-        Observable
-            .combineLatest(self.pageViewModel.allPageItemKeys, self.pageViewModel.allPageItemObservable) { (keys, itemDic) in
-                let items = keys.map {
-                    itemDic[$0]
-                }
-                itemsCount = items.count
+        source = RxCollectionViewSectionedReloadDataSource<PageSection>(configureCell: { dataSource, collectionView, indexPath, item in
+            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PageViewModeCollectionViewCell.identifier, for: indexPath) as? PageViewModeCollectionViewCell {
+                cell.setStickerView(items: item.items)
                 
-                return items
-            }
-            .bind(to: pageCollectionView.rx.items(cellIdentifier: PageViewModeCollectionViewCell.identifier, cellType: PageViewModeCollectionViewCell.self)) { (index, items, cell) in
-                if let items = items {
-                    cell.setStickerView(items: items)
+                let maxSectionIndex = self.pageCollectionView.numberOfSections - 1
+                let lastItemIndex = self.pageCollectionView.numberOfItems(inSection: maxSectionIndex) - 1
+                let lastIndexPath = IndexPath(item: lastItemIndex, section: maxSectionIndex)
+                
+                if lastIndexPath == indexPath{
+                    cell.separatorView.backgroundColor = UIColor.appBackgroundColor
                 }
-                if index == itemsCount - 1 {
-                    cell.separatorView.backgroundColor = .white
+                return cell
+            } else {
+                return UICollectionViewCell()
+            }
+        }, configureSupplementaryView: { (dataSource, collectionView, kind, indexPath) -> UICollectionReusableView in
+            switch kind {
+            case UICollectionView.elementKindSectionHeader:
+                if let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "PageCollectionViewHeaderCell", for: indexPath) as? PageCollectionViewHeaderCell {
+                    return header
                 } else {
-                    cell.separatorView.backgroundColor = .lightGray
+                    return UICollectionReusableView()
                 }
+            default:
+                fatalError()
             }
-            .disposed(by: self.pageViewModel.disposeBag)
+        })
+        
+        pageViewModel.pageCollectionViewData
+            .bind(to: pageCollectionView.rx.items(dataSource: source))
+            .disposed(by: pageViewModel.disposeBag)
     }
     
     @objc private func onTapNavigationBack() {
@@ -144,8 +171,8 @@ class PageViewModeViewController: UIViewController {
     
     @objc private func onTapNavigationMenu() {
         let popUp = PopUpViewController(popUpPosition: .top)
-        popUp.addButton(buttonTitle: "현재 페이지 편집", action: onTapEditCurrentPage)
-        popUp.addButton(buttonTitle: "현재 페이지 공유", action: onTapShareCurrentPage)
+        popUp.addButton(buttonTitle: " 페이지 편집", buttonSymbol: "square.and.pencil", buttonSize: 17, action: onTapEditCurrentPage)
+        popUp.addButton(buttonTitle: " 페이지 공유", buttonSymbol: "square.and.arrow.up", buttonSize: 17 , action: onTapShareCurrentPage)
 
         self.present(popUp, animated: false)
     }
@@ -157,32 +184,20 @@ class PageViewModeViewController: UIViewController {
 
     @objc private func onTapShareCurrentPage() {
         
-        Observable
-            .combineLatest(self.pageViewModel.maxPageIndexByDayObservable, self.pageViewModel.selectedPageIndex) { (maxPageIndexes, selectedPageIndex) in
-                
-                var targetIndex = selectedPageIndex.1
-                
-                if selectedPageIndex.0 > 0 {
-                    (0...(selectedPageIndex.0 - 1)).forEach {
-                        targetIndex += (maxPageIndexes[$0] + 1)
-                    }
-                }
-                
-                return targetIndex
-            }
+        self.pageViewModel.selectedPageIndex
             .take(1)
             .subscribe(onNext: { targetIndex in
-                
-                guard let targetCell = self.pageCollectionView.cellForItem(at: IndexPath(item: targetIndex, section: 0)) as? PageViewModeCollectionViewCell else { return }
+
+                guard let targetCell = self.pageCollectionView.cellForItem(at: IndexPath(item: targetIndex.1, section: targetIndex.0)) as? PageViewModeCollectionViewCell else { return }
                 guard let targetImage = targetCell.pageBackgroundView.transformToImage() else { return }
-                
+
                 let activityViewController = UIActivityViewController(activityItems: [targetImage], applicationActivities: nil)
                 activityViewController.popoverPresentationController?.sourceView = self.view
                 self.present(activityViewController, animated: true, completion: nil)
-                
+
             })
             .disposed(by: self.pageViewModel.disposeBag)
-        
+
     }
 }
 
@@ -201,16 +216,22 @@ extension PageViewModeViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         
-        guard let visibleCellIndex = collectionView.indexPathsForVisibleItems.first?.item else { return }
-        self.pageViewModel.collectionViewIndexPathHasChanged(targetIndexPath: visibleCellIndex)
-  
+        guard let visibleCellIndex = collectionView.indexPathsForVisibleItems.first else { return }
+        self.pageViewModel.selectedPageIndex.onNext((visibleCellIndex.section, visibleCellIndex.item))
     }
     
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         
-        guard let visibleCellIndex = collectionView.indexPathsForVisibleItems.first?.item else { return }
-        self.pageViewModel.collectionViewIndexPathHasChanged(targetIndexPath: visibleCellIndex)
+        guard let visibleCellIndex = collectionView.indexPathsForVisibleItems.first else { return }
+        self.pageViewModel.selectedPageIndex.onNext((visibleCellIndex.section, visibleCellIndex.item))
 
     }
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        
+        if section == 0 {
+           return CGSize(width: collectionView.frame.width, height: 0)
+        }
+        return CGSize(width: collectionView.frame.width, height: 30)
+    }
 }

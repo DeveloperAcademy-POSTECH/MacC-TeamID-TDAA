@@ -33,9 +33,9 @@ final class MyHomeViewController: UIViewController {
 	private func setupSubViews() {
 		self.view.backgroundColor = UIColor(named: "appBackgroundColor") ?? UIColor.white
 
-		[collectionView, addDiaryButton, profileButton].forEach { view.addSubview($0) }
-		collectionView.snp.makeConstraints {
-
+		[collectionHeaderView, collectionView, addDiaryButton, profileButton].forEach { view.addSubview($0) }
+        
+		collectionHeaderView.snp.makeConstraints {
 			$0.top.equalTo(view.safeAreaLayoutGuide)
 			$0.height.equalTo(25)
 		}

@@ -55,15 +55,6 @@ class MyHomeViewModel {
 		return value
 	}
 	
-	func getCollectionSection(_ value: [Diary]?) -> [DiarySection] {
-		guard let value = value else {
-			return []
-		}
-		
-		return [DiarySection(header: "다이어리", items: value)]
-
-	}
-	
 	func isDiaryCodeEqualTo(_ diaryUUID: String) {
 		Task {
 			do {

@@ -226,11 +226,17 @@ class DiaryConfigViewModel {
     
     func uploadImage(_ completion: @escaping () -> Void) {
         if let coverImage = self.coverImage {
-            FirebaseStorageManager.uploadImage(image: coverImage, pathRoot: "Diary/" + self.diaryUUID! + "/diaryCoverImage") { url in
-                guard let url = url else { return }
-                self.coverImageURL = url.absoluteString
-                ImageManager.shared.cacheImage(urlString: url.absoluteString, image: coverImage)
+            if coverImage == UIImage(named: "selectImage") {
+                self.coverImageURL = nil
+                print("No Image to Upload")
                 completion()
+            } else {
+                FirebaseStorageManager.uploadImage(image: coverImage, pathRoot: "Diary/" + self.diaryUUID! + "/diaryCoverImage") { url in
+                    guard let url = url else { return }
+                    self.coverImageURL = url.absoluteString
+                    ImageManager.shared.cacheImage(urlString: url.absoluteString, image: coverImage)
+                    completion()
+                }
             }
         } else {
             self.coverImageURL = nil

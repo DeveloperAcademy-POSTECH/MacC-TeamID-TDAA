@@ -5,112 +5,295 @@
 //  Created by 김상현 on 2022/10/02.
 //
 
+import RxDataSources
+import RxSwift
 import UIKit
 
-class PageViewModel {
-    @Published var selectedDay: Int = 0
-    @Published var currentPageIndex: Int = 0
-    @Published var diary: Diary = Diary(diaryUUID: "", diaryName: "", diaryLocation: Location(locationName: "", locationAddress: "", locationCoordinate: []), diaryStartDate: "", diaryEndDate: "", diaryCover: "")
-    @Published var stickerArray: [[StickerView]] = []
-    var oldPageIndex: Int = 0
-    var oldDiary: Diary!
+struct PageSection {
+    var header: String
+    var items: [Page]
+}
 
-    init(diary: Diary, selectedDay: Int) {
-        // TODO: 선행 뷰에게서 diary 받아와서 init 하기
-            self.diary = diary
-            self.selectedDay = selectedDay
-            setStickerArray()
+extension PageSection: SectionModelType {
+    
+    typealias Item = Page
+
+    init(original: PageSection, items: [Page]) {
+        self = original
+        self.items = items
+    }
+}
+
+class PageViewModel {
+    
+    enum AddPage {
+        case nextToCurrentPage
+        case nextToLastPage
     }
     
-    func saveOldData() {
-        oldPageIndex = currentPageIndex
-        oldDiary = diary
+    var disposeBag = DisposeBag()
+    
+    var diaryObservable: BehaviorSubject<Diary>!
+    var selectedPageIndex: BehaviorSubject<(Int,Int)>! // n 일차에 m 번째 페이지.
+    
+    // for ViewMode
+    var allPageObservable: Observable<[[Page]]>!
+    var pageCollectionViewData: Observable<[PageSection]>!
+    var pageCollectionViewCurrentCellIndex: Observable<IndexPath>!
+        
+    // for EditMode
+    var oldDiary: Diary!
+    var currentPageItemObservable: Observable<[Item]>!
+    var pageIndexDescriptionObservable: Observable<String>!
+    var maxPageIndexObservable: Observable<Int>!
+    
+    init(diary: Diary, selectedDayIndex: Int) async {
+        self.selectedPageIndex = BehaviorSubject(value: (selectedDayIndex,0))
+        self.diaryObservable = await setDiaryObservable(diary: diary)
+
+        self.pageCollectionViewCurrentCellIndex  = await setPageCollectionViewCurrentCellIndex()
+        
+        await setPageCollectionViewDataSource()
+        
+        self.currentPageItemObservable = await setCurrentPageItemObservable()
+        self.pageIndexDescriptionObservable = await setPageIndexDescriptionObservable()
+        self.maxPageIndexObservable = await setMaxPageIndexObservable()
+        await setDiaryDBUpdate()
+    }
+
+    func setPageCollectionViewDataSource() async {
+        self.allPageObservable =  self.diaryObservable
+            .observe(on: MainScheduler.instance)
+            .map {
+                var returnVal: [[Page]] = []
+                $0.diaryPages.forEach { _ in 
+                    returnVal.append([])
+                }
+                $0.diaryPages.enumerated().forEach { (pagesIndex, pages) in
+                    returnVal[pagesIndex].append(contentsOf: pages.pages)
+                }
+                return returnVal
+            }
+        
+        self.pageCollectionViewData = self.allPageObservable
+            .observe(on: MainScheduler.instance)
+            .map {
+                $0.map {
+                    PageSection(header: "", items: $0)
+                }
+            }
     }
     
-    func restoreOldData() {
-        currentPageIndex = oldPageIndex
-        diary = oldDiary
+    func setOldDiary() {
+        self.diaryObservable
+            .observe(on: MainScheduler.instance)
+            .take(1)
+            .subscribe(onNext: {
+                print($0.diaryUUID)
+                self.oldDiary = $0
+            })
+            .disposed(by: disposeBag)
     }
     
-    func addNewPage() {
+    func setDiaryObservable(diary: Diary) async -> BehaviorSubject<Diary> {
+        return BehaviorSubject(value: diary)
+    }
+    
+    /// diaryObservable 에 새 값이 전달될때 마다 서버 db에 업데이트
+    func setDiaryDBUpdate() async {
+        self.diaryObservable
+            .observe(on: ConcurrentDispatchQueueScheduler(qos: .default))
+            .subscribe { diary in
+                FirebaseClient().updatePage(diary: diary)
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    func setPageCollectionViewCurrentCellIndex() async-> Observable<IndexPath>{
+        return selectedPageIndex
+                .map {(selectedPageIndex) in
+                    return IndexPath(item: selectedPageIndex.0, section: selectedPageIndex.1)
+                }
+    }
+    
+    func setCurrentPageItemObservable() async -> Observable<[Item]> {
+        return Observable.combineLatest(diaryObservable, selectedPageIndex)
+            .map { (diary, selectedPageIndex) in
+                diary.diaryPages[selectedPageIndex.0].pages[selectedPageIndex.1].items
+            }
+    }
+    
+    func setPageIndexDescriptionObservable() async -> Observable<String> {
+        return Observable.combineLatest(diaryObservable, selectedPageIndex)
+            .map { (diary, selectedPageIndex) in
+                let pagesCount = diary.diaryPages[selectedPageIndex.0].pages.count
+                return (selectedPageIndex.1 + 1).description + "/" + pagesCount.description
+            }
+    }
+    
+    func setMaxPageIndexObservable() async -> Observable<Int> {
+        return Observable.combineLatest(diaryObservable, selectedPageIndex)
+            .map { (diary, selectedPageIndex) in
+                let pagesCount = diary.diaryPages[selectedPageIndex.0].pages.count
+                return pagesCount - 1
+            }
+    }
+    
+    // PageViewMode
+
+    // PageEditMode
+    func restoreOldDiary() {
+        self.diaryObservable.onNext(self.oldDiary)
+    }
+    
+    func addNewPage(to: AddPage) {
         let pageUUID = UUID().uuidString + String(Date().timeIntervalSince1970)
         let newPage = Page(pageUUID: pageUUID, items: [])
-        diary.diaryPages[selectedDay].pages.append(newPage)
+        var selectedDayIndex = 0
+        var newPageIndex = 0
         
-        stickerArray.append([])
+        self.selectedPageIndex
+            .observe(on: MainScheduler.instance)
+            .take(1)
+            .subscribe {
+                selectedDayIndex = $0.0
+                newPageIndex = $0.1 + 1
+            }
+            .disposed(by: self.disposeBag)
+        
+        diaryObservable
+            .observe(on: MainScheduler.instance)
+            .take(1)
+            .subscribe(onNext: {
+                var newDiary = $0
+               
+                switch to {
+                case .nextToCurrentPage:
+                    newDiary.diaryPages[selectedDayIndex].pages.insert(newPage, at: newPageIndex)
+                    
+                case .nextToLastPage:
+                    newDiary.diaryPages[selectedDayIndex].pages.append(newPage)
+                }
+                
+                self.diaryObservable.onNext(newDiary)
+                self.selectedPageIndex.onNext((selectedDayIndex, newPageIndex))
+            })
+            .disposed(by: disposeBag)
     }
     
-    func deletePage() {
-        diary.diaryPages[selectedDay].pages.remove(at: currentPageIndex)
-        stickerArray.remove(at: currentPageIndex)
+    func deleteCurrentPage() {
+        var selectedDayIndex = 0
+        var selectedPageIndex = 0
+        
+        self.selectedPageIndex
+            .observe(on: MainScheduler.instance)
+            .take(1)
+            .subscribe {
+                selectedDayIndex = $0.0
+                selectedPageIndex = $0.1
+            }
+            .disposed(by: self.disposeBag)
+        
+        diaryObservable
+            .observe(on: MainScheduler.instance)
+            .take(1)
+            .subscribe(onNext: {
+                var newDiary = $0
+                
+                newDiary.diaryPages[selectedDayIndex].pages.remove(at: selectedPageIndex)
+                
+                self.maxPageIndexObservable
+                    .observe(on: MainScheduler.instance)
+                    .take(1)
+                    .subscribe(onNext: {
+                        if $0 == 0 {
+                            print("한 장 입니다.")
+                        } else if selectedPageIndex == $0 {
+                            self.selectedPageIndex.onNext((selectedDayIndex, selectedPageIndex - 1))
+                            self.diaryObservable.onNext(newDiary)
+                        } else {
+                            self.diaryObservable.onNext(newDiary)
+                        }
+                    })
+                    .disposed(by: self.disposeBag)
+            })
+            .disposed(by: disposeBag)
+        
+    }
+    
+    func moveToNextPage() {
+        
+        Observable
+            .combineLatest(self.selectedPageIndex, self.maxPageIndexObservable)
+            .observe(on: MainScheduler.instance)
+            .take(1)
+            .subscribe { (selectedPageIndex, maxPageIndex) in
+                if selectedPageIndex.1 + 1 <= maxPageIndex {
+                    self.selectedPageIndex.onNext((selectedPageIndex.0, selectedPageIndex.1 + 1))
+                } else {
+                    print("마지막 페이지입니다.")
+                }
+            }.disposed(by: self.disposeBag)
+        
     }
 
-    func appendSticker(_ sticker: StickerView) {
-        stickerArray[currentPageIndex].append(sticker)
-    }
-    
-    func removeSticker(_ sticker: StickerView) {
-        guard let index = stickerArray[currentPageIndex].firstIndex(of: sticker) else { return }
-        stickerArray[currentPageIndex].remove(at: index)
-    }
-    
-    func hideStickerSubview(_ value: Bool) {
-        stickerArray.forEach{
-            $0.forEach{
-                $0.subviewIsHidden = value
-            }
-        }
-    }
-    
-    func bringStickerToFront(_ sticker: StickerView) {
-        guard let index = stickerArray[currentPageIndex].firstIndex(of: sticker) else { return }
-        stickerArray[currentPageIndex].remove(at: index)
-        stickerArray[currentPageIndex].append(sticker)
-    }
-    
-    func setStickerArray() {
-        self.stickerArray = self.diary.diaryPages[self.selectedDay].pages.map{
-            let stickerViews: [StickerView] = $0.items.map {
-                var stickerView: StickerView!
-                switch $0.itemType {
-                case .text:
-                    stickerView = TextStickerView(item: $0)
-                case .image:
-                    stickerView = ImageStickerView(item: $0)
-                case .sticker:
-                    stickerView = StickerStickerView(item: $0)
-                case .location:
-                    stickerView = MapStickerView(item: $0)
+    func moveToPreviousPage() {
+        
+        self.selectedPageIndex
+            .observe(on: MainScheduler.instance)
+            .take(1)
+            .subscribe(onNext: {
+                
+                if $0.1 - 1 >= 0 {
+                    self.selectedPageIndex.onNext(($0.0, $0.1 - 1))
+                } else {
+                    print("첫 페이지입니다.")
                 }
-                return stickerView
+                
+            })
+            .disposed(by: disposeBag)
+
+    }
+
+    func updateCurrentPageDataToDiaryModel(stickerViews: [StickerView]) {
+        var selectedDayIndex = 0
+        var selectedPageIndex = 0
+        
+        self.selectedPageIndex
+            .observe(on: MainScheduler.instance)
+            .take(1)
+            .subscribe {
+                selectedDayIndex = $0.0
+                selectedPageIndex = $0.1
             }
-            return stickerViews
-        }
+            .disposed(by: self.disposeBag)
+        
+        Observable.just(stickerViews)
+            .observe(on: MainScheduler.instance)
+            .take(1)
+            .map {
+                var newItems: [Item] = []
+                
+                for stickerView in $0 {
+                    newItems.append(try stickerView.fetchItem())
+                }
+                
+                return newItems
+            }.subscribe(onNext: { newItems in
+                                
+                self.diaryObservable
+                    .observe(on: MainScheduler.instance)
+                    .take(1)
+                    .subscribe(onNext: {
+                        var newDiary = $0
+                        newDiary.diaryPages[selectedDayIndex].pages[selectedPageIndex].items = newItems
+                        
+                        self.diaryObservable.onNext(newDiary)
+                    })
+                    .disposed(by: self.disposeBag)
+                
+            })
+            .disposed(by: self.disposeBag)
     }
-    
-    func updatePageThumbnail() {
-        FirebaseClient().updatePageThumbnail(diary: diary)
-    }
-    
-    func upLoadThumbnail(image: UIImage, _ completion: @escaping () -> Void) {
-        let cacheURL = diary.diaryPages[selectedDay].pages[0].pageUUID
-        ImageManager.shared.cacheImage(urlString: cacheURL, image: image)
-        FirebaseStorageManager.uploadImage(image: image, pathRoot: "Diary/" + diary.diaryUUID.description + "/thumbnail") { url in
-            guard let url = url else { return }
-            self.diary.pageThumbnails[self.selectedDay] = url.description
-            completion()
-        }
-    }
-    
-    func updateDBPages() {
-        let items = stickerArray.map{
-            $0.map{
-                $0.stickerViewData.item
-            }
-        }
-        items.enumerated().forEach{
-            diary.diaryPages[selectedDay].pages[$0].items = $1
-        }
-        FirebaseClient().updatePage(diary: diary)
-    }
+
 }

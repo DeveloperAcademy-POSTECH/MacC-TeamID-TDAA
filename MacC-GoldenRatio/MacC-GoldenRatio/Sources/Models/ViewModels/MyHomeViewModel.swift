@@ -4,16 +4,24 @@
 //
 //  Created by woo0 on 2022/10/04.
 //
-
-import FirebaseFirestore
 import FirebaseAuth
-import UIKit
+import FirebaseFirestore
+import RxCocoa
+import RxSwift
 
 // TODO: 수정 예정
 class MyHomeViewModel {
-	@Published var diaryData = [Diary]()
-	@Published var diaryCellData = [DiaryCell]()
-	@Published var isInitializing = true {
+	private let client = FirestoreClient()
+	private let db = Firestore.firestore()
+	private let disposeBag = DisposeBag()
+	
+	private var myUID = Auth.auth().currentUser?.uid ?? ""
+	
+	let diaryCollectionViewModel = DiaryCollectionViewModel()
+	let albumCollectionViewModel = AlbumCollectionViewModel()
+	
+	var isEqual = false
+	var isInitializing = true {
 		didSet {
 			if isInitializing {
 				LoadingIndicator.showLoading(loadingText: "다이어리를 불러오는 중입니다.")
@@ -23,28 +31,28 @@ class MyHomeViewModel {
 		}
 	}
 	
-	private let client = FirestoreClient()
-	private let db = Firestore.firestore()
-	private var myUID = Auth.auth().currentUser?.uid ?? ""
-	
-	var isEqual = false
-	
 	init() {
-		fetchLoadData()
+		createCell()
 	}
 	
-	func fetchLoadData() {
-		Task {
-			do {
-				self.isInitializing = true
-				diaryData.removeAll()
-				self.diaryData = try await client.fetchMyDiaries(myUID)
-				self.diaryCellData = try await convertDiaryToCellData(diaryData)
-				self.isInitializing = false
-			} catch {
-				print(error)
-			}
+	func createCell() {
+		let userUID = Observable.just(Auth.auth().currentUser?.uid ?? "")
+		
+		let diaryResult = userUID
+			.flatMapLatest(client.fetchMyDiaries)
+			.share()
+		
+		diaryResult
+			.map(getDiaryValue)
+			.bind(to: diaryCollectionViewModel.collectionDiaryData)
+			.disposed(by: disposeBag)
+	}
+	
+	func getDiaryValue(_ result: Result<[Diary], Error>) -> [Diary] {
+		guard case .success(let value) = result else {
+			return []
 		}
+		return value
 	}
 	
 	func isDiaryCodeEqualTo(_ diaryUUID: String) {
@@ -55,27 +63,6 @@ class MyHomeViewModel {
 				print(error)
 			}
 		}
-	}
-	
-	private func convertDiaryToCellData(_ diaries: [Diary]) async throws -> [DiaryCell] {
-		var diaryCellData = [DiaryCell]()
-		var userImageURL = [String]()
-		
-		for diary in diaries {
-			for userUID in diary.userUIDs {
-				let query = db.collection("User").whereField("userUID", isEqualTo: userUID)
-				let documents = try await query.getDocuments()
-
-				documents.documents.forEach { querySnapshot in
-					let data = querySnapshot.data()
-					userImageURL.append(data["userImageURL"] as? String ?? "profileImage")
-				}
-			}
-			diaryCellData.append(DiaryCell(diaryUUID: diary.diaryUUID, diaryName: diary.diaryName, diaryCover: diary.diaryCover, userImageURLs: userImageURL))
-			userImageURL.removeAll()
-		}
-
-		return diaryCellData
 	}
 	
 	func updateJoinDiary(_ diaryUUID: String) {

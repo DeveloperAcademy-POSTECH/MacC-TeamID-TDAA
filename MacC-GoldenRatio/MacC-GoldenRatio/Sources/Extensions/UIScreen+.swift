@@ -40,7 +40,7 @@ extension UIScreen {
         case iPhone8
         case iPhoneSE
         
-        // MARK: MyDiariesView
+        // MARK: MyHomeView
         var TabBarTitleLabelLeading: Int {
             switch self {
             default: return 20
@@ -117,7 +117,7 @@ extension UIScreen {
         
         var diaryCollectionViewCellSize: CGSize {
             switch self {
-			default: return CGSize(width: (UIScreen.main.bounds.size.width-60)/2, height: ((UIScreen.main.bounds.size.width-60)/2)*1.151515)
+			default: return CGSize(width: (UIScreen.main.bounds.size.width-60)/2, height: ((UIScreen.main.bounds.size.width-60)/2)*1.2121)
             }
         }
         
@@ -309,7 +309,19 @@ extension UIScreen {
         
         var pageToolButtonSize: CGSize {
             switch self {
-            default: return CGSize(width: 30, height: 30)
+            default: return CGSize(width: 28, height: 28)
+            }
+        }
+        
+        var pagePhotoToolButtonSize: CGSize {
+            switch self {
+            default: return CGSize(width: 34, height: 28)
+            }
+        }
+        
+        var pageDocsToolButtonSize: CGSize {
+            switch self {
+            default: return CGSize(width: 26, height: 28)
             }
         }
         
@@ -485,7 +497,7 @@ extension UIScreen {
         /// 20
         var myPageVerticalPadding: CGFloat {
             switch self {
-            default: return 20
+            default: return 40
             }
         }
         
@@ -512,6 +524,12 @@ extension UIScreen {
         var myPageVerticalSpacing3: CGFloat {
             switch self {
             default: return 50
+            }
+        }
+        /// 30
+        var myPageVerticalSpacing4: CGFloat {
+            switch self {
+            default: return 30
             }
         }
         /// 62*62

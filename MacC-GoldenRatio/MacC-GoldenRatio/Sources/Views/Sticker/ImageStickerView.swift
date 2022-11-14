@@ -4,10 +4,12 @@
 //
 //  Created by 김상현 on 2022/10/05.
 //
-
+import RxCocoa
+import RxSwift
 import UIKit
 
 class ImageStickerView: StickerView {
+    
     private let imageView: UIImageView = {
         let imageView = UIImageView(frame: CGRect(origin: .zero, size: UIScreen.getDevice().stickerDefaultSize))
         imageView.contentMode = .scaleAspectFit
@@ -16,14 +18,20 @@ class ImageStickerView: StickerView {
     }()
     
     /// StickerView를 새로 만듭니다.
-    init(image: UIImage, diaryUUID: String) {
+    init(image: UIImage, diaryUUID: String, appearPoint: CGPoint) {
         super.init(frame: imageView.frame)
 
-        upLoadImage(image: image, path: "Diary/" + diaryUUID.description)
-        DispatchQueue.main.async {
-            self.initializeStickerViewData(itemType: .image)
-            super.setupContentView(content: self.imageView)
-            super.setupDefaultAttributes()
+        self.configureNewStickerView()
+        self.upLoadImage(image: image, path: "Diary/" + diaryUUID.description)
+        
+        Task {
+            self.stickerViewData = await StickerViewData(itemType: .image, contents: [""], appearPoint: appearPoint, defaultSize: imageView.frame.size)
+            await self.configureStickerViewData()
+            
+            DispatchQueue.main.async {
+                super.setupContentView(content: self.imageView)
+                super.setupDefaultAttributes()
+            }
         }
     }
     
@@ -31,12 +39,15 @@ class ImageStickerView: StickerView {
     init(item: Item) {
         super.init(frame: CGRect())
 
-        DispatchQueue.main.async{
-            self.stickerViewData = StickerViewData(item: item)
-            self.configureStickerViewData()
-            self.configureImageView()
-            super.setupContentView(content: self.imageView)
-            super.setupDefaultAttributes()
+        Task {
+            self.stickerViewData = await StickerViewData(item: item)
+            await self.configureStickerViewData()
+            await self.configureImageView()
+            
+            DispatchQueue.main.async {
+                super.setupContentView(content: self.imageView)
+                super.setupDefaultAttributes()
+            }
         }
     }
     
@@ -44,19 +55,36 @@ class ImageStickerView: StickerView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func configureImageView() {
-        guard let imageUrl = super.stickerViewData.item.contents.first else { return }
+    override func configureNewStickerView() {
+        super.configureNewStickerView()
+    }
+    
+    private func configureImageView() async {
         
-        let image = ImageManager.shared.searchImage(urlString: imageUrl)
-        
-        switch image {
-        case nil:
-            downLoadImage(imageUrl: imageUrl)
-            return
-        default:
-            self.imageView.image = image
-            return
-        }
+        self.stickerViewData?.contentsObservable
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: {
+                guard let imageUrl = $0.first else { return }
+                
+                guard imageUrl.verifyUrl() else {
+                    self.removeFromSuperview()
+                    print("wrongURL")
+                    return
+                }
+                
+                let image = ImageManager.shared.searchImage(urlString: imageUrl)
+                
+                switch image {
+                case nil:
+                    self.downLoadImage(imageUrl: imageUrl)
+                    return
+                default:
+                    self.imageView.image = image
+                    return
+                }
+            })
+            .disposed(by: self.disposeBag)
+    
     }
     
     private func downLoadImage(imageUrl: String) {
@@ -69,10 +97,13 @@ class ImageStickerView: StickerView {
     
     private func upLoadImage(image: UIImage, path: String) {
         FirebaseStorageManager.uploadImage(image: image, pathRoot: path) { url in
-            self.imageView.image = image
+            DispatchQueue.main.async {
+                self.imageView.image = image
+            }
             guard let url = url else { return }
             ImageManager.shared.cacheImage(urlString: url.absoluteString, image: image)
-            self.stickerViewData.updateContents(contents: [url.absoluteString])
+
+            self.stickerViewData?.updateContents(contents: [url.absoluteString])
         }
     }
 

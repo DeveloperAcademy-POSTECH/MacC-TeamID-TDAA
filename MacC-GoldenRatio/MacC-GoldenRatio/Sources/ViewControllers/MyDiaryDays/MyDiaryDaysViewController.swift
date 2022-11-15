@@ -248,17 +248,8 @@ class MyDiaryDaysViewController: UIViewController {
         
         vc.configureSegmentedControl(titles: titles)
         
-        if #available(iOS 15.0, *) {
-            vc.modalPresentationStyle = .pageSheet
-            if let sheet = vc.sheetPresentationController {
-                sheet.detents = [.medium(), .large()]
-                sheet.delegate = self
-                sheet.prefersGrabberVisible = true
-            }
-        } else {
-            vc.modalPresentationStyle = .custom
-            vc.transitioningDelegate = self
-        }
+		vc.modalPresentationStyle = .custom
+		vc.transitioningDelegate = self
         vc.view.backgroundColor = .white
         
         self.present(vc, animated: true)

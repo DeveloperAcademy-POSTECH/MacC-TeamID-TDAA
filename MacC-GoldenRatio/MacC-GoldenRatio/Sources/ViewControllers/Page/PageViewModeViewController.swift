@@ -19,6 +19,8 @@ class PageViewModeViewController: UIViewController {
     
     private var source: RxCollectionViewSectionedReloadDataSource<PageSection>!
 
+    private var completion: ((Diary) -> Void)!
+    
     private lazy var pageCollectionView: UICollectionView = {
         let collectionViewFlowLayout = UICollectionViewFlowLayout()
         collectionViewFlowLayout.minimumInteritemSpacing = 1
@@ -46,8 +48,9 @@ class PageViewModeViewController: UIViewController {
     }()
     
     // MARK: init
-    init(diary: Diary, selectedDayIndex: Int) async {
+    init(diary: Diary, selectedDayIndex: Int, completion: @escaping (Diary) -> Void) async {
         super.init(nibName: nil, bundle: nil)
+        self.completion = completion
         self.pageViewModel = await PageViewModel(diary: diary, selectedDayIndex: selectedDayIndex)
     }
     
@@ -166,7 +169,13 @@ class PageViewModeViewController: UIViewController {
     }
     
     @objc private func onTapNavigationBack() {
-        self.navigationController?.popViewController(animated: true)
+        self.pageViewModel.diaryObservable
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: {
+                self.completion($0)
+                self.navigationController?.popViewController(animated: true)
+            })
+            .disposed(by: self.pageViewModel.disposeBag)
     }
     
     @objc private func onTapNavigationMenu() {

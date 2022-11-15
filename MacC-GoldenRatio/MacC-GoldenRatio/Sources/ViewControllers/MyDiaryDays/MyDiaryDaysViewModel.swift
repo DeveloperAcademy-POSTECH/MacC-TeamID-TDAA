@@ -41,7 +41,7 @@ class MyDiaryDaysViewModel {
     func updateModel() {
         self.titleLabelText.accept(self.diaryConfigViewModel.title ?? "default")
         Task {
-            try await self.myDiaryDaysModel.updateDiaryData()
+            try await self.myDiaryDaysModel.fetchDiaryDataObservable()
                 .subscribe(onNext: { diary in
                     let array = self.diarydaysCollectionViewModel.arrayToDays(model: self.myDiaryDaysModel)
                     self.diarydaysCollectionViewModel.cellData.onNext(array)

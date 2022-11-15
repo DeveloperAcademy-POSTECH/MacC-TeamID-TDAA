@@ -50,7 +50,7 @@ class CalendarPickerHeaderView: UIView {
     private lazy var dateFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
         dateFormatter.calendar = Calendar(identifier: .gregorian)
-        dateFormatter.locale = Locale.autoupdatingCurrent
+        dateFormatter.locale = Locale(identifier: "ko")
         dateFormatter.setLocalizedDateFormatFromTemplate("MMMM y")
         return dateFormatter
     }()

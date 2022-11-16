@@ -21,6 +21,14 @@ class CalendarPickerHeaderView: UIView {
         return label
     }()
     
+    lazy var monthPickerButton: UIButton = {
+        let button = UIButton()
+        let imageConfig = UIImage.SymbolConfiguration(pointSize: 14, weight: .semibold, scale: .default)
+        button.setImage(UIImage(systemName: "chevron.right", withConfiguration: imageConfig), for: .normal)
+        button.tintColor = .sandbrownColor
+        return button
+    }()
+    
     lazy var previousMonthButton: UIButton = {
         let button = UIButton()
         let imageConfig = UIImage.SymbolConfiguration(pointSize: 22, weight: .semibold, scale: .default)
@@ -80,7 +88,7 @@ class CalendarPickerHeaderView: UIView {
         layer.cornerCurve = .continuous
         layer.cornerRadius = 15
 
-        [monthLabel, previousMonthButton, nextMonthButton, dayOfWeekStackView].forEach {
+        [monthLabel, monthPickerButton, previousMonthButton, nextMonthButton, dayOfWeekStackView].forEach {
             self.addSubview($0)
         }
         
@@ -126,6 +134,12 @@ class CalendarPickerHeaderView: UIView {
         monthLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(16)
             $0.leading.equalToSuperview().inset(16)
+        }
+        
+        monthPickerButton.snp.makeConstraints {
+            $0.leading.equalTo(monthLabel.snp.trailing)
+            $0.centerY.equalTo(monthLabel)
+            $0.width.height.equalTo(20)
         }
         
         previousMonthButton.snp.makeConstraints {

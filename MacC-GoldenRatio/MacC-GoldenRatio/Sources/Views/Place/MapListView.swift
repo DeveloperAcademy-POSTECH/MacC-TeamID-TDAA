@@ -39,6 +39,7 @@ class MapListView: UICollectionView {
 			.disposed(by: disposeBag)
 		viewModel.mapCellData
 			.map {
+				self.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
 				return selectedLocation != nil ? model.changeIndex($0, selectedLocation: selectedLocation!) : $0
 			}
 			.bind(to: self.rx.items(cellIdentifier: "MapListCell", cellType: MapListCell.self)) { index, data, cell in

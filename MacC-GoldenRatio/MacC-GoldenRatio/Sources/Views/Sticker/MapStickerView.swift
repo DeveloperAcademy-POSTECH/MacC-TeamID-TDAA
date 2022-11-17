@@ -69,10 +69,10 @@ class MapStickerView: StickerView {
             self.setLocationView(appearPoint: appearPoint)
             self.stickerViewData?.updateUIItem(frame: self.frame, bounds: self.bounds, transform: self.transform)
 
-            DispatchQueue.main.async {
-                super.setupContentView(content: self.locationView.convertViewToImageView())
-                super.setupDefaultAttributes()
+            self.locationView.convertViewToImageView {
+                super.setupContentView(content: $0)
             }
+            super.setupDefaultAttributes()
         }
     }
     
@@ -86,10 +86,10 @@ class MapStickerView: StickerView {
 
             self.setLocationView(appearPoint: nil)
             
-            DispatchQueue.main.async {
-                super.setupContentView(content: self.locationView.convertViewToImageView())
-                super.setupDefaultAttributes()
+            self.locationView.convertViewToImageView {
+                super.setupContentView(content: $0)
             }
+            super.setupDefaultAttributes()
         }
     }
     
@@ -107,6 +107,7 @@ class MapStickerView: StickerView {
         return itemContents
     }
     
+    // 새로 추가된 지도스티커의 경우 초기 생성 좌표 필요.
     private func setLocationView(appearPoint: CGPoint?) {
         self.stickerViewData?.contentsObservable
             .observe(on: MainScheduler.instance)
@@ -126,13 +127,13 @@ class MapStickerView: StickerView {
                 self.locationAddressLabel.frame = CGRect(origin: .init(x: 55, y: self.locationNameLabel.frame.maxY + 4), size: self.locationAddressLabel.intrinsicContentSize)
                 
                 let width = (self.locationNameLabel.frame.width < self.locationAddressLabel.frame.width) ? self.locationAddressLabel.frame.width : self.locationNameLabel.frame.width
-                self.locationView.frame = CGRect(origin: .zero, size: .init(width: 70 + width, height: 60))
-
-                self.frame.size = self.locationView.frame.size
+                self.locationView.bounds = CGRect(origin: .zero, size: .init(width: 70 + width, height: 60))
                 
                 if let appearPoint = appearPoint {
-                    self.frame.origin.x = appearPoint.x - ( self.locationView.frame.width / 2 - 50 )
-                    self.frame.origin.y = appearPoint.y - ( self.locationView.frame.height / 2 - 50 )
+                    self.frame.size = self.locationView.bounds.size
+                    
+                    self.frame.origin.x = appearPoint.x - ( self.locationView.bounds.width / 2 - 50 )
+                    self.frame.origin.y = appearPoint.y - ( self.locationView.bounds.height / 2 - 50 )
                 }
             })
             .disposed(by: self.disposeBag)

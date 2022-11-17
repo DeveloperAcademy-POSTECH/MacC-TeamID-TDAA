@@ -154,13 +154,11 @@ class PageViewController: UIViewController {
                 return stickerViews
             }
             .subscribe(onNext: { stickerViews in
-                
                 self.backgroundImageView.subviews.forEach {
                     $0.removeFromSuperview()
                 }
                 
                 stickerViews.forEach { stickerView in
-                    
                     stickerView.delegate = self
                     self.backgroundImageView.addSubview(stickerView)
                 }
@@ -202,7 +200,7 @@ class PageViewController: UIViewController {
         
         self.navigationController?.navigationBar.barTintColor = UIColor.appBackgroundColor
         
-        self.pageViewModel.selectedPageIndex
+        self.pageViewModel.selectedPageIndexSubject
             .observe(on: MainScheduler.instance)
             .map{
                 ($0.0 + 1).description + "일차"
@@ -346,6 +344,7 @@ extension PageViewController {
     }
 
     @objc private func onTapAddNextPageMenu() {
+        self.pageViewModel.updateCurrentPageDataToDiaryModel(backgroundView: self.backgroundImageView)
         self.pageViewModel.addNewPage(to: .nextToCurrentPage)
     }
     
@@ -356,11 +355,11 @@ extension PageViewController {
     @objc private func swipeAction(_ sender: UISwipeGestureRecognizer) {
         switch sender.direction {
         case .left:
-            self.updateStickerViewsToDiaryModel()
+            self.pageViewModel.updateCurrentPageDataToDiaryModel(backgroundView: self.backgroundImageView)
             self.pageViewModel.moveToNextPage()
             
         case .right:
-            self.updateStickerViewsToDiaryModel()
+            self.pageViewModel.updateCurrentPageDataToDiaryModel(backgroundView: self.backgroundImageView)
             self.pageViewModel.moveToPreviousPage()
             
         default:
@@ -374,31 +373,8 @@ extension PageViewController {
     }
 
     @objc private func onTapNavigationComplete() {
-        self.updateStickerViewsToDiaryModel()
+        self.pageViewModel.updateCurrentPageDataToDiaryModel(backgroundView: self.backgroundImageView)
         self.navigationController?.popViewController(animated: true)
-    }
-    
-    private func updateStickerViewsToDiaryModel() {
-        
-        Observable.just(self.backgroundImageView.subviews)
-            .observe(on: MainScheduler.instance)
-            .take(1)
-            .map {
-                var stickerViews: [StickerView] = []
-                
-                $0.forEach {
-                    if let stickerView = $0 as? StickerView {
-                        stickerViews.append(stickerView)
-                    }
-                }
-                
-                return stickerViews
-            }
-            .subscribe(onNext: { stickerViews in
-                self.pageViewModel.updateCurrentPageDataToDiaryModel(stickerViews: stickerViews)
-            })
-            .disposed(by: self.pageViewModel.disposeBag)
-        
     }
 }
 

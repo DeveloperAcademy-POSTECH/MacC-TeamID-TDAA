@@ -72,7 +72,7 @@ class PageViewModeViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.pageViewModel.selectedPageIndex
+        self.pageViewModel.selectedPageIndexSubject
             .observe(on: MainScheduler.instance)
             .take(1)
             .subscribe(onNext: {
@@ -125,7 +125,7 @@ class PageViewModeViewController: UIViewController {
         
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.navigationTitleFont, NSAttributedString.Key.foregroundColor:UIColor.black]
         
-        self.pageViewModel.selectedPageIndex
+        self.pageViewModel.selectedPageIndexSubject
             .observe(on: MainScheduler.instance)
             .map{
                 ($0.0 + 1).description + "일차"
@@ -193,7 +193,7 @@ class PageViewModeViewController: UIViewController {
 
     @objc private func onTapShareCurrentPage() {
         
-        self.pageViewModel.selectedPageIndex
+        self.pageViewModel.selectedPageIndexSubject
             .take(1)
             .subscribe(onNext: { targetIndex in
 
@@ -226,13 +226,13 @@ extension PageViewModeViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         
         guard let visibleCellIndex = collectionView.indexPathsForVisibleItems.first else { return }
-        self.pageViewModel.selectedPageIndex.onNext((visibleCellIndex.section, visibleCellIndex.item))
+        self.pageViewModel.selectedPageIndexSubject.onNext((visibleCellIndex.section, visibleCellIndex.item))
     }
     
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         
         guard let visibleCellIndex = collectionView.indexPathsForVisibleItems.first else { return }
-        self.pageViewModel.selectedPageIndex.onNext((visibleCellIndex.section, visibleCellIndex.item))
+        self.pageViewModel.selectedPageIndexSubject.onNext((visibleCellIndex.section, visibleCellIndex.item))
 
     }
     

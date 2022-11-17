@@ -50,11 +50,11 @@ class MapListViewController: UIViewController {
 	func bind(_ viewModel: MapViewModel, _ selectedLocation: Location?) {
 		mapListView.bind(viewModel, MapModel(), selectedLocation)
 		
-		mapListView.rx.itemSelected
-			.subscribe(onNext: { indexPath in
-				print(indexPath.row)
+		mapListView.rx.modelSelected(Location.self)
+			.subscribe(onNext: { location in
+				NotificationCenter.default.post(name: .mapListTapped, object: nil, userInfo: ["location": location])
 			})
-			.disposed(by: self.disposeBag)
+			.disposed(by: disposeBag)
 	}
 	
 	func layout() {

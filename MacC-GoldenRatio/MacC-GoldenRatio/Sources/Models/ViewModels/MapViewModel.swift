@@ -15,8 +15,8 @@ struct MapViewModel {
 
 	var mapData = BehaviorRelay<[MapData]>(value: [])
 	var mapAnnotations = BehaviorRelay<[[CustomAnnotation]]>(value: [])
-	var selectDay = BehaviorRelay<Int>(value: 0)
 	var mapCellData = BehaviorRelay<[Location]>(value: [])
+	var selectDay = BehaviorRelay<Int>(value: 0)
 
 	init(_ model: MapModel = MapModel()) {
 		mapDiaryData

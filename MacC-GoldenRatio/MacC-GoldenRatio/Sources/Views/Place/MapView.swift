@@ -17,15 +17,20 @@ class MapView: UIView, MKMapViewDelegate, CLLocationManagerDelegate {
 	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
-		map.register(CustomAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
-		map.delegate = self
-		locationManager.requestWhenInUseAuthorization()
-		locationManager.delegate = self
+		setup()
 		layout()
 	}
 	
 	required init?(coder: NSCoder) {
 		fatalError()
+	}
+	
+	func setup() {
+		map.register(CustomAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
+		map.delegate = self
+		locationManager.requestWhenInUseAuthorization()
+		locationManager.delegate = self
+		NotificationCenter.default.addObserver(self, selector: #selector(mapListTapped(notification:)), name: .mapListTapped, object: nil)
 	}
 	
 	func bind(_ viewModel: MapViewModel) {
@@ -37,6 +42,15 @@ class MapView: UIView, MKMapViewDelegate, CLLocationManagerDelegate {
 				data.forEach { annotations in
 					self.map.addAnnotations(annotations)
 				}
+			})
+			.disposed(by: disposeBag)
+		
+		viewModel.mapCellData
+			.asObservable()
+			.subscribe(onNext: { data in
+				let location = data.first?.locationCoordinate ?? [37.56667, 126.97806]
+				let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: location[0], longitude: location[1]), latitudinalMeters: CLLocationDistance(exactly: 15000) ?? 0, longitudinalMeters: CLLocationDistance(exactly: 15000) ?? 0)
+				self.map.setRegion(self.map.regionThatFits(region), animated: true)
 			})
 			.disposed(by: disposeBag)
 		
@@ -90,6 +104,20 @@ class MapView: UIView, MKMapViewDelegate, CLLocationManagerDelegate {
 		guard let view = view.annotation as? CustomAnnotation else {
 			return
 		}
+		
 		NotificationCenter.default.post(name: .mapAnnotationTapped, object: nil, userInfo: ["day": view.day, "selectedLocation": Location(locationName: view.title ?? "", locationAddress: view.address, locationCoordinate: [view.coordinate.latitude, view.coordinate.longitude], locationCategory: view.category)])
+		
+		let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: view.coordinate.latitude, longitude: view.coordinate.longitude), latitudinalMeters: CLLocationDistance(exactly: 15000) ?? 0, longitudinalMeters: CLLocationDistance(exactly: 15000) ?? 0)
+		self.map.setRegion(self.map.regionThatFits(region), animated: true)
+	}
+	
+	@objc private func mapListTapped(notification: NSNotification) {
+		guard let selectedLocation = notification.userInfo?["location"] as? Location else {
+			return
+		}
+		
+		let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: selectedLocation.locationCoordinate[0], longitude: selectedLocation.locationCoordinate[1]), latitudinalMeters: CLLocationDistance(exactly: 15000) ?? 0, longitudinalMeters: CLLocationDistance(exactly: 15000) ?? 0)
+		
+		self.map.setRegion(self.map.regionThatFits(region), animated: true)
 	}
 }

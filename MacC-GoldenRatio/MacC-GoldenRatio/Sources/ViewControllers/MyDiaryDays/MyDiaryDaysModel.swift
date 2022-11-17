@@ -19,6 +19,10 @@ class MyDiaryDaysModel {
         self.diary = diary
     }
     
+    func fetchDiaryDataObservable() async throws -> Observable<Diary> {
+        return Observable.just(diary)
+    }
+    
     func updateDiaryData() async throws -> Observable<Diary> {
         let query = db.collection("Diary").whereField("diaryUUID", isEqualTo: self.diary.diaryUUID)
         let documents = try await query.getDocuments()

@@ -11,4 +11,6 @@ extension Notification.Name {
 	static let changeAddButtonImage = Notification.Name("changeAddButtonImage")
 	static let mapAnnotationTapped = Notification.Name("mapAnnotationTapped")
 	static let paging = Notification.Name("paging")
+	static let mapListSwipeLeft = Notification.Name("mapListSwipeLeft")
+	static let mapListSwipeRight = Notification.Name("mapListSwipeRight")
 }

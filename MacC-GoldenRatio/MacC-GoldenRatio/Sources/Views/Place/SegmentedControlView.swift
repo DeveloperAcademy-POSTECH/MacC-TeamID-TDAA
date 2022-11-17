@@ -39,6 +39,8 @@ class SegmentedControlView: UIView, SegmentedControlViewDelegate {
 	override init(frame: CGRect) {
 		super.init(frame: frame)
 		configure()
+		NotificationCenter.default.addObserver(self, selector: #selector(mapListSwipeLeft), name: .mapListSwipeLeft, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(mapListSwipeRight), name: .mapListSwipeRight, object: nil)
 	}
 	
 	required init?(coder: NSCoder) {
@@ -139,6 +141,34 @@ class SegmentedControlView: UIView, SegmentedControlViewDelegate {
 			titleLabels[index].textColor = config.selectedLabelColor
 			selectedIndex = index
 			delegate?.segmentedControl(didChange: selectedIndex)
+		}
+	}
+	
+	@objc private func mapListSwipeLeft() {
+		if titleLabels.count > selectedIndex+1 {
+			lineViews[selectedIndex].backgroundColor = config.unselectedLabelColor
+			titleLabels[selectedIndex].textColor = config.unselectedLabelColor
+			lineViews[selectedIndex+1].backgroundColor = config.selectedLineColor
+			titleLabels[selectedIndex+1].textColor = config.selectedLabelColor
+			selectedIndex = selectedIndex+1
+			delegate?.segmentedControl(didChange: selectedIndex)
+			if titleLabels.count-1 > selectedIndex+1 {
+				self.scrollView.setContentOffset(CGPoint(x: Int(UIScreen.main.bounds.size.width)/3*selectedIndex, y: 0), animated: true)
+			}
+		}
+	}
+	
+	@objc private func mapListSwipeRight() {
+		if 0 <= selectedIndex-1 {
+			lineViews[selectedIndex].backgroundColor = config.unselectedLabelColor
+			titleLabels[selectedIndex].textColor = config.unselectedLabelColor
+			lineViews[selectedIndex-1].backgroundColor = config.selectedLineColor
+			titleLabels[selectedIndex-1].textColor = config.selectedLabelColor
+			selectedIndex = selectedIndex-1
+			delegate?.segmentedControl(didChange: selectedIndex)
+			if titleLabels.count-1 > selectedIndex+1 {
+				self.scrollView.setContentOffset(CGPoint(x: Int(UIScreen.main.bounds.size.width)/3*selectedIndex, y: 0), animated: true)
+			}
 		}
 	}
 }

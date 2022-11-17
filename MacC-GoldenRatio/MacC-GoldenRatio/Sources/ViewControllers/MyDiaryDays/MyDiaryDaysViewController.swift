@@ -240,8 +240,13 @@ class MyDiaryDaysViewController: UIViewController {
         guard let selectedLocation = notification.userInfo?["selectedLocation"] as? Location else {
             return
         }
+		
+		Observable.just(day)
+			.bind(to: viewModel!.mapViewModel.selectDay)
+			.disposed(by: disposeBag)
         
-        let vc = MapListViewController(viewMdoel: viewModel!.mapViewModel, day: day, selectedLocation: selectedLocation)
+        let vc = MapListViewController(viewMdoel: viewModel!.mapViewModel, selectedLocation: selectedLocation)
+		vc.bind(viewModel!.mapViewModel, selectedLocation)
         let titles = viewModel!.mapViewModel.mapData
             .value
             .map { data in

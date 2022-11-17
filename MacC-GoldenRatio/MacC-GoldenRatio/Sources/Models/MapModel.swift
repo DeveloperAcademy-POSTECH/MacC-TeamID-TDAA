@@ -53,11 +53,17 @@ struct MapModel {
 	}
     
     func changeIndex(_ locations: [Location], selectedLocation: Location) -> [Location] {
+		var isEqual = false
         var resultLocations = locations
             .filter {
+				if $0.locationAddress == selectedLocation.locationAddress {
+					isEqual = true
+				}
                 return !($0.locationAddress == selectedLocation.locationAddress)
             }
-        resultLocations.insert(selectedLocation, at: 0)
+		if isEqual {
+			resultLocations.insert(selectedLocation, at: 0)
+		}
         return resultLocations
     }
 }

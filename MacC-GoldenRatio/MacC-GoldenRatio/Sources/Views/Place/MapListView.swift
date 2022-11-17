@@ -18,9 +18,11 @@ class MapListView: UICollectionView {
 		super.init(frame: frame, collectionViewLayout: layout)
 		let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture(_:)))
 		swipeLeft.direction = UISwipeGestureRecognizer.Direction.left
+		swipeLeft.cancelsTouchesInView = false
 		self.addGestureRecognizer(swipeLeft)
 		let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture(_:)))
 		swipeRight.direction = UISwipeGestureRecognizer.Direction.right
+		swipeRight.cancelsTouchesInView = false
 		self.addGestureRecognizer(swipeRight)
 		self.collectionViewLayout = layout
 		self.showsVerticalScrollIndicator = false
@@ -32,13 +34,10 @@ class MapListView: UICollectionView {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
-	func bind(_ viewModel: MapViewModel,_ model: MapModel,_ day: Int,_ selectedLocation: Location?) {
+	func bind(_ viewModel: MapViewModel, _ model: MapModel, _ selectedLocation: Location?) {
 		self.rx.setDelegate(self)
 			.disposed(by: disposeBag)
-		viewModel.mapData
-			.map {
-				return model.convertMapDatasToLocations($0, day: day).locations
-			}
+		viewModel.mapCellData
 			.map {
 				return selectedLocation != nil ? model.changeIndex($0, selectedLocation: selectedLocation!) : $0
 			}

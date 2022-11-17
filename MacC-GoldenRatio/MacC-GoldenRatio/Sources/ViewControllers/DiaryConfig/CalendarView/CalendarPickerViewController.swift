@@ -219,7 +219,7 @@ class CalendarPickerViewController: UIViewController {
             self.footerView.buttonLabel = "확인"
             self.footerView.selectButton.isEnabled = true
             UIView.animate(withDuration: 0.2) {
-                var angle = CGAffineTransform(rotationAngle: .pi/2)
+                let angle = CGAffineTransform(rotationAngle: .pi/2)
                 self.headerView.monthPickerButton.imageView?.transform = angle
                 self.monthPicker.alpha = 1
             }

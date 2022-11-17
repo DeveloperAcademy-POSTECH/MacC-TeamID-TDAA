@@ -68,6 +68,7 @@
 		CC6C7F23291D2A6300B88888 /* DiaryDayModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6C7F22291D2A6300B88888 /* DiaryDayModel.swift */; };
 		CC9F969628F7E0B100E4B68A /* MyDiaryPagesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC9F969528F7E0B100E4B68A /* MyDiaryPagesViewModel.swift */; };
 		CCBF68932924D8A800AD2B63 /* CalendarYearPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCBF68922924D8A800AD2B63 /* CalendarYearPickerView.swift */; };
+		CCBF689529260C7700AD2B63 /* DiaryDaysSegmentedControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCBF689429260C7700AD2B63 /* DiaryDaysSegmentedControlView.swift */; };
 		CCD6D58C29135A7300013367 /* DiaryConfigCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD6D58B29135A7300013367 /* DiaryConfigCellViewModel.swift */; };
 		CCD6D58E2914F6C600013367 /* DiaryConfigModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD6D58D2914F6C600013367 /* DiaryConfigModel.swift */; };
 		CCE1806F28E5919B00AF06DB /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE1806E28E5919B00AF06DB /* SignInViewController.swift */; };
@@ -227,6 +228,7 @@
 		CC6C7F22291D2A6300B88888 /* DiaryDayModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryDayModel.swift; sourceTree = "<group>"; };
 		CC9F969528F7E0B100E4B68A /* MyDiaryPagesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDiaryPagesViewModel.swift; sourceTree = "<group>"; };
 		CCBF68922924D8A800AD2B63 /* CalendarYearPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarYearPickerView.swift; sourceTree = "<group>"; };
+		CCBF689429260C7700AD2B63 /* DiaryDaysSegmentedControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryDaysSegmentedControlView.swift; sourceTree = "<group>"; };
 		CCD6D58B29135A7300013367 /* DiaryConfigCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryConfigCellViewModel.swift; sourceTree = "<group>"; };
 		CCD6D58D2914F6C600013367 /* DiaryConfigModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryConfigModel.swift; sourceTree = "<group>"; };
 		CCE1806E28E5919B00AF06DB /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
@@ -410,6 +412,7 @@
 				B9901C06291C2A2C00AF92DE /* MyDiaryDaysViewModel.swift */,
 				B9901C08291C2A3800AF92DE /* MyDiaryDaysModel.swift */,
 				B9901C0C291CA4B900AF92DE /* DiaryDaysCollectionView */,
+				CCBF689429260C7700AD2B63 /* DiaryDaysSegmentedControlView.swift */,
 			);
 			path = MyDiaryDays;
 			sourceTree = "<group>";
@@ -933,6 +936,7 @@
 				E2C27502290D62EB00319885 /* DiaryCollectionViewModel.swift in Sources */,
 				0A5235B028F8510C00AC77AC /* UIFont+.swift in Sources */,
 				0A3ED14128F98956000D55D8 /* MyPageViewModel.swift in Sources */,
+				CCBF689529260C7700AD2B63 /* DiaryDaysSegmentedControlView.swift in Sources */,
 				CC3414082919310700A1FD17 /* DiaryColorCellViewModel.swift in Sources */,
 				CC6BD74428EBFA80001ED665 /* DiaryConfigViewController.swift in Sources */,
 				B9901C07291C2A2C00AF92DE /* MyDiaryDaysViewModel.swift in Sources */,

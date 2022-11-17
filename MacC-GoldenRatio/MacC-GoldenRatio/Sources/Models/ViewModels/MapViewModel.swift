@@ -14,11 +14,17 @@ struct MapViewModel {
 	let mapDiaryData = PublishSubject<Diary>()
 
 	var mapData = BehaviorRelay<[MapData]>(value: [])
+	var mapAnnotations = BehaviorRelay<[[CustomAnnotation]]>(value: [])
 
 	init(_ model: MapModel = MapModel()) {
 		mapDiaryData
 			.map(model.convertDiaryToMapData)
 			.bind(to: mapData)
+			.disposed(by: disposeBag)
+		
+		mapData
+			.map(model.convertMapDatasToAnnotations)
+			.bind(to: mapAnnotations)
 			.disposed(by: disposeBag)
 	}
 }

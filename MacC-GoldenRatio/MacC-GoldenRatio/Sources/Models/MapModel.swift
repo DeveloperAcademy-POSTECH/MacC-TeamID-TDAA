@@ -4,6 +4,8 @@
 //
 //  Created by woo0 on 2022/11/11.
 //
+
+import CoreLocation
 struct MapModel {
     func convertDiaryToMapData(_ diary: Diary) -> [MapData] {
         var resultData = [MapData]()
@@ -32,6 +34,23 @@ struct MapModel {
             .filter { $0.day == day }
             .first ?? MapData(day: 0, diaryLocation: Location(locationName: "", locationAddress: "", locationCoordinate: [], locationCategory: ""), locations: [])
     }
+	
+	func convertMapDatasToAnnotations(_ mapDatas: [MapData]) -> [[CustomAnnotation]] {
+		return mapDatas
+			.map { data in
+				var annotations = [CustomAnnotation]()
+				data.locations.forEach { location in
+					if data.day != 10 {
+						let annotation = CustomAnnotation(coordinate: CLLocationCoordinate2D(latitude: location.locationCoordinate[0], longitude: location.locationCoordinate[1]), title: location.locationName, address: location.locationAddress, day: data.day, iconImage: "pin\(data.day%10)", category: location.locationCategory ?? "")
+						annotations.append(annotation)
+					} else {
+						let annotation = CustomAnnotation(coordinate: CLLocationCoordinate2D(latitude: location.locationCoordinate[0], longitude: location.locationCoordinate[1]), title: location.locationName, address: location.locationAddress, day: data.day, iconImage: "pin10", category: location.locationCategory ?? "")
+						annotations.append(annotation)
+					}
+				}
+				return annotations
+			}
+	}
     
     func changeIndex(_ locations: [Location], selectedLocation: Location) -> [Location] {
         var resultLocations = locations

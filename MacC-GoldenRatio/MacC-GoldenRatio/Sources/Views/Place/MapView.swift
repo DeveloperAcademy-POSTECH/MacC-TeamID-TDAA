@@ -31,21 +31,26 @@ class MapView: UIView, MKMapViewDelegate, CLLocationManagerDelegate {
 	func bind(_ viewModel: MapViewModel) {
 		let allAnnotations = self.map.annotations
 		self.map.removeAnnotations(allAnnotations)
-		viewModel.mapData
-			.value
-			.forEach { data in
-				let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: data.diaryLocation.locationCoordinate[0], longitude: data.diaryLocation.locationCoordinate[1]), latitudinalMeters: CLLocationDistance(exactly: 15000) ?? 0, longitudinalMeters: CLLocationDistance(exactly: 15000) ?? 0)
-				self.map.setRegion(self.map.regionThatFits(region), animated: true)
-				data.locations.forEach { location in
-					if data.day != 10 {
-						let pin = CustomAnnotation(coordinate: CLLocationCoordinate2D(latitude: location.locationCoordinate[0], longitude: location.locationCoordinate[1]), title: location.locationName, address: location.locationAddress, day: data.day, iconImage: "pin\(data.day%10)", category: location.locationCategory ?? "")
-						map.addAnnotation(pin)
-					} else {
-						let pin = CustomAnnotation(coordinate: CLLocationCoordinate2D(latitude: location.locationCoordinate[0], longitude: location.locationCoordinate[1]), title: location.locationName, address: location.locationAddress, day: data.day, iconImage: "pin10", category: location.locationCategory ?? "")
-						map.addAnnotation(pin)
-					}
+//		viewModel.mapAnnotations
+//			.value
+//			.forEach { annotations in
+//				self.map.addAnnotations(annotations)
+//			}
+		
+		viewModel.mapAnnotations
+			.asObservable()
+			.subscribe(onNext: { data in
+				data.forEach { annotations in
+					self.map.addAnnotations(annotations)
 				}
-			}
+			})
+			.disposed(by: disposeBag)
+		
+		let locations = viewModel.mapData
+			.value.first?.diaryLocation
+		
+		let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: locations?.locationCoordinate[0] ?? 37.56667, longitude: locations?.locationCoordinate[1] ?? 126.97806), latitudinalMeters: CLLocationDistance(exactly: 15000) ?? 0, longitudinalMeters: CLLocationDistance(exactly: 15000) ?? 0)
+		self.map.setRegion(self.map.regionThatFits(region), animated: true)
 	}
 	
 	func layout() {

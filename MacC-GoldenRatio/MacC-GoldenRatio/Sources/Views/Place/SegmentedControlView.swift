@@ -155,6 +155,8 @@ class SegmentedControlView: UIView, SegmentedControlViewDelegate {
 			delegate?.segmentedControl(didChange: selectedIndex)
 			if titleLabels.count-1 > selectedIndex+1 {
 				self.scrollView.setContentOffset(CGPoint(x: Int(UIScreen.main.bounds.size.width)/3*selectedIndex, y: 0), animated: true)
+			} else if titleLabels.count == selectedIndex+1 {
+				self.scrollView.setContentOffset(CGPoint(x: Int(UIScreen.main.bounds.size.width)/3*(selectedIndex-2), y: 0), animated: true)
 			}
 		}
 	}

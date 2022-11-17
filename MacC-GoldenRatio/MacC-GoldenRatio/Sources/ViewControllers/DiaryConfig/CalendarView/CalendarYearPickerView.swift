@@ -28,9 +28,11 @@ class CalendarYearPickerView: UIPickerView {
     func setAvailableDate(date: Date) {
         let formatterYear = DateFormatter()
         formatterYear.dateFormat = "yyyy"
+        
+        let currentYear = formatterYear.string(from: Date())
         todayYear = formatterYear.string(from: date)
-            
-        for i in 1970...Int(todayYear)!+5 {
+        
+        for i in 1970...Int(currentYear)!+5 {
             availableYear.append(i)
         }
         

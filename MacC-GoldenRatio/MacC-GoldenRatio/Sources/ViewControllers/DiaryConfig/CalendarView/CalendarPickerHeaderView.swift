@@ -23,8 +23,11 @@ class CalendarPickerHeaderView: UIView {
     
     lazy var monthPickerButton: UIButton = {
         let button = UIButton()
-        let imageConfig = UIImage.SymbolConfiguration(pointSize: 14, weight: .semibold, scale: .default)
+        let imageConfig = UIImage.SymbolConfiguration(pointSize: 14, weight: .semibold, scale: .unspecified)
         button.setImage(UIImage(systemName: "chevron.right", withConfiguration: imageConfig), for: .normal)
+        button.imageView?.contentMode = .scaleAspectFit
+        button.contentHorizontalAlignment = .trailing
+        button.backgroundColor = .clear
         button.tintColor = .sandbrownColor
         return button
     }()
@@ -137,9 +140,10 @@ class CalendarPickerHeaderView: UIView {
         }
         
         monthPickerButton.snp.makeConstraints {
-            $0.leading.equalTo(monthLabel.snp.trailing)
+            $0.leading.equalTo(monthLabel)
             $0.centerY.equalTo(monthLabel)
-            $0.width.height.equalTo(20)
+            $0.height.equalTo(30)
+            $0.width.equalTo(monthLabel).multipliedBy(1.1)
         }
         
         previousMonthButton.snp.makeConstraints {

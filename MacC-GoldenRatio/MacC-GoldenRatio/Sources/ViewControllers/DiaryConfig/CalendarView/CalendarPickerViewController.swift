@@ -52,7 +52,7 @@ class CalendarPickerViewController: UIViewController {
             self.monthPicker.isHidden = true
             UIView.animate(withDuration: 0.2) {
                 let scale = CGAffineTransform(rotationAngle: 0)
-                self.headerView.monthPickerButton.transform = scale
+                self.headerView.monthPickerButton.imageView?.transform = scale
             }
             self.updateFooterButtonLabel(day: nil)
             self.collectionView.reloadData()
@@ -210,8 +210,8 @@ class CalendarPickerViewController: UIViewController {
             self.footerView.buttonLabel = "날짜를 선택하세요"
             self.footerView.selectButton.isEnabled = false
             UIView.animate(withDuration: 0.2) {
-                let scale = CGAffineTransform(rotationAngle: 0)
-                self.headerView.monthPickerButton.transform = scale
+                let angle = CGAffineTransform(rotationAngle: 0)
+                self.headerView.monthPickerButton.imageView?.transform = angle
                 self.monthPicker.alpha = 0
             }
         } else {
@@ -219,8 +219,8 @@ class CalendarPickerViewController: UIViewController {
             self.footerView.buttonLabel = "확인"
             self.footerView.selectButton.isEnabled = true
             UIView.animate(withDuration: 0.2) {
-                let scale = CGAffineTransform(rotationAngle: .pi/2)
-                self.headerView.monthPickerButton.transform = scale
+                var angle = CGAffineTransform(rotationAngle: .pi/2)
+                self.headerView.monthPickerButton.imageView?.transform = angle
                 self.monthPicker.alpha = 1
             }
         }

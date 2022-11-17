@@ -31,12 +31,6 @@ class MapView: UIView, MKMapViewDelegate, CLLocationManagerDelegate {
 	func bind(_ viewModel: MapViewModel) {
 		let allAnnotations = self.map.annotations
 		self.map.removeAnnotations(allAnnotations)
-//		viewModel.mapAnnotations
-//			.value
-//			.forEach { annotations in
-//				self.map.addAnnotations(annotations)
-//			}
-		
 		viewModel.mapAnnotations
 			.asObservable()
 			.subscribe(onNext: { data in

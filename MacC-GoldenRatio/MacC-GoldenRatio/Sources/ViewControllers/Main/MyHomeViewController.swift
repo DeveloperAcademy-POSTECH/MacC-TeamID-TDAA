@@ -31,7 +31,7 @@ final class MyHomeViewController: UIViewController {
 	}
 	
 	private func setupSubViews() {
-		self.view.backgroundColor = UIColor(named: "appBackgroundColor") ?? UIColor.white
+		self.view.backgroundColor = UIColor(named: "appBackgroundColor") ?? UIColor.clear
 
 		[collectionHeaderView, collectionView, addDiaryButton, profileButton].forEach { view.addSubview($0) }
         

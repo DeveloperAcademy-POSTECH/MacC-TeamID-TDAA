@@ -75,29 +75,23 @@ class MapView: UIView, MKMapViewDelegate, CLLocationManagerDelegate {
 		}
 		
 		var annotationView = self.map.dequeueReusableAnnotationView(withIdentifier: CustomAnnotationView.identifier)
+		annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: CustomAnnotationView.identifier)
+		annotationView?.canShowCallout = false
+		annotationView?.contentMode = .scaleAspectFit
 		
-		if annotationView == nil {
-			annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: CustomAnnotationView.identifier)
-			annotationView?.canShowCallout = false
-			annotationView?.contentMode = .scaleAspectFit
-			
-			let countLabel = UILabel()
-			countLabel.text = "\(annotation.day)"
-			countLabel.font = UIFont.mapLabelFont
-			countLabel.textColor = UIColor.darkgrayColor
-			countLabel.textAlignment = .center
-			
-			annotationView?.addSubview(countLabel)
-			
-			countLabel.snp.makeConstraints {
-				$0.center.equalToSuperview()
-			}
-			
-			annotationView?.image = UIImage(named: "\(annotation.iconImage)") ?? UIImage()
-			
-		} else {
-			annotationView?.annotation = annotation
+		let countLabel = UILabel()
+		countLabel.text = "\(annotation.day)"
+		countLabel.font = UIFont.mapLabelFont
+		countLabel.textColor = UIColor.darkgrayColor
+		countLabel.textAlignment = .center
+		
+		annotationView?.addSubview(countLabel)
+		
+		countLabel.snp.makeConstraints {
+			$0.center.equalToSuperview()
 		}
+		
+		annotationView?.image = UIImage(named: "\(annotation.iconImage)") ?? UIImage()
 		
 		return annotationView
 	}

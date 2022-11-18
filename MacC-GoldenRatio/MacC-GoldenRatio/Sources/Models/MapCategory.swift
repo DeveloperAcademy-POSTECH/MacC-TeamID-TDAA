@@ -12,7 +12,7 @@ struct Category {
 	let category: String
 }
 
-enum MapCategory -> String {
+enum MapCategory: String {
 	case airport = "MKPOICategoryAirport"
 	case amusementPark = "MKPOICategoryAmusementPark"
 	case aquarium = "MKPOICategoryAquarium"
@@ -53,4 +53,5 @@ enum MapCategory -> String {
 	case university = "MKPOICategoryUniversity"
 	case winery = "MKPOICategoryWinery"
 	case zoo = "MKPOICategoryZoo"
+	case def = ""
 }

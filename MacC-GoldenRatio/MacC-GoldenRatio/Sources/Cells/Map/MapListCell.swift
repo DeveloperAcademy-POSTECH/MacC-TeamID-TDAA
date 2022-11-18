@@ -45,30 +45,39 @@ class MapListCell: UICollectionViewCell {
 	
 	func setup(location: Location) {
 		[titleLabel, categoryImageView, categoryLabel, addressLabel, lineView].forEach { self.addSubview($0) }
-		titleLabel.text = location.locationName
-		titleLabel.snp.makeConstraints {
-			$0.top.leading.trailing.equalTo(self.safeAreaLayoutGuide)
-			$0.bottom.equalToSuperview().inset(80)
-		}
 		
 		let mapCategory = MapCategory(rawValue: location.locationCategory ?? "")
-		let category = getCategory(mapCategory)
+		let category = getCategory(mapCategory ?? MapCategory.def)
 		
 		categoryImageView.image = UIImage(named: category.imageName)
 		categoryImageView.snp.makeConstraints {
-			$0.top.bottom.leading.equalToSuperview()
+			$0.width.height.equalTo(80)
+			$0.top.equalToSuperview().inset(6)
+			$0.leading.equalToSuperview()
+		}
+		
+		titleLabel.text = location.locationName
+		titleLabel.snp.makeConstraints {
+			$0.height.equalTo(21)
+			$0.top.equalToSuperview().inset(11.5)
+			$0.trailing.equalTo(self.safeAreaLayoutGuide)
+			$0.leading.equalTo(categoryImageView.snp.trailing).offset(15)
 		}
 		
 		categoryLabel.text = category.category
 		categoryLabel.snp.makeConstraints {
-			$0.top.equalTo(titleLabel.snp.bottom).inset(3)
-			$0.leading.trailing.equalTo(self.safeAreaLayoutGuide)
+			$0.height.equalTo(13)
+			$0.top.equalTo(titleLabel.snp.bottom).offset(10)
+			$0.trailing.equalTo(self.safeAreaLayoutGuide)
+			$0.leading.equalTo(categoryImageView.snp.trailing).offset(15)
 		}
 		
 		addressLabel.text = location.locationAddress
 		addressLabel.snp.makeConstraints {
-			$0.leading.trailing.equalTo(self.safeAreaLayoutGuide)
-			$0.bottom.equalToSuperview().inset(20)
+			$0.height.equalTo(15)
+			$0.trailing.equalTo(self.safeAreaLayoutGuide)
+			$0.leading.equalTo(categoryImageView.snp.trailing).offset(15)
+			$0.bottom.equalToSuperview().inset(11.5)
 		}
 		
 		lineView.snp.makeConstraints {
@@ -160,6 +169,8 @@ class MapListCell: UICollectionViewCell {
 			return Category(imageName: "winery", category: "양조장")
 		case .zoo:
 			return Category(imageName: "zoo", category: "동물원")
+		default:
+			return Category(imageName: "zoo", category: "")
 		}
 	}
 }

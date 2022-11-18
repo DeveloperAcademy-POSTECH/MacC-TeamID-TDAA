@@ -482,6 +482,12 @@ extension UIScreen {
             default: return 20
             }
         }
+        /// 40
+        var myPageHorizontalPadding2: CGFloat {
+            switch self {
+            default: return 40
+            }
+        }
         /// 10
         var myPageHorizontalSpacing: CGFloat {
             switch self {
@@ -530,6 +536,11 @@ extension UIScreen {
         var myPageVerticalSpacing4: CGFloat {
             switch self {
             default: return 30
+            }
+        }
+        var myPageButtonHeight: CGFloat {
+            switch self {
+            default: return 48
             }
         }
         /// 62*62

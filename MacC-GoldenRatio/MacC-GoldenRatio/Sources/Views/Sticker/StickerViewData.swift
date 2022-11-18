@@ -111,7 +111,7 @@ class StickerViewData {
     
     func updateUIItem(frame: CGRect, bounds: CGRect, transform: CGAffineTransform) {
         self.itemObservable
-            .observe(on: MainScheduler.asyncInstance)
+            .observe(on: MainScheduler.instance)
             .take(1)
             .map { item in
                 let itemFrame: [Double] = [frame.origin.x, frame.origin.y, frame.size.width, frame.size.height]

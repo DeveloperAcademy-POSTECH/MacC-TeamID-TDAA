@@ -36,6 +36,8 @@ class DiaryCollectionViewCell: UICollectionViewCell {
 		let imageView =  UIImageView()
 		imageView.contentMode = .scaleAspectFill
 		imageView.clipsToBounds = true
+		imageView.layer.maskedCorners = [.layerMaxXMaxYCorner]
+		imageView.layer.cornerRadius = 10
 		return imageView
 	}()
 	
@@ -52,7 +54,7 @@ class DiaryCollectionViewCell: UICollectionViewCell {
 			$0.edges.equalToSuperview()
 		}
 		
-		cellData.diaryCoverImage == nil || cellData.diaryCoverImage == "" ? cellCoverImageView.image = UIImage(named: "defaultBottomcover") : cellCoverImageView.setImage(with: cellData.diaryCoverImage ?? "")
+		cellData.diaryCoverImage == nil || cellData.diaryCoverImage == "" ? cellCoverImageView.image = UIImage(named: "defaultBottomcover") : cellCoverImageView.setImage(with: cellData.diaryCoverImage!)
 		cellCoverImageView.snp.makeConstraints {
 			$0.height.equalTo(116)
 			$0.bottom.leading.trailing.equalToSuperview()

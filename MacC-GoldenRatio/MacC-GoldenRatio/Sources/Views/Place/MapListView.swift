@@ -16,6 +16,12 @@ class MapListView: UICollectionView {
 	override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
 		let layout = UICollectionViewFlowLayout()
 		super.init(frame: frame, collectionViewLayout: layout)
+		let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture(_:)))
+		swipeLeft.direction = UISwipeGestureRecognizer.Direction.left
+		self.addGestureRecognizer(swipeLeft)
+		let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture(_:)))
+		swipeRight.direction = UISwipeGestureRecognizer.Direction.right
+		self.addGestureRecognizer(swipeRight)
 		self.collectionViewLayout = layout
 		self.showsVerticalScrollIndicator = false
 		self.backgroundColor = UIColor.clear
@@ -26,20 +32,31 @@ class MapListView: UICollectionView {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
-	func bind(_ viewModel: MapViewModel,_ model: MapModel,_ day: Int,_ selectedLocation: Location?) {
+	func bind(_ viewModel: MapViewModel, _ model: MapModel, _ selectedLocation: Location?) {
 		self.rx.setDelegate(self)
 			.disposed(by: disposeBag)
-		viewModel.mapData
+		viewModel.mapCellData
 			.map {
-				return model.convertMapDatasToLocations($0, day: day).locations
-			}
-			.map {
+				self.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
 				return selectedLocation != nil ? model.changeIndex($0, selectedLocation: selectedLocation!) : $0
 			}
 			.bind(to: self.rx.items(cellIdentifier: "MapListCell", cellType: MapListCell.self)) { index, data, cell in
 				cell.setup(location: data)
 			}
 			.disposed(by: disposeBag)
+	}
+	
+	@objc func respondToSwipeGesture(_ gesture: UIGestureRecognizer) {
+		if let swipeGesture = gesture as? UISwipeGestureRecognizer {
+			switch swipeGesture.direction {
+			case UISwipeGestureRecognizer.Direction.left:
+				NotificationCenter.default.post(name: .mapListSwipeLeft, object: nil)
+			case UISwipeGestureRecognizer.Direction.right:
+				NotificationCenter.default.post(name: .mapListSwipeRight, object: nil)
+			default:
+				break
+			}
+		}
 	}
 }
 

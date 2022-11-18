@@ -1,19 +1,8 @@
 {
   "images" : [
     {
-      "filename" : "diaryBlack.png",
-      "idiom" : "universal",
-      "scale" : "1x"
-    },
-    {
-      "filename" : "diaryBlack@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "diaryBlack@3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
+      "filename" : "diaryBlack@3x.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

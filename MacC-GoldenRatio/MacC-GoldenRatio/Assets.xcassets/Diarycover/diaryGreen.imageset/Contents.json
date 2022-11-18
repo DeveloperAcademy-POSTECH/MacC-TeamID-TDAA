@@ -1,19 +1,8 @@
 {
   "images" : [
     {
-      "filename" : "diaryGreen.png",
-      "idiom" : "universal",
-      "scale" : "1x"
-    },
-    {
-      "filename" : "diaryGreen@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "diaryGreen@3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
+      "filename" : "diaryGreen@3x.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

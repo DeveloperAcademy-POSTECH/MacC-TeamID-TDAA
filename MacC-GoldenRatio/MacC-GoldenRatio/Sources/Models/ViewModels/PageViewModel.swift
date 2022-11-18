@@ -34,7 +34,7 @@ class PageViewModel {
     var disposeBag = DisposeBag()
     
     var diaryObservable: BehaviorSubject<Diary>!
-    var selectedPageIndex: BehaviorSubject<(Int,Int)>! // n 일차에 m 번째 페이지.
+    var selectedPageIndexSubject: BehaviorSubject<(Int,Int)>! // n 일차에 m 번째 페이지.
     
     // for ViewMode
     var allPageObservable: Observable<[[Page]]>!
@@ -47,8 +47,11 @@ class PageViewModel {
     var pageIndexDescriptionObservable: Observable<String>!
     var maxPageIndexObservable: Observable<Int>!
     
+    let pageViewModelSerialQueueName: String = "pageViewModelSerialQueue"
+    lazy var pageViewModelSerialQueue = SerialDispatchQueueScheduler(qos: .userInteractive, internalSerialQueueName: pageViewModelSerialQueueName)
+    
     init(diary: Diary, selectedDayIndex: Int) async {
-        self.selectedPageIndex = BehaviorSubject(value: (selectedDayIndex,0))
+        self.selectedPageIndexSubject = BehaviorSubject(value: (selectedDayIndex,0))
         self.diaryObservable = await setDiaryObservable(diary: diary)
 
         self.pageCollectionViewCurrentCellIndex  = await setPageCollectionViewCurrentCellIndex()
@@ -89,7 +92,6 @@ class PageViewModel {
             .observe(on: MainScheduler.instance)
             .take(1)
             .subscribe(onNext: {
-                print($0.diaryUUID)
                 self.oldDiary = $0
             })
             .disposed(by: disposeBag)
@@ -109,22 +111,22 @@ class PageViewModel {
             .disposed(by: disposeBag)
     }
     
-    func setPageCollectionViewCurrentCellIndex() async-> Observable<IndexPath>{
-        return selectedPageIndex
+    func setPageCollectionViewCurrentCellIndex() async-> Observable<IndexPath> {
+        return selectedPageIndexSubject
                 .map {(selectedPageIndex) in
                     return IndexPath(item: selectedPageIndex.0, section: selectedPageIndex.1)
                 }
     }
     
     func setCurrentPageItemObservable() async -> Observable<[Item]> {
-        return Observable.combineLatest(diaryObservable, selectedPageIndex)
+        return Observable.combineLatest(diaryObservable, selectedPageIndexSubject)
             .map { (diary, selectedPageIndex) in
-                diary.diaryPages[selectedPageIndex.0].pages[selectedPageIndex.1].items
+                return diary.diaryPages[selectedPageIndex.0].pages[selectedPageIndex.1].items
             }
     }
     
     func setPageIndexDescriptionObservable() async -> Observable<String> {
-        return Observable.combineLatest(diaryObservable, selectedPageIndex)
+        return Observable.combineLatest(diaryObservable, selectedPageIndexSubject)
             .map { (diary, selectedPageIndex) in
                 let pagesCount = diary.diaryPages[selectedPageIndex.0].pages.count
                 return (selectedPageIndex.1 + 1).description + "/" + pagesCount.description
@@ -132,28 +134,24 @@ class PageViewModel {
     }
     
     func setMaxPageIndexObservable() async -> Observable<Int> {
-        return Observable.combineLatest(diaryObservable, selectedPageIndex)
+        return Observable.combineLatest(diaryObservable, selectedPageIndexSubject)
             .map { (diary, selectedPageIndex) in
                 let pagesCount = diary.diaryPages[selectedPageIndex.0].pages.count
                 return pagesCount - 1
             }
     }
     
-    // PageViewMode
-
-    // PageEditMode
+    // MARK: PageEditMode 메서드
     func restoreOldDiary() {
         self.diaryObservable.onNext(self.oldDiary)
     }
     
     func addNewPage(to: AddPage) {
-        let pageUUID = UUID().uuidString + String(Date().timeIntervalSince1970)
-        let newPage = Page(pageUUID: pageUUID, items: [])
         var selectedDayIndex = 0
         var newPageIndex = 0
         
-        self.selectedPageIndex
-            .observe(on: MainScheduler.instance)
+        selectedPageIndexSubject
+            .observe(on: self.pageViewModelSerialQueue)
             .take(1)
             .subscribe {
                 selectedDayIndex = $0.0
@@ -162,11 +160,13 @@ class PageViewModel {
             .disposed(by: self.disposeBag)
         
         diaryObservable
-            .observe(on: MainScheduler.instance)
+            .observe(on: self.pageViewModelSerialQueue)
             .take(1)
             .subscribe(onNext: {
                 var newDiary = $0
-               
+                let pageUUID = UUID().uuidString + String(Date().timeIntervalSince1970)
+                let newPage = Page(pageUUID: pageUUID, items: [])
+                
                 switch to {
                 case .nextToCurrentPage:
                     newDiary.diaryPages[selectedDayIndex].pages.insert(newPage, at: newPageIndex)
@@ -176,7 +176,7 @@ class PageViewModel {
                 }
                 
                 self.diaryObservable.onNext(newDiary)
-                self.selectedPageIndex.onNext((selectedDayIndex, newPageIndex))
+                self.selectedPageIndexSubject.onNext((selectedDayIndex, newPageIndex))
             })
             .disposed(by: disposeBag)
     }
@@ -185,8 +185,8 @@ class PageViewModel {
         var selectedDayIndex = 0
         var selectedPageIndex = 0
         
-        self.selectedPageIndex
-            .observe(on: MainScheduler.instance)
+        selectedPageIndexSubject
+            .observe(on: self.pageViewModelSerialQueue)
             .take(1)
             .subscribe {
                 selectedDayIndex = $0.0
@@ -195,7 +195,7 @@ class PageViewModel {
             .disposed(by: self.disposeBag)
         
         diaryObservable
-            .observe(on: MainScheduler.instance)
+            .observe(on: self.pageViewModelSerialQueue)
             .take(1)
             .subscribe(onNext: {
                 var newDiary = $0
@@ -203,13 +203,13 @@ class PageViewModel {
                 newDiary.diaryPages[selectedDayIndex].pages.remove(at: selectedPageIndex)
                 
                 self.maxPageIndexObservable
-                    .observe(on: MainScheduler.instance)
+                    .observe(on: self.pageViewModelSerialQueue)
                     .take(1)
                     .subscribe(onNext: {
                         if $0 == 0 {
                             print("한 장 입니다.")
                         } else if selectedPageIndex == $0 {
-                            self.selectedPageIndex.onNext((selectedDayIndex, selectedPageIndex - 1))
+                            self.selectedPageIndexSubject.onNext((selectedDayIndex, selectedPageIndex - 1))
                             self.diaryObservable.onNext(newDiary)
                         } else {
                             self.diaryObservable.onNext(newDiary)
@@ -224,12 +224,12 @@ class PageViewModel {
     func moveToNextPage() {
         
         Observable
-            .combineLatest(self.selectedPageIndex, self.maxPageIndexObservable)
-            .observe(on: MainScheduler.instance)
+            .combineLatest(selectedPageIndexSubject, maxPageIndexObservable)
+            .observe(on: self.pageViewModelSerialQueue)
             .take(1)
             .subscribe { (selectedPageIndex, maxPageIndex) in
                 if selectedPageIndex.1 + 1 <= maxPageIndex {
-                    self.selectedPageIndex.onNext((selectedPageIndex.0, selectedPageIndex.1 + 1))
+                    self.selectedPageIndexSubject.onNext((selectedPageIndex.0, selectedPageIndex.1 + 1))
                 } else {
                     print("마지막 페이지입니다.")
                 }
@@ -239,13 +239,13 @@ class PageViewModel {
 
     func moveToPreviousPage() {
         
-        self.selectedPageIndex
-            .observe(on: MainScheduler.instance)
+        selectedPageIndexSubject
+            .observe(on: self.pageViewModelSerialQueue)
             .take(1)
             .subscribe(onNext: {
                 
                 if $0.1 - 1 >= 0 {
-                    self.selectedPageIndex.onNext(($0.0, $0.1 - 1))
+                    self.selectedPageIndexSubject.onNext(($0.0, $0.1 - 1))
                 } else {
                     print("첫 페이지입니다.")
                 }
@@ -255,12 +255,12 @@ class PageViewModel {
 
     }
 
-    func updateCurrentPageDataToDiaryModel(stickerViews: [StickerView]) {
+    func updateCurrentPageDataToDiaryModel(backgroundView: UIView) {
         var selectedDayIndex = 0
         var selectedPageIndex = 0
         
-        self.selectedPageIndex
-            .observe(on: MainScheduler.instance)
+        selectedPageIndexSubject
+            .observe(on: self.pageViewModelSerialQueue)
             .take(1)
             .subscribe {
                 selectedDayIndex = $0.0
@@ -268,21 +268,26 @@ class PageViewModel {
             }
             .disposed(by: self.disposeBag)
         
-        Observable.just(stickerViews)
-            .observe(on: MainScheduler.instance)
+        Observable.just(backgroundView.subviews)
+            .observe(on: self.pageViewModelSerialQueue)
             .take(1)
             .map {
                 var newItems: [Item] = []
-                
-                for stickerView in $0 {
-                    newItems.append(try stickerView.fetchItem())
+
+                $0.forEach {
+                    if let stickerView = $0 as? StickerView {
+                        if let item = try? stickerView.fetchItem() {
+                            newItems.append(item)
+                        }
+                    }
                 }
                 
                 return newItems
-            }.subscribe(onNext: { newItems in
-                                
+            }
+            .subscribe(onNext: { newItems in
+                
                 self.diaryObservable
-                    .observe(on: MainScheduler.instance)
+                    .observe(on: self.pageViewModelSerialQueue)
                     .take(1)
                     .subscribe(onNext: {
                         var newDiary = $0

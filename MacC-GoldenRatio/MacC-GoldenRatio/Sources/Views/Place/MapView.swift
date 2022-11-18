@@ -34,14 +34,15 @@ class MapView: UIView, MKMapViewDelegate, CLLocationManagerDelegate {
 	}
 	
 	func bind(_ viewModel: MapViewModel) {
+		let allAnnotations = self.map.annotations
+		self.map.removeAnnotations(allAnnotations)
+		
 		let locations = viewModel.mapData
 			.value.first?.diaryLocation
 		
 		viewModel.mapAnnotations
 			.asObservable()
 			.subscribe(onNext: { data in
-				let allAnnotations = self.map.annotations
-				self.map.removeAnnotations(allAnnotations)
 				data.forEach { annotations in
 					self.map.addAnnotations(annotations)
 				}
@@ -79,23 +80,24 @@ class MapView: UIView, MKMapViewDelegate, CLLocationManagerDelegate {
 			annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: CustomAnnotationView.identifier)
 			annotationView?.canShowCallout = false
 			annotationView?.contentMode = .scaleAspectFit
+			
+			let countLabel = UILabel()
+			countLabel.text = "\(annotation.day)"
+			countLabel.font = UIFont.mapLabelFont
+			countLabel.textColor = UIColor.darkgrayColor
+			countLabel.textAlignment = .center
+			
+			annotationView?.addSubview(countLabel)
+			
+			countLabel.snp.makeConstraints {
+				$0.center.equalToSuperview()
+			}
+			
+			annotationView?.image = UIImage(named: "\(annotation.iconImage)") ?? UIImage()
+			
 		} else {
 			annotationView?.annotation = annotation
 		}
-		
-		let countLabel = UILabel()
-		countLabel.text = "\(annotation.day)"
-		countLabel.font = UIFont.mapLabelFont
-		countLabel.textColor = UIColor.darkgrayColor
-		countLabel.textAlignment = .center
-		
-		annotationView?.addSubview(countLabel)
-		
-		countLabel.snp.makeConstraints {
-			$0.center.equalToSuperview()
-		}
-		
-		annotationView?.image = UIImage(named: "\(annotation.iconImage)") ?? UIImage()
 		
 		return annotationView
 	}

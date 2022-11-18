@@ -11,8 +11,7 @@ import MapKit
 import SnapKit
 import UIKit
 
-// PageEditModeViewController
-class PageViewController: UIViewController {
+class PageEditModeViewController: UIViewController {
     private lazy var newStickerDefaultSize = UIScreen.getDevice().stickerDefaultSize
     private lazy var newStickerAppearPoint = CGPoint(x: self.view.center.x - ( self.newStickerDefaultSize.width * 0.5 ), y: self.view.center.y - self.newStickerDefaultSize.height)
     
@@ -21,8 +20,8 @@ class PageViewController: UIViewController {
     private var myDiariesViewModalBackgroundView = UIView()
     private var pageViewModel: PageViewModel!
     
-    private let backgroundImageView: UIImageView = {
-        let backgroundImageView = UIImageView()
+    private let backgroundView: UIView = {
+        let backgroundImageView = UIView()
         backgroundImageView.clipsToBounds = true
         backgroundImageView.isUserInteractionEnabled = true
         backgroundImageView.backgroundColor = .appBackgroundColor
@@ -135,7 +134,7 @@ class PageViewController: UIViewController {
         self.pageViewModel.currentPageItemObservable
             .observe(on: MainScheduler.instance)
             .map { items in
-                
+                print("setStickerViews")
                 let stickerViews: [StickerView] = items.map { item in
                     
                     switch item.itemType {
@@ -154,15 +153,13 @@ class PageViewController: UIViewController {
                 return stickerViews
             }
             .subscribe(onNext: { stickerViews in
-                
-                self.backgroundImageView.subviews.forEach {
+                self.backgroundView.subviews.forEach {
                     $0.removeFromSuperview()
                 }
                 
                 stickerViews.forEach { stickerView in
-                    
                     stickerView.delegate = self
-                    self.backgroundImageView.addSubview(stickerView)
+                    self.backgroundView.addSubview(stickerView)
                 }
                 
             })
@@ -173,7 +170,7 @@ class PageViewController: UIViewController {
     //MARK: view 세팅 관련
     private func configureGestureRecognizer() {
         let backgroundImageViewSingleTap = UITapGestureRecognizer(target: self, action: #selector(self.setStickerSubviewHidden))
-        self.backgroundImageView.addGestureRecognizer(backgroundImageViewSingleTap)
+        self.backgroundView.addGestureRecognizer(backgroundImageViewSingleTap)
         
         let directions: [UISwipeGestureRecognizer.Direction] = [.right, .left]
         for direction in directions {
@@ -202,7 +199,7 @@ class PageViewController: UIViewController {
         
         self.navigationController?.navigationBar.barTintColor = UIColor.appBackgroundColor
         
-        self.pageViewModel.selectedPageIndex
+        self.pageViewModel.selectedPageIndexSubject
             .observe(on: MainScheduler.instance)
             .map{
                 ($0.0 + 1).description + "일차"
@@ -215,7 +212,7 @@ class PageViewController: UIViewController {
 
     private func addSubviews() {
         DispatchQueue.main.async {
-            self.view.addSubview(self.backgroundImageView)
+            self.view.addSubview(self.backgroundView)
             self.view.addSubview(self.pageDescriptionLabel)
             [self.mapToolButton, self.imageToolButton, self.stickerToolButton, self.textToolButton, self.docsButton]
                 .forEach{
@@ -226,19 +223,19 @@ class PageViewController: UIViewController {
     
     private func configureConstraints() {
         DispatchQueue.main.async {
-            self.backgroundImageView.snp.makeConstraints { make in
+            self.backgroundView.snp.makeConstraints { make in
                 make.edges.equalTo(self.view.safeAreaLayoutGuide)
             }
             
             self.pageDescriptionLabel.snp.makeConstraints { make in
-                make.trailing.top.equalTo(self.backgroundImageView).inset(self.myDevice.pagePadding)
+                make.trailing.top.equalTo(self.backgroundView).inset(self.myDevice.pagePadding)
                 make.width.equalTo(47)
                 make.height.equalTo(25)
             }
             
             self.mapToolButton.snp.makeConstraints { make in
                 make.leading.equalToSuperview().offset(self.myDevice.pagePadding)
-                make.bottom.equalTo(self.backgroundImageView.snp.bottom).inset(self.myDevice.pagePadding)
+                make.bottom.equalTo(self.backgroundView.snp.bottom).inset(self.myDevice.pagePadding)
                 make.size.equalTo(self.myDevice.pageToolButtonSize)
             }
             
@@ -250,13 +247,13 @@ class PageViewController: UIViewController {
             
             self.stickerToolButton.snp.makeConstraints { make in
                 make.leading.equalTo(self.imageToolButton.snp.trailing).offset(self.myDevice.pageToolButtonInterval)
-                make.bottom.equalTo(self.backgroundImageView.snp.bottom).inset(self.myDevice.pagePadding)
+                make.bottom.equalTo(self.backgroundView.snp.bottom).inset(self.myDevice.pagePadding)
                 make.size.equalTo(self.myDevice.pageToolButtonSize)
             }
             
             self.textToolButton.snp.makeConstraints { make in
                 make.leading.equalTo(self.stickerToolButton.snp.trailing).offset(self.myDevice.pageToolButtonInterval)
-                make.bottom.equalTo(self.backgroundImageView.snp.bottom).inset(self.myDevice.pagePadding)
+                make.bottom.equalTo(self.backgroundView.snp.bottom).inset(self.myDevice.pagePadding)
                 make.size.equalTo(self.myDevice.pageToolButtonSize)
             }
             
@@ -271,7 +268,7 @@ class PageViewController: UIViewController {
     // MARK: Actions
     @objc private func setStickerSubviewHidden() {
         
-        self.backgroundImageView.subviews.forEach {
+        self.backgroundView.subviews.forEach {
             if let stickerView = $0 as? StickerView {
                 stickerView.isStickerViewActive.onNext(false)
             }
@@ -329,15 +326,15 @@ class PageViewController: UIViewController {
     private func addSticker(stickerView: StickerView) {
         DispatchQueue.main.async {
             stickerView.delegate = self
-            self.backgroundImageView.addSubview(stickerView)
-            self.backgroundImageView.bringSubviewToFront(stickerView)
+            self.backgroundView.addSubview(stickerView)
+            self.backgroundView.bringSubviewToFront(stickerView)
         }
     }
     
 }
 
 // MARK: 페이지 편집 처리
-extension PageViewController {
+extension PageEditModeViewController {
     @objc private func onTapDocsButton() {
         let popUp = PopUpViewController(popUpPosition: .bottom2)
         popUp.addButton(buttonTitle: " 페이지 추가", buttonSymbol: "plus.square", buttonSize: 17, action: onTapAddNextPageMenu)
@@ -346,6 +343,7 @@ extension PageViewController {
     }
 
     @objc private func onTapAddNextPageMenu() {
+        self.pageViewModel.updateCurrentPageDataToDiaryModel(backgroundView: self.backgroundView)
         self.pageViewModel.addNewPage(to: .nextToCurrentPage)
     }
     
@@ -356,11 +354,11 @@ extension PageViewController {
     @objc private func swipeAction(_ sender: UISwipeGestureRecognizer) {
         switch sender.direction {
         case .left:
-            self.updateStickerViewsToDiaryModel()
+            self.pageViewModel.updateCurrentPageDataToDiaryModel(backgroundView: self.backgroundView)
             self.pageViewModel.moveToNextPage()
             
         case .right:
-            self.updateStickerViewsToDiaryModel()
+            self.pageViewModel.updateCurrentPageDataToDiaryModel(backgroundView: self.backgroundView)
             self.pageViewModel.moveToPreviousPage()
             
         default:
@@ -374,49 +372,26 @@ extension PageViewController {
     }
 
     @objc private func onTapNavigationComplete() {
-        self.updateStickerViewsToDiaryModel()
+        self.pageViewModel.updateCurrentPageDataToDiaryModel(backgroundView: self.backgroundView)
         self.navigationController?.popViewController(animated: true)
-    }
-    
-    private func updateStickerViewsToDiaryModel() {
-        
-        Observable.just(self.backgroundImageView.subviews)
-            .observe(on: MainScheduler.instance)
-            .take(1)
-            .map {
-                var stickerViews: [StickerView] = []
-                
-                $0.forEach {
-                    if let stickerView = $0 as? StickerView {
-                        stickerViews.append(stickerView)
-                    }
-                }
-                
-                return stickerViews
-            }
-            .subscribe(onNext: { stickerViews in
-                self.pageViewModel.updateCurrentPageDataToDiaryModel(stickerViews: stickerViews)
-            })
-            .disposed(by: self.pageViewModel.disposeBag)
-        
     }
 }
 
 // MARK: StickerViewDelegate
-extension PageViewController: StickerViewDelegate {
+extension PageEditModeViewController: StickerViewDelegate {
     
     func removeSticker(sticker: StickerView) {
         sticker.removeFromSuperview()
     }
     
     func bringStickerToFront(sticker: StickerView) {
-        backgroundImageView.bringSubviewToFront(sticker)
+        backgroundView.bringSubviewToFront(sticker)
     }
     
 }
 
 // MARK: ImagePikcerDelegate
-extension PageViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+extension PageEditModeViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         var selectedImage: UIImage? = nil
         
@@ -431,7 +406,7 @@ extension PageViewController: UIImagePickerControllerDelegate, UINavigationContr
 }
 
 // MARK: PresentationDelegate
-extension PageViewController: UIViewControllerTransitioningDelegate {
+extension PageEditModeViewController: UIViewControllerTransitioningDelegate {
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         
         return HalfModalPresentationController(presentedViewController: presented, presenting: presenting)
@@ -439,7 +414,7 @@ extension PageViewController: UIViewControllerTransitioningDelegate {
 }
 
 // MARK: UIGestureRecognizerDelegate
-extension PageViewController: UIGestureRecognizerDelegate {
+extension PageEditModeViewController: UIGestureRecognizerDelegate {
     
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         
@@ -450,7 +425,7 @@ extension PageViewController: UIGestureRecognizerDelegate {
             let point = gestureRecognizer.location(in: self.view)
             
             do {
-                try self.backgroundImageView.subviews.forEach {
+                try self.backgroundView.subviews.forEach {
                     
                     let convertedPoint = $0.convert(point, from: self.view)
                     

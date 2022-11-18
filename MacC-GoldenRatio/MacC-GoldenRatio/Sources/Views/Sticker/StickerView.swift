@@ -61,6 +61,19 @@ class StickerView: UIView {
             throw error
         }
     }
+    
+//    func fetchItem() -> Item? {
+//        var returnItem: Item?
+//        self.stickerViewData?.itemObservable
+//            .observe(on: MainScheduler.instance)
+//            .take(1)
+//            .subscribe(onNext: { item in
+//                returnItem = item
+//            })
+//            .disposed(by: self.disposeBag)
+//
+//        return returnItem
+//    }
 
     func updateIsStickerViewActive(value: Bool) {
         
@@ -76,31 +89,25 @@ class StickerView: UIView {
         self.isStickerViewActive.onNext(true)
     }
     
-    internal func stickerUIDidChange()  {
-        Task {
-            await self.stickerViewData?.updateUIItem(frame: self.frame, bounds: self.bounds, transform: self.transform)
-        }
-    }
-    
     /// StickerViewData 를 현재 View의 프로퍼티들와 binding 합니다.
     internal func configureStickerViewData() async {
         
         self.stickerViewData?.frameObservable
-            .observe(on: MainScheduler.asyncInstance)
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: {
                 self.frame = $0
             })
             .disposed(by: self.disposeBag)
         
         self.stickerViewData?.boundsObservable
-            .observe(on: MainScheduler.asyncInstance)
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: {
                 self.bounds = $0
             })
             .disposed(by: self.disposeBag)
         
         self.stickerViewData?.transitionObservable
-            .observe(on: MainScheduler.asyncInstance)
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: {
                 self.transform = $0
             })
@@ -206,9 +213,7 @@ class StickerView: UIView {
             enableTranslucency(state: false)
             previousPoint = sender.location(in: self)
             setNeedsDisplay()
-            Task {
-                await stickerUIDidChange()
-            }
+            self.stickerViewData?.updateUIItem(frame: self.frame, bounds: self.bounds, transform: self.transform)
         }
         updateControlsPosition()
     }
@@ -268,9 +273,7 @@ class StickerView: UIView {
             enableTranslucency(state: false)
             previousPoint = sender.location(in: self)
             setNeedsDisplay()
-            Task {
-                await stickerUIDidChange()
-            }
+            self.stickerViewData?.updateUIItem(frame: self.frame, bounds: self.bounds, transform: self.transform)
         }
         updateControlsPosition()
     }
@@ -291,9 +294,7 @@ class StickerView: UIView {
             enableTranslucency(state: false)
             previousPoint = sender.location(in: self)
             setNeedsDisplay()
-            Task {
-                await stickerUIDidChange()
-            }
+            self.stickerViewData?.updateUIItem(frame: self.frame, bounds: self.bounds, transform: self.transform)
         }
         updateControlsPosition()
         
@@ -334,9 +335,7 @@ class StickerView: UIView {
 
         enableTranslucency(state: false)
         
-        Task {
-            await stickerUIDidChange()
-        }
+        self.stickerViewData?.updateUIItem(frame: self.frame, bounds: self.bounds, transform: self.transform)
         
     }
 

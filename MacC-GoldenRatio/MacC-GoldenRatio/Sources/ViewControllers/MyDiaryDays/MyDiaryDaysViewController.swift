@@ -240,8 +240,13 @@ class MyDiaryDaysViewController: UIViewController {
         guard let selectedLocation = notification.userInfo?["selectedLocation"] as? Location else {
             return
         }
+		
+		Observable.just(day)
+			.bind(to: viewModel!.mapViewModel.selectDay)
+			.disposed(by: disposeBag)
         
-        let vc = MapListViewController(viewMdoel: viewModel!.mapViewModel, day: day, selectedLocation: selectedLocation)
+        let vc = MapListViewController(viewMdoel: viewModel!.mapViewModel, selectedLocation: selectedLocation)
+		vc.bind(viewModel!.mapViewModel, selectedLocation)
         let titles = viewModel!.mapViewModel.mapData
             .value
             .map { data in
@@ -250,17 +255,8 @@ class MyDiaryDaysViewController: UIViewController {
         
         vc.configureSegmentedControl(titles: titles)
         
-        if #available(iOS 15.0, *) {
-            vc.modalPresentationStyle = .pageSheet
-            if let sheet = vc.sheetPresentationController {
-                sheet.detents = [.medium(), .large()]
-                sheet.delegate = self
-                sheet.prefersGrabberVisible = true
-            }
-        } else {
-            vc.modalPresentationStyle = .custom
-            vc.transitioningDelegate = self
-        }
+		vc.modalPresentationStyle = .custom
+		vc.transitioningDelegate = self
         vc.view.backgroundColor = .white
         
         self.present(vc, animated: true)

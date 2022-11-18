@@ -21,16 +21,16 @@ class MapHalfModalPresentationController: UIPresentationController {
 	}
 	
 	override var frameOfPresentedViewInContainerView: CGRect {
-		CGRect(origin: CGPoint(x: 0, y: self.containerView!.frame.height * 0.45),
+		CGRect(origin: CGPoint(x: 0, y: self.containerView!.frame.height * 0.65),
 			   size: CGSize(width: self.containerView!.frame.width, height: self.containerView!.frame.height *
-							0.55))
+							0.35))
 	}
 	
 	override func presentationTransitionWillBegin() {
 		self.blurEffectView.alpha = 0
 		self.containerView?.addSubview(blurEffectView)
 		self.presentedViewController.transitionCoordinator?.animate(alongsideTransition: { (UIViewControllerTransitionCoordinatorContext) in
-			self.blurEffectView.alpha = 0.2
+			self.blurEffectView.alpha = 0.1
 		}, completion: { (UIViewControllerTransitionCoordinatorContext) in })
 	}
 	

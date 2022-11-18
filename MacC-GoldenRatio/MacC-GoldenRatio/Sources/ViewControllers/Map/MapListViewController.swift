@@ -22,16 +22,13 @@ class MapListViewController: UIViewController {
 	}()
 	
 	let viewModel: MapViewModel
-	let day: Int
 	let selectedLocation: Location
 	
-	init(viewMdoel: MapViewModel, day: Int, selectedLocation: Location) {
+	init(viewMdoel: MapViewModel, selectedLocation: Location) {
 		self.viewModel = viewMdoel
-		self.day = day
 		self.selectedLocation = selectedLocation
 		super.init(nibName: nil, bundle: nil)
 		layout()
-		mapListView.bind(viewModel, MapModel(), day, selectedLocation)
 	}
 	
 	required init?(coder: NSCoder) {
@@ -46,14 +43,18 @@ class MapListViewController: UIViewController {
 												   selectedLabelColor: .black,
 												   unselectedLabelColor: UIColor(named: "separatorColor") ?? .placeholderText,
 												   selectedLineColor: .black,
-												   day: day-1)
+												   day: viewModel.selectDay.value-1)
 		segmentedControlView.configure(config)
 	}
 	
-	func bind(_ viewModel: MapViewModel,_ day: Int,_ selectedLocation: Location?) {
-		mapListView.delegate = nil
-		mapListView.dataSource = nil
-		mapListView.bind(viewModel, MapModel(), day, selectedLocation)
+	func bind(_ viewModel: MapViewModel, _ selectedLocation: Location?) {
+		mapListView.bind(viewModel, MapModel(), selectedLocation)
+		
+		mapListView.rx.modelSelected(Location.self)
+			.subscribe(onNext: { location in
+				NotificationCenter.default.post(name: .mapListTapped, object: nil, userInfo: ["location": location])
+			})
+			.disposed(by: disposeBag)
 	}
 	
 	func layout() {
@@ -72,9 +73,9 @@ class MapListViewController: UIViewController {
 }
 
 extension MapListViewController: SegmentedControlViewDelegate {
-	
 	func segmentedControl(didChange index: Int) {
-		bind(viewModel, index+1, nil)
+		Observable.just(index+1)
+			.bind(to: viewModel.selectDay)
+			.disposed(by: disposeBag)
 	}
-
 }

@@ -83,7 +83,7 @@ class SetProfileImageViewController: UIViewController {
             let tap = UITapGestureRecognizer(target: self, action: #selector(self.onTapView))
             self.view.addGestureRecognizer(tap)
             self.navigationController?.isNavigationBarHidden = true
-            self.view.backgroundColor = .backgroundTexture
+            self.view.backgroundColor = UIColor.appBackgroundColor
             self.profileImageView.layer.cornerRadius = self.myDevice.setProfileProfileImageSize.width * 0.5
             self.profileCameraButton.layer.cornerRadius = self.myDevice.setProfileProfileImageSize.width * 0.28 * 0.5
             self.configureImagePicker()

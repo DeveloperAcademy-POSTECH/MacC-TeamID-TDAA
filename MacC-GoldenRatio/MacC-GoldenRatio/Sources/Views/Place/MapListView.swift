@@ -18,11 +18,9 @@ class MapListView: UICollectionView {
 		super.init(frame: frame, collectionViewLayout: layout)
 		let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture(_:)))
 		swipeLeft.direction = UISwipeGestureRecognizer.Direction.left
-		swipeLeft.cancelsTouchesInView = false
 		self.addGestureRecognizer(swipeLeft)
 		let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture(_:)))
 		swipeRight.direction = UISwipeGestureRecognizer.Direction.right
-		swipeRight.cancelsTouchesInView = false
 		self.addGestureRecognizer(swipeRight)
 		self.collectionViewLayout = layout
 		self.showsVerticalScrollIndicator = false

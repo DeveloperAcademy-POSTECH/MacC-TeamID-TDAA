@@ -107,7 +107,6 @@ class SegmentedControlView: UIView, SegmentedControlViewDelegate {
 		stackView.axis = .vertical
 		stackView.isUserInteractionEnabled = true
 		let tap = UITapGestureRecognizer(target: self, action: #selector(selectionHandler))
-		tap.cancelsTouchesInView = false
 		stackView.addGestureRecognizer(tap)
 		return stackView
 	}

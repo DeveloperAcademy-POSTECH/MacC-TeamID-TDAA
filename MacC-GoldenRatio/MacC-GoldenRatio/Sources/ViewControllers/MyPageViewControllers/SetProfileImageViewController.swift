@@ -36,8 +36,8 @@ class SetProfileImageViewController: UIViewController {
         let button = UIButton()
         let cameraImage = UIImage(systemName: "camera")
         button.setImage(cameraImage, for: .normal)
-        button.tintColor = .buttonColor
-        button.backgroundColor = .white
+        button.tintColor = .white
+        button.backgroundColor = .sandbrownColor
         button.addTarget(self, action: #selector(onTapCameraButton), for: .touchUpInside)
         
         return button
@@ -122,7 +122,8 @@ class SetProfileImageViewController: UIViewController {
             make.size.equalTo(myDevice.setProfileProfileImageSize)
         }
         profileCameraButton.snp.makeConstraints { make in
-            make.bottom.trailing.equalTo(profileImageView)
+            make.trailing.equalTo(profileImageView)
+            make.bottom.equalTo(profileImageView).multipliedBy(0.94)
             make.size.equalTo(profileImageView.snp.size).multipliedBy(0.28)
         }
         nickNameTitleLabel.snp.makeConstraints { make in

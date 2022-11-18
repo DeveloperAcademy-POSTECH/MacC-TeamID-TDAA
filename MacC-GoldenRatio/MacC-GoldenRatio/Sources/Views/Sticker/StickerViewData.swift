@@ -113,7 +113,6 @@ class StickerViewData {
         self.itemObservable
             .observe(on: MainScheduler.instance)
             .take(1)
-            .debug()
             .map { item in
                 let itemFrame: [Double] = [frame.origin.x, frame.origin.y, frame.size.width, frame.size.height]
                 let itemBounds: [Double] = [0, 0, bounds.size.width, bounds.size.height]

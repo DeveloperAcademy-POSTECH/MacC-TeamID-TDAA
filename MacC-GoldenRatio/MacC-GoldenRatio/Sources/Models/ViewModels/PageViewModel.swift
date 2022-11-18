@@ -47,6 +47,9 @@ class PageViewModel {
     var pageIndexDescriptionObservable: Observable<String>!
     var maxPageIndexObservable: Observable<Int>!
     
+    let pageViewModelSerialQueueName: String = "pageViewModelSerialQueue"
+    lazy var pageViewModelSerialQueue = SerialDispatchQueueScheduler(qos: .userInteractive, internalSerialQueueName: pageViewModelSerialQueueName)
+    
     init(diary: Diary, selectedDayIndex: Int) async {
         self.selectedPageIndexSubject = BehaviorSubject(value: (selectedDayIndex,0))
         self.diaryObservable = await setDiaryObservable(diary: diary)
@@ -118,7 +121,7 @@ class PageViewModel {
     func setCurrentPageItemObservable() async -> Observable<[Item]> {
         return Observable.combineLatest(diaryObservable, selectedPageIndexSubject)
             .map { (diary, selectedPageIndex) in
-                diary.diaryPages[selectedPageIndex.0].pages[selectedPageIndex.1].items
+                return diary.diaryPages[selectedPageIndex.0].pages[selectedPageIndex.1].items
             }
     }
     
@@ -148,7 +151,7 @@ class PageViewModel {
         var newPageIndex = 0
         
         selectedPageIndexSubject
-            .observe(on: SerialDispatchQueueScheduler(qos: .userInteractive))
+            .observe(on: self.pageViewModelSerialQueue)
             .take(1)
             .subscribe {
                 selectedDayIndex = $0.0
@@ -157,7 +160,7 @@ class PageViewModel {
             .disposed(by: self.disposeBag)
         
         diaryObservable
-            .observe(on: SerialDispatchQueueScheduler(qos: .userInteractive))
+            .observe(on: self.pageViewModelSerialQueue)
             .take(1)
             .subscribe(onNext: {
                 var newDiary = $0
@@ -183,7 +186,7 @@ class PageViewModel {
         var selectedPageIndex = 0
         
         selectedPageIndexSubject
-            .observe(on: SerialDispatchQueueScheduler(qos: .userInteractive))
+            .observe(on: self.pageViewModelSerialQueue)
             .take(1)
             .subscribe {
                 selectedDayIndex = $0.0
@@ -192,7 +195,7 @@ class PageViewModel {
             .disposed(by: self.disposeBag)
         
         diaryObservable
-            .observe(on: SerialDispatchQueueScheduler(qos: .userInteractive))
+            .observe(on: self.pageViewModelSerialQueue)
             .take(1)
             .subscribe(onNext: {
                 var newDiary = $0
@@ -200,7 +203,7 @@ class PageViewModel {
                 newDiary.diaryPages[selectedDayIndex].pages.remove(at: selectedPageIndex)
                 
                 self.maxPageIndexObservable
-                    .observe(on: MainScheduler.instance)
+                    .observe(on: self.pageViewModelSerialQueue)
                     .take(1)
                     .subscribe(onNext: {
                         if $0 == 0 {
@@ -222,7 +225,7 @@ class PageViewModel {
         
         Observable
             .combineLatest(selectedPageIndexSubject, maxPageIndexObservable)
-            .observe(on: SerialDispatchQueueScheduler(qos: .userInteractive))
+            .observe(on: self.pageViewModelSerialQueue)
             .take(1)
             .subscribe { (selectedPageIndex, maxPageIndex) in
                 if selectedPageIndex.1 + 1 <= maxPageIndex {
@@ -237,7 +240,7 @@ class PageViewModel {
     func moveToPreviousPage() {
         
         selectedPageIndexSubject
-            .observe(on: SerialDispatchQueueScheduler(qos: .userInteractive))
+            .observe(on: self.pageViewModelSerialQueue)
             .take(1)
             .subscribe(onNext: {
                 
@@ -257,7 +260,7 @@ class PageViewModel {
         var selectedPageIndex = 0
         
         selectedPageIndexSubject
-            .observe(on: SerialDispatchQueueScheduler(qos: .userInteractive))
+            .observe(on: self.pageViewModelSerialQueue)
             .take(1)
             .subscribe {
                 selectedDayIndex = $0.0
@@ -266,7 +269,7 @@ class PageViewModel {
             .disposed(by: self.disposeBag)
         
         Observable.just(backgroundView.subviews)
-            .observe(on: SerialDispatchQueueScheduler(qos: .userInteractive))
+            .observe(on: self.pageViewModelSerialQueue)
             .take(1)
             .map {
                 var newItems: [Item] = []
@@ -284,7 +287,7 @@ class PageViewModel {
             .subscribe(onNext: { newItems in
                 
                 self.diaryObservable
-                    .observe(on: SerialDispatchQueueScheduler(qos: .userInteractive))
+                    .observe(on: self.pageViewModelSerialQueue)
                     .take(1)
                     .subscribe(onNext: {
                         var newDiary = $0

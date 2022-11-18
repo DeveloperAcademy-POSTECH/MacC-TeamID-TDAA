@@ -187,7 +187,7 @@ class PageViewModeViewController: UIViewController {
     }
     
     @objc private func onTapEditCurrentPage() {
-        let viewController = PageViewController(pageViewModel: self.pageViewModel)
+        let viewController = PageEditModeViewController(pageViewModel: self.pageViewModel)
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 

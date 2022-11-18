@@ -18,7 +18,7 @@
 		0A5235B028F8510C00AC77AC /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5235AF28F8510C00AC77AC /* UIFont+.swift */; };
 		0A5235B228F854C200AC77AC /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5235B128F854C200AC77AC /* UIColor+.swift */; };
 		0A5DC37B28F7F65B00AABED1 /* ImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5DC37A28F7F65B00AABED1 /* ImageManager.swift */; };
-		0A5E904528E8578400B381B8 /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5E904428E8578400B381B8 /* PageViewController.swift */; };
+		0A5E904528E8578400B381B8 /* PageEditModeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5E904428E8578400B381B8 /* PageEditModeViewController.swift */; };
 		0A5E904828E857E200B381B8 /* StickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5E904728E857E200B381B8 /* StickerView.swift */; };
 		0A5E904A28E858C000B381B8 /* StickerContollerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5E904928E858C000B381B8 /* StickerContollerView.swift */; };
 		0A5E904C28E858D200B381B8 /* StickerBorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5E904B28E858D200B381B8 /* StickerBorderView.swift */; };
@@ -175,7 +175,7 @@
 		0A5235AF28F8510C00AC77AC /* UIFont+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+.swift"; sourceTree = "<group>"; };
 		0A5235B128F854C200AC77AC /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		0A5DC37A28F7F65B00AABED1 /* ImageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageManager.swift; sourceTree = "<group>"; };
-		0A5E904428E8578400B381B8 /* PageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
+		0A5E904428E8578400B381B8 /* PageEditModeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageEditModeViewController.swift; sourceTree = "<group>"; };
 		0A5E904728E857E200B381B8 /* StickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerView.swift; sourceTree = "<group>"; };
 		0A5E904928E858C000B381B8 /* StickerContollerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerContollerView.swift; sourceTree = "<group>"; };
 		0A5E904B28E858D200B381B8 /* StickerBorderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerBorderView.swift; sourceTree = "<group>"; };
@@ -344,7 +344,7 @@
 		0A5E904328E8575C00B381B8 /* Page */ = {
 			isa = PBXGroup;
 			children = (
-				0A5E904428E8578400B381B8 /* PageViewController.swift */,
+				0A5E904428E8578400B381B8 /* PageEditModeViewController.swift */,
 				0AAB2ACC28EAFD78009FBD96 /* MapSearchViewController.swift */,
 				0AAB2AD428EC1F11009FBD96 /* StickerPickerViewController.swift */,
 				0A939488291A1E0E007ADDAC /* PageViewModeViewController.swift */,
@@ -896,7 +896,7 @@
 				CC6C7F23291D2A6300B88888 /* DiaryDayModel.swift in Sources */,
 				E21342E328F6B6BC0048D9CF /* MapData.swift in Sources */,
 				0AAB2ACD28EAFD78009FBD96 /* MapSearchViewController.swift in Sources */,
-				0A5E904528E8578400B381B8 /* PageViewController.swift in Sources */,
+				0A5E904528E8578400B381B8 /* PageEditModeViewController.swift in Sources */,
 				E2FA41A328F48C1B00BBA354 /* DiaryCell.swift in Sources */,
 				0AAB2AD528EC1F11009FBD96 /* StickerPickerViewController.swift in Sources */,
 				E2BEC45E28F806C40056E755 /* MyAlbumViewModel.swift in Sources */,

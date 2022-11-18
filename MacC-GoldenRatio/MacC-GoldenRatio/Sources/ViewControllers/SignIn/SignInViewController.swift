@@ -81,6 +81,7 @@ class SignInViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
+        self.initialSetup()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -91,7 +92,7 @@ class SignInViewController: UIViewController {
                 FirestoreClient().isExistingUser(user.uid) { value in
                     if value {
                         self.showMainView()
-                    }else{
+                    } else {
                         self.setup()
                     }
                 }
@@ -100,11 +101,29 @@ class SignInViewController: UIViewController {
             }
         }
     }
-    private func setup() {
-        [appLogo, appTitle, appleLoginButton].forEach {
+    
+    private func initialSetup() {
+        navigationController?.isNavigationBarHidden = true
+        [appLogo, appTitle].forEach {
             view.addSubview($0)
         }
-        navigationController?.isNavigationBarHidden = true
+        
+        appLogo.snp.makeConstraints {
+            $0.width.equalToSuperview().dividedBy(3.9)
+            $0.height.equalTo(appLogo.snp.width).multipliedBy(0.8)
+            $0.bottom.equalTo(appTitle.snp.top).offset(-70)
+            $0.centerX.equalToSuperview()
+        }
+        
+        appTitle.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.centerY.equalToSuperview().offset(70)
+        }
+    }
+    
+    private func setup() {
+        
+        view.addSubview(appleLoginButton)
         
         appLogo.snp.makeConstraints {
             $0.width.equalToSuperview().dividedBy(3.9)

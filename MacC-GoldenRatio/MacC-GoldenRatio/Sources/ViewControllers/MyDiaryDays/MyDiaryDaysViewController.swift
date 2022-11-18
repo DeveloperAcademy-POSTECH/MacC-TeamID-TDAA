@@ -29,6 +29,7 @@ class MyDiaryDaysViewController: UIViewController {
         super.viewWillAppear(animated)
     }
     
+    // MARK: Components
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
@@ -58,22 +59,12 @@ class MyDiaryDaysViewController: UIViewController {
         return view
     }()
     
-    private lazy var segmentedControl: UISegmentedControl = {
-        let configuration = UIImage.SymbolConfiguration(pointSize: 20, weight: .regular, scale: .medium)
-        let dayButton = UIImage(systemName: "doc.text.image", withConfiguration: configuration) ?? UIImage()
-        let albumButton = UIImage(systemName: "photo", withConfiguration: configuration) ?? UIImage()
-        let mapButton = UIImage(systemName: "mappin.and.ellipse", withConfiguration: configuration) ?? UIImage()
-        let control = UISegmentedControl(items: [dayButton, albumButton, mapButton])
-        let selectedAttribute = [NSAttributedString.Key.foregroundColor: UIColor.sandbrownColor]
-        control.setTitleTextAttributes(selectedAttribute, for:.selected)
-        control.selectedSegmentIndex = 0
-        control.backgroundColor = .clear
-        return control
-    }()
-
+    let segmentedControl = DiaryDaysSegmentedControlView(items: nil)
+    
     let diaryDaysCollectionView = DiaryDaysCollectionView()
     let albumCollectionView = AlbumCollectionView()
     let mapView = MapView()
+    
     
     // MARK: Bind
     func bind(_ viewModel: MyDiaryDaysViewModel) {
@@ -82,12 +73,18 @@ class MyDiaryDaysViewController: UIViewController {
         self.segmentedControl.rx.selectedSegmentIndex
             .bind(to: viewModel.segmentIndex)
             .disposed(by: disposeBag)
-        
+                
         viewModel.selectedViewType
             .drive(onNext: { state in
                 [self.diaryDaysCollectionView, self.albumCollectionView, self.mapView].enumerated().forEach { index, view in
                     view.isHidden = state[index]
                 }
+                
+                let configuration = UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .medium)
+                
+                self.segmentedControl.setImage(UIImage(systemName: "doc.text.image", withConfiguration: configuration)?.withTintColor(state[0] ? .stickerBackgroundColor : .sandbrownColor , renderingMode: .alwaysOriginal), forSegmentAt: 0)
+                self.segmentedControl.setImage(UIImage(systemName: "photo", withConfiguration: configuration)?.withTintColor(state[1] ? .stickerBackgroundColor : .sandbrownColor , renderingMode: .alwaysOriginal), forSegmentAt: 1)
+                self.segmentedControl.setImage(UIImage(systemName: "mappin.and.ellipse", withConfiguration: configuration)?.withTintColor(state[2] ? .stickerBackgroundColor : .sandbrownColor , renderingMode: .alwaysOriginal), forSegmentAt: 2)
             })
             .disposed(by: disposeBag)
         
@@ -131,14 +128,13 @@ class MyDiaryDaysViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
+    
     // MARK: Attribute & Layout
     private func attribute() {
-        // TODO: UIColor+ 추가 후 수정
-        self.view.backgroundColor = UIColor(named: "appBackgroundColor")!
+        self.view.backgroundColor = UIColor.appBackgroundColor
         self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         NotificationCenter.default.addObserver(self, selector: #selector(mapListHalfModal(notification:)), name: .mapAnnotationTapped, object: nil)
-        
     }
     
     private func layout() {
@@ -173,7 +169,7 @@ class MyDiaryDaysViewController: UIViewController {
         segmentedControl.snp.makeConstraints {
             $0.top.equalTo(dividerView.snp.bottom)
             $0.horizontalEdges.equalToSuperview()
-            $0.height.equalTo(44)
+            $0.height.equalTo(67)
         }
         
         [diaryDaysCollectionView, albumCollectionView, mapView].forEach {

@@ -21,6 +21,17 @@ class CalendarPickerHeaderView: UIView {
         return label
     }()
     
+    lazy var monthPickerButton: UIButton = {
+        let button = UIButton()
+        let imageConfig = UIImage.SymbolConfiguration(pointSize: 14, weight: .semibold, scale: .unspecified)
+        button.setImage(UIImage(systemName: "chevron.right", withConfiguration: imageConfig), for: .normal)
+        button.imageView?.contentMode = .scaleAspectFit
+        button.contentHorizontalAlignment = .trailing
+        button.backgroundColor = .clear
+        button.tintColor = .sandbrownColor
+        return button
+    }()
+    
     lazy var previousMonthButton: UIButton = {
         let button = UIButton()
         let imageConfig = UIImage.SymbolConfiguration(pointSize: 22, weight: .semibold, scale: .default)
@@ -50,7 +61,7 @@ class CalendarPickerHeaderView: UIView {
     private lazy var dateFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
         dateFormatter.calendar = Calendar(identifier: .gregorian)
-        dateFormatter.locale = Locale.autoupdatingCurrent
+        dateFormatter.locale = Locale(identifier: "ko")
         dateFormatter.setLocalizedDateFormatFromTemplate("MMMM y")
         return dateFormatter
     }()
@@ -80,7 +91,7 @@ class CalendarPickerHeaderView: UIView {
         layer.cornerCurve = .continuous
         layer.cornerRadius = 15
 
-        [monthLabel, previousMonthButton, nextMonthButton, dayOfWeekStackView].forEach {
+        [monthLabel, monthPickerButton, previousMonthButton, nextMonthButton, dayOfWeekStackView].forEach {
             self.addSubview($0)
         }
         
@@ -126,6 +137,13 @@ class CalendarPickerHeaderView: UIView {
         monthLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(16)
             $0.leading.equalToSuperview().inset(16)
+        }
+        
+        monthPickerButton.snp.makeConstraints {
+            $0.leading.equalTo(monthLabel)
+            $0.centerY.equalTo(monthLabel)
+            $0.height.equalTo(30)
+            $0.width.equalTo(monthLabel).multipliedBy(1.1)
         }
         
         previousMonthButton.snp.makeConstraints {

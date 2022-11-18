@@ -32,4 +32,12 @@ extension Date {
         }
         return dates
     }
+    
+    init(_ dateString:String) {
+        let dateStringFormatter = DateFormatter()
+        dateStringFormatter.dateFormat = "yyyy/MM"
+        dateStringFormatter.locale = Locale(identifier: "ko")
+        let date = dateStringFormatter.date(from: dateString)!
+        self.init(timeInterval:0, since:date)
+    }
 }

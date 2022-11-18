@@ -42,11 +42,22 @@ class CalendarPickerViewController: UIViewController {
         })
     
     lazy var footerView = CalendarPickerFooterView(timeInterval: dateInterval, selectButtonCompletionHanlder: { [weak self] in
-            guard let self = self else { return }
-            
+        guard let self = self else { return }
+        
+        if self.monthPicker.isHidden == true {
             self.selectedDateChanged(self.dateInterval)
             self.dismissCalendar()
-        })
+        } else {
+            
+            self.monthPicker.isHidden = true
+            UIView.animate(withDuration: 0.2) {
+                let scale = CGAffineTransform(rotationAngle: 0)
+                self.headerView.monthPickerButton.imageView?.transform = scale
+            }
+            self.updateFooterButtonLabel(day: nil)
+            self.collectionView.reloadData()
+        }
+    })
     
     private lazy var closeButton: UIButton = {
         let button = UIButton()
@@ -57,6 +68,8 @@ class CalendarPickerViewController: UIViewController {
         return button
     }()
     
+    private let monthPicker = CalendarYearPickerView(frame: CGRect.zero)
+    
     // MARK: Calendar Data Values
     
     private let selectedStartDate: Date
@@ -66,6 +79,7 @@ class CalendarPickerViewController: UIViewController {
             days = generateDaysInMonth(for: startBaseDate)
             collectionView.reloadData()
             headerView.baseDate = startBaseDate
+            monthPicker.setAvailableDate(date: startBaseDate)
         }
     }
     private var endBaseDate: Date? {
@@ -73,7 +87,6 @@ class CalendarPickerViewController: UIViewController {
             collectionView.reloadData()
         }
     }
-    
     
     private lazy var days = generateDaysInMonth(for: startBaseDate)
     
@@ -103,7 +116,7 @@ class CalendarPickerViewController: UIViewController {
             self.startBaseDate = dateArray[0]
         }
         self.selectedDateChanged = selectedDateChanged
-
+        
         super.init(nibName: nil, bundle: nil)
         
         modalPresentationStyle = .overCurrentContext
@@ -119,12 +132,36 @@ class CalendarPickerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        collectionView.backgroundColor = .systemGroupedBackground
         
-        [dimmedBackgroundView, collectionView, headerView, footerView, closeButton].forEach {
+        attribute()
+        layout()
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        collectionView.reloadData()
+    }
+    
+    private func attribute() {
+        collectionView.backgroundColor = .systemGroupedBackground
+        collectionView.register(CalendarDateCollectionViewCell.self, forCellWithReuseIdentifier: CalendarDateCollectionViewCell.reuseIdentifier)
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        
+        headerView.baseDate = startBaseDate
+        headerView.monthPickerButton.addTarget(self, action: #selector(didTapMonthPickerButton), for: .touchUpInside)
+        
+        monthPicker.isHidden = true
+        monthPicker.dataSource = self
+        monthPicker.delegate = self
+        monthPicker.setAvailableDate(date: startBaseDate)
+        
+        [dimmedBackgroundView, collectionView, headerView, footerView, closeButton, monthPicker].forEach {
             view.addSubview($0)
         }
-        
+    }
+    
+    private func layout() {
         dimmedBackgroundView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
@@ -153,21 +190,40 @@ class CalendarPickerViewController: UIViewController {
             $0.size.equalTo(device.calendarCloseButtonSize)
         }
         
-        collectionView.register(CalendarDateCollectionViewCell.self, forCellWithReuseIdentifier: CalendarDateCollectionViewCell.reuseIdentifier)
-        
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        
-        headerView.baseDate = startBaseDate
-    }
-    
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        collectionView.reloadData()
+        monthPicker.snp.makeConstraints {
+            $0.top.equalTo(headerView.snp.bottom).offset(-30)
+            $0.centerX.equalTo(collectionView)
+            $0.width.equalTo(collectionView).inset(10)
+            $0.height.equalTo(collectionView).offset(20)
+        }
     }
     
     @objc private func dismissCalendar() {
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    @objc private func didTapMonthPickerButton() {
+        self.monthPicker.isHidden.toggle()
+        
+        if monthPicker.isHidden == true {
+            collectionView.reloadData()
+            self.footerView.buttonLabel = "날짜를 선택하세요"
+            self.footerView.selectButton.isEnabled = false
+            UIView.animate(withDuration: 0.2) {
+                let angle = CGAffineTransform(rotationAngle: 0)
+                self.headerView.monthPickerButton.imageView?.transform = angle
+                self.monthPicker.alpha = 0
+            }
+        } else {
+            self.dateInterval.removeAll()
+            self.footerView.buttonLabel = "확인"
+            self.footerView.selectButton.isEnabled = true
+            UIView.animate(withDuration: 0.2) {
+                let angle = CGAffineTransform(rotationAngle: .pi/2)
+                self.headerView.monthPickerButton.imageView?.transform = angle
+                self.monthPicker.alpha = 1
+            }
+        }
     }
 }
 
@@ -216,24 +272,24 @@ private extension CalendarPickerViewController {
     
     func generateStartOfNextMonth(
         using firstDayOfDisplayedMonth: Date) -> [Day] {
-        guard
-            let lastDayInMonth = calendar.date(byAdding: DateComponents(month: 1, day: -1), to: firstDayOfDisplayedMonth)
-        else {
-            return []
-        }
-        
-        let additionalDays = 7 - calendar.component(.weekday, from: lastDayInMonth)
-        guard additionalDays > 0 else {
-            return []
-        }
-        
-        let days: [Day] = (1...additionalDays)
-            .map {
-                generateDay(offsetBy: $0, for: lastDayInMonth, isWithinDisplayedMonth: false)
+            guard
+                let lastDayInMonth = calendar.date(byAdding: DateComponents(month: 1, day: -1), to: firstDayOfDisplayedMonth)
+            else {
+                return []
             }
-        
-        return days
-    }
+            
+            let additionalDays = 7 - calendar.component(.weekday, from: lastDayInMonth)
+            guard additionalDays > 0 else {
+                return []
+            }
+            
+            let days: [Day] = (1...additionalDays)
+                .map {
+                    generateDay(offsetBy: $0, for: lastDayInMonth, isWithinDisplayedMonth: false)
+                }
+            
+            return days
+        }
     
     enum CalendarDataError: Error {
         case metadataGeneration
@@ -313,11 +369,16 @@ extension CalendarPickerViewController: UICollectionViewDelegateFlowLayout {
         return UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
     }
     
-    private func updateFooterButtonLabel(day: Day) {
+    private func updateFooterButtonLabel(day: Day?) {
         if dateInterval.count == 2 {
             dateInterval.removeAll()
         }
-        dateInterval.append(day.date)
+        
+        if let day = day {
+            dateInterval.append(day.date)
+        } else {
+            dateInterval.removeAll()
+        }
         
         switch dateInterval.count {
         case 1:
@@ -343,6 +404,56 @@ extension CalendarPickerViewController: UICollectionViewDelegateFlowLayout {
             self.footerView.selectButton.isEnabled = false
             self.footerView.buttonLabel = "날짜를 선택하세요"
         }
+    }
+}
+
+extension CalendarPickerViewController: UIPickerViewDelegate, UIPickerViewDataSource {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 2
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        guard let pickerView = pickerView as? CalendarYearPickerView else { return 0 }
+        
+        switch component {
+        case 0:
+            return pickerView.availableYear.count
+        case 1:
+            return pickerView.allMonth.count
+        default:
+            return 0
+        }
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        
+        guard let pickerView = pickerView as? CalendarYearPickerView else { return nil }
+        
+        switch component {
+        case 0:
+            return "\(pickerView.availableYear[row])년"
+        case 1:
+            return "\(pickerView.allMonth[row])월"
+        default:
+            return ""
+        }
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        
+        guard let pickerView = pickerView as? CalendarYearPickerView else { return }
+        
+        switch component {
+        case 0:
+            pickerView.selectedYear = pickerView.availableYear[row]
+            
+        case 1:
+            pickerView.selectedMonth = pickerView.allMonth[row]
+        default:
+            break
+        }
+        
+        startBaseDate = Date("\(pickerView.selectedYear)/\(pickerView.selectedMonth)")
     }
 }
 

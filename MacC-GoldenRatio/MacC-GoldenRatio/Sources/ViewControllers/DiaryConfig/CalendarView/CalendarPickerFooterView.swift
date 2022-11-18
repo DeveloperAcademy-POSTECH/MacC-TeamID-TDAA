@@ -22,6 +22,7 @@ class CalendarPickerFooterView: UIView {
         button.backgroundColor = .sandbrownColor
         button.layer.cornerRadius = 5
         button.addTarget(self, action: #selector(selectButtonTapped), for: .touchUpInside)
+        button.isEnabled = false
         return button
     }()
     

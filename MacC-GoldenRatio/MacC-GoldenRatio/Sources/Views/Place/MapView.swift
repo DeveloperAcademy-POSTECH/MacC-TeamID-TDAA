@@ -36,6 +36,10 @@ class MapView: UIView, MKMapViewDelegate, CLLocationManagerDelegate {
 	func bind(_ viewModel: MapViewModel) {
 		let allAnnotations = self.map.annotations
 		self.map.removeAnnotations(allAnnotations)
+		
+		let locations = viewModel.mapData
+			.value.first?.diaryLocation
+		
 		viewModel.mapAnnotations
 			.asObservable()
 			.subscribe(onNext: { data in
@@ -48,14 +52,11 @@ class MapView: UIView, MKMapViewDelegate, CLLocationManagerDelegate {
 		viewModel.mapCellData
 			.asObservable()
 			.subscribe(onNext: { data in
-				let location = data.first?.locationCoordinate ?? [37.56667, 126.97806]
+				let location = data.first?.locationCoordinate ?? [locations?.locationCoordinate[0] ?? 37.56667, locations?.locationCoordinate[1] ?? 126.97806]
 				let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: location[0], longitude: location[1]), latitudinalMeters: CLLocationDistance(exactly: 15000) ?? 0, longitudinalMeters: CLLocationDistance(exactly: 15000) ?? 0)
 				self.map.setRegion(self.map.regionThatFits(region), animated: true)
 			})
 			.disposed(by: disposeBag)
-		
-		let locations = viewModel.mapData
-			.value.first?.diaryLocation
 		
 		let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: locations?.locationCoordinate[0] ?? 37.56667, longitude: locations?.locationCoordinate[1] ?? 126.97806), latitudinalMeters: CLLocationDistance(exactly: 15000) ?? 0, longitudinalMeters: CLLocationDistance(exactly: 15000) ?? 0)
 		self.map.setRegion(self.map.regionThatFits(region), animated: true)

@@ -34,15 +34,14 @@ class MapView: UIView, MKMapViewDelegate, CLLocationManagerDelegate {
 	}
 	
 	func bind(_ viewModel: MapViewModel) {
-		let allAnnotations = self.map.annotations
-		self.map.removeAnnotations(allAnnotations)
-		
 		let locations = viewModel.mapData
 			.value.first?.diaryLocation
 		
 		viewModel.mapAnnotations
 			.asObservable()
 			.subscribe(onNext: { data in
+				let allAnnotations = self.map.annotations
+				self.map.removeAnnotations(allAnnotations)
 				data.forEach { annotations in
 					self.map.addAnnotations(annotations)
 				}

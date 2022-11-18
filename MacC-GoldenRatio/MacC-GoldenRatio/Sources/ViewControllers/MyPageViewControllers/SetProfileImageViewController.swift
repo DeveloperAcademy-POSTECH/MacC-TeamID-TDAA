@@ -59,6 +59,7 @@ class SetProfileImageViewController: UIViewController {
         textField.setUnderLine(width: 1)
         textField.tintColor = .calendarWeeklyGrayColor
         textField.clearButtonMode = .always
+        textField.placeholder = "닉네임을 입력해주세요."
         
         return textField
     }()

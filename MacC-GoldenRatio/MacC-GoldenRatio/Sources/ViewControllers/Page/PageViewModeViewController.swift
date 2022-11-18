@@ -241,6 +241,6 @@ extension PageViewModeViewController: UICollectionViewDelegateFlowLayout {
         if section == 0 {
            return CGSize(width: collectionView.frame.width, height: 0)
         }
-        return CGSize(width: collectionView.frame.width, height: 30)
+        return CGSize(width: collectionView.frame.width, height: 10)
     }
 }

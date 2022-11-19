@@ -21,7 +21,7 @@ class SegmentedControlView: UIView, SegmentedControlViewDelegate {
 	
 	weak var delegate: SegmentedControlViewDelegate?
 	
-	private lazy var scrollView: UIScrollView = {
+	var scrollView: UIScrollView = {
 		let scrollView = UIScrollView()
 		scrollView.contentSize = CGSize(width: .zero, height: 30)
 		scrollView.showsVerticalScrollIndicator = false
@@ -153,9 +153,9 @@ class SegmentedControlView: UIView, SegmentedControlViewDelegate {
 			titleLabels[selectedIndex+1].textColor = config.selectedLabelColor
 			selectedIndex = selectedIndex+1
 			delegate?.segmentedControl(didChange: selectedIndex)
-			if titleLabels.count-1 > selectedIndex+1 {
-				self.scrollView.setContentOffset(CGPoint(x: Int(UIScreen.main.bounds.size.width)/3*selectedIndex, y: 0), animated: true)
-			} else if titleLabels.count == selectedIndex+1 {
+			if Int(scrollView.contentOffset.x) == 0 && selectedIndex > 2 {
+				self.scrollView.setContentOffset(CGPoint(x: Int(UIScreen.main.bounds.size.width)/3, y: 0), animated: true)
+			} else if Int(scrollView.contentOffset.x) != 0 && Int(scrollView.contentOffset.x)*selectedIndex >= Int(UIScreen.main.bounds.size.width)/3*selectedIndex && Int(scrollView.contentOffset.x) < Int(UIScreen.main.bounds.size.width)/3*(selectedIndex-2) {
 				self.scrollView.setContentOffset(CGPoint(x: Int(UIScreen.main.bounds.size.width)/3*(selectedIndex-2), y: 0), animated: true)
 			}
 		}
@@ -169,7 +169,7 @@ class SegmentedControlView: UIView, SegmentedControlViewDelegate {
 			titleLabels[selectedIndex-1].textColor = config.selectedLabelColor
 			selectedIndex = selectedIndex-1
 			delegate?.segmentedControl(didChange: selectedIndex)
-			if titleLabels.count-1 > selectedIndex+1 {
+			if Int(scrollView.contentOffset.x) > Int(UIScreen.main.bounds.size.width)/3*selectedIndex {
 				self.scrollView.setContentOffset(CGPoint(x: Int(UIScreen.main.bounds.size.width)/3*selectedIndex, y: 0), animated: true)
 			}
 		}
@@ -177,7 +177,6 @@ class SegmentedControlView: UIView, SegmentedControlViewDelegate {
 }
 
 struct SegmentedControlConfiguration {
-	
 	let titles: [String]
 	let font: UIFont
 	let spacing: CGFloat

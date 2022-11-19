@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "passfort2.png",
+      "filename" : "knife.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "passfort2@2x.png",
+      "filename" : "knife@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "passfort2@3x.png",
+      "filename" : "knife@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

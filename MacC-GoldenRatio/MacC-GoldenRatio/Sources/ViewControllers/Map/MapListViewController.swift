@@ -61,9 +61,9 @@ class MapListViewController: UIViewController {
 		view.backgroundColor = .white
 		[mapListView, segmentedControlView].forEach { view.addSubview($0) }
 		segmentedControlView.snp.makeConstraints {
-			$0.top.equalTo(view.safeAreaLayoutGuide).inset(15)
+			$0.top.equalTo(view.safeAreaLayoutGuide).inset(20)
 			$0.leading.trailing.equalTo(view.safeAreaLayoutGuide)
-			$0.height.equalTo(35)
+			$0.height.equalTo(46)
 		}
 		mapListView.snp.makeConstraints {
 			$0.top.equalTo(segmentedControlView.snp.bottom)

@@ -62,10 +62,10 @@ class MapListView: UICollectionView {
 
 extension MapListView: UICollectionViewDelegateFlowLayout {
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-		return CGSize(width: self.bounds.width-40, height: 110)
+		return CGSize(width: self.bounds.width-40, height: 141)
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-		return 20
+		return 0
 	}
 }

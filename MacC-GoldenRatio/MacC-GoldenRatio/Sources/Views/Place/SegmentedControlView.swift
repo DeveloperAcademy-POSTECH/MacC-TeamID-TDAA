@@ -65,6 +65,7 @@ class SegmentedControlView: UIView, SegmentedControlViewDelegate {
 		
 		scrollView.addSubview(hStack)
 		hStack.snp.makeConstraints {
+			$0.height.equalTo(46)
 			$0.edges.equalToSuperview()
 		}
 		

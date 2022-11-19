@@ -233,14 +233,12 @@ extension PageViewModeViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         
         guard let visibleCellIndex = collectionView.indexPathsForVisibleItems.first else { return }
-        print("fuckyou1")
         self.pageViewModeViewModel.selectedPageIndexSubject.onNext((visibleCellIndex.section, visibleCellIndex.item))
     }
     
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         
         guard let visibleCellIndex = collectionView.indexPathsForVisibleItems.first else { return }
-        print("fuckyou2")
         self.pageViewModeViewModel.selectedPageIndexSubject.onNext((visibleCellIndex.section, visibleCellIndex.item))
 
     }

@@ -42,7 +42,6 @@ class PageEditModeViewModel {
     func setCurrentPageItemObservable() -> Observable<[Item]> {
         return Observable.combineLatest(diaryObservable, selectedPageIndexSubject)
             .map { (diary, selectedPageIndex) in
-                print(selectedPageIndex)
                 return diary.diaryPages[selectedPageIndex.0].pages[selectedPageIndex.1].items
             }
     }
@@ -93,6 +92,7 @@ class PageEditModeViewModel {
         var newPageIndex = 0
         
         selectedPageIndexSubject
+            .subscribe(on: self.pageViewModelSerialQueue)
             .observe(on: self.pageViewModelSerialQueue)
             .take(1)
             .subscribe {
@@ -102,6 +102,7 @@ class PageEditModeViewModel {
             .disposed(by: self.disposeBag)
         
         diaryObservable
+            .subscribe(on: self.pageViewModelSerialQueue)
             .observe(on: self.pageViewModelSerialQueue)
             .take(1)
             .subscribe(onNext: {
@@ -128,6 +129,7 @@ class PageEditModeViewModel {
         var selectedPageIndex = 0
         
         selectedPageIndexSubject
+            .subscribe(on: self.pageViewModelSerialQueue)
             .observe(on: self.pageViewModelSerialQueue)
             .take(1)
             .subscribe {
@@ -137,6 +139,7 @@ class PageEditModeViewModel {
             .disposed(by: self.disposeBag)
         
         diaryObservable
+            .subscribe(on: self.pageViewModelSerialQueue)
             .observe(on: self.pageViewModelSerialQueue)
             .take(1)
             .subscribe(onNext: {
@@ -171,7 +174,6 @@ class PageEditModeViewModel {
             .take(1)
             .subscribe { (selectedPageIndex, maxPageIndex) in
                 if selectedPageIndex.1 + 1 <= maxPageIndex {
-                    print("moveToNextPage")
                     self.selectedPageIndexSubject.onNext((selectedPageIndex.0, selectedPageIndex.1 + 1))
                 } else {
                     print("마지막 페이지입니다.")
@@ -206,7 +208,6 @@ class PageEditModeViewModel {
             .observe(on: self.pageViewModelSerialQueue)
             .take(1)
             .subscribe {
-                print("updateCurrentPageDataToDiaryModel selectedPageIndex")
                 selectedDayIndex = $0.0
                 selectedPageIndex = $0.1
             }
@@ -229,14 +230,11 @@ class PageEditModeViewModel {
                 return newItems
             }
             .subscribe(onNext: { newItems in
-                
                 if var newDiary = try? self.diaryObservable.value() {
                     newDiary.diaryPages[selectedDayIndex].pages[selectedPageIndex].items = newItems
                     
-                    print("updateCurrentPageDataToDiaryModel diaryobservableOnNext")
                     self.diaryObservable.onNext(newDiary)
                 }
-                
             })
             .disposed(by: self.disposeBag)
     }

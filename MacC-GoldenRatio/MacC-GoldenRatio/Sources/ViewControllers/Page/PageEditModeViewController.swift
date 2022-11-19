@@ -137,7 +137,6 @@ class PageEditModeViewController: UIViewController {
         self.pageEditModeViewModel.currentPageItemObservable
             .observe(on: MainScheduler.instance)
             .map { items in
-                print("setStickerViews")
                 let stickerViews: [StickerView] = items.map { item in
                     
                     switch item.itemType {

@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "passfort.png",
+      "filename" : "passport.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "passfort@2x.png",
+      "filename" : "passport@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "passfort@3x.png",
+      "filename" : "passport@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

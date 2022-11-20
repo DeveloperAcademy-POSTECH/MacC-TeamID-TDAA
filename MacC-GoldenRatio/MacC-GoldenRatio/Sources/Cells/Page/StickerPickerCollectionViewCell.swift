@@ -32,7 +32,9 @@ class StickerPickerCollectionViewCell: UICollectionViewCell {
     
     private func configureConstraints() {
         imageView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.horizontalEdges.equalToSuperview()
+            make.centerY.equalToSuperview()
+            make.height.equalTo(imageView.snp.width)
         }
     }
     

@@ -10,7 +10,7 @@ import UIKit
 class StickerPickerViewController: UIViewController {
     var completion: (_ sticker: String) -> Void = { sticker in }
     private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
-    private let stickerArray: [String] = ["broom", "ghost1", "ghost2", "ghost3", "ghost4", "ghost5", "ghost6", "ghost7", "pot", "pumpkin1", "pumpkin2", "pumpkin3", "wizardHat", "manLong", "manShort", "womanLong", "womanShort", "passport", "hamburgerSticker" ,"pizzaSticker", "fireSticker"]
+    private let stickerArray: [String] = ["manLong", "manLong2", "womanLong", "womanLong2", "manShort", "womanShort", "neckPillow", "fork", "knife", "camera", "plate", "passport", "broom", "ghost1", "ghost2", "ghost3", "ghost4", "ghost5", "ghost6", "ghost7", "pot", "pumpkin1", "pumpkin2", "pumpkin3", "wizardHat"]
     
     private lazy var xMarkButton: UIButton = {
         let button = UIButton()

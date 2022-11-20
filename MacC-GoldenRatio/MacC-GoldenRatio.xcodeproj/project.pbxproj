@@ -22,7 +22,9 @@
 		0A5E904828E857E200B381B8 /* StickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5E904728E857E200B381B8 /* StickerView.swift */; };
 		0A5E904A28E858C000B381B8 /* StickerContollerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5E904928E858C000B381B8 /* StickerContollerView.swift */; };
 		0A5E904C28E858D200B381B8 /* StickerBorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5E904B28E858D200B381B8 /* StickerBorderView.swift */; };
-		0A5E904F28E9948B00B381B8 /* PageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5E904E28E9948B00B381B8 /* PageViewModel.swift */; };
+		0A5E904F28E9948B00B381B8 /* PageViewModeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5E904E28E9948B00B381B8 /* PageViewModeViewModel.swift */; };
+		0A6230CD29290492008CC131 /* PageSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6230CC29290492008CC131 /* PageSection.swift */; };
+		0A6230CF2929075A008CC131 /* PageEditModeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6230CE2929075A008CC131 /* PageEditModeViewModel.swift */; };
 		0A6F107128FBFA7C002FB611 /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6F107028FBFA7C002FB611 /* MenuTableViewCell.swift */; };
 		0A6F107528FC3782002FB611 /* LicenseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6F107428FC3782002FB611 /* LicenseViewController.swift */; };
 		0A6F107D28FC6259002FB611 /* License.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0A6F107C28FC6258002FB611 /* License.txt */; };
@@ -182,7 +184,9 @@
 		0A5E904728E857E200B381B8 /* StickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerView.swift; sourceTree = "<group>"; };
 		0A5E904928E858C000B381B8 /* StickerContollerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerContollerView.swift; sourceTree = "<group>"; };
 		0A5E904B28E858D200B381B8 /* StickerBorderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerBorderView.swift; sourceTree = "<group>"; };
-		0A5E904E28E9948B00B381B8 /* PageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewModel.swift; sourceTree = "<group>"; };
+		0A5E904E28E9948B00B381B8 /* PageViewModeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewModeViewModel.swift; sourceTree = "<group>"; };
+		0A6230CC29290492008CC131 /* PageSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageSection.swift; sourceTree = "<group>"; };
+		0A6230CE2929075A008CC131 /* PageEditModeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageEditModeViewModel.swift; sourceTree = "<group>"; };
 		0A6F107028FBFA7C002FB611 /* MenuTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuTableViewCell.swift; sourceTree = "<group>"; };
 		0A6F107428FC3782002FB611 /* LicenseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LicenseViewController.swift; sourceTree = "<group>"; };
 		0A6F107C28FC6258002FB611 /* License.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = License.txt; sourceTree = "<group>"; };
@@ -376,13 +380,14 @@
 		0A5E904D28E9947800B381B8 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				0A5E904E28E9948B00B381B8 /* PageViewModel.swift */,
+				0A5E904E28E9948B00B381B8 /* PageViewModeViewModel.swift */,
 				E2B025BB28EB326C00B73891 /* MyHomeViewModel.swift */,
 				0A3ED14028F98956000D55D8 /* MyPageViewModel.swift */,
 				E2BEC45D28F806C40056E755 /* MyAlbumViewModel.swift */,
 				E2C27501290D62EB00319885 /* DiaryCollectionViewModel.swift */,
 				E2993A6729195B9400409C9B /* AlbumCollectionViewModel.swift */,
 				E2838BE7291E3A4C0013DD82 /* MapViewModel.swift */,
+				0A6230CE2929075A008CC131 /* PageEditModeViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -604,6 +609,7 @@
 				CC6C7F22291D2A6300B88888 /* DiaryDayModel.swift */,
 				E2838BE5291E38EE0013DD82 /* MapModel.swift */,
 				E223B1B32927766D00BB5B17 /* MapCategory.swift */,
+				0A6230CC29290492008CC131 /* PageSection.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -905,6 +911,7 @@
 				CC6C7F23291D2A6300B88888 /* DiaryDayModel.swift in Sources */,
 				E21342E328F6B6BC0048D9CF /* MapData.swift in Sources */,
 				0AAB2ACD28EAFD78009FBD96 /* MapSearchViewController.swift in Sources */,
+				0A6230CD29290492008CC131 /* PageSection.swift in Sources */,
 				0A5E904528E8578400B381B8 /* PageEditModeViewController.swift in Sources */,
 				E2FA41A328F48C1B00BBA354 /* DiaryCell.swift in Sources */,
 				0AAB2AD528EC1F11009FBD96 /* StickerPickerViewController.swift in Sources */,
@@ -932,7 +939,7 @@
 				CC65515028F0874800E637A2 /* MyDiaryPagesViewController.swift in Sources */,
 				0AEC53EC28EF211D001B0169 /* StickerViewData.swift in Sources */,
 				0A30BD49291A93AE00079326 /* PageViewModeCollectionViewCell.swift in Sources */,
-				0A5E904F28E9948B00B381B8 /* PageViewModel.swift in Sources */,
+				0A5E904F28E9948B00B381B8 /* PageViewModeViewModel.swift in Sources */,
 				CC242EBE291CDC7F002AB747 /* DiaryDaysCollectionViewModel.swift in Sources */,
 				0AAB2ADE28EDA511009FBD96 /* MapStickerView.swift in Sources */,
 				0AAB2AE028EDA553009FBD96 /* ImageStickerView.swift in Sources */,
@@ -1000,6 +1007,7 @@
 				E28F080428E4655100832F4A /* SceneDelegate.swift in Sources */,
 				CCBF68932924D8A800AD2B63 /* CalendarYearPickerView.swift in Sources */,
 				E2DA8F6228F856A10098DD94 /* MyAlbumPhotoViewController.swift in Sources */,
+				0A6230CF2929075A008CC131 /* PageEditModeViewModel.swift in Sources */,
 				E2838BE6291E38EE0013DD82 /* MapModel.swift in Sources */,
 				E2FA41A128F4752D00BBA354 /* DiaryCollectionViewCell.swift in Sources */,
 				CC34140A29193C0A00A1FD17 /* DiaryColorCollectionView.swift in Sources */,

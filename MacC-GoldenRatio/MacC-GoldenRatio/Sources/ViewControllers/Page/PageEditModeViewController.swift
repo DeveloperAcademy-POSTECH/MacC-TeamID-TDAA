@@ -12,13 +12,15 @@ import SnapKit
 import UIKit
 
 class PageEditModeViewController: UIViewController {
+    private var completion: ((Diary, (Int,Int)) -> Void)!
+    
     private lazy var newStickerDefaultSize = UIScreen.getDevice().stickerDefaultSize
     private lazy var newStickerAppearPoint = CGPoint(x: self.view.center.x - ( self.newStickerDefaultSize.width * 0.5 ), y: self.view.center.y - self.newStickerDefaultSize.height)
     
     private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
     private let imagePicker = UIImagePickerController()
     private var myDiariesViewModalBackgroundView = UIView()
-    private var pageViewModel: PageViewModel!
+    private var pageEditModeViewModel: PageEditModeViewModel!
     
     private let backgroundView: UIView = {
         let backgroundImageView = UIView()
@@ -92,10 +94,11 @@ class PageEditModeViewController: UIViewController {
     }()
     
     // MARK: init
-    init(pageViewModel: PageViewModel) {
+    init(diary: Diary, selectedPageIndex: (Int,Int), completion: @escaping (Diary, (Int,Int)) -> Void) {
         super.init(nibName: nil, bundle: nil)
-        self.pageViewModel = pageViewModel
-        self.pageViewModel.setOldDiary()
+        
+        self.completion = completion
+        self.pageEditModeViewModel = PageEditModeViewModel(diary: diary, selectedPageIndex: selectedPageIndex)
     }
     
     required init?(coder: NSCoder) {
@@ -124,17 +127,16 @@ class PageEditModeViewController: UIViewController {
     }
     
     private func setPageDescription() {
-        self.pageViewModel.pageIndexDescriptionObservable
+        self.pageEditModeViewModel.pageIndexDescriptionObservable
             .observe(on: MainScheduler.instance)
             .bind(to: self.pageDescriptionLabel.rx.text)
-            .disposed(by: self.pageViewModel.disposeBag)
+            .disposed(by: self.pageEditModeViewModel.disposeBag)
     }
     
     private func setStickerViews() {
-        self.pageViewModel.currentPageItemObservable
+        self.pageEditModeViewModel.currentPageItemObservable
             .observe(on: MainScheduler.instance)
             .map { items in
-                print("setStickerViews")
                 let stickerViews: [StickerView] = items.map { item in
                     
                     switch item.itemType {
@@ -163,7 +165,7 @@ class PageEditModeViewController: UIViewController {
                 }
                 
             })
-            .disposed(by: self.pageViewModel.disposeBag)
+            .disposed(by: self.pageEditModeViewModel.disposeBag)
             
     }
     
@@ -199,13 +201,13 @@ class PageEditModeViewController: UIViewController {
         
         self.navigationController?.navigationBar.barTintColor = UIColor.appBackgroundColor
         
-        self.pageViewModel.selectedPageIndexSubject
+        self.pageEditModeViewModel.selectedPageIndexSubject
             .observe(on: MainScheduler.instance)
             .map{
                 ($0.0 + 1).description + "일차"
             }
             .bind(to: self.navigationItem.rx.title)
-            .disposed(by: self.pageViewModel.disposeBag)
+            .disposed(by: self.pageEditModeViewModel.disposeBag)
         
 		self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.navigationTitleFont, NSAttributedString.Key.foregroundColor:UIColor.black]
     }
@@ -308,7 +310,7 @@ class PageEditModeViewController: UIViewController {
     
     private func addImageSticker(image: UIImage?) {
         guard let image = image else { return }
-        guard let diaryUUID = try? pageViewModel.diaryObservable.value().diaryUUID else { return }
+        guard let diaryUUID = try? pageEditModeViewModel.diaryObservable.value().diaryUUID else { return }
         let imageStickerView = ImageStickerView(image: image, diaryUUID: diaryUUID, appearPoint: newStickerAppearPoint)
         self.addSticker(stickerView: imageStickerView)
     }
@@ -343,23 +345,23 @@ extension PageEditModeViewController {
     }
 
     @objc private func onTapAddNextPageMenu() {
-        self.pageViewModel.updateCurrentPageDataToDiaryModel(backgroundView: self.backgroundView)
-        self.pageViewModel.addNewPage(to: .nextToCurrentPage)
+        self.pageEditModeViewModel.updateCurrentPageDataToDiaryModel(backgroundView: self.backgroundView)
+        self.pageEditModeViewModel.addNewPage(to: .nextToCurrentPage)
     }
     
     @objc private func onTapDeleteCurrentPageMenu() {
-        self.pageViewModel.deleteCurrentPage()
+        self.pageEditModeViewModel.deleteCurrentPage()
     }
 
     @objc private func swipeAction(_ sender: UISwipeGestureRecognizer) {
         switch sender.direction {
         case .left:
-            self.pageViewModel.updateCurrentPageDataToDiaryModel(backgroundView: self.backgroundView)
-            self.pageViewModel.moveToNextPage()
+            self.pageEditModeViewModel.updateCurrentPageDataToDiaryModel(backgroundView: self.backgroundView)
+            self.pageEditModeViewModel.moveToNextPage()
             
         case .right:
-            self.pageViewModel.updateCurrentPageDataToDiaryModel(backgroundView: self.backgroundView)
-            self.pageViewModel.moveToPreviousPage()
+            self.pageEditModeViewModel.updateCurrentPageDataToDiaryModel(backgroundView: self.backgroundView)
+            self.pageEditModeViewModel.moveToPreviousPage()
             
         default:
             break
@@ -367,13 +369,29 @@ extension PageEditModeViewController {
     }
 
     @objc private func onTapNavigationCancel() {
-        self.pageViewModel.restoreOldDiary()
-        self.navigationController?.popViewController(animated: true)
+        self.pageEditModeViewModel.restoreOldDiary()
+        
+        DispatchQueue.main.async {
+            guard let diary = try? self.pageEditModeViewModel.diaryObservable.value() else  { return }
+            guard let selectedPageIndex = try? self.pageEditModeViewModel.selectedPageIndexSubject.value() else  { return }
+            
+            self.completion(diary, selectedPageIndex)
+            
+            self.navigationController?.popViewController(animated: true)
+        }
     }
 
     @objc private func onTapNavigationComplete() {
-        self.pageViewModel.updateCurrentPageDataToDiaryModel(backgroundView: self.backgroundView)
-        self.navigationController?.popViewController(animated: true)
+        self.pageEditModeViewModel.updateCurrentPageDataToDiaryModel(backgroundView: self.backgroundView)
+        
+        DispatchQueue.main.async {
+            guard let diary = try? self.pageEditModeViewModel.diaryObservable.value() else  { return }
+            guard let selectedPageIndex = try? self.pageEditModeViewModel.selectedPageIndexSubject.value() else  { return }
+            
+            self.completion(diary, selectedPageIndex)
+            
+            self.navigationController?.popViewController(animated: true)
+        }
     }
 }
 

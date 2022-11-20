@@ -35,6 +35,14 @@ class MapListViewController: UIViewController {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		if viewModel.selectDay.value-1 > 2 {
+			DispatchQueue.main.async {
+				self.segmentedControlView.scrollView.setContentOffset(CGPoint(x: Int(UIScreen.main.bounds.size.width)/3*(self.viewModel.selectDay.value-3), y: 0), animated: true)
+			}
+		}
+	}
 	
 	func configureSegmentedControl(titles: [String]) {
 		let config = SegmentedControlConfiguration(titles: titles,
@@ -61,12 +69,12 @@ class MapListViewController: UIViewController {
 		view.backgroundColor = .white
 		[mapListView, segmentedControlView].forEach { view.addSubview($0) }
 		segmentedControlView.snp.makeConstraints {
-			$0.top.equalTo(view.safeAreaLayoutGuide).inset(30)
+			$0.top.equalTo(view.safeAreaLayoutGuide).inset(20)
 			$0.leading.trailing.equalTo(view.safeAreaLayoutGuide)
-			$0.height.equalTo(40)
+			$0.height.equalTo(46)
 		}
 		mapListView.snp.makeConstraints {
-			$0.top.equalTo(view.safeAreaLayoutGuide).inset(80)
+			$0.top.equalTo(segmentedControlView.snp.bottom)
 			$0.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
 		}
 	}

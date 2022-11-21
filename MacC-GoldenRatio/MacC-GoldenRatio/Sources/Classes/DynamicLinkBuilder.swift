@@ -9,9 +9,11 @@ import FirebaseDynamicLinks
 
 class DynamicLinkBuilder {
     
-    static func createDynamicLink() {
-        guard let link = URL(string: "https://tdaa.page.link/test-page") else { return }
+    static func createDynamicLink(diaryUUID: String, completion: @escaping (String) -> Void) {
         let dynamicLinksDomainURIPrefix = "https://tdaa.page.link"
+        var shortenURL = dynamicLinksDomainURIPrefix
+        
+        guard let link = URL(string: "\(dynamicLinksDomainURIPrefix)/\(diaryUUID)") else { return }
         guard let linkBuilder = DynamicLinkComponents(link: link, domainURIPrefix: dynamicLinksDomainURIPrefix) else { return }
         
         linkBuilder.iOSParameters = DynamicLinkIOSParameters(bundleID: "com.San.MacC-GoldenRatio")
@@ -25,9 +27,11 @@ class DynamicLinkBuilder {
         guard let longDynamicLink = linkBuilder.url else { return }
         print("The long URL is: \(longDynamicLink)")
         
-        DynamicLinkComponents.shortenURL(longDynamicLink, options: nil) { url, warnings, error in
+        DynamicLinkComponents.shortenURL(longDynamicLink, options: nil) { url, _, _ in
             guard let url = url else { return }
-            print("The short URL is: \(url)")
+            shortenURL = url.absoluteString
+            completion(shortenURL)
         }
+
     }
 }

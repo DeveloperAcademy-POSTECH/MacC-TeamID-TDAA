@@ -101,7 +101,7 @@ class MyDiaryDaysViewController: UIViewController {
             .map { $0.row }
             .subscribe(onNext: { selectedDay in
                 Task {
-                    let vc = await PageViewModeViewController(diary: viewModel.myDiaryDaysModel.diary, selectedDayIndex: selectedDay, completion: { newDiary in
+                    let vc = PageViewModeViewController(diary: viewModel.myDiaryDaysModel.diary, selectedDayIndex: selectedDay, completion: { newDiary in
                         self.viewModel?.myDiaryDaysModel.diary = newDiary
                     })
                     self.navigationController?.setNavigationBarHidden(false, animated: false)
@@ -198,9 +198,11 @@ class MyDiaryDaysViewController: UIViewController {
     }
     
     @objc private func copyButtonTapped() {
-        UIPasteboard.general.string = self.viewModel!.myDiaryDaysModel.diary.diaryUUID
+        DynamicLinkBuilder.createDynamicLink(diaryUUID: self.viewModel!.myDiaryDaysModel.diary.diaryUUID) {
+            UIPasteboard.general.string = $0
+        }
+        
         self.view.showToastMessage("초대코드가 복사되었습니다.")
-        DynamicLinkBuilder.createDynamicLink()
     }
     
     @objc private func modifyButtonTapped() {

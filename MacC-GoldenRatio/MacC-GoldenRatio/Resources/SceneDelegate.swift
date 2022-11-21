@@ -21,6 +21,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.rootViewController = UINavigationController(rootViewController: SignInViewController()) // 시작 VC 작성해주기
         window.makeKeyAndVisible()
         self.window = window
+        
+        // 앱이 Running 상태가 아닐 때 DynamicLink 수신
+        if let userActivity = connectionOptions.userActivities.first {
+            self.scene(scene, continue: userActivity)
+        }
     }
     
     // DynamicLink 수신
@@ -28,9 +33,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if let incomingURL = userActivity.webpageURL {
             DynamicLinks.dynamicLinks().handleUniversalLink(incomingURL) { dynamiclink, error in
                 if let urlString = dynamiclink?.url?.absoluteString {
-                    if UIApplication.currentViewController()! is MyHomeViewController {
+                    guard let currentViewController = UIApplication.currentViewController() else { return }
+                    if currentViewController is MyHomeViewController {
                         print("HomeViewController")
-                    } else if UIApplication.currentViewController()! is SignInViewController {
+                        let myHomeViewController = currentViewController as! MyHomeViewController
+                        let diaryUUID = urlString.deletePrefix("https://tdaa.page.link")
+                        myHomeViewController.viewModel.updateJoinDiary(diaryUUID)
+                        myHomeViewController.reloadDiaryCell()
+                        myHomeViewController.view.showToastMessage("다이어리가 추가되었습니다.")
+                    } else if currentViewController is SignInViewController {
                         print("SignInViewController")
                     } else {
                         print("VC: \(UIApplication.currentViewController()!)")

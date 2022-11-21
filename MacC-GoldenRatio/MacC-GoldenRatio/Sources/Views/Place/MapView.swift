@@ -12,8 +12,10 @@ import UIKit
 class MapView: UIView, MKMapViewDelegate, CLLocationManagerDelegate {
 	private let disposeBag = DisposeBag()
 	private let map = MKMapView()
+	private let mapModel = MapModel()
 	private let myDevice = UIScreen.getDevice()
 	private let locationManager = CLLocationManager()
+	private var selectedLocation: Location?
 	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -51,9 +53,12 @@ class MapView: UIView, MKMapViewDelegate, CLLocationManagerDelegate {
 		
 		viewModel.mapCellData
 			.asObservable()
+			.map {
+				return self.selectedLocation != nil ? self.mapModel.changeIndex($0, selectedLocation: self.selectedLocation!) : $0
+			}
 			.subscribe(onNext: { data in
 				let location = data.first?.locationCoordinate ?? [locations?.locationCoordinate[0] ?? 37.56667, locations?.locationCoordinate[1] ?? 126.97806]
-				let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: location[0], longitude: location[1]), latitudinalMeters: CLLocationDistance(exactly: 15000) ?? 0, longitudinalMeters: CLLocationDistance(exactly: 15000) ?? 0)
+				let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: location[0], longitude: location[1]), span: self.map.region.span)
 				self.map.setRegion(self.map.regionThatFits(region), animated: true)
 			})
 			.disposed(by: disposeBag)
@@ -101,9 +106,11 @@ class MapView: UIView, MKMapViewDelegate, CLLocationManagerDelegate {
 			return
 		}
 		
+		selectedLocation = Location(locationName: view.title ?? "", locationAddress: view.address, locationCoordinate: [view.coordinate.latitude, view.coordinate.longitude], locationCategory: view.category)
+		
 		NotificationCenter.default.post(name: .mapAnnotationTapped, object: nil, userInfo: ["day": view.day, "selectedLocation": Location(locationName: view.title ?? "", locationAddress: view.address, locationCoordinate: [view.coordinate.latitude, view.coordinate.longitude], locationCategory: view.category)])
 		
-		let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: view.coordinate.latitude, longitude: view.coordinate.longitude), latitudinalMeters: CLLocationDistance(exactly: 15000) ?? 0, longitudinalMeters: CLLocationDistance(exactly: 15000) ?? 0)
+		let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: view.coordinate.latitude, longitude: view.coordinate.longitude), span: self.map.region.span)
 		self.map.setRegion(self.map.regionThatFits(region), animated: true)
 	}
 	
@@ -112,7 +119,7 @@ class MapView: UIView, MKMapViewDelegate, CLLocationManagerDelegate {
 			return
 		}
 		
-		let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: selectedLocation.locationCoordinate[0], longitude: selectedLocation.locationCoordinate[1]), latitudinalMeters: CLLocationDistance(exactly: 15000) ?? 0, longitudinalMeters: CLLocationDistance(exactly: 15000) ?? 0)
+		let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: selectedLocation.locationCoordinate[0], longitude: selectedLocation.locationCoordinate[1]), span: self.map.region.span)
 		
 		self.map.setRegion(self.map.regionThatFits(region), animated: true)
 	}

@@ -21,7 +21,7 @@ class SegmentedControlView: UIView, SegmentedControlViewDelegate {
 	
 	weak var delegate: SegmentedControlViewDelegate?
 	
-	private lazy var scrollView: UIScrollView = {
+	var scrollView: UIScrollView = {
 		let scrollView = UIScrollView()
 		scrollView.contentSize = CGSize(width: .zero, height: 30)
 		scrollView.showsVerticalScrollIndicator = false
@@ -39,6 +39,8 @@ class SegmentedControlView: UIView, SegmentedControlViewDelegate {
 	override init(frame: CGRect) {
 		super.init(frame: frame)
 		configure()
+		NotificationCenter.default.addObserver(self, selector: #selector(mapListSwipeLeft), name: .mapListSwipeLeft, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(mapListSwipeRight), name: .mapListSwipeRight, object: nil)
 	}
 	
 	required init?(coder: NSCoder) {
@@ -63,12 +65,19 @@ class SegmentedControlView: UIView, SegmentedControlViewDelegate {
 		
 		scrollView.addSubview(hStack)
 		hStack.snp.makeConstraints {
+			$0.height.equalTo(46)
 			$0.edges.equalToSuperview()
 		}
 		
 		layoutElements(config, hStack)
 		lineViews[selectedIndex].backgroundColor = config.selectedLineColor
 		titleLabels[selectedIndex].textColor = config.selectedLabelColor
+		
+		if selectedIndex > 2 {
+			DispatchQueue.main.async {
+				self.scrollView.setContentOffset(CGPoint(x: Int(UIScreen.main.bounds.size.width)/3*(self.selectedIndex-2), y: 0), animated: true)
+			}
+		}
 	}
 	
 	func segmentedControl(didChange index: Int) {
@@ -141,10 +150,39 @@ class SegmentedControlView: UIView, SegmentedControlViewDelegate {
 			delegate?.segmentedControl(didChange: selectedIndex)
 		}
 	}
+	
+	@objc private func mapListSwipeLeft() {
+		if titleLabels.count > selectedIndex+1 {
+			lineViews[selectedIndex].backgroundColor = config.unselectedLabelColor
+			titleLabels[selectedIndex].textColor = config.unselectedLabelColor
+			lineViews[selectedIndex+1].backgroundColor = config.selectedLineColor
+			titleLabels[selectedIndex+1].textColor = config.selectedLabelColor
+			selectedIndex = selectedIndex+1
+			delegate?.segmentedControl(didChange: selectedIndex)
+			if Int(scrollView.contentOffset.x) == 0 && selectedIndex > 2 {
+				self.scrollView.setContentOffset(CGPoint(x: Int(UIScreen.main.bounds.size.width)/3, y: 0), animated: true)
+			} else if Int(scrollView.contentOffset.x) != 0 && Int(scrollView.contentOffset.x)*selectedIndex >= Int(UIScreen.main.bounds.size.width)/3*selectedIndex && Int(scrollView.contentOffset.x) < Int(UIScreen.main.bounds.size.width)/3*(selectedIndex-2) {
+				self.scrollView.setContentOffset(CGPoint(x: Int(UIScreen.main.bounds.size.width)/3*(selectedIndex-2), y: 0), animated: true)
+			}
+		}
+	}
+	
+	@objc private func mapListSwipeRight() {
+		if 0 <= selectedIndex-1 {
+			lineViews[selectedIndex].backgroundColor = config.unselectedLabelColor
+			titleLabels[selectedIndex].textColor = config.unselectedLabelColor
+			lineViews[selectedIndex-1].backgroundColor = config.selectedLineColor
+			titleLabels[selectedIndex-1].textColor = config.selectedLabelColor
+			selectedIndex = selectedIndex-1
+			delegate?.segmentedControl(didChange: selectedIndex)
+			if Int(scrollView.contentOffset.x) > Int(UIScreen.main.bounds.size.width)/3*selectedIndex {
+				self.scrollView.setContentOffset(CGPoint(x: Int(UIScreen.main.bounds.size.width)/3*selectedIndex, y: 0), animated: true)
+			}
+		}
+	}
 }
 
 struct SegmentedControlConfiguration {
-	
 	let titles: [String]
 	let font: UIFont
 	let spacing: CGFloat

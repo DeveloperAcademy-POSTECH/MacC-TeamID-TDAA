@@ -31,7 +31,7 @@ final class MyHomeViewController: UIViewController {
 	}
 	
 	private func setupSubViews() {
-		self.view.backgroundColor = UIColor(named: "appBackgroundColor") ?? UIColor.white
+		self.view.backgroundColor = UIColor(named: "appBackgroundColor") ?? UIColor.clear
 
 		[collectionHeaderView, collectionView, addDiaryButton, profileButton].forEach { view.addSubview($0) }
         
@@ -132,7 +132,7 @@ final class MyHomeViewController: UIViewController {
 						self.reloadDiaryCell()
 						self.view.showToastMessage("다이어리가 추가되었습니다.")
 					} else {
-						self.view.showToastMessage("잘못된 초대코드입니다.")
+						self.view.showToastMessage("초대코드가 잘못되었습니다.")
 					}
 				}
 				self.dismiss(animated: true, completion: nil)

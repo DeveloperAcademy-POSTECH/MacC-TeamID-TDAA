@@ -12,15 +12,14 @@ import UIKit
 class MapView: UIView, MKMapViewDelegate, CLLocationManagerDelegate {
 	private let disposeBag = DisposeBag()
 	private let map = MKMapView()
+	private let mapModel = MapModel()
 	private let myDevice = UIScreen.getDevice()
 	private let locationManager = CLLocationManager()
+	private var selectedLocation: Location?
 	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
-		map.register(CustomAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
-		map.delegate = self
-		locationManager.requestWhenInUseAuthorization()
-		locationManager.delegate = self
+		setup()
 		layout()
 	}
 	
@@ -28,24 +27,44 @@ class MapView: UIView, MKMapViewDelegate, CLLocationManagerDelegate {
 		fatalError()
 	}
 	
+	func setup() {
+		map.register(CustomAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
+		map.delegate = self
+		locationManager.requestWhenInUseAuthorization()
+		locationManager.delegate = self
+		NotificationCenter.default.addObserver(self, selector: #selector(mapListTapped(notification:)), name: .mapListTapped, object: nil)
+	}
+	
 	func bind(_ viewModel: MapViewModel) {
 		let allAnnotations = self.map.annotations
 		self.map.removeAnnotations(allAnnotations)
-		viewModel.mapData
-			.value
-			.forEach { data in
-				let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: data.diaryLocation.locationCoordinate[0], longitude: data.diaryLocation.locationCoordinate[1]), latitudinalMeters: CLLocationDistance(exactly: 15000) ?? 0, longitudinalMeters: CLLocationDistance(exactly: 15000) ?? 0)
-				self.map.setRegion(self.map.regionThatFits(region), animated: true)
-				data.locations.forEach { location in
-					if data.day != 10 {
-						let pin = CustomAnnotation(coordinate: CLLocationCoordinate2D(latitude: location.locationCoordinate[0], longitude: location.locationCoordinate[1]), title: location.locationName, address: location.locationAddress, day: data.day, iconImage: "pin\(data.day%10)", category: location.locationCategory ?? "")
-						map.addAnnotation(pin)
-					} else {
-						let pin = CustomAnnotation(coordinate: CLLocationCoordinate2D(latitude: location.locationCoordinate[0], longitude: location.locationCoordinate[1]), title: location.locationName, address: location.locationAddress, day: data.day, iconImage: "pin10", category: location.locationCategory ?? "")
-						map.addAnnotation(pin)
-					}
+		
+		let locations = viewModel.mapData
+			.value.first?.diaryLocation
+		
+		viewModel.mapAnnotations
+			.asObservable()
+			.subscribe(onNext: { data in
+				data.forEach { annotations in
+					self.map.addAnnotations(annotations)
 				}
+			})
+			.disposed(by: disposeBag)
+		
+		viewModel.mapCellData
+			.asObservable()
+			.map {
+				return self.selectedLocation != nil ? self.mapModel.changeIndex($0, selectedLocation: self.selectedLocation!) : $0
 			}
+			.subscribe(onNext: { data in
+				let location = data.first?.locationCoordinate ?? [locations?.locationCoordinate[0] ?? 37.56667, locations?.locationCoordinate[1] ?? 126.97806]
+				let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: location[0], longitude: location[1]), span: self.map.region.span)
+				self.map.setRegion(self.map.regionThatFits(region), animated: true)
+			})
+			.disposed(by: disposeBag)
+		
+		let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: locations?.locationCoordinate[0] ?? 37.56667, longitude: locations?.locationCoordinate[1] ?? 126.97806), latitudinalMeters: CLLocationDistance(exactly: 15000) ?? 0, longitudinalMeters: CLLocationDistance(exactly: 15000) ?? 0)
+		self.map.setRegion(self.map.regionThatFits(region), animated: true)
 	}
 	
 	func layout() {
@@ -61,14 +80,9 @@ class MapView: UIView, MKMapViewDelegate, CLLocationManagerDelegate {
 		}
 		
 		var annotationView = self.map.dequeueReusableAnnotationView(withIdentifier: CustomAnnotationView.identifier)
-		
-		if annotationView == nil {
-			annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: CustomAnnotationView.identifier)
-			annotationView?.canShowCallout = false
-			annotationView?.contentMode = .scaleAspectFit
-		} else {
-			annotationView?.annotation = annotation
-		}
+		annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: CustomAnnotationView.identifier)
+		annotationView?.canShowCallout = false
+		annotationView?.contentMode = .scaleAspectFit
 		
 		let countLabel = UILabel()
 		countLabel.text = "\(annotation.day)"
@@ -91,6 +105,22 @@ class MapView: UIView, MKMapViewDelegate, CLLocationManagerDelegate {
 		guard let view = view.annotation as? CustomAnnotation else {
 			return
 		}
+		
+		selectedLocation = Location(locationName: view.title ?? "", locationAddress: view.address, locationCoordinate: [view.coordinate.latitude, view.coordinate.longitude], locationCategory: view.category)
+		
 		NotificationCenter.default.post(name: .mapAnnotationTapped, object: nil, userInfo: ["day": view.day, "selectedLocation": Location(locationName: view.title ?? "", locationAddress: view.address, locationCoordinate: [view.coordinate.latitude, view.coordinate.longitude], locationCategory: view.category)])
+		
+		let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: view.coordinate.latitude, longitude: view.coordinate.longitude), span: self.map.region.span)
+		self.map.setRegion(self.map.regionThatFits(region), animated: true)
+	}
+	
+	@objc private func mapListTapped(notification: NSNotification) {
+		guard let selectedLocation = notification.userInfo?["location"] as? Location else {
+			return
+		}
+		
+		let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: selectedLocation.locationCoordinate[0], longitude: selectedLocation.locationCoordinate[1]), span: self.map.region.span)
+		
+		self.map.setRegion(self.map.regionThatFits(region), animated: true)
 	}
 }

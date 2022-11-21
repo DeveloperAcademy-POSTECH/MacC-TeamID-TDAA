@@ -122,7 +122,7 @@ class MyPageViewController: UIViewController {
         DispatchQueue.main.async {
 			self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
 			self.navigationController?.interactivePopGestureRecognizer?.delegate = self
-            self.view.backgroundColor = .backgroundTexture
+            self.view.backgroundColor = UIColor.appBackgroundColor
             self.setupViewModel()
             self.configureViews()
             self.configureNickName()

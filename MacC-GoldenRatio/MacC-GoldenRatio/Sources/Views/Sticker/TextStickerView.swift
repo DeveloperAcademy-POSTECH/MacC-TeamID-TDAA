@@ -111,7 +111,7 @@ class TextStickerView: StickerView {
     private func bindTextStickerContents() async {
         
         self.stickerViewData?.contentsObservable
-            .observe(on: MainScheduler.asyncInstance)
+            .observe(on: MainScheduler.instance)
             .map {
                 return $0[0]
             }
@@ -155,7 +155,7 @@ class TextStickerView: StickerView {
         // just 초기화
         Observable
             .combineLatest(stickerViewData.frameObservable, stickerViewData.transitionObservable)
-            .observe(on:MainScheduler.asyncInstance)
+            .observe(on:MainScheduler.instance)
             .take(1)
             .subscribe(onNext: {
                 self.textStickerDefaultUI = ($0, $1)
@@ -165,7 +165,7 @@ class TextStickerView: StickerView {
         
         Observable
             .combineLatest(self.textStickerViewMode, stickerViewData.frameObservable, stickerViewData.transitionObservable)
-            .observe(on:MainScheduler.asyncInstance)
+            .observe(on:MainScheduler.instance)
             .subscribe(onNext: {
                 
                 switch $0 {
@@ -181,7 +181,7 @@ class TextStickerView: StickerView {
     
     private func setTextStickerEditModePositionObservable() async {
         self.stickerViewData?.frameObservable
-            .observe(on: MainScheduler.asyncInstance)
+            .observe(on: MainScheduler.instance)
             .take(1)
             .subscribe(onNext: {
                 var targetFrame = $0
@@ -196,7 +196,7 @@ class TextStickerView: StickerView {
     private func bindTextStickerPositionByTextStickerMode() async {
         Observable
             .combineLatest(textStickerViewMode, textStickerEditTextModeUI)
-            .observe(on:MainScheduler.asyncInstance)
+            .observe(on:MainScheduler.instance)
             .subscribe(onNext: {
                 
                 switch $0 {
@@ -220,7 +220,7 @@ class TextStickerView: StickerView {
     private func bindTextStickerComponentByTextStickerEditMode() async {
 
         self.textStickerViewMode
-            .observe(on: MainScheduler.asyncInstance)
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: {
                 switch $0 {
                 case .editText:

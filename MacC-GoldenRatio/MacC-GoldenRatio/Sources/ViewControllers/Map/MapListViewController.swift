@@ -22,22 +22,18 @@ class MapListViewController: UIViewController {
 	}()
 	
 	let viewModel: MapViewModel
-	let day: Int
 	let selectedLocation: Location
 	
-	init(viewMdoel: MapViewModel, day: Int, selectedLocation: Location) {
+	init(viewMdoel: MapViewModel, selectedLocation: Location) {
 		self.viewModel = viewMdoel
-		self.day = day
 		self.selectedLocation = selectedLocation
 		super.init(nibName: nil, bundle: nil)
 		layout()
-		mapListView.bind(viewModel, MapModel(), day, selectedLocation)
 	}
 	
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
-	
 	
 	func configureSegmentedControl(titles: [String]) {
 		let config = SegmentedControlConfiguration(titles: titles,
@@ -46,35 +42,39 @@ class MapListViewController: UIViewController {
 												   selectedLabelColor: .black,
 												   unselectedLabelColor: UIColor(named: "separatorColor") ?? .placeholderText,
 												   selectedLineColor: .black,
-												   day: day-1)
+												   day: viewModel.selectDay.value-1)
 		segmentedControlView.configure(config)
 	}
 	
-	func bind(_ viewModel: MapViewModel,_ day: Int,_ selectedLocation: Location?) {
-		mapListView.delegate = nil
-		mapListView.dataSource = nil
-		mapListView.bind(viewModel, MapModel(), day, selectedLocation)
+	func bind(_ viewModel: MapViewModel, _ selectedLocation: Location?) {
+		mapListView.bind(viewModel, MapModel(), selectedLocation)
+		
+		mapListView.rx.modelSelected(Location.self)
+			.subscribe(onNext: { location in
+				NotificationCenter.default.post(name: .mapListTapped, object: nil, userInfo: ["location": location])
+			})
+			.disposed(by: disposeBag)
 	}
 	
 	func layout() {
 		view.backgroundColor = .white
 		[mapListView, segmentedControlView].forEach { view.addSubview($0) }
 		segmentedControlView.snp.makeConstraints {
-			$0.top.equalTo(view.safeAreaLayoutGuide).inset(30)
+			$0.top.equalTo(view.safeAreaLayoutGuide).inset(20)
 			$0.leading.trailing.equalTo(view.safeAreaLayoutGuide)
-			$0.height.equalTo(40)
+			$0.height.equalTo(46)
 		}
 		mapListView.snp.makeConstraints {
-			$0.top.equalTo(view.safeAreaLayoutGuide).inset(80)
+			$0.top.equalTo(segmentedControlView.snp.bottom)
 			$0.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
 		}
 	}
 }
 
 extension MapListViewController: SegmentedControlViewDelegate {
-	
 	func segmentedControl(didChange index: Int) {
-		bind(viewModel, index+1, nil)
+		Observable.just(index+1)
+			.bind(to: viewModel.selectDay)
+			.disposed(by: disposeBag)
 	}
-
 }

@@ -40,15 +40,15 @@ extension UIView {
     }
 	
 	func showToastMessage(_ message: String, font: UIFont = UIFont(name: "EF_Diary", size: 12) ?? UIFont.systemFont(ofSize: 12)) {
-		let toastLabel = UILabel(frame: CGRect(x: self.bounds.midX-90, y: self.frame.height - 150, width: 180, height: 30))
+		let toastLabel = UILabel(frame: CGRect(x: self.bounds.midX-90, y: self.frame.height - 150, width: 180, height: 42))
 		
-		toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+		toastLabel.backgroundColor = UIColor.black
 		toastLabel.textColor = UIColor.white
 		toastLabel.numberOfLines = 2
 		toastLabel.font = font
 		toastLabel.text = message
 		toastLabel.textAlignment = .center
-		toastLabel.layer.cornerRadius = 15
+		toastLabel.layer.cornerRadius = 20
 		toastLabel.clipsToBounds = true
 		
 		self.addSubview(toastLabel)

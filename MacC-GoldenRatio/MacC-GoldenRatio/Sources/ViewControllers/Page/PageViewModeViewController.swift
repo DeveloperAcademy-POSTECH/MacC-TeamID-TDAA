@@ -13,12 +13,14 @@ import RxDataSources
 
 class PageViewModeViewController: UIViewController {
     
-    private var pageViewModel: PageViewModel!
+    private var pageViewModeViewModel: PageViewModeViewModel!
     
     private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
     
     private var source: RxCollectionViewSectionedReloadDataSource<PageSection>!
 
+    private var completion: ((Diary) -> Void)!
+    
     private lazy var pageCollectionView: UICollectionView = {
         let collectionViewFlowLayout = UICollectionViewFlowLayout()
         collectionViewFlowLayout.minimumInteritemSpacing = 1
@@ -46,9 +48,10 @@ class PageViewModeViewController: UIViewController {
     }()
     
     // MARK: init
-    init(diary: Diary, selectedDayIndex: Int) async {
+    init(diary: Diary, selectedDayIndex: Int, completion: @escaping (Diary) -> Void) {
         super.init(nibName: nil, bundle: nil)
-        self.pageViewModel = await PageViewModel(diary: diary, selectedDayIndex: selectedDayIndex)
+        self.completion = completion
+        self.pageViewModeViewModel = PageViewModeViewModel(diary: diary, selectedDayIndex: selectedDayIndex)
     }
     
     required init?(coder: NSCoder) {
@@ -62,20 +65,20 @@ class PageViewModeViewController: UIViewController {
         self.view.backgroundColor = UIColor.appBackgroundColor
 
         self.configureSubView()
-        self.setPageDescription()
+        self.bindPageDescription()
         self.configurePageCollectionView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.pageViewModel.selectedPageIndex
+        self.pageViewModeViewModel.selectedPageIndexSubject
             .observe(on: MainScheduler.instance)
             .take(1)
             .subscribe(onNext: {
                 self.pageCollectionView.scrollToItem(at: IndexPath(item: $0.1, section: $0.0), at: .top, animated: true)
             })
-            .disposed(by: pageViewModel.disposeBag)
+            .disposed(by: pageViewModeViewModel.disposeBag)
     }
     
     private func configureSubView() {
@@ -94,11 +97,11 @@ class PageViewModeViewController: UIViewController {
         }
     }
     
-    private func setPageDescription() {
-        self.pageViewModel.pageIndexDescriptionObservable
+    private func bindPageDescription() {
+        self.pageViewModeViewModel.pageIndexDescriptionObservable
             .observe(on: MainScheduler.instance)
             .bind(to: self.pageDescriptionLabel.rx.text)
-            .disposed(by: self.pageViewModel.disposeBag)
+            .disposed(by: self.pageViewModeViewModel.disposeBag)
     }
     
     private func configureNavigationBar() {
@@ -122,13 +125,13 @@ class PageViewModeViewController: UIViewController {
         
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.navigationTitleFont, NSAttributedString.Key.foregroundColor:UIColor.black]
         
-        self.pageViewModel.selectedPageIndex
+        self.pageViewModeViewModel.selectedPageIndexSubject
             .observe(on: MainScheduler.instance)
             .map{
                 ($0.0 + 1).description + "일차"
             }
             .bind(to: self.navigationItem.rx.title)
-            .disposed(by: self.pageViewModel.disposeBag)
+            .disposed(by: self.pageViewModeViewModel.disposeBag)
     }
     
     private func configurePageCollectionView() {
@@ -160,13 +163,19 @@ class PageViewModeViewController: UIViewController {
             }
         })
         
-        pageViewModel.pageCollectionViewData
+        pageViewModeViewModel.pageCollectionViewData
             .bind(to: pageCollectionView.rx.items(dataSource: source))
-            .disposed(by: pageViewModel.disposeBag)
+            .disposed(by: pageViewModeViewModel.disposeBag)
     }
     
     @objc private func onTapNavigationBack() {
-        self.navigationController?.popViewController(animated: true)
+        self.pageViewModeViewModel.diaryObservable
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: {
+                self.completion($0)
+                self.navigationController?.popViewController(animated: true)
+            })
+            .disposed(by: self.pageViewModeViewModel.disposeBag)
     }
     
     @objc private func onTapNavigationMenu() {
@@ -178,13 +187,20 @@ class PageViewModeViewController: UIViewController {
     }
     
     @objc private func onTapEditCurrentPage() {
-        let viewController = PageViewController(pageViewModel: self.pageViewModel)
+        guard let diary = try? self.pageViewModeViewModel.diaryObservable.value() else  { return }
+        guard let selectedPageIndex = try? self.pageViewModeViewModel.selectedPageIndexSubject.value() else  { return }
+        
+        let viewController = PageEditModeViewController(diary: diary, selectedPageIndex: selectedPageIndex, completion: { newDiary, selectedPageIndex in
+            self.pageViewModeViewModel.diaryObservable.onNext(newDiary)
+            self.pageViewModeViewModel.selectedPageIndexSubject.onNext(selectedPageIndex)
+        })
+        
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 
     @objc private func onTapShareCurrentPage() {
         
-        self.pageViewModel.selectedPageIndex
+        self.pageViewModeViewModel.selectedPageIndexSubject
             .take(1)
             .subscribe(onNext: { targetIndex in
 
@@ -196,7 +212,7 @@ class PageViewModeViewController: UIViewController {
                 self.present(activityViewController, animated: true, completion: nil)
 
             })
-            .disposed(by: self.pageViewModel.disposeBag)
+            .disposed(by: self.pageViewModeViewModel.disposeBag)
 
     }
 }
@@ -217,13 +233,13 @@ extension PageViewModeViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         
         guard let visibleCellIndex = collectionView.indexPathsForVisibleItems.first else { return }
-        self.pageViewModel.selectedPageIndex.onNext((visibleCellIndex.section, visibleCellIndex.item))
+        self.pageViewModeViewModel.selectedPageIndexSubject.onNext((visibleCellIndex.section, visibleCellIndex.item))
     }
     
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         
         guard let visibleCellIndex = collectionView.indexPathsForVisibleItems.first else { return }
-        self.pageViewModel.selectedPageIndex.onNext((visibleCellIndex.section, visibleCellIndex.item))
+        self.pageViewModeViewModel.selectedPageIndexSubject.onNext((visibleCellIndex.section, visibleCellIndex.item))
 
     }
     
@@ -232,6 +248,6 @@ extension PageViewModeViewController: UICollectionViewDelegateFlowLayout {
         if section == 0 {
            return CGSize(width: collectionView.frame.width, height: 0)
         }
-        return CGSize(width: collectionView.frame.width, height: 30)
+        return CGSize(width: collectionView.frame.width, height: 10)
     }
 }

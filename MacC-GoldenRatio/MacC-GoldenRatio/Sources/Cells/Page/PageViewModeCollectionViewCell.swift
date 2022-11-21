@@ -12,7 +12,8 @@ class PageViewModeCollectionViewCell: UICollectionViewCell {
     let pageBackgroundView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.appBackgroundColor
-
+        view.clipsToBounds = true
+        
         return view
     }()
     

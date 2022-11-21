@@ -71,7 +71,7 @@ final class MyAlbumPhotoViewController: UIViewController {
 	}
 	
 	private func setupSubViews() {
-		self.view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundTexture.png") ?? UIImage())
+		self.view.backgroundColor = UIColor(named: "appBackgroundColor") ?? UIColor.clear
 		
 		[collectionView, backButton, menuButton, titleLabel].forEach { view.addSubview($0) }
 		

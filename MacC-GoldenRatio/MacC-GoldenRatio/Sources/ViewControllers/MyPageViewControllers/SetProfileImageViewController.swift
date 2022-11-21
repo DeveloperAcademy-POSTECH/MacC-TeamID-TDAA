@@ -36,8 +36,8 @@ class SetProfileImageViewController: UIViewController {
         let button = UIButton()
         let cameraImage = UIImage(systemName: "camera")
         button.setImage(cameraImage, for: .normal)
-        button.tintColor = .buttonColor
-        button.backgroundColor = .white
+        button.tintColor = .white
+        button.backgroundColor = .sandbrownColor
         button.addTarget(self, action: #selector(onTapCameraButton), for: .touchUpInside)
         
         return button
@@ -59,20 +59,35 @@ class SetProfileImageViewController: UIViewController {
         textField.setUnderLine(width: 1)
         textField.tintColor = .calendarWeeklyGrayColor
         textField.clearButtonMode = .always
+        textField.placeholder = "닉네임을 입력해주세요."
         
         return textField
     }()
     
-    private lazy var confirmButton = {
+    private lazy var confirmButton: UIButton = {
         let button = UIButton()
+        button.tintColor = .white
+        button.backgroundColor = .sandbrownColor
+        button.layer.cornerRadius = 5
+        button.addTarget(self, action: #selector(onTapConfirmButton), for: .touchUpInside)
         let attributes = [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 14, weight: .semibold),NSAttributedString.Key.foregroundColor:UIColor.white.cgColor]
         let attributedString = NSAttributedString(string: "확인", attributes: attributes)
         button.setAttributedTitle(attributedString, for: .normal)
-        button.tintColor = .white
-        button.backgroundColor = .endDateColor
+
+        return button
+    }()
+    
+    private lazy var cancelButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = .white
         button.layer.cornerRadius = 5
-        button.addTarget(self, action: #selector(onTapConfirmButton), for: .touchUpInside)
-        
+        button.layer.borderColor = UIColor.sandbrownColor.cgColor
+        button.layer.borderWidth = 1
+        button.addTarget(self, action: #selector(onTapCancelButton), for: .touchUpInside)
+        let attributes = [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 14, weight: .semibold),NSAttributedString.Key.foregroundColor:UIColor.sandbrownColor.cgColor]
+        let attributedString = NSAttributedString(string: "취소", attributes: attributes)
+        button.setAttributedTitle(attributedString, for: .normal)
+
         return button
     }()
     
@@ -83,7 +98,7 @@ class SetProfileImageViewController: UIViewController {
             let tap = UITapGestureRecognizer(target: self, action: #selector(self.onTapView))
             self.view.addGestureRecognizer(tap)
             self.navigationController?.isNavigationBarHidden = true
-            self.view.backgroundColor = .backgroundTexture
+            self.view.backgroundColor = UIColor.appBackgroundColor
             self.profileImageView.layer.cornerRadius = self.myDevice.setProfileProfileImageSize.width * 0.5
             self.profileCameraButton.layer.cornerRadius = self.myDevice.setProfileProfileImageSize.width * 0.28 * 0.5
             self.configureImagePicker()
@@ -93,7 +108,7 @@ class SetProfileImageViewController: UIViewController {
     }
     
     private func configureViews() {
-        [titleLabel, profileImageView, profileCameraButton, nickNameTitleLabel, nickNameTextField, confirmButton].forEach{
+        [titleLabel, profileImageView, profileCameraButton, nickNameTitleLabel, nickNameTextField, confirmButton, cancelButton].forEach{
             $0.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview($0)
         }
@@ -107,7 +122,8 @@ class SetProfileImageViewController: UIViewController {
             make.size.equalTo(myDevice.setProfileProfileImageSize)
         }
         profileCameraButton.snp.makeConstraints { make in
-            make.bottom.trailing.equalTo(profileImageView)
+            make.trailing.equalTo(profileImageView)
+            make.bottom.equalTo(profileImageView).multipliedBy(0.94)
             make.size.equalTo(profileImageView.snp.size).multipliedBy(0.28)
         }
         nickNameTitleLabel.snp.makeConstraints { make in
@@ -119,10 +135,14 @@ class SetProfileImageViewController: UIViewController {
             make.top.equalTo(nickNameTitleLabel.snp.bottom).offset(myDevice.myPageVerticalSpacing)
         }
         confirmButton.snp.makeConstraints { make in
-            make.width.equalToSuperview().multipliedBy(0.8)
-            make.height.equalTo(40)
-            make.centerX.equalToSuperview()
-            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-70)
+            make.horizontalEdges.equalToSuperview().inset(myDevice.myPageHorizontalPadding2)
+            make.height.equalTo(myDevice.myPageButtonHeight)
+            make.bottom.equalTo(cancelButton.snp.top).offset(-myDevice.myPageVerticalSpacing)
+        }
+        cancelButton.snp.makeConstraints { make in
+            make.horizontalEdges.equalToSuperview().inset(myDevice.myPageHorizontalPadding2)
+            make.height.equalTo(myDevice.myPageButtonHeight)
+            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(myDevice.myPageVerticalSpacing4)
         }
     }
     
@@ -157,6 +177,10 @@ class SetProfileImageViewController: UIViewController {
                 self.viewModel.setUserData()
             })
         }
+        self.dismiss(animated: true)
+    }
+    
+    @objc private func onTapCancelButton() {
         self.dismiss(animated: true)
     }
 }

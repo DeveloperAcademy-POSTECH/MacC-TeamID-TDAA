@@ -16,17 +16,22 @@ class MapListCell: UICollectionViewCell {
 		return label
 	}()
 	
+	private lazy var categoryImageView: UIImageView = {
+		let imageView =  UIImageView()
+		return imageView
+	}()
+	
 	private lazy var categoryLabel: UILabel = {
 		let label =  UILabel()
 		label.font = UIFont(name: "EF_Diary", size: 15)
-		label.textColor = .gray
+		label.textColor = .separatorColor
 		return label
 	}()
 	
 	private lazy var addressLabel: UILabel = {
 		let label =  UILabel()
 		label.font = UIFont(name: "EF_Diary", size: 17)
-		label.textColor = .gray
+		label.textColor = .separatorColor2
 		label.numberOfLines = 2
 		return label
 	}()
@@ -39,23 +44,39 @@ class MapListCell: UICollectionViewCell {
 	}()
 	
 	func setup(location: Location) {
-		[titleLabel, categoryLabel, addressLabel, lineView].forEach { self.addSubview($0) }
-		titleLabel.text = location.locationName
-		titleLabel.snp.makeConstraints {
-			$0.top.leading.trailing.equalTo(self.safeAreaLayoutGuide)
-			$0.bottom.equalToSuperview().inset(80)
+		[titleLabel, categoryImageView, categoryLabel, addressLabel, lineView].forEach { self.addSubview($0) }
+		
+		let category = MapCategory(rawValue: location.locationCategory ?? "")?.category
+		
+		categoryImageView.image = UIImage(named: category?.imageName ?? "defaultIcon")
+		categoryImageView.snp.makeConstraints {
+			$0.width.height.equalTo(101)
+			$0.top.equalToSuperview().inset(20)
+			$0.leading.equalToSuperview()
 		}
 		
-		categoryLabel.text = location.locationCategory ?? ""
+		titleLabel.text = location.locationName
+		titleLabel.snp.makeConstraints {
+			$0.height.equalTo(22)
+			$0.top.equalToSuperview().inset(20)
+			$0.trailing.equalTo(self.safeAreaLayoutGuide)
+			$0.leading.equalTo(categoryImageView.snp.trailing).offset(15)
+		}
+		
+		categoryLabel.text = category?.category ?? ""
 		categoryLabel.snp.makeConstraints {
-			$0.top.equalTo(titleLabel.snp.bottom).inset(3)
-			$0.leading.trailing.equalTo(self.safeAreaLayoutGuide)
+			$0.height.equalTo(15)
+			$0.top.equalTo(titleLabel.snp.bottom).offset(10)
+			$0.trailing.equalTo(self.safeAreaLayoutGuide)
+			$0.leading.equalTo(categoryImageView.snp.trailing).offset(15)
 		}
 		
 		addressLabel.text = location.locationAddress
+		addressLabel.sizeToFit()
 		addressLabel.snp.makeConstraints {
-			$0.leading.trailing.equalTo(self.safeAreaLayoutGuide)
-			$0.bottom.equalToSuperview().inset(20)
+			$0.trailing.equalTo(self.safeAreaLayoutGuide)
+			$0.top.equalTo(categoryLabel.snp.bottom).offset(10)
+			$0.leading.equalTo(categoryImageView.snp.trailing).offset(15)
 		}
 		
 		lineView.snp.makeConstraints {

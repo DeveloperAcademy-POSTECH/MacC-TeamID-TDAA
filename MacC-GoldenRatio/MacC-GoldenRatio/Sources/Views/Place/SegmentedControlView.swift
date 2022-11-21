@@ -72,6 +72,12 @@ class SegmentedControlView: UIView, SegmentedControlViewDelegate {
 		layoutElements(config, hStack)
 		lineViews[selectedIndex].backgroundColor = config.selectedLineColor
 		titleLabels[selectedIndex].textColor = config.selectedLabelColor
+		
+		if selectedIndex > 2 {
+			DispatchQueue.main.async {
+				self.scrollView.setContentOffset(CGPoint(x: Int(UIScreen.main.bounds.size.width)/3*(self.selectedIndex-2), y: 0), animated: true)
+			}
+		}
 	}
 	
 	func segmentedControl(didChange index: Int) {

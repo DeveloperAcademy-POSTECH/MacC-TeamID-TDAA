@@ -200,6 +200,7 @@ class MyDiaryDaysViewController: UIViewController {
     @objc private func copyButtonTapped() {
         UIPasteboard.general.string = self.viewModel!.myDiaryDaysModel.diary.diaryUUID
         self.view.showToastMessage("초대코드가 복사되었습니다.")
+        DynamicLinkBuilder.createDynamicLink()
     }
     
     @objc private func modifyButtonTapped() {

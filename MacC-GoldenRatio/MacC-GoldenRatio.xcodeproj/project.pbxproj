@@ -66,6 +66,9 @@
 		CC6BD74628EC18B8001ED665 /* DiaryConfigCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6BD74528EC18B8001ED665 /* DiaryConfigCollectionViewCell.swift */; };
 		CC6C7F21291CEB3600B88888 /* DiaryDaysCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6C7F20291CEB3600B88888 /* DiaryDaysCell.swift */; };
 		CC6C7F23291D2A6300B88888 /* DiaryDayModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6C7F22291D2A6300B88888 /* DiaryDayModel.swift */; };
+		CCACFE51292BD2890038D792 /* UIApplication+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCACFE50292BD2890038D792 /* UIApplication+.swift */; };
+		CCACFE53292BD2C30038D792 /* DynamicLinkBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCACFE52292BD2C30038D792 /* DynamicLinkBuilder.swift */; };
+		CCACFE56292BD2EE0038D792 /* FirebaseDynamicLinks in Frameworks */ = {isa = PBXBuildFile; productRef = CCACFE55292BD2EE0038D792 /* FirebaseDynamicLinks */; };
 		CCBF68932924D8A800AD2B63 /* CalendarYearPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCBF68922924D8A800AD2B63 /* CalendarYearPickerView.swift */; };
 		CCBF689529260C7700AD2B63 /* DiaryDaysSegmentedControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCBF689429260C7700AD2B63 /* DiaryDaysSegmentedControlView.swift */; };
 		CCD6D58C29135A7300013367 /* DiaryConfigCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD6D58B29135A7300013367 /* DiaryConfigCellViewModel.swift */; };
@@ -226,6 +229,8 @@
 		CC6BD74528EC18B8001ED665 /* DiaryConfigCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryConfigCollectionViewCell.swift; sourceTree = "<group>"; };
 		CC6C7F20291CEB3600B88888 /* DiaryDaysCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryDaysCell.swift; sourceTree = "<group>"; };
 		CC6C7F22291D2A6300B88888 /* DiaryDayModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryDayModel.swift; sourceTree = "<group>"; };
+		CCACFE50292BD2890038D792 /* UIApplication+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+.swift"; sourceTree = "<group>"; };
+		CCACFE52292BD2C30038D792 /* DynamicLinkBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicLinkBuilder.swift; sourceTree = "<group>"; };
 		CCBF68922924D8A800AD2B63 /* CalendarYearPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarYearPickerView.swift; sourceTree = "<group>"; };
 		CCBF689429260C7700AD2B63 /* DiaryDaysSegmentedControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryDaysSegmentedControlView.swift; sourceTree = "<group>"; };
 		CCD6D58B29135A7300013367 /* DiaryConfigCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryConfigCellViewModel.swift; sourceTree = "<group>"; };
@@ -296,6 +301,7 @@
 				E2F5690F28E5CCDC0039BE37 /* FirebaseDatabaseSwift in Frameworks */,
 				E2C8FA26291432B4009C58C9 /* RxCocoa in Frameworks */,
 				E2F5690328E57E7B0039BE37 /* SnapKit in Frameworks */,
+				CCACFE56292BD2EE0038D792 /* FirebaseDynamicLinks in Frameworks */,
 				E2F5690B28E5CCDC0039BE37 /* FirebaseAuthCombine-Community in Frameworks */,
 				E2F5690D28E5CCDC0039BE37 /* FirebaseDatabase in Frameworks */,
 				E2C8FA28291432B4009C58C9 /* RxSwift in Frameworks */,
@@ -540,6 +546,7 @@
 				E2838BF0291E3D010013DD82 /* MapHalfModalPresentationController.swift */,
 				0A5DC37A28F7F65B00AABED1 /* ImageManager.swift */,
 				E2C2A76B28F97DB900D48F8F /* LoadingIndicator.swift */,
+				CCACFE52292BD2C30038D792 /* DynamicLinkBuilder.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -556,6 +563,7 @@
 				0A5235AF28F8510C00AC77AC /* UIFont+.swift */,
 				0A5235B128F854C200AC77AC /* UIColor+.swift */,
 				0A30BD46291A4DAE00079326 /* CALayer+.swift */,
+				CCACFE50292BD2890038D792 /* UIApplication+.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -766,6 +774,13 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
+		CCACFE54292BD2EE0038D792 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		E276B91428E468E900163833 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -799,6 +814,7 @@
 				E28F081728E4655200832F4A /* MacC-GoldenRatioTests */,
 				E28F082128E4655200832F4A /* MacC-GoldenRatioUITests */,
 				E28F07FF28E4655100832F4A /* Products */,
+				CCACFE54292BD2EE0038D792 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -871,6 +887,7 @@
 				E2C8FA25291432B4009C58C9 /* RxCocoa */,
 				E2C8FA27291432B4009C58C9 /* RxSwift */,
 				0A1C3FE52920A573009A8C31 /* RxDataSources */,
+				CCACFE55292BD2EE0038D792 /* FirebaseDynamicLinks */,
 			);
 			productName = "MacC-GoldenRatio";
 			productReference = E28F07FE28E4655100832F4A /* MacC-GoldenRatio.app */;
@@ -1034,6 +1051,7 @@
 				0AAB2ADE28EDA511009FBD96 /* MapStickerView.swift in Sources */,
 				0AAB2AE028EDA553009FBD96 /* ImageStickerView.swift in Sources */,
 				E2C27502290D62EB00319885 /* DiaryCollectionViewModel.swift in Sources */,
+				CCACFE51292BD2890038D792 /* UIApplication+.swift in Sources */,
 				0A5235B028F8510C00AC77AC /* UIFont+.swift in Sources */,
 				0A3ED14128F98956000D55D8 /* MyPageViewModel.swift in Sources */,
 				CCBF689529260C7700AD2B63 /* DiaryDaysSegmentedControlView.swift in Sources */,
@@ -1069,6 +1087,7 @@
 				CC65514728EEBF7C00E637A2 /* Date+.swift in Sources */,
 				E21342DD28F6B2740048D9CF /* HalfModalPresentationController.swift in Sources */,
 				E2838BEF291E3CF20013DD82 /* MapListViewController.swift in Sources */,
+				CCACFE53292BD2C30038D792 /* DynamicLinkBuilder.swift in Sources */,
 				E2838BEA291E3B3B0013DD82 /* MapListView.swift in Sources */,
 				E2EA7F1628E5711E00AC1C49 /* DiaryCollectionHeaderView.swift in Sources */,
 				B93EC22928F7BC8000BB89C5 /* String+.swift in Sources */,
@@ -1278,7 +1297,7 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = ZNH7978JJQ;
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = ZNH7978JJQ;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = C643325Z95;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "MacC-GoldenRatio/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = TDAA;
@@ -1295,10 +1314,10 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.1.1;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.TwoInterval.MacC-GoldenRatio";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.San.MacC-GoldenRatio";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = DiaryAppForDevelopment;
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = DiaryAppForDevelopment;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "TDAA new profile";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
@@ -1320,7 +1339,7 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = ZNH7978JJQ;
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = ZNH7978JJQ;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = C643325Z95;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "MacC-GoldenRatio/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = TDAA;
@@ -1337,10 +1356,10 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.1.1;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.TwoInterval.MacC-GoldenRatio";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.San.MacC-GoldenRatio";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = DiaryAppForDistribution;
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = DiaryAppForDevelopment;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "TDAA new profile";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
@@ -1515,6 +1534,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 0A1C3FE42920A573009A8C31 /* XCRemoteSwiftPackageReference "RxDataSources" */;
 			productName = RxDataSources;
+		};
+		CCACFE55292BD2EE0038D792 /* FirebaseDynamicLinks */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E2F5690728E5CCDC0039BE37 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDynamicLinks;
 		};
 		E25753BE28ED9E0600023619 /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;

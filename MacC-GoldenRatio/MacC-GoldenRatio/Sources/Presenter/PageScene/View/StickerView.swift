@@ -231,8 +231,18 @@ class StickerView: UIView {
                           recognizer.location(in: superview).x - center.x)
 
         if let deltaAngle = deltaAngle {
-            let angleDiff = deltaAngle - angle
-            transform = CGAffineTransformMakeRotation(-angleDiff)
+            let angleDiff = deltaAngle - angle            
+            let newTransform = CGAffineTransformMakeRotation(-angleDiff)
+            let rotation = atan2(newTransform.b, newTransform.a)
+            
+            if rotation < -0.2 || rotation > 0.2 {
+                transform = newTransform
+            }else {
+                if transform != CGAffineTransform.identity {
+                    transform = CGAffineTransform.identity
+                    self.hapticFeedback.notificationOccurred(.success)
+                }
+            }
         }
     }
 

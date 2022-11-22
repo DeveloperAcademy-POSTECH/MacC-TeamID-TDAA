@@ -34,13 +34,15 @@ class StickerView: UIView {
     private var oldBounds: CGRect!
     private var oldTransform: CGAffineTransform!
 
+    var hapticFeedback: UINotificationFeedbackGenerator!
+    
     /// 스티커 뷰의 활성 상태를 나타내는 변수입니다. Local 상에서만 다뤄집니다. 즉, 서버 데이터에 업데이트 되지 않습니다.
     var isStickerViewActive: BehaviorSubject<Bool> = BehaviorSubject(value: false)
     var isStickerViewMode: Bool = false
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+        setHapticFeedback()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -51,6 +53,11 @@ class StickerView: UIView {
         }
     }
 
+    func setHapticFeedback() {
+        self.hapticFeedback = UINotificationFeedbackGenerator()
+        self.hapticFeedback.prepare()
+    }
+    
     func fetchItem() throws -> Item {
         do {
             guard let stickerViewData = self.stickerViewData else { throw ErrorMessage.stickerViewDataDoesntExist }
@@ -61,19 +68,6 @@ class StickerView: UIView {
             throw error
         }
     }
-    
-//    func fetchItem() -> Item? {
-//        var returnItem: Item?
-//        self.stickerViewData?.itemObservable
-//            .observe(on: MainScheduler.instance)
-//            .take(1)
-//            .subscribe(onNext: { item in
-//                returnItem = item
-//            })
-//            .disposed(by: self.disposeBag)
-//
-//        return returnItem
-//    }
 
     func updateIsStickerViewActive(value: Bool) {
         
@@ -213,6 +207,7 @@ class StickerView: UIView {
             enableTranslucency(state: false)
             previousPoint = sender.location(in: self)
             setNeedsDisplay()
+            
             self.stickerViewData?.updateUIItem(frame: self.frame, bounds: self.bounds, transform: self.transform)
         }
         updateControlsPosition()
@@ -273,7 +268,8 @@ class StickerView: UIView {
             enableTranslucency(state: false)
             previousPoint = sender.location(in: self)
             setNeedsDisplay()
-            self.stickerViewData?.updateUIItem(frame: self.frame, bounds: self.bounds, transform: self.transform)
+            
+            self.stickerViewData?.updateItemFrameBoundsData(frame: self.frame, bounds: self.bounds)
         }
         updateControlsPosition()
     }
@@ -288,13 +284,24 @@ class StickerView: UIView {
             previousPoint = sender.location(in: self)
             setNeedsDisplay()
         } else if sender.state == .changed {
-            transform = CGAffineTransformRotate(oldTransform, sender.rotation)
+            let newTransform = CGAffineTransformRotate(oldTransform, sender.rotation)
+            let rotation = atan2(newTransform.b, newTransform.a)
+            
+            if rotation < -0.2 || rotation > 0.2 {
+                transform = newTransform
+            }else {
+                if transform != CGAffineTransform.identity {
+                    transform = CGAffineTransform.identity
+                    self.hapticFeedback.notificationOccurred(.success)
+                }
+            }
         } else if sender.state == .ended {
             oldTransform = transform
             enableTranslucency(state: false)
             previousPoint = sender.location(in: self)
             setNeedsDisplay()
-            self.stickerViewData?.updateUIItem(frame: self.frame, bounds: self.bounds, transform: self.transform)
+            
+            self.stickerViewData?.updateItemTransform(transform: self.transform)
         }
         updateControlsPosition()
         

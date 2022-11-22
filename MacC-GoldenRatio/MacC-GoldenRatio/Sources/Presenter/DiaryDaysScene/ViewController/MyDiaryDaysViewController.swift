@@ -186,6 +186,7 @@ class MyDiaryDaysViewController: UIViewController {
     private func menuButtonTapped() {
         let popUp = PopUpViewController(popUpPosition: .top)
         popUp.addButton(buttonTitle: " 초대코드 복사", buttonSymbol: "envelope.arrow.triangle.branch", buttonSize: 15, action: copyButtonTapped)
+        popUp.addButton(buttonTitle: " 초대링크 공유", buttonSymbol: "link", buttonSize: 17, action: linkButtonTapped)
         popUp.addButton(buttonTitle: " 다이어리 수정", buttonSymbol: "square.and.pencil",  buttonSize: 17, action: modifyButtonTapped)
         popUp.addButton(buttonTitle: " 다이어리 탈퇴", buttonSymbol: "door.right.hand.open",  buttonSize: 17, action: outButtonTapped)
         present(popUp, animated: false)
@@ -198,11 +199,18 @@ class MyDiaryDaysViewController: UIViewController {
     }
     
     @objc private func copyButtonTapped() {
-        DynamicLinkBuilder.createDynamicLink(diaryUUID: self.viewModel!.myDiaryDaysModel.diary.diaryUUID) {
-            UIPasteboard.general.string = $0
-        }
+        UIPasteboard.general.string = self.viewModel!.myDiaryDaysModel.diary.diaryUUID
         
         self.view.showToastMessage("초대코드가 복사되었습니다.")
+    }
+    
+    @objc private func linkButtonTapped() {
+        DynamicLinkBuilder.createDynamicLink(diaryUUID: self.viewModel!.myDiaryDaysModel.diary.diaryUUID) { link in
+            
+            let activityViewController = UIActivityViewController(activityItems: [link], applicationActivities: nil)
+            activityViewController.popoverPresentationController?.sourceView = self.view
+            self.present(activityViewController, animated: true, completion: nil)
+        }
     }
     
     @objc private func modifyButtonTapped() {

@@ -25,7 +25,6 @@ class DynamicLinkBuilder {
         linkBuilder.socialMetaTagParameters?.imageURL = URL(string: "https://github.com/Dorodong96/iOS-StudyProjects/blob/main/FastCampus/Challange%20Images/banner.png?raw=true")
         
         guard let longDynamicLink = linkBuilder.url else { return }
-        print("The long URL is: \(longDynamicLink)")
         
         DynamicLinkComponents.shortenURL(longDynamicLink, options: nil) { url, _, _ in
             guard let url = url else { return }

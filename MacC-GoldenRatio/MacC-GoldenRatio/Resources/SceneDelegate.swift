@@ -34,19 +34,28 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             DynamicLinks.dynamicLinks().handleUniversalLink(incomingURL) { dynamiclink, error in
                 if let urlString = dynamiclink?.url?.absoluteString {
                     guard let currentViewController = UIApplication.currentViewController() else { return }
+                    
                     if currentViewController is MyHomeViewController {
-                        print("HomeViewController")
-                        let myHomeViewController = currentViewController as! MyHomeViewController
-                        let diaryUUID = urlString.deletePrefix("https://tdaa.page.link")
-                        myHomeViewController.viewModel.updateJoinDiary(diaryUUID)
-                        myHomeViewController.reloadDiaryCell()
-                        myHomeViewController.view.showToastMessage("다이어리가 추가되었습니다.")
+                        // 접속한 화면이 HomeViewController인 경우
+                        self.addDiaryInHomeViewController(urlString: urlString)
+                        
                     } else if currentViewController is SignInViewController {
-                        print("SignInViewController")
+                        let signInViewController = currentViewController as! SignInViewController
+                        // 접속한 화면이 SignInViewController인 경우
+                        signInViewController.completion = {
+                            self.addDiaryInHomeViewController(urlString: urlString)
+                        }
+                        
                     } else {
-                        print("VC: \(UIApplication.currentViewController()!)")
+                        // 접속한 화면이 다른 ViewController인 경우
+                        for controller in currentViewController.navigationController!.viewControllers as Array {
+                            if controller.isKind(of: MyHomeViewController.self) {
+                                currentViewController.navigationController!.popToViewController(controller, animated: true)
+                                self.addDiaryInHomeViewController(urlString: urlString)
+                                break
+                            }
+                        }
                     }
-                    print(urlString)
                 }
             }
         }
@@ -78,6 +87,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Called as the scene transitions from the foreground to the background.
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
+    }
+    
+    private func addDiaryInHomeViewController(urlString: String) {
+        if let myHomeViewController = UIApplication.currentViewController() as? MyHomeViewController {
+            let diaryUUID = urlString.deletePrefix("https://tdaa.page.link")
+            myHomeViewController.navigationController?.navigationBar.isHidden = true
+            myHomeViewController.viewModel.updateJoinDiary(diaryUUID)
+            myHomeViewController.reloadDiaryCell()
+            myHomeViewController.view.showToastMessage("다이어리가 추가되었습니다.")
+        } else {
+            UIApplication.currentViewController()?.view.showToastMessage("다이어리 추가에 실패했습니다.")
+        }
     }
     
 }

@@ -5,7 +5,6 @@
 //  Created by DongKyu Kim on 2022/11/10.
 //
 
-import MapKit // TODO: MapView 연결 이후 삭제
 import RxCocoa
 import RxSwift
 import SnapKit

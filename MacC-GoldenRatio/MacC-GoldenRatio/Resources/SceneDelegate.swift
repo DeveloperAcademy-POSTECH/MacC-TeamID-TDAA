@@ -94,8 +94,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             let diaryUUID = urlString.deletePrefix("https://tdaa.page.link")
             myHomeViewController.navigationController?.navigationBar.isHidden = true
             myHomeViewController.viewModel.updateJoinDiary(diaryUUID)
-            myHomeViewController.reloadDiaryCell()
-            myHomeViewController.view.showToastMessage("다이어리가 추가되었습니다.")
+            DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
+                myHomeViewController.reloadDiaryCell()
+                myHomeViewController.view.showToastMessage("다이어리가 추가되었습니다.")
+            }
         } else {
             UIApplication.currentViewController()?.view.showToastMessage("다이어리 추가에 실패했습니다.")
         }

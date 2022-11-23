@@ -11,8 +11,8 @@ import UIKit
 
 final class MyHomeViewController: UIViewController {
 	private let disposeBag = DisposeBag()
-	private let viewModel = MyHomeViewModel()
 	private let myDevice = UIScreen.getDevice()
+    let viewModel = MyHomeViewModel()
 	
 	private lazy var collectionHeaderView = DiaryCollectionHeaderView()
 	private lazy var collectionView = DiaryCollectionView()
@@ -106,7 +106,7 @@ final class MyHomeViewController: UIViewController {
 		}
 	}
 	
-	@objc private func reloadDiaryCell() {
+	@objc func reloadDiaryCell() {
 		viewModel.createCell()
 	}
 	

@@ -17,7 +17,7 @@ struct Diary: Codable {
     var diaryCoverImage: String?
     var userUIDs: [String] = []
     var diaryPages: [Pages] = []
-    var pageThumbnails: [String] = []
+    var pageThumbnails: [String?] = []
 }
 
 struct Location: Codable {

@@ -43,7 +43,7 @@ class MyDiaryDaysViewModel {
         Task {
             try await self.myDiaryDaysModel.fetchDiaryDataObservable()
                 .subscribe(onNext: { diary in
-                    let array = self.diarydaysCollectionViewModel.arrayToDays(model: self.myDiaryDaysModel)
+                    let array = self.myDiaryDaysModel.daysToArray(model: self.myDiaryDaysModel)
                     self.diarydaysCollectionViewModel.cellData.onNext(array)
                     self.albumCollectionViewModel.collectionDiaryData.onNext(diary)
                     self.mapViewModel.mapDiaryData.onNext(diary)

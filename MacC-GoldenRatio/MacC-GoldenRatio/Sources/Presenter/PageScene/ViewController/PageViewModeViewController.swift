@@ -182,6 +182,7 @@ class PageViewModeViewController: UIViewController {
         let popUp = PopUpViewController(popUpPosition: .top)
         popUp.addButton(buttonTitle: " 페이지 편집", buttonSymbol: "square.and.pencil", buttonSize: 17, action: onTapEditCurrentPage)
         popUp.addButton(buttonTitle: " 페이지 공유", buttonSymbol: "square.and.arrow.up", buttonSize: 17 , action: onTapShareCurrentPage)
+        popUp.addButton(buttonTitle: " 섬네일 선택", buttonSymbol: "photo.on.rectangle.angled", buttonSize: 15 , action: onTapThumbnailConfig)
 
         self.present(popUp, animated: false)
     }
@@ -214,6 +215,19 @@ class PageViewModeViewController: UIViewController {
             })
             .disposed(by: self.pageViewModeViewModel.disposeBag)
 
+    }
+    
+    @objc private func onTapThumbnailConfig() {
+        guard let diary = try? self.pageViewModeViewModel.diaryObservable.value() else  { return }
+        guard let selectedPageIndex = try? self.pageViewModeViewModel.selectedPageIndexSubject.value() else  { return }
+        
+        let thumbnailViewModel = ThumbnailConfigViewModel(diary: diary, selectedDay: (selectedPageIndex.0+1))
+        let viewController = ThumbnailConfigViewController()
+        
+        viewController.bind(thumbnailViewModel)
+        viewController.modalPresentationStyle = .fullScreen
+        
+        self.present(viewController, animated: true)
     }
 }
 

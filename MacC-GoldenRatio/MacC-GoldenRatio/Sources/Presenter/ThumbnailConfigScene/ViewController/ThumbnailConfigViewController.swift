@@ -13,8 +13,6 @@ import UIKit
 class ThumbnailConfigViewController: UIViewController {
     private var disposeBag = DisposeBag()
     private let device: UIScreen.DeviceSize = UIScreen.getDevice()
-
-    var viewModel = ThumbnailConfigViewModel(diary: nil)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,22 +31,36 @@ class ThumbnailConfigViewController: UIViewController {
     
     // MARK: - bind, attribute, layout methods
     func bind(_ viewModel: ThumbnailConfigViewModel) {
-        self.viewModel = viewModel
         
         self.previewView.bind(viewModel.previewViewModel)
         self.dayAlbumView.bind(viewModel.dayAlbumView)
         
+        self.cancelButton.rx.tap
+            .bind(to: viewModel.cancelButtonTapped)
+            .disposed(by: disposeBag)
+        
+        self.doneButton.rx.tap
+            .bind(to: viewModel.doneButtonTapped)
+            .disposed(by: disposeBag)
+        
         self.dayAlbumView.rx.itemSelected
             .subscribe(onNext: { index in
-//                let vc = MyAlbumPhotoViewController(photoPage: index.item, totalCount: viewModel.albumCollectionViewModel.collectionCellData.value.count)
-//                vc.bind(viewModel: viewModel.albumCollectionViewModel)
-//                vc.modalPresentationStyle = .fullScreen
-//                self.present(vc, animated: true)
+                print(index)
             })
+            .disposed(by: disposeBag)
+        
+        viewModel.dismiss
+            .drive(onNext: { _ in self.dismiss(animated: true) })
+            .disposed(by: disposeBag)
+        
+        viewModel.complete
+            .drive(onNext: { _ in self.dismiss(animated: true) })
             .disposed(by: disposeBag)
     }
     
     private func attribute() {
+        view.backgroundColor = UIColor.appBackgroundColor
+        
         titleLabel.text = "섬네일 선택"
         titleLabel.textColor = .black
         titleLabel.font = device.diaryConfigTitleFont

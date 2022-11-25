@@ -28,6 +28,7 @@
 		0A6F107128FBFA7C002FB611 /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6F107028FBFA7C002FB611 /* MenuTableViewCell.swift */; };
 		0A6F107528FC3782002FB611 /* LicenseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6F107428FC3782002FB611 /* LicenseViewController.swift */; };
 		0A6F107D28FC6259002FB611 /* License.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0A6F107C28FC6258002FB611 /* License.txt */; };
+		0A70EB3F292F6398003492CD /* YPImagePicker in Frameworks */ = {isa = PBXBuildFile; productRef = 0A70EB3E292F6398003492CD /* YPImagePicker */; };
 		0A939489291A1E0E007ADDAC /* PageViewModeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A939488291A1E0E007ADDAC /* PageViewModeViewController.swift */; };
 		0AAB2ACD28EAFD78009FBD96 /* MapSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2ACC28EAFD78009FBD96 /* MapSearchViewController.swift */; };
 		0AAB2ACF28EAFF52009FBD96 /* UITableView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2ACE28EAFF52009FBD96 /* UITableView+.swift */; };
@@ -297,6 +298,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E25753BF28ED9E0600023619 /* Kingfisher in Frameworks */,
+				0A70EB3F292F6398003492CD /* YPImagePicker in Frameworks */,
 				0A1C3FE62920A573009A8C31 /* RxDataSources in Frameworks */,
 				E2F5690F28E5CCDC0039BE37 /* FirebaseDatabaseSwift in Frameworks */,
 				E2C8FA26291432B4009C58C9 /* RxCocoa in Frameworks */,
@@ -359,7 +361,6 @@
 			isa = PBXGroup;
 			children = (
 				0A5E904728E857E200B381B8 /* StickerView.swift */,
-				0AEC53EB28EF211D001B0169 /* StickerViewData.swift */,
 				0A5E904928E858C000B381B8 /* StickerContollerView.swift */,
 				0A5E904B28E858D200B381B8 /* StickerBorderView.swift */,
 				0AAB2ADD28EDA510009FBD96 /* MapStickerView.swift */,
@@ -396,6 +397,7 @@
 		0AFD1F85292B7167007A242B /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				0AEC53EB28EF211D001B0169 /* StickerViewData.swift */,
 				0A6230CE2929075A008CC131 /* PageEditModeViewModel.swift */,
 				0A5E904E28E9948B00B381B8 /* PageViewModeViewModel.swift */,
 			);
@@ -888,6 +890,7 @@
 				E2C8FA27291432B4009C58C9 /* RxSwift */,
 				0A1C3FE52920A573009A8C31 /* RxDataSources */,
 				CCACFE55292BD2EE0038D792 /* FirebaseDynamicLinks */,
+				0A70EB3E292F6398003492CD /* YPImagePicker */,
 			);
 			productName = "MacC-GoldenRatio";
 			productReference = E28F07FE28E4655100832F4A /* MacC-GoldenRatio.app */;
@@ -967,6 +970,7 @@
 				E25753BD28ED9E0600023619 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				E2C8FA24291432B4009C58C9 /* XCRemoteSwiftPackageReference "RxSwift" */,
 				0A1C3FE42920A573009A8C31 /* XCRemoteSwiftPackageReference "RxDataSources" */,
+				0A70EB3D292F6398003492CD /* XCRemoteSwiftPackageReference "YPImagePicker" */,
 			);
 			productRefGroup = E28F07FF28E4655100832F4A /* Products */;
 			projectDirPath = "";
@@ -1495,6 +1499,14 @@
 				minimumVersion = 5.0.0;
 			};
 		};
+		0A70EB3D292F6398003492CD /* XCRemoteSwiftPackageReference "YPImagePicker" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Yummypets/YPImagePicker.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 		E25753BD28ED9E0600023619 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher";
@@ -1534,6 +1546,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 0A1C3FE42920A573009A8C31 /* XCRemoteSwiftPackageReference "RxDataSources" */;
 			productName = RxDataSources;
+		};
+		0A70EB3E292F6398003492CD /* YPImagePicker */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0A70EB3D292F6398003492CD /* XCRemoteSwiftPackageReference "YPImagePicker" */;
+			productName = YPImagePicker;
 		};
 		CCACFE55292BD2EE0038D792 /* FirebaseDynamicLinks */ = {
 			isa = XCSwiftPackageProductDependency;

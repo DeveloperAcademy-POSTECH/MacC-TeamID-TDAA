@@ -221,15 +221,30 @@ class PageViewModeViewController: UIViewController {
         guard let diary = try? self.pageViewModeViewModel.diaryObservable.value() else  { return }
         guard let selectedPageIndex = try? self.pageViewModeViewModel.selectedPageIndexSubject.value() else  { return }
         
-        let thumbnailViewModel = ThumbnailConfigViewModel(diary: diary, selectedDay: (selectedPageIndex.0+1), completion: { newDiary in
-            self.pageViewModeViewModel.diaryObservable.onNext(newDiary)
-        })
-        let viewController = ThumbnailConfigViewController()
+        var isValid = false
+        let pages = diary.diaryPages[selectedPageIndex.0].pages
         
-        viewController.bind(thumbnailViewModel)
-        viewController.modalPresentationStyle = .fullScreen
+        for page in pages {
+            for item in page.items {
+                isValid = (item.itemType == .image) ? true : false
+                if isValid { break }
+            }
+        }
         
-        self.present(viewController, animated: true)
+        if isValid {
+            let thumbnailViewModel = ThumbnailConfigViewModel(diary: diary, selectedDay: (selectedPageIndex.0+1), completion: { newDiary in
+                self.pageViewModeViewModel.diaryObservable.onNext(newDiary)
+            })
+            let viewController = ThumbnailConfigViewController()
+            
+            viewController.bind(thumbnailViewModel)
+            viewController.modalPresentationStyle = .fullScreen
+            self.present(viewController, animated: true)
+        } else {
+            let alert = UIAlertController(title: "섬네일 선택", message: "페이지에 선택할 이미지가 없습니다.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "확인", style: .default))
+            self.present(alert, animated: true)
+        }
     }
 }
 

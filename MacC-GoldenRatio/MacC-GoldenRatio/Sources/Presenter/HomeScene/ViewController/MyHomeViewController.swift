@@ -4,6 +4,7 @@
 //
 //  Created by woo0 on 2022/09/29.
 //
+
 import RxCocoa
 import RxSwift
 import SnapKit
@@ -20,6 +21,8 @@ final class MyHomeViewController: UIViewController, UIGestureRecognizerDelegate 
 	private lazy var collectionView = DiaryCollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout(), viewModel: viewModel.diaryCollectionViewModel)
 	private lazy var addDiaryButton = HomeButtonView()
 	private lazy var profileButton = HomeButtonView()
+	private lazy var dateFilterButton = FilterButton()
+	private lazy var nameFilterButton = FilterButton()
 	
 	override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
 		super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -36,7 +39,7 @@ final class MyHomeViewController: UIViewController, UIGestureRecognizerDelegate 
 	private func setupSubViews() {
 		self.view.backgroundColor = UIColor(named: "appBackgroundColor") ?? UIColor.clear
 
-		[collectionHeaderView, collectionView, addDiaryButton, profileButton].forEach { view.addSubview($0) }
+		[collectionHeaderView, collectionView, addDiaryButton, profileButton, dateFilterButton, nameFilterButton].forEach { view.addSubview($0) }
 		
 		collectionHeaderView.snp.makeConstraints {
 			$0.top.equalTo(view.safeAreaLayoutGuide)
@@ -44,10 +47,30 @@ final class MyHomeViewController: UIViewController, UIGestureRecognizerDelegate 
 		}
 		
 		collectionView.snp.makeConstraints {
-			$0.top.equalTo(collectionHeaderView.snp.bottom).offset(50)
+			$0.top.equalTo(collectionHeaderView.snp.bottom).offset(90)
 			$0.bottom.equalTo(view.safeAreaLayoutGuide)
 			$0.leading.equalTo(view.safeAreaLayoutGuide).inset(10)
 			$0.trailing.equalTo(view.safeAreaLayoutGuide).inset(20)
+		}
+		
+		dateFilterButton.setTitle("날짜순", for: .normal)
+		dateFilterButton.backgroundColor = .sandbrownColor
+		dateFilterButton.setTitleColor(.white, for: .normal)
+		dateFilterButton.snp.makeConstraints {
+			$0.width.equalTo(53)
+			$0.height.equalTo(26)
+			$0.top.equalTo(collectionHeaderView.snp.bottom).offset(55)
+			$0.leading.equalToSuperview().inset(20)
+		}
+		
+		nameFilterButton.setTitle("이름순", for: .normal)
+		nameFilterButton.backgroundColor = .white
+		nameFilterButton.setTitleColor(.sandbrownColor, for: .normal)
+		nameFilterButton.snp.makeConstraints {
+			$0.width.equalTo(53)
+			$0.height.equalTo(26)
+			$0.top.equalTo(collectionHeaderView.snp.bottom).offset(55)
+			$0.leading.equalTo(dateFilterButton.snp.trailing).offset(10)
 		}
 		
 		addDiaryButton.setupViews(UIImage(named: "plusButton"))
@@ -73,8 +96,8 @@ final class MyHomeViewController: UIViewController, UIGestureRecognizerDelegate 
 		collectionView.rx
 			.modelSelected(Diary.self)
 			.subscribe(onNext: { diary in
-                let vc = MyDiaryDaysViewController()
-                vc.bind(MyDiaryDaysViewModel(diary: diary))
+				let vc = MyDiaryDaysViewController()
+				vc.bind(MyDiaryDaysViewModel(diary: diary))
 				self.navigationController?.pushViewController(vc, animated: true)
 			})
 			.disposed(by: disposeBag)
@@ -101,6 +124,30 @@ final class MyHomeViewController: UIViewController, UIGestureRecognizerDelegate 
 				} else {
 					self.endEditMode()
 				}
+			}
+			.disposed(by: disposeBag)
+		
+		dateFilterButton.rx.tap
+			.bind {
+				self.dateFilterButton.backgroundColor = .sandbrownColor
+				self.dateFilterButton.setTitleColor(.white, for: .normal)
+				self.nameFilterButton.backgroundColor = .white
+				self.nameFilterButton.setTitleColor(.sandbrownColor, for: .normal)
+				Observable.just(true)
+					.bind(to: self.viewModel.filterButtonTapped)
+					.disposed(by: self.disposeBag)
+			}
+			.disposed(by: disposeBag)
+		
+		nameFilterButton.rx.tap
+			.bind {
+				self.dateFilterButton.backgroundColor = .white
+				self.dateFilterButton.setTitleColor(.sandbrownColor, for: .normal)
+				self.nameFilterButton.backgroundColor = .sandbrownColor
+				self.nameFilterButton.setTitleColor(.white, for: .normal)
+				Observable.just(false)
+					.bind(to: self.viewModel.filterButtonTapped)
+					.disposed(by: self.disposeBag)
 			}
 			.disposed(by: disposeBag)
 		

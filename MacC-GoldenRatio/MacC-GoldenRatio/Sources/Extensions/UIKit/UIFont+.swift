@@ -68,4 +68,9 @@ extension UIFont {
 		let font = UIFont(name: "EF_Diary", size: 8) ?? UIFont.systemFont(ofSize: 8)
 		return font
 	}
+	
+	static var homeFilterButtonTitleFont: UIFont {
+		let font = UIFont(name: "EF_Diary", size: 12) ?? UIFont.systemFont(ofSize: 12)
+		return font
+	}
 }

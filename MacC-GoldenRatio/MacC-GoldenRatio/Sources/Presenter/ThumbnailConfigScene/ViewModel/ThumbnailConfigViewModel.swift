@@ -12,13 +12,13 @@ import UIKit
 struct ThumbnailConfigViewModel {
     private let disposeBag = DisposeBag()
     
-    let previewViewModel = ThumbnailPreviewViewModel()
+    let previewViewModel: ThumbnailPreviewViewModel
     let dayAlbumView = AlbumCollectionViewModel()
     
     // ViewModel -> View
     let dismiss: Driver<Void>
     let complete: Driver<Void>
-    let previewData = PublishRelay<DiaryDayModel>()
+    // let previewData = PublishRelay<DiaryDayModel>()
     
     // View -> ViewModel
     let doneButtonTapped = PublishRelay<Void>()
@@ -26,8 +26,7 @@ struct ThumbnailConfigViewModel {
     
     init(diary: Diary, selectedDay: Int) {
         let diaryModel = MyDiaryDaysModel(diary: diary)
-        let dayModel = diaryModel.diaryToDayModel(model: diaryModel, selectedDay: selectedDay)
-        self.previewData.accept(dayModel)
+        self.previewViewModel = ThumbnailPreviewViewModel(model: diaryModel, selectedDay: selectedDay)
         
         self.dismiss = cancelButtonTapped
             .map { _ in Void() }

@@ -9,5 +9,11 @@ import RxSwift
 import RxCocoa
 
 struct ThumbnailPreviewViewModel {
+    // ViewModel -> View
+    let previewData: BehaviorRelay<DiaryDayModel>
     
+    init(model: MyDiaryDaysModel, selectedDay: Int) {
+        let dataForPreview = model.diaryToDayModel(model: model, selectedDay: selectedDay)
+        self.previewData = BehaviorRelay<DiaryDayModel>(value: dataForPreview)
+    }
 }

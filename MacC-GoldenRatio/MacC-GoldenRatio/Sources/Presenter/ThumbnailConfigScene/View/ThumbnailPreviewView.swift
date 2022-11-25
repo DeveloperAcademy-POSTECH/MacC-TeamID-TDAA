@@ -20,7 +20,6 @@ class ThumbnailPreviewView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         attribute()
         layout()
     }
@@ -30,7 +29,14 @@ class ThumbnailPreviewView: UIView {
     }
     
     func bind(_ viewModel: ThumbnailPreviewViewModel) {
-        
+        viewModel.previewData
+            .subscribe(on: MainScheduler.instance)
+            .subscribe(onNext: { data in
+                self.dayLabel.text = data.dayLabel
+                self.dateLabel.text = data.dateLabel
+                self.backImageView.image = data.image
+            })
+            .disposed(by: disposeBag)
     }
     
     private func attribute() {
@@ -45,15 +51,14 @@ class ThumbnailPreviewView: UIView {
         gradientLayer.locations = [0, 0.31, 0.73]
         gradientLayer.startPoint = CGPoint(x: 1.0, y: 0.0)
         gradientLayer.endPoint = CGPoint(x: 1.0, y: 0.73)
-        gradientLayer.bounds = self.bounds
-        gradientLayer.position = self.center
+        gradientLayer.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width-40, height: 170)
         
         dayLabel.textColor = .white
-        dayLabel.font = UIFont.dayLabelFont
+        dayLabel.font = UIFont.previewDayLabelFont
         dayLabel.backgroundColor = .clear
         
         dateLabel.textColor = .white
-        dateLabel.font = UIFont.labelTitleFont
+        dateLabel.font = UIFont.previewDateLabelFont
         dateLabel.backgroundColor = .clear
         
         self.addSubview(backImageView)
@@ -66,17 +71,17 @@ class ThumbnailPreviewView: UIView {
         backImageView.snp.makeConstraints {
             $0.width.equalToSuperview()
             $0.center.equalToSuperview()
-            $0.bottom.equalToSuperview().inset(1)
+            $0.bottom.equalToSuperview()
         }
         
         dayLabel.snp.makeConstraints {
-            $0.leading.equalToSuperview().inset(20)
-            $0.top.equalToSuperview().inset(30)
+            $0.leading.equalToSuperview().inset(15)
+            $0.top.equalToSuperview().inset(25)
         }
         
         dateLabel.snp.makeConstraints {
             $0.leading.equalTo(dayLabel)
-            $0.top.equalTo(dayLabel.snp.bottom).offset(20)
+            $0.top.equalTo(dayLabel.snp.bottom).offset(15)
         }
     }
 }

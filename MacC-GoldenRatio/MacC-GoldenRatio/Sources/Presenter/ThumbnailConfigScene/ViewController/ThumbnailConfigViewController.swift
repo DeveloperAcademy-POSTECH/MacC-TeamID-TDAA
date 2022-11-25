@@ -33,7 +33,7 @@ class ThumbnailConfigViewController: UIViewController {
     func bind(_ viewModel: ThumbnailConfigViewModel) {
         
         self.previewView.bind(viewModel.previewViewModel)
-        self.dayAlbumView.bind(viewModel.dayAlbumView)
+        self.dayAlbumView.bind(viewModel.dayAlbumViewModel)
         
         self.cancelButton.rx.tap
             .bind(to: viewModel.cancelButtonTapped)
@@ -43,9 +43,9 @@ class ThumbnailConfigViewController: UIViewController {
             .bind(to: viewModel.doneButtonTapped)
             .disposed(by: disposeBag)
         
-        self.dayAlbumView.rx.itemSelected
-            .subscribe(onNext: { index in
-                print(index)
+        self.dayAlbumView.rx.modelSelected(UIImage.self)
+            .subscribe(onNext: { image in
+                self.previewView.backImageView.image = image
             })
             .disposed(by: disposeBag)
         

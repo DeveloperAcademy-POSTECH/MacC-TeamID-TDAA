@@ -74,7 +74,7 @@ class SegmentedControlView: UIView, SegmentedControlViewDelegate {
 		titleLabels[selectedIndex].textColor = config.selectedLabelColor
 		
 		if selectedIndex > 2 {
-			DispatchQueue.main.async {
+			DispatchQueue.main.asyncAfter(deadline: .now()+0.1) {
 				self.scrollView.setContentOffset(CGPoint(x: Int(UIScreen.main.bounds.size.width)/3*(self.selectedIndex-2), y: 0), animated: true)
 			}
 		}

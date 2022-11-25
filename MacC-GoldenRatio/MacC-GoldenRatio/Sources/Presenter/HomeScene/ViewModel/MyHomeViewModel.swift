@@ -17,22 +17,19 @@ class MyHomeViewModel {
 	
 	private var myUID = Auth.auth().currentUser?.uid ?? ""
 	
+	let longPressedEnabled = BehaviorRelay(value: false)
+	
 	let diaryCollectionViewModel = DiaryCollectionViewModel()
 	let albumCollectionViewModel = AlbumCollectionViewModel()
 	
 	var isEqual = false
-	var isInitializing = true {
-		didSet {
-			if isInitializing {
-				LoadingIndicator.showLoading(loadingText: "다이어리를 불러오는 중입니다.")
-			} else {
-				LoadingIndicator.hideLoading()
-			}
-		}
-	}
 	
 	init() {
 		createCell()
+		
+		longPressedEnabled
+			.bind(to: diaryCollectionViewModel.longPressedEnabled)
+			.disposed(by: disposeBag)
 	}
 	
 	func createCell() {

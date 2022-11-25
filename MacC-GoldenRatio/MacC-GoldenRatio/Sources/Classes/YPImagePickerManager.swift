@@ -13,7 +13,7 @@ enum YPImagePickerType {
 }
 
 class YPImagePickerManager {
-    private var imagePicker: YPImagePicker!
+    private var imagePickerConfig: YPImagePickerConfiguration!
     
     init(pickerType: YPImagePickerType) {
         var config = YPImagePickerConfiguration()
@@ -29,14 +29,16 @@ class YPImagePickerManager {
             config.library.maxNumberOfItems = 5
         }
         
-        imagePicker = YPImagePicker(configuration: config)
+        imagePickerConfig = config
     }
     
-    func presentImagePicker(viewControllerToPresent: UIViewController,completion: @escaping ([UIImage]) -> Void) {
+    func presentImagePicker(viewControllerToPresent: UIViewController, completion: @escaping ([UIImage]) -> Void) {
+        let imagePicker = YPImagePicker(configuration: imagePickerConfig)
+
         imagePicker.didFinishPicking { [unowned imagePicker] items, cancelled in
             guard !cancelled else {
                 print("imagePicker Cancelled")
-                imagePicker?.dismiss(animated: true, completion: nil)
+                imagePicker.dismiss(animated: true, completion: nil)
                 return
             }
             var selectedImages: [UIImage] = []
@@ -50,7 +52,7 @@ class YPImagePickerManager {
                 }
             }
             completion(selectedImages)
-            imagePicker?.dismiss(animated: true, completion: nil)
+            imagePicker.dismiss(animated: true, completion: nil)
         }
         viewControllerToPresent.present(imagePicker, animated: true)
     }

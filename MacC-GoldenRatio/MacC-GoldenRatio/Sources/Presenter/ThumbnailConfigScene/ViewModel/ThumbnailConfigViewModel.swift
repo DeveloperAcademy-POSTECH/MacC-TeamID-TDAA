@@ -11,6 +11,7 @@ import UIKit
 
 struct ThumbnailConfigViewModel {
     private let disposeBag = DisposeBag()
+    private var completion: (Diary) -> Void
     
     let previewViewModel: ThumbnailPreviewViewModel
     let dayAlbumViewModel = AlbumCollectionViewModel()
@@ -23,9 +24,15 @@ struct ThumbnailConfigViewModel {
     // View -> ViewModel
     let doneButtonTapped = PublishRelay<Void>()
     let cancelButtonTapped = PublishRelay<Void>()
+    let selectedIndex = PublishRelay<Int>()
     
-    init(diary: Diary, selectedDay: Int) {
+    init(diary: Diary, selectedDay: Int, completion: @escaping (Diary) -> Void) {
+        self.completion = completion
+        
         let diaryModel = MyDiaryDaysModel(diary: diary)
+        let imageURLs = self.dayAlbumViewModel.convertDiaryToAlbumDataWithDay(diary, selectedDay: selectedDay).imageURLs
+        var imageURL: String?
+        
         self.previewViewModel = ThumbnailPreviewViewModel(model: diaryModel, selectedDay: selectedDay)
         self.dayAlbumViewModel.collectionDiaryDataWithDay.onNext((diary, selectedDay))
         
@@ -33,9 +40,18 @@ struct ThumbnailConfigViewModel {
             .map { _ in Void() }
             .asDriver(onErrorDriveWith: .empty())
         
+        self.selectedIndex
+            .subscribe(onNext: { index in
+                imageURL = imageURLs?[index]
+            })
+            .disposed(by: disposeBag)
+        
         self.complete = doneButtonTapped
             .map { _ in
-                print("\(selectedDay)일차 다이어리 저장") // 썀네일 데이터 업데이트
+                guard let imageURL = imageURL else { return }
+                diaryModel.updateTumbnail(urlString: imageURL, selectedDay: selectedDay, completion: { newDiary in
+                    completion(newDiary)
+                })
                 return Void()
             }
             .asDriver(onErrorDriveWith: .empty())

@@ -30,7 +30,7 @@ class ThumbnailConfigViewController: UIViewController {
     
     
     // MARK: - bind, attribute, layout methods
-    func bind(_ viewModel: ThumbnailConfigViewModel) {
+    func bind(_ viewModel: ThumbnailConfigViewModel){
         
         self.previewView.bind(viewModel.previewViewModel)
         self.dayAlbumView.bind(viewModel.dayAlbumViewModel)
@@ -46,6 +46,12 @@ class ThumbnailConfigViewController: UIViewController {
         self.dayAlbumView.rx.modelSelected(UIImage.self)
             .subscribe(onNext: { image in
                 self.previewView.backImageView.image = image
+            })
+            .disposed(by: disposeBag)
+        
+        self.dayAlbumView.rx.itemSelected
+            .subscribe(onNext: { index in
+                viewModel.selectedIndex.accept(index.row)
             })
             .disposed(by: disposeBag)
         

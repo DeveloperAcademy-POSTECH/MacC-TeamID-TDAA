@@ -46,32 +46,6 @@ class MyDiaryDaysModel {
         return data
     }
     
-    func fetchRandomImage(day: Int) -> Observable<UIImage?> {
-        var targetImage: UIImage?
-        var urls: [String] = []
-        self.diary.diaryPages[day-1].pages.forEach { page in // 해당 일차의 페이지
-            page.items.forEach { item in // 각 페이지의 아이템
-                if item.itemType == .image {
-                    urls.append(item.contents[0])
-                }
-            }
-            
-            if let url = urls.randomElement() {
-                if let image = ImageManager.shared.searchImage(urlString: url) {
-                    targetImage = image
-                } else {
-                    FirebaseStorageManager.downloadImage(urlString: url) { result in
-                        ImageManager.shared.cacheImage(urlString: url, image: result ?? UIImage())
-                        targetImage = result
-                    }
-                }
-            } else {
-                targetImage = nil
-            }
-        }
-        return Observable<UIImage?>.just(targetImage)
-    }
-    
     func makeDateString(day: Int) -> String {
         guard let startDate = self.diary.diaryStartDate.toDate() else { return "" }
         guard let currentDate = Calendar.current.date(byAdding: .day, value: day - 1, to: startDate) else { return "" }
@@ -106,20 +80,7 @@ class MyDiaryDaysModel {
         
         for day in 1...days {
             // Model -> ViewModel
-            model.fetchRandomImage(day: day)
-                .subscribe(onNext: {
-                    let dayLabelData = "\(day)일차"
-                    let dateLabelData = model.makeDateString(day: day)
-                    let imageData: UIImage? = $0
-                    
-                    if let imageData = imageData {
-                        dataForCellData.append(DiaryDayModel(dayLabel: dayLabelData, dateLabel: dateLabelData, image: imageData))
-                    } else {
-                        dataForCellData.append(DiaryDayModel(dayLabel: dayLabelData, dateLabel: dateLabelData, image: UIImage(named: "diaryDaysDefault")!))
-                    }
-                    
-                })
-                .disposed(by: self.disposeBag)
+            dataForCellData.append(self.diaryToDayModel(model: model, selectedDay: day))
         }
         return dataForCellData
     }
@@ -135,12 +96,12 @@ class MyDiaryDaysModel {
             // 썸네일 이미지 URL이 있는 경우 -> 이미지 다운로드 후 리턴
             guard let thumbnailURLString = thumbnailURLString else { return diaryDayModel }
             if let image = ImageManager.shared.searchImage(urlString: thumbnailURLString) {
-                print("썸네일 있고 캐시에 이미지 있음")
+                // 썸네일 있고 캐시에 이미지 있음
                 diaryDayModel = DiaryDayModel(dayLabel: dayLabelData, dateLabel: dateLabelData, image: image)
             } else {
                 FirebaseStorageManager.downloadImage(urlString: thumbnailURLString) { image in
                     ImageManager.shared.cacheImage(urlString: thumbnailURLString, image: image ?? UIImage())
-                    print("썸네일 있고 파베에 이미지 있음")
+                    // 썸네일 있고 파베에 이미지 있음
                     diaryDayModel = DiaryDayModel(dayLabel: dayLabelData, dateLabel: dateLabelData, image: image)
                 }
             }
@@ -152,11 +113,11 @@ class MyDiaryDaysModel {
                     let imageData: UIImage? = $0
                     
                     if let imageData = imageData {
-                        print("지정된 썸네일 없고 앨범에 이미지 있음")
+                        // 지정된 썸네일 없고 앨범에 이미지 있음
                         diaryDayModel = DiaryDayModel(dayLabel: dayLabelData, dateLabel: dateLabelData, image: imageData)
                     } else {
-                        print("지정된 썸네일 없고 앨범에 이미지 없음")
-                        diaryDayModel = DiaryDayModel(dayLabel: dayLabelData, dateLabel: dateLabelData, image: nil)
+                        // 지정된 썸네일 없고 앨범에 이미지 없음
+                        diaryDayModel = DiaryDayModel(dayLabel: dayLabelData, dateLabel: dateLabelData, image: UIImage(named: "diaryDaysDefault"))
                     }
                 })
                 .disposed(by: self.disposeBag)
@@ -165,7 +126,44 @@ class MyDiaryDaysModel {
         return diaryDayModel
     }
     
+    func fetchRandomImage(day: Int) -> Observable<UIImage?> {
+        var targetImage: UIImage?
+        var urls: [String] = []
+        self.diary.diaryPages[day-1].pages.forEach { page in // 해당 일차의 페이지
+            page.items.forEach { item in // 각 페이지의 아이템
+                if item.itemType == .image {
+                    urls.append(item.contents[0])
+                }
+            }
+            
+            if let url = urls.randomElement() {
+                if let image = ImageManager.shared.searchImage(urlString: url) {
+                    targetImage = image
+                } else {
+                    FirebaseStorageManager.downloadImage(urlString: url) { result in
+                        ImageManager.shared.cacheImage(urlString: url, image: result ?? UIImage())
+                        targetImage = result
+                    }
+                }
+            } else {
+                targetImage = nil
+            }
+        }
+        return Observable<UIImage?>.just(targetImage)
+    }
+    
     private func checkThumbnailValid(url: String?) -> Bool{
         return (url == nil || url == "NoURL") ? false : true
+    }
+    
+    func updateTumbnail(urlString: String, selectedDay: Int, completion: @escaping (Diary) -> Void) {
+        let firebaseClient = FirebaseClient()
+        
+        var thumbnails = self.diary.pageThumbnails
+        thumbnails[selectedDay-1] = urlString
+        self.diary.pageThumbnails = thumbnails
+        
+        firebaseClient.updatePageThumbnail(diary: self.diary)
+        completion(self.diary)
     }
 }

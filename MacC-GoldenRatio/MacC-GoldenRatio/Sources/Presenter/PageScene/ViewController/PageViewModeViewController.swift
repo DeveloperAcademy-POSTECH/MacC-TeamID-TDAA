@@ -221,7 +221,9 @@ class PageViewModeViewController: UIViewController {
         guard let diary = try? self.pageViewModeViewModel.diaryObservable.value() else  { return }
         guard let selectedPageIndex = try? self.pageViewModeViewModel.selectedPageIndexSubject.value() else  { return }
         
-        let thumbnailViewModel = ThumbnailConfigViewModel(diary: diary, selectedDay: (selectedPageIndex.0+1))
+        let thumbnailViewModel = ThumbnailConfigViewModel(diary: diary, selectedDay: (selectedPageIndex.0+1), completion: { newDiary in
+            self.pageViewModeViewModel.diaryObservable.onNext(newDiary)
+        })
         let viewController = ThumbnailConfigViewController()
         
         viewController.bind(thumbnailViewModel)

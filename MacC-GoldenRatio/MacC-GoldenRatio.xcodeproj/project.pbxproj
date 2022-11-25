@@ -40,6 +40,7 @@
 		0AAB2ADE28EDA511009FBD96 /* MapStickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2ADD28EDA510009FBD96 /* MapStickerView.swift */; };
 		0AAB2AE028EDA553009FBD96 /* ImageStickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2ADF28EDA553009FBD96 /* ImageStickerView.swift */; };
 		0AAB2AE228EDA55D009FBD96 /* StickerStickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2AE128EDA55D009FBD96 /* StickerStickerView.swift */; };
+		0AAEB39129309E1700AEB5B8 /* YPImagePickerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAEB39029309E1700AEB5B8 /* YPImagePickerManager.swift */; };
 		0AD6FD7E2903054D00939F3D /* MapSearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD6FD7D2903054D00939F3D /* MapSearchResultTableViewCell.swift */; };
 		0AE27F2528F442B100D79208 /* FirebaseStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE27F2428F442B100D79208 /* FirebaseStorage.swift */; };
 		0AE94ABC291182090051A710 /* ErrorMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE94ABB291182090051A710 /* ErrorMessage.swift */; };
@@ -201,6 +202,7 @@
 		0AAB2ADD28EDA510009FBD96 /* MapStickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapStickerView.swift; sourceTree = "<group>"; };
 		0AAB2ADF28EDA553009FBD96 /* ImageStickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageStickerView.swift; sourceTree = "<group>"; };
 		0AAB2AE128EDA55D009FBD96 /* StickerStickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerStickerView.swift; sourceTree = "<group>"; };
+		0AAEB39029309E1700AEB5B8 /* YPImagePickerManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YPImagePickerManager.swift; sourceTree = "<group>"; };
 		0AD6FD7D2903054D00939F3D /* MapSearchResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapSearchResultTableViewCell.swift; sourceTree = "<group>"; };
 		0AE27F2428F442B100D79208 /* FirebaseStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseStorage.swift; sourceTree = "<group>"; };
 		0AE94ABB291182090051A710 /* ErrorMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMessage.swift; sourceTree = "<group>"; };
@@ -544,6 +546,7 @@
 		0AFD1F95292B7456007A242B /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				0AAEB39029309E1700AEB5B8 /* YPImagePickerManager.swift */,
 				E21342DC28F6B2740048D9CF /* HalfModalPresentationController.swift */,
 				E2838BF0291E3D010013DD82 /* MapHalfModalPresentationController.swift */,
 				0A5DC37A28F7F65B00AABED1 /* ImageManager.swift */,
@@ -1092,6 +1095,7 @@
 				E21342DD28F6B2740048D9CF /* HalfModalPresentationController.swift in Sources */,
 				E2838BEF291E3CF20013DD82 /* MapListViewController.swift in Sources */,
 				CCACFE53292BD2C30038D792 /* DynamicLinkBuilder.swift in Sources */,
+				0AAEB39129309E1700AEB5B8 /* YPImagePickerManager.swift in Sources */,
 				E2838BEA291E3B3B0013DD82 /* MapListView.swift in Sources */,
 				E2EA7F1628E5711E00AC1C49 /* DiaryCollectionHeaderView.swift in Sources */,
 				B93EC22928F7BC8000BB89C5 /* String+.swift in Sources */,
@@ -1305,7 +1309,9 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "MacC-GoldenRatio/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = TDAA;
+				INFOPLIST_KEY_NSCameraUsageDescription = "카메라를 사용하기 위해 카메라 접근 권한이 필요합니다.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "사용자의 위치를 활용해 지도를 표시하기 위한 권한이 필요합니다.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "마이크를 사용하기 위해 마이크 접근 권한이 필요합니다.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "사진을 저장하기 위해 앨범 접근 권한이 필요합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -1347,7 +1353,9 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "MacC-GoldenRatio/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = TDAA;
+				INFOPLIST_KEY_NSCameraUsageDescription = "카메라를 사용하기 위해 카메라 접근 권한이 필요합니다.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "사용자의 위치를 활용해 지도를 표시하기 위한 권한이 필요합니다.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "마이크를 사용하기 위해 마이크 접근 권한이 필요합니다.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "사진을 저장하기 위해 앨범 접근 권한이 필요합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;

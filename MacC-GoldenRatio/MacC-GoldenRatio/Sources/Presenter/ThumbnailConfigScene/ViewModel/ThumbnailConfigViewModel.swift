@@ -50,6 +50,7 @@ struct ThumbnailConfigViewModel {
             .map { _ in
                 guard let imageURL = imageURL else { return }
                 diaryModel.updateTumbnail(urlString: imageURL, selectedDay: selectedDay, completion: { newDiary in
+                    NotificationCenter.default.post(name: .reloadDiary, object: nil)
                     completion(newDiary)
                 })
                 return Void()

@@ -40,6 +40,15 @@ class ThumbnailConfigViewController: UIViewController {
             .disposed(by: disposeBag)
         
         self.doneButton.rx.tap
+            .map {
+                for index in 0..<self.dayAlbumView.visibleCells.count {
+                    guard let cell = self.dayAlbumView.cellForItem(at: IndexPath(row: index, section: 0)) as? MyAlbumCollectionViewCell else { return }
+                    if cell.imageView.image == self.previewView.backImageView.image {
+                        viewModel.selectedIndex.accept(index)
+                        break
+                    }
+                }
+            }
             .bind(to: viewModel.doneButtonTapped)
             .disposed(by: disposeBag)
         

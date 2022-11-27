@@ -28,7 +28,6 @@ final class MyHomeViewController: UIViewController, UIGestureRecognizerDelegate 
 		super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
 		setupSubViews()
 		bind()
-		setupNotification()
 		setupGestureRecognizer()
 	}
 	
@@ -49,8 +48,7 @@ final class MyHomeViewController: UIViewController, UIGestureRecognizerDelegate 
 		collectionView.snp.makeConstraints {
 			$0.top.equalTo(collectionHeaderView.snp.bottom).offset(90)
 			$0.bottom.equalTo(view.safeAreaLayoutGuide)
-			$0.leading.equalTo(view.safeAreaLayoutGuide).inset(10)
-			$0.trailing.equalTo(view.safeAreaLayoutGuide).inset(20)
+			$0.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(10)
 		}
 		
 		dateFilterButton.setTitle("날짜순", for: .normal)
@@ -164,11 +162,24 @@ final class MyHomeViewController: UIViewController, UIGestureRecognizerDelegate 
 				}
 			}
 			.disposed(by: disposeBag)
-	}
-	
-	private func setupNotification() {
-		NotificationCenter.default.addObserver(self, selector: #selector(reloadDiaryCell), name: .reloadDiary, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(changeAddButtonImage), name: .changeAddButtonImage, object: nil)
+		
+		NotificationCenter
+			.default
+			.rx
+			.notification(.reloadDiary)
+			.subscribe(onNext: { _ in
+				self.viewModel.createCell()
+			})
+			.disposed(by: disposeBag)
+		
+		NotificationCenter
+			.default
+			.rx
+			.notification(.changeAddButtonImage)
+			.subscribe(onNext: { _ in
+				self.addDiaryButton.setImage(UIImage(named: "plusButton"), for: .normal)
+			})
+			.disposed(by: disposeBag)
 	}
 	
 	private func setupGestureRecognizer() {
@@ -216,14 +227,6 @@ final class MyHomeViewController: UIViewController, UIGestureRecognizerDelegate 
 		}
 	}
 	
-	@objc private func reloadDiaryCell() {
-		viewModel.createCell()
-	}
-	
-	@objc private func changeAddButtonImage() {
-		addDiaryButton.setImage(UIImage(named: "plusButton"), for: .normal)
-	}
-	
 	@objc func createButtonTapped() {
 		let vc = DiaryConfigViewController()
 		vc.bind(DiaryConfigViewModel(diary: nil))
@@ -239,7 +242,7 @@ final class MyHomeViewController: UIViewController, UIGestureRecognizerDelegate 
 				DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.5) {
 					if self.viewModel.isEqual {
 						self.viewModel.updateJoinDiary(textField.text ?? "")
-						self.reloadDiaryCell()
+						self.viewModel.createCell()
 						self.view.showToastMessage("다이어리가 추가되었습니다.")
 					} else {
 						self.view.showToastMessage("초대코드가 잘못되었습니다.")

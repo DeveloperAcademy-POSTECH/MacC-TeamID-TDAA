@@ -122,17 +122,19 @@ final class MyAlbumPhotoViewController: UIViewController {
 				self.present(alert, animated: true)
 			}
 			.disposed(by: disposeBag)
-	}
-	
-	private func setupNotification() {
-		NotificationCenter.default.addObserver(self, selector: #selector(changePageIndex(notification:)), name: .paging, object: nil)
-	}
-	
-	@objc private func changePageIndex(notification: NSNotification) {
-		guard let data = notification.userInfo?["data"]  as? Int else{
-			return
-		}
-		photoPage = data
+		
+		NotificationCenter
+			.default
+			.rx
+			.notification(.paging)
+			.subscribe(on: MainScheduler.instance)
+			.subscribe(onNext: { [weak self] data in
+				guard let page = data.userInfo?["data"] as? Int else{
+					return
+				}
+				self?.photoPage = page
+			})
+			.disposed(by: disposeBag)
 	}
 	
 	private func updatePageOffset() {

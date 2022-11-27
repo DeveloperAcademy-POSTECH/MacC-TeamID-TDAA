@@ -58,37 +58,34 @@ class DiaryCollectionViewCell: UICollectionViewCell {
 		
 		cellImageView.image = UIImage(named: cellData.diaryCover)
 		cellImageView.snp.makeConstraints {
-			$0.top.leading.equalToSuperview().inset(10)
-			$0.bottom.trailing.equalToSuperview()
+			$0.top.leading.trailing.equalToSuperview().inset(10)
+			$0.bottom.equalToSuperview()
 		}
 		
 		cellData.diaryCoverImage == nil || cellData.diaryCoverImage == "" ? cellCoverImageView.image = UIImage(named: "defaultBottomcover") : cellCoverImageView.setImage(with: cellData.diaryCoverImage!)
 		cellCoverImageView.snp.makeConstraints {
 			$0.height.equalTo(116)
-			$0.leading.equalToSuperview().inset(10)
-			$0.bottom.trailing.equalToSuperview()
+			$0.leading.trailing.equalToSuperview().inset(10)
+			$0.bottom.equalToSuperview()
 		}
 		
 		titleLabel.text = cellData.diaryName
 		titleLabel.snp.makeConstraints {
 			$0.top.equalToSuperview().inset(myDevice.diaryCollectionViewCellTitleLabelTop)
-			$0.leading.equalToSuperview().inset(30)
-			$0.trailing.equalToSuperview().inset(20)
+			$0.leading.trailing.equalToSuperview().inset(30)
 		}
 		
 		let day = Calendar.current.dateComponents([.day], from: cellData.diaryStartDate.toDate() ?? Date(), to: cellData.diaryEndDate.toDate() ?? Date()).day
 		dateLabel.text = "\(cellData.diaryStartDate) (\((day ?? 0)+1)일)"
 		dateLabel.snp.makeConstraints {
 			$0.top.equalTo(titleLabel.snp.bottom)
-			$0.leading.equalToSuperview().inset(30)
-			$0.trailing.equalToSuperview().inset(20)
+			$0.leading.trailing.equalToSuperview().inset(30)
 		}
 		
 		addressLabel.text = cellData.diaryLocation.locationName
 		addressLabel.snp.makeConstraints {
 			$0.top.equalTo(dateLabel.snp.bottom)
-			$0.leading.equalToSuperview().inset(30)
-			$0.trailing.equalToSuperview().inset(20)
+			$0.leading.trailing.equalToSuperview().inset(30)
 		}
 		
 		removeButton.snp.makeConstraints {

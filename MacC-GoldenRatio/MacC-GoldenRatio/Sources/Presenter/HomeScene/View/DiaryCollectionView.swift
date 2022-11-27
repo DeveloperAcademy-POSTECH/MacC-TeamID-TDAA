@@ -35,9 +35,8 @@ class DiaryCollectionView: UICollectionView {
 		viewModel.collectionDiaryData
 			.bind(to: self.rx.items(cellIdentifier: "DiaryCollectionViewCell", cellType: DiaryCollectionViewCell.self)) { index, data, cell in
 				let cellData = DiaryCell(diaryUUID: data.diaryUUID, diaryName: data.diaryName, diaryLocation: data.diaryLocation, diaryStartDate: data.diaryStartDate, diaryEndDate: data.diaryEndDate, diaryCover: data.diaryCover, diaryCoverImage: data.diaryCoverImage, userUIDs: data.userUIDs)
+				cell.bind(viewModel: self.viewModel)
 				cell.setup(cellData: cellData)
-				
-				cell.removeButton.addTarget(self, action: #selector(self.removeButtonTapped), for: .touchUpInside)
 				cell.removeButton.diaryCell = cellData
 				
 				if self.viewModel.longPressedEnabled.value {
@@ -61,14 +60,6 @@ class DiaryCollectionView: UICollectionView {
 				}
 			})
 			.disposed(by: disposeBag)
-	}
-	
-	@objc func removeButtonTapped(sender: RemoveButton) {
-		if sender.diaryCell != nil {
-			Observable.just(sender.diaryCell)
-				.bind(to: self.viewModel.removeData)
-				.disposed(by: disposeBag)
-		}
 	}
 }
 

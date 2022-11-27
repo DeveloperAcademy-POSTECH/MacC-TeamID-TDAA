@@ -5,11 +5,13 @@
 //  Created by woo0 on 2022/09/29.
 //
 
-import Combine
+import RxCocoa
+import RxSwift
 import Kingfisher
 import UIKit
 
 class DiaryCollectionViewCell: UICollectionViewCell {
+	private let disposeBag = DisposeBag()
 	private let myDevice = UIScreen.getDevice()
 	private var isAnimate: Bool = true
 	private lazy var titleLabel: UILabel = {
@@ -53,8 +55,22 @@ class DiaryCollectionViewCell: UICollectionViewCell {
 		return button
 	}()
 	
+	lazy var blurButton: UIButton = {
+		let button = UIButton()
+		return button
+	}()
+	
+	func bind(viewModel: DiaryCollectionViewModel) {
+		removeButton.rx.tap
+			.map {
+				return self.removeButton.diaryCell
+			}
+			.bind(to: viewModel.removeData)
+			.disposed(by: disposeBag)
+	}
+	
 	func setup(cellData: DiaryCell) {
-		[cellImageView, cellCoverImageView, titleLabel, dateLabel, addressLabel, removeButton].forEach { self.addSubview($0) }
+		[cellImageView, cellCoverImageView, titleLabel, dateLabel, addressLabel, blurButton, removeButton].forEach { self.addSubview($0) }
 		
 		cellImageView.image = UIImage(named: cellData.diaryCover)
 		cellImageView.snp.makeConstraints {
@@ -91,6 +107,10 @@ class DiaryCollectionViewCell: UICollectionViewCell {
 		removeButton.snp.makeConstraints {
 			$0.top.leading.equalToSuperview()
 		}
+		
+		blurButton.snp.makeConstraints {
+			$0.edges.equalToSuperview()
+		}
 	}
 	
 	func startAnimate() {
@@ -112,13 +132,15 @@ class DiaryCollectionViewCell: UICollectionViewCell {
 		let layer: CALayer = self.layer
 		layer.add(shakeAnimation, forKey:"animate")
 		removeButton.isHidden = false
+		blurButton.isHidden = false
 		isAnimate = true
 	}
 	
 	func stopAnimate() {
 		let layer: CALayer = self.layer
 		layer.removeAnimation(forKey: "animate")
-		self.removeButton.isHidden = true
+		removeButton.isHidden = true
+		blurButton.isHidden = true
 		isAnimate = false
 	}
 }

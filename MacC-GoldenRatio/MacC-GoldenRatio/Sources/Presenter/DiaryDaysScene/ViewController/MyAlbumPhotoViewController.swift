@@ -67,7 +67,6 @@ final class MyAlbumPhotoViewController: UIViewController {
 		super.viewDidLoad()
 		setupSubViews()
 		updatePageOffset()
-		setupNotification()
 	}
 	
 	private func setupSubViews() {

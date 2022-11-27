@@ -185,14 +185,15 @@ final class MyHomeViewController: UIViewController, UIGestureRecognizerDelegate 
 	private func setupGestureRecognizer() {
 		let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapGesture))
 		tapGesture.cancelsTouchesInView = false
+//		self.view.addGestureRecognizer(tapGesture)
 		viewModel.longPressedEnabled
 			.asObservable()
 			.subscribe(onNext: { value in
 				if value {
-					tapGesture.cancelsTouchesInView = false
+//					tapGesture.cancelsTouchesInView = false
 					self.view.addGestureRecognizer(tapGesture)
 				} else {
-					tapGesture.cancelsTouchesInView = true
+//					tapGesture.cancelsTouchesInView = true
 					self.view.removeGestureRecognizer(tapGesture)
 				}
 			})

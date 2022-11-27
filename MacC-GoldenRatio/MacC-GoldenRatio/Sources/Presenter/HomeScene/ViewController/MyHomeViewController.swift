@@ -12,8 +12,8 @@ import UIKit
 
 final class MyHomeViewController: UIViewController, UIGestureRecognizerDelegate {
 	private let disposeBag = DisposeBag()
-	private let viewModel = MyHomeViewModel()
 	private let myDevice = UIScreen.getDevice()
+    let viewModel = MyHomeViewModel()
 	
 	private var currentLongPressedCell: DiaryCollectionViewCell?
 	

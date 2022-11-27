@@ -15,6 +15,7 @@ class SignInViewController: UIViewController {
 
     private let device: UIScreen.DeviceSize = UIScreen.getDevice()
     private var currentNonce: String?
+    var completion: () -> Void = {}
     
     // MARK: - properties
     
@@ -173,10 +174,12 @@ extension SignInViewController: ASAuthorizationControllerDelegate {
                         let user = User(userUID: currentUser.uid, userName: currentUser.displayName ?? "", userImageURL: "", diaryUUIDs: [])
                         FirestoreClient().setMyUser(myUser: user, completion: {
                             self.showMainView()
+                            self.completion()
                         })
                         return
                     }
                     self.showMainView()
+                    self.completion()
                 })
             }
         }

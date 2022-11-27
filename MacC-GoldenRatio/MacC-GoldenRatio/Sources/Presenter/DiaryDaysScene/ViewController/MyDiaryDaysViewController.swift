@@ -5,7 +5,6 @@
 //  Created by DongKyu Kim on 2022/11/10.
 //
 
-import MapKit // TODO: MapView 연결 이후 삭제
 import RxCocoa
 import RxSwift
 import SnapKit
@@ -101,7 +100,7 @@ class MyDiaryDaysViewController: UIViewController {
             .map { $0.row }
             .subscribe(onNext: { selectedDay in
                 Task {
-                    let vc = await PageViewModeViewController(diary: viewModel.myDiaryDaysModel.diary, selectedDayIndex: selectedDay, completion: { newDiary in
+                    let vc = PageViewModeViewController(diary: viewModel.myDiaryDaysModel.diary, selectedDayIndex: selectedDay, completion: { newDiary in
                         self.viewModel?.myDiaryDaysModel.diary = newDiary
                     })
                     self.navigationController?.setNavigationBarHidden(false, animated: false)
@@ -186,6 +185,7 @@ class MyDiaryDaysViewController: UIViewController {
     private func menuButtonTapped() {
         let popUp = PopUpViewController(popUpPosition: .top)
         popUp.addButton(buttonTitle: " 초대코드 복사", buttonSymbol: "envelope.arrow.triangle.branch", buttonSize: 15, action: copyButtonTapped)
+        popUp.addButton(buttonTitle: " 초대링크 공유", buttonSymbol: "link", buttonSize: 17, action: linkButtonTapped)
         popUp.addButton(buttonTitle: " 다이어리 수정", buttonSymbol: "square.and.pencil",  buttonSize: 17, action: modifyButtonTapped)
         popUp.addButton(buttonTitle: " 다이어리 탈퇴", buttonSymbol: "door.right.hand.open",  buttonSize: 17, action: outButtonTapped)
         present(popUp, animated: false)
@@ -199,7 +199,17 @@ class MyDiaryDaysViewController: UIViewController {
     
     @objc private func copyButtonTapped() {
         UIPasteboard.general.string = self.viewModel!.myDiaryDaysModel.diary.diaryUUID
+        
         self.view.showToastMessage("초대코드가 복사되었습니다.")
+    }
+    
+    @objc private func linkButtonTapped() {
+        DynamicLinkBuilder.createDynamicLink(diaryUUID: self.viewModel!.myDiaryDaysModel.diary.diaryUUID) { link in
+            
+            let activityViewController = UIActivityViewController(activityItems: [link], applicationActivities: nil)
+            activityViewController.popoverPresentationController?.sourceView = self.view
+            self.present(activityViewController, animated: true, completion: nil)
+        }
     }
     
     @objc private func modifyButtonTapped() {

@@ -10,7 +10,7 @@ import UIKit
 
 class MyAlbumCollectionViewCell: UICollectionViewCell {
 	private let myDevice = UIScreen.getDevice()
-	private lazy var imageView: UIImageView = {
+	lazy var imageView: UIImageView = {
 		let imageView =  UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true

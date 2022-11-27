@@ -18,7 +18,7 @@ class PageEditModeViewController: UIViewController {
     private lazy var newStickerAppearPoint = CGPoint(x: self.view.center.x - ( self.newStickerDefaultSize.width * 0.5 ), y: self.view.center.y - self.newStickerDefaultSize.height)
     
     private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
-    private let imagePicker = UIImagePickerController()
+    private let imagePickerManager = YPImagePickerManager(pickerType: .multiSelectionWithCrop)
     private var myDiariesViewModalBackgroundView = UIView()
     private var pageEditModeViewModel: PageEditModeViewModel!
     
@@ -109,7 +109,6 @@ class PageEditModeViewController: UIViewController {
         super.viewDidLoad()
         DispatchQueue.main.async {
             self.view.backgroundColor = .appBackgroundColor
-            self.configureImagePicker()
                         
             self.addSubviews()
             self.configureConstraints()
@@ -181,12 +180,6 @@ class PageEditModeViewController: UIViewController {
             gesture.delegate = self
             self.view.addGestureRecognizer(gesture)
         }
-    }
-    
-    private func configureImagePicker() {
-        self.imagePicker.sourceType = .photoLibrary
-        self.imagePicker.allowsEditing = true
-        self.imagePicker.delegate = self
     }
     
     private func configureNavigationBar() {
@@ -285,9 +278,9 @@ class PageEditModeViewController: UIViewController {
     }
     
     @objc func onTapImageButton() {
-        imagePicker.modalPresentationStyle = .overCurrentContext
-        
-        self.present(self.imagePicker, animated: true)
+        self.imagePickerManager.presentImagePicker(viewControllerToPresent: self, completion: { images in
+            self.addImageStickers(images: images)
+        })
     }
     
     @objc func onTapStickerButton(){
@@ -308,11 +301,12 @@ class PageEditModeViewController: UIViewController {
         self.addSticker(stickerView: mapStickerView)
     }
     
-    private func addImageSticker(image: UIImage?) {
-        guard let image = image else { return }
+    private func addImageStickers(images: [UIImage]) {
         guard let diaryUUID = try? pageEditModeViewModel.diaryObservable.value().diaryUUID else { return }
-        let imageStickerView = ImageStickerView(image: image, diaryUUID: diaryUUID, appearPoint: newStickerAppearPoint)
-        self.addSticker(stickerView: imageStickerView)
+        images.forEach {
+            let imageStickerView = ImageStickerView(image: $0, diaryUUID: diaryUUID, appearPoint: newStickerAppearPoint)
+            self.addSticker(stickerView: imageStickerView)
+        }
     }
     
     private func addSticker(sticker: String) {
@@ -406,21 +400,6 @@ extension PageEditModeViewController: StickerViewDelegate {
         backgroundView.bringSubviewToFront(sticker)
     }
     
-}
-
-// MARK: ImagePikcerDelegate
-extension PageEditModeViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        var selectedImage: UIImage? = nil
-        
-        if let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
-            selectedImage = image
-        } else if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-            selectedImage = image
-        }
-        self.addImageSticker(image: selectedImage)
-        self.imagePicker.dismiss(animated: true, completion: nil)
-    }
 }
 
 // MARK: PresentationDelegate

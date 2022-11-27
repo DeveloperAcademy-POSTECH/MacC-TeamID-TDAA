@@ -130,4 +130,42 @@ class StickerViewData {
             })
             .disposed(by: disposeBag)
     }
+    
+    func updateItemFrameBoundsData(frame: CGRect, bounds: CGRect) {
+        self.itemObservable
+            .observe(on: MainScheduler.instance)
+            .take(1)
+            .map { item in
+                let itemFrame: [Double] = [frame.origin.x, frame.origin.y, frame.size.width, frame.size.height]
+                let itemBounds: [Double] = [0, 0, bounds.size.width, bounds.size.height]
+                
+                var newItem = item
+                newItem.itemFrame = itemFrame
+                newItem.itemBounds = itemBounds
+                
+                return newItem
+            }
+            .subscribe(onNext: {
+                self.itemObservable.onNext($0)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    func updateItemTransform(transform: CGAffineTransform) {
+        self.itemObservable
+            .observe(on: MainScheduler.instance)
+            .take(1)
+            .map { item in
+                let itemTrasnform: [Double] = [transform.a, transform.b, transform.c, transform.d, transform.tx, transform.ty]
+                
+                var newItem = item
+                newItem.itemTransform = itemTrasnform
+
+                return newItem
+            }
+            .subscribe(onNext: {
+                self.itemObservable.onNext($0)
+            })
+            .disposed(by: disposeBag)
+    }
 }

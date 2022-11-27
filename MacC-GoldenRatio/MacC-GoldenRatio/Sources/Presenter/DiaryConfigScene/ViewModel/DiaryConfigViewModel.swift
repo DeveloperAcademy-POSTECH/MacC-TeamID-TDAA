@@ -46,7 +46,7 @@ class DiaryConfigViewModel {
     var userUIDs: [String]?
     var diaryPages: [Pages] = []
     var coverImageURL: String?
-    var thumbnails: [String] = []
+    var thumbnails: [String?] = []
     var myUID = Auth.auth().currentUser?.uid ?? ""
     
     var pageArray: [Page] = []
@@ -172,7 +172,7 @@ class DiaryConfigViewModel {
         guard let diaryUUID = self.diaryUUID, let title = self.title, let location = self.location, let startDate = self.startDate, let endDate = endDate, let diaryCover = diaryCover else { return print("Check Data") }
         
         for _ in 1...getPageCount() {
-            thumbnails.append("NoURL")
+            thumbnails.append(nil)
             let pageUUID = UUID().uuidString + String(Date().timeIntervalSince1970)
             let pages = [Page(pageUUID: pageUUID, items: [])]
             diaryPages.append(Pages(pages: pages))

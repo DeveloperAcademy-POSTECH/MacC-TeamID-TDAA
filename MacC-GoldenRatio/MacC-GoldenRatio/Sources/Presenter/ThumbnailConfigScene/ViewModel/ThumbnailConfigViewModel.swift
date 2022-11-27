@@ -19,7 +19,6 @@ struct ThumbnailConfigViewModel {
     // ViewModel -> View
     let dismiss: Driver<Void>
     let complete: Driver<Void>
-    // let previewData = PublishRelay<DiaryDayModel>()
     
     // View -> ViewModel
     let doneButtonTapped = PublishRelay<Void>()

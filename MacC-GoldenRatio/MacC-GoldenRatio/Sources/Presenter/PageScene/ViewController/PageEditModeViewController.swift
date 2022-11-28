@@ -75,7 +75,9 @@ class PageEditModeViewController: UIViewController {
     
     private lazy var stickerToolButton: UIButton = {
         let button = UIButton()
-        let image = UIImage(systemName: "s.square", withConfiguration: UIImage.SymbolConfiguration(pointSize: 24, weight: .semibold))
+        guard var image = UIImage(named: "stickerTool") else { return button }
+        image = image.withConfiguration(UIImage.SymbolConfiguration(pointSize: 24, weight: .semibold))
+        
         button.setImage(image, for: .normal)
         button.tintColor = .black
         button.addTarget(self, action: #selector(onTapStickerButton), for: .touchUpInside)
@@ -85,7 +87,9 @@ class PageEditModeViewController: UIViewController {
     
     private lazy var textToolButton: UIButton = {
         let button = UIButton()
-        let image = UIImage(systemName: "t.square", withConfiguration: UIImage.SymbolConfiguration(pointSize: 24, weight: .semibold))
+        guard var image = UIImage(named: "textTool") else { return button }
+        image = image.withConfiguration(UIImage.SymbolConfiguration(pointSize: 24, weight: .semibold))
+
         button.setImage(image, for: .normal)
         button.tintColor = .black
         button.addTarget(self, action: #selector(onTapTextButton), for: .touchUpInside)

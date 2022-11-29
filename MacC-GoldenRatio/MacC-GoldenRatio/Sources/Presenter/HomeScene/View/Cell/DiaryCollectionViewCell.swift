@@ -51,7 +51,7 @@ class DiaryCollectionViewCell: UICollectionViewCell {
 	
 	lazy var removeButton: RemoveButton = {
 		let button = RemoveButton()
-		button.setImage(UIImage(systemName: "minus.circle.fill")?.withTintColor(UIColor.darkgrayColor, renderingMode: .alwaysOriginal), for: .normal)
+		button.setImage(UIImage(named: "minusButton"), for: .normal)
 		return button
 	}()
 	
@@ -105,7 +105,8 @@ class DiaryCollectionViewCell: UICollectionViewCell {
 		}
 		
 		removeButton.snp.makeConstraints {
-			$0.top.leading.equalToSuperview()
+			$0.width.height.equalTo(18)
+			$0.top.leading.equalToSuperview().inset(3)
 		}
 		
 		blurButton.snp.makeConstraints {

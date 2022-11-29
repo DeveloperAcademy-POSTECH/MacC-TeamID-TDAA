@@ -185,15 +185,12 @@ final class MyHomeViewController: UIViewController, UIGestureRecognizerDelegate 
 	private func setupGestureRecognizer() {
 		let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapGesture))
 		tapGesture.cancelsTouchesInView = false
-//		self.view.addGestureRecognizer(tapGesture)
 		viewModel.longPressedEnabled
 			.asObservable()
 			.subscribe(onNext: { value in
 				if value {
-//					tapGesture.cancelsTouchesInView = false
 					self.view.addGestureRecognizer(tapGesture)
 				} else {
-//					tapGesture.cancelsTouchesInView = true
 					self.view.removeGestureRecognizer(tapGesture)
 				}
 			})
@@ -218,14 +215,10 @@ final class MyHomeViewController: UIViewController, UIGestureRecognizerDelegate 
 	}
 	
 	@objc func handleLongPress(gestureRecognizer: UILongPressGestureRecognizer) {
-		if gestureRecognizer.state == .ended {
-			Observable.just(true)
-				.bind(to: viewModel.longPressedEnabled)
-				.disposed(by: disposeBag)
-			viewModel.createCell()
-		} else {
-			return
-		}
+		Observable.just(true)
+			.bind(to: viewModel.longPressedEnabled)
+			.disposed(by: disposeBag)
+		viewModel.createCell()
 	}
 	
 	@objc func createButtonTapped() {

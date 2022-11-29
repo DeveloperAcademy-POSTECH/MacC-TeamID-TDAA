@@ -10,6 +10,7 @@ import YPImagePicker
 
 enum YPImagePickerType {
     case multiSelectionWithCrop
+    case coverWithCrop
 }
 
 class YPImagePickerManager {
@@ -27,6 +28,15 @@ class YPImagePickerManager {
             config.showsCrop = .rectangle(ratio: 1)
             config.targetImageSize = YPImageSize.original
             config.library.maxNumberOfItems = 5
+            
+        case .coverWithCrop:
+            config.onlySquareImagesFromCamera = false
+            config.albumName = "트다(TDAA)"
+            config.startOnScreen = YPPickerScreen.library
+            config.screens = [.library, .photo]
+            config.showsCrop = .rectangle(ratio: 1.42)
+            config.targetImageSize = YPImageSize.original
+            config.library.maxNumberOfItems = 1
         }
         
         imagePickerConfig = config

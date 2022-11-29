@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>863234423654-cdkapjff1f3oqh12m6rs0q70vug8pba4.apps.googleusercontent.com</string>
+	<string>863234423654-21vsneuqrspaivkml4pvv92luhtbhinu.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.863234423654-cdkapjff1f3oqh12m6rs0q70vug8pba4</string>
+	<string>com.googleusercontent.apps.863234423654-21vsneuqrspaivkml4pvv92luhtbhinu</string>
 	<key>API_KEY</key>
 	<string>AIzaSyD6ROc667LMYR_AQUrh1qEMNNfDwT7UXCQ</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,21 +13,21 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.TwoInterval.MacC-GoldenRatio</string>
+	<string>com.San.MacC-GoldenRatio</string>
 	<key>PROJECT_ID</key>
 	<string>macc-goldenratio</string>
 	<key>STORAGE_BUCKET</key>
 	<string>macc-goldenratio.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_GCM_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:863234423654:ios:a67f130603514714e266a7</string>
 </dict>

@@ -28,10 +28,11 @@
 		0A6F107128FBFA7C002FB611 /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6F107028FBFA7C002FB611 /* MenuTableViewCell.swift */; };
 		0A6F107528FC3782002FB611 /* LicenseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6F107428FC3782002FB611 /* LicenseViewController.swift */; };
 		0A6F107D28FC6259002FB611 /* License.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0A6F107C28FC6258002FB611 /* License.txt */; };
+		0A70EB3F292F6398003492CD /* YPImagePicker in Frameworks */ = {isa = PBXBuildFile; productRef = 0A70EB3E292F6398003492CD /* YPImagePicker */; };
 		0A939489291A1E0E007ADDAC /* PageViewModeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A939488291A1E0E007ADDAC /* PageViewModeViewController.swift */; };
 		0AAB2ACD28EAFD78009FBD96 /* MapSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2ACC28EAFD78009FBD96 /* MapSearchViewController.swift */; };
-		0AAB2ACF28EAFF52009FBD96 /* TableView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2ACE28EAFF52009FBD96 /* TableView+.swift */; };
-		0AAB2AD128EAFF6D009FBD96 /* CollectionView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2AD028EAFF6D009FBD96 /* CollectionView+.swift */; };
+		0AAB2ACF28EAFF52009FBD96 /* UITableView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2ACE28EAFF52009FBD96 /* UITableView+.swift */; };
+		0AAB2AD128EAFF6D009FBD96 /* UICollectionView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2AD028EAFF6D009FBD96 /* UICollectionView+.swift */; };
 		0AAB2AD328EB14A8009FBD96 /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2AD228EB14A8009FBD96 /* UIView+.swift */; };
 		0AAB2AD528EC1F11009FBD96 /* StickerPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2AD428EC1F11009FBD96 /* StickerPickerViewController.swift */; };
 		0AAB2ADA28EC8C8D009FBD96 /* StickerPickerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2AD928EC8C8D009FBD96 /* StickerPickerCollectionViewCell.swift */; };
@@ -39,6 +40,7 @@
 		0AAB2ADE28EDA511009FBD96 /* MapStickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2ADD28EDA510009FBD96 /* MapStickerView.swift */; };
 		0AAB2AE028EDA553009FBD96 /* ImageStickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2ADF28EDA553009FBD96 /* ImageStickerView.swift */; };
 		0AAB2AE228EDA55D009FBD96 /* StickerStickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2AE128EDA55D009FBD96 /* StickerStickerView.swift */; };
+		0AAEB39129309E1700AEB5B8 /* YPImagePickerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAEB39029309E1700AEB5B8 /* YPImagePickerManager.swift */; };
 		0AD6FD7E2903054D00939F3D /* MapSearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD6FD7D2903054D00939F3D /* MapSearchResultTableViewCell.swift */; };
 		0AE27F2528F442B100D79208 /* FirebaseStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE27F2428F442B100D79208 /* FirebaseStorage.swift */; };
 		0AE94ABC291182090051A710 /* ErrorMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE94ABB291182090051A710 /* ErrorMessage.swift */; };
@@ -61,14 +63,18 @@
 		CC40BC1E28EEAEDA00DF48E1 /* MonthMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC40BC1D28EEAEDA00DF48E1 /* MonthMetadata.swift */; };
 		CC40BC1F28EEB10800DF48E1 /* CalendarPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC40BC1328EEADD100DF48E1 /* CalendarPickerViewController.swift */; };
 		CC65514728EEBF7C00E637A2 /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC65514628EEBF7C00E637A2 /* Date+.swift */; };
-		CC65515028F0874800E637A2 /* MyDiaryPagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC65514F28F0874800E637A2 /* MyDiaryPagesViewController.swift */; };
-		CC65515228F0877900E637A2 /* MyDiaryPagesViewCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC65515128F0877900E637A2 /* MyDiaryPagesViewCollectionViewCell.swift */; };
 		CC65515828F544ED00E637A2 /* PopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC65515728F544ED00E637A2 /* PopUpViewController.swift */; };
 		CC6BD74428EBFA80001ED665 /* DiaryConfigViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6BD74328EBFA80001ED665 /* DiaryConfigViewController.swift */; };
 		CC6BD74628EC18B8001ED665 /* DiaryConfigCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6BD74528EC18B8001ED665 /* DiaryConfigCollectionViewCell.swift */; };
 		CC6C7F21291CEB3600B88888 /* DiaryDaysCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6C7F20291CEB3600B88888 /* DiaryDaysCell.swift */; };
 		CC6C7F23291D2A6300B88888 /* DiaryDayModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6C7F22291D2A6300B88888 /* DiaryDayModel.swift */; };
-		CC9F969628F7E0B100E4B68A /* MyDiaryPagesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC9F969528F7E0B100E4B68A /* MyDiaryPagesViewModel.swift */; };
+		CCACFE51292BD2890038D792 /* UIApplication+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCACFE50292BD2890038D792 /* UIApplication+.swift */; };
+		CCACFE53292BD2C30038D792 /* DynamicLinkBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCACFE52292BD2C30038D792 /* DynamicLinkBuilder.swift */; };
+		CCACFE56292BD2EE0038D792 /* FirebaseDynamicLinks in Frameworks */ = {isa = PBXBuildFile; productRef = CCACFE55292BD2EE0038D792 /* FirebaseDynamicLinks */; };
+		CCACFE5F292F51F80038D792 /* ThumbnailConfigViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCACFE5E292F51F80038D792 /* ThumbnailConfigViewController.swift */; };
+		CCACFE62292F58510038D792 /* ThumbnailConfigViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCACFE61292F58510038D792 /* ThumbnailConfigViewModel.swift */; };
+		CCACFE64292F5A2D0038D792 /* ThumbnailPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCACFE63292F5A2D0038D792 /* ThumbnailPreviewView.swift */; };
+		CCACFE66292F5A380038D792 /* ThumbnailPreviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCACFE65292F5A380038D792 /* ThumbnailPreviewViewModel.swift */; };
 		CCBF68932924D8A800AD2B63 /* CalendarYearPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCBF68922924D8A800AD2B63 /* CalendarYearPickerView.swift */; };
 		CCBF689529260C7700AD2B63 /* DiaryDaysSegmentedControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCBF689429260C7700AD2B63 /* DiaryDaysSegmentedControlView.swift */; };
 		CCD6D58C29135A7300013367 /* DiaryConfigCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD6D58B29135A7300013367 /* DiaryConfigCellViewModel.swift */; };
@@ -99,7 +105,6 @@
 		E2838BF3291E3E820013DD82 /* GothicA1-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E2838BF2291E3E820013DD82 /* GothicA1-Bold.ttf */; };
 		E28F080228E4655100832F4A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28F080128E4655100832F4A /* AppDelegate.swift */; };
 		E28F080428E4655100832F4A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28F080328E4655100832F4A /* SceneDelegate.swift */; };
-		E28F080628E4655100832F4A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28F080528E4655100832F4A /* ViewController.swift */; };
 		E28F080B28E4655200832F4A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E28F080A28E4655200832F4A /* Assets.xcassets */; };
 		E28F080E28E4655200832F4A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E28F080C28E4655200832F4A /* LaunchScreen.storyboard */; };
 		E28F081928E4655200832F4A /* MacC_GoldenRatioTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28F081828E4655200832F4A /* MacC_GoldenRatioTests.swift */; };
@@ -109,7 +114,6 @@
 		E2993A6829195B9400409C9B /* AlbumCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2993A6729195B9400409C9B /* AlbumCollectionViewModel.swift */; };
 		E2B025BC28EB326C00B73891 /* MyHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B025BB28EB326C00B73891 /* MyHomeViewModel.swift */; };
 		E2B025C728EC163500B73891 /* FirestoreClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B025C628EC163500B73891 /* FirestoreClient.swift */; };
-		E2BEC45E28F806C40056E755 /* MyAlbumViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEC45D28F806C40056E755 /* MyAlbumViewModel.swift */; };
 		E2BEC46028F806F80056E755 /* AlbumData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEC45F28F806F80056E755 /* AlbumData.swift */; };
 		E2BEC46328F82DC30056E755 /* MyAlbumTitleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEC46228F82DC30056E755 /* MyAlbumTitleCollectionViewCell.swift */; };
 		E2C27502290D62EB00319885 /* DiaryCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C27501290D62EB00319885 /* DiaryCollectionViewModel.swift */; };
@@ -118,9 +122,11 @@
 		E2C8FA26291432B4009C58C9 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = E2C8FA25291432B4009C58C9 /* RxCocoa */; };
 		E2C8FA28291432B4009C58C9 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E2C8FA27291432B4009C58C9 /* RxSwift */; };
 		E2CCF30128F74450008A12F9 /* CustomAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CCF30028F74450008A12F9 /* CustomAnnotationView.swift */; };
+		E2D18FB3292F639C006F0E19 /* RemoveButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D18FB2292F639C006F0E19 /* RemoveButton.swift */; };
 		E2DA8F6028F842310098DD94 /* MyAlbumCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DA8F5F28F842310098DD94 /* MyAlbumCollectionViewCell.swift */; };
 		E2DA8F6228F856A10098DD94 /* MyAlbumPhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DA8F6128F856A10098DD94 /* MyAlbumPhotoViewController.swift */; };
 		E2DA8F6428F857D80098DD94 /* MyAlbumPhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DA8F6328F857D80098DD94 /* MyAlbumPhotoCollectionViewCell.swift */; };
+		E2E3B869293097A100B750C9 /* FilterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E3B868293097A100B750C9 /* FilterButton.swift */; };
 		E2EA7F1628E5711E00AC1C49 /* DiaryCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EA7F1528E5711E00AC1C49 /* DiaryCollectionHeaderView.swift */; };
 		E2ED4872290ABE46002FEC2B /* Notification+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2ED4871290ABE46002FEC2B /* Notification+.swift */; };
 		E2F5690328E57E7B0039BE37 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = E2F5690228E57E7B0039BE37 /* SnapKit */; };
@@ -192,8 +198,8 @@
 		0A6F107C28FC6258002FB611 /* License.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = License.txt; sourceTree = "<group>"; };
 		0A939488291A1E0E007ADDAC /* PageViewModeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewModeViewController.swift; sourceTree = "<group>"; };
 		0AAB2ACC28EAFD78009FBD96 /* MapSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapSearchViewController.swift; sourceTree = "<group>"; };
-		0AAB2ACE28EAFF52009FBD96 /* TableView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TableView+.swift"; sourceTree = "<group>"; };
-		0AAB2AD028EAFF6D009FBD96 /* CollectionView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionView+.swift"; sourceTree = "<group>"; };
+		0AAB2ACE28EAFF52009FBD96 /* UITableView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+.swift"; sourceTree = "<group>"; };
+		0AAB2AD028EAFF6D009FBD96 /* UICollectionView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+.swift"; sourceTree = "<group>"; };
 		0AAB2AD228EB14A8009FBD96 /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
 		0AAB2AD428EC1F11009FBD96 /* StickerPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerPickerViewController.swift; sourceTree = "<group>"; };
 		0AAB2AD928EC8C8D009FBD96 /* StickerPickerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerPickerCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -201,10 +207,12 @@
 		0AAB2ADD28EDA510009FBD96 /* MapStickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapStickerView.swift; sourceTree = "<group>"; };
 		0AAB2ADF28EDA553009FBD96 /* ImageStickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageStickerView.swift; sourceTree = "<group>"; };
 		0AAB2AE128EDA55D009FBD96 /* StickerStickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerStickerView.swift; sourceTree = "<group>"; };
+		0AAEB39029309E1700AEB5B8 /* YPImagePickerManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YPImagePickerManager.swift; sourceTree = "<group>"; };
 		0AD6FD7D2903054D00939F3D /* MapSearchResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapSearchResultTableViewCell.swift; sourceTree = "<group>"; };
 		0AE27F2428F442B100D79208 /* FirebaseStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseStorage.swift; sourceTree = "<group>"; };
 		0AE94ABB291182090051A710 /* ErrorMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMessage.swift; sourceTree = "<group>"; };
 		0AEC53EB28EF211D001B0169 /* StickerViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerViewData.swift; sourceTree = "<group>"; };
+		0AFD1F99292B7813007A242B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B93EC22828F7BC8000BB89C5 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		B9901C04291C2A1A00AF92DE /* MyDiaryDaysViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDiaryDaysViewController.swift; sourceTree = "<group>"; };
 		B9901C06291C2A2C00AF92DE /* MyDiaryDaysViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDiaryDaysViewModel.swift; sourceTree = "<group>"; };
@@ -223,15 +231,18 @@
 		CC40BC1B28EEAEB200DF48E1 /* Day.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day.swift; sourceTree = "<group>"; };
 		CC40BC1D28EEAEDA00DF48E1 /* MonthMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthMetadata.swift; sourceTree = "<group>"; };
 		CC65514628EEBF7C00E637A2 /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
-		CC65514F28F0874800E637A2 /* MyDiaryPagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDiaryPagesViewController.swift; sourceTree = "<group>"; };
-		CC65515128F0877900E637A2 /* MyDiaryPagesViewCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDiaryPagesViewCollectionViewCell.swift; sourceTree = "<group>"; };
 		CC65515728F544ED00E637A2 /* PopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpViewController.swift; sourceTree = "<group>"; };
 		CC6BD73728E9790C001ED665 /* MacC-GoldenRatio.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "MacC-GoldenRatio.entitlements"; sourceTree = "<group>"; };
 		CC6BD74328EBFA80001ED665 /* DiaryConfigViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryConfigViewController.swift; sourceTree = "<group>"; };
 		CC6BD74528EC18B8001ED665 /* DiaryConfigCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryConfigCollectionViewCell.swift; sourceTree = "<group>"; };
 		CC6C7F20291CEB3600B88888 /* DiaryDaysCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryDaysCell.swift; sourceTree = "<group>"; };
 		CC6C7F22291D2A6300B88888 /* DiaryDayModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryDayModel.swift; sourceTree = "<group>"; };
-		CC9F969528F7E0B100E4B68A /* MyDiaryPagesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDiaryPagesViewModel.swift; sourceTree = "<group>"; };
+		CCACFE50292BD2890038D792 /* UIApplication+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+.swift"; sourceTree = "<group>"; };
+		CCACFE52292BD2C30038D792 /* DynamicLinkBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicLinkBuilder.swift; sourceTree = "<group>"; };
+		CCACFE5E292F51F80038D792 /* ThumbnailConfigViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailConfigViewController.swift; sourceTree = "<group>"; };
+		CCACFE61292F58510038D792 /* ThumbnailConfigViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailConfigViewModel.swift; sourceTree = "<group>"; };
+		CCACFE63292F5A2D0038D792 /* ThumbnailPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailPreviewView.swift; sourceTree = "<group>"; };
+		CCACFE65292F5A380038D792 /* ThumbnailPreviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailPreviewViewModel.swift; sourceTree = "<group>"; };
 		CCBF68922924D8A800AD2B63 /* CalendarYearPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarYearPickerView.swift; sourceTree = "<group>"; };
 		CCBF689429260C7700AD2B63 /* DiaryDaysSegmentedControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryDaysSegmentedControlView.swift; sourceTree = "<group>"; };
 		CCD6D58B29135A7300013367 /* DiaryConfigCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryConfigCellViewModel.swift; sourceTree = "<group>"; };
@@ -262,10 +273,8 @@
 		E28F07FE28E4655100832F4A /* MacC-GoldenRatio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MacC-GoldenRatio.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E28F080128E4655100832F4A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E28F080328E4655100832F4A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		E28F080528E4655100832F4A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		E28F080A28E4655200832F4A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E28F080D28E4655200832F4A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		E28F080F28E4655200832F4A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E28F081428E4655200832F4A /* MacC-GoldenRatioTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "MacC-GoldenRatioTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E28F081828E4655200832F4A /* MacC_GoldenRatioTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacC_GoldenRatioTests.swift; sourceTree = "<group>"; };
 		E28F081E28E4655200832F4A /* MacC-GoldenRatioUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "MacC-GoldenRatioUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -275,19 +284,20 @@
 		E2993A6729195B9400409C9B /* AlbumCollectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumCollectionViewModel.swift; sourceTree = "<group>"; };
 		E2B025BB28EB326C00B73891 /* MyHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyHomeViewModel.swift; sourceTree = "<group>"; };
 		E2B025C628EC163500B73891 /* FirestoreClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreClient.swift; sourceTree = "<group>"; };
-		E2BEC45D28F806C40056E755 /* MyAlbumViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAlbumViewModel.swift; sourceTree = "<group>"; };
 		E2BEC45F28F806F80056E755 /* AlbumData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumData.swift; sourceTree = "<group>"; };
 		E2BEC46228F82DC30056E755 /* MyAlbumTitleCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAlbumTitleCollectionViewCell.swift; sourceTree = "<group>"; };
 		E2C27501290D62EB00319885 /* DiaryCollectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryCollectionViewModel.swift; sourceTree = "<group>"; };
 		E2C2750A290D950400319885 /* DiaryCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryCollectionView.swift; sourceTree = "<group>"; };
 		E2C2A76B28F97DB900D48F8F /* LoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingIndicator.swift; sourceTree = "<group>"; };
 		E2CCF30028F74450008A12F9 /* CustomAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotationView.swift; sourceTree = "<group>"; };
+		E2D18FB2292F639C006F0E19 /* RemoveButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveButton.swift; sourceTree = "<group>"; };
 		E2DA8F5F28F842310098DD94 /* MyAlbumCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAlbumCollectionViewCell.swift; sourceTree = "<group>"; };
 		E2DA8F6128F856A10098DD94 /* MyAlbumPhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAlbumPhotoViewController.swift; sourceTree = "<group>"; };
 		E2DA8F6328F857D80098DD94 /* MyAlbumPhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAlbumPhotoCollectionViewCell.swift; sourceTree = "<group>"; };
+		E2E3B868293097A100B750C9 /* FilterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterButton.swift; sourceTree = "<group>"; };
 		E2EA7F1528E5711E00AC1C49 /* DiaryCollectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryCollectionHeaderView.swift; sourceTree = "<group>"; };
 		E2ED4871290ABE46002FEC2B /* Notification+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+.swift"; sourceTree = "<group>"; };
-		E2F5691828E5CE170039BE37 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		E2F5691828E5CE170039BE37 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "MacC-GoldenRatio/Resources/GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		E2FA41A028F4752D00BBA354 /* DiaryCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiaryCollectionViewCell.swift; sourceTree = "<group>"; };
 		E2FA41A228F48C1B00BBA354 /* DiaryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryCell.swift; sourceTree = "<group>"; };
 		E2FA41A428F496D100BBA354 /* UIImageView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+.swift"; sourceTree = "<group>"; };
@@ -300,10 +310,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				E25753BF28ED9E0600023619 /* Kingfisher in Frameworks */,
+				0A70EB3F292F6398003492CD /* YPImagePicker in Frameworks */,
 				0A1C3FE62920A573009A8C31 /* RxDataSources in Frameworks */,
 				E2F5690F28E5CCDC0039BE37 /* FirebaseDatabaseSwift in Frameworks */,
 				E2C8FA26291432B4009C58C9 /* RxCocoa in Frameworks */,
 				E2F5690328E57E7B0039BE37 /* SnapKit in Frameworks */,
+				CCACFE56292BD2EE0038D792 /* FirebaseDynamicLinks in Frameworks */,
 				E2F5690B28E5CCDC0039BE37 /* FirebaseAuthCombine-Community in Frameworks */,
 				E2F5690D28E5CCDC0039BE37 /* FirebaseDatabase in Frameworks */,
 				E2C8FA28291432B4009C58C9 /* RxSwift in Frameworks */,
@@ -332,67 +344,80 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0A3ED13F28F937EB000D55D8 /* MyPageViewControllers */ = {
+		0AFD1F80292B7114007A242B /* Presenter */ = {
 			isa = PBXGroup;
 			children = (
-				0A3ED14728FBE6EB000D55D8 /* MyPageViewController.swift */,
-				0A3ED14528F99FBF000D55D8 /* SetProfileImageViewController.swift */,
-				0A6F107428FC3782002FB611 /* LicenseViewController.swift */,
+				0AFD1F8E292B73DC007A242B /* Common */,
+				0AFD1FAD292B7BCE007A242B /* SignInScene */,
+				0AFD1F9B292B790C007A242B /* HomeScene */,
+				0AFD1FA6292B7ACC007A242B /* DiaryConfigScene */,
+				0AFD1FA0292B79D0007A242B /* DiaryDaysScene */,
+				CCACFE59292F48780038D792 /* ThumbnailConfigScene */,
+				0AFD1F87292B71FD007A242B /* UserScene */,
+				0AFD1F81292B7121007A242B /* PageScene */,
 			);
-			path = MyPageViewControllers;
+			path = Presenter;
 			sourceTree = "<group>";
 		};
-		0A3ED14228F99EEF000D55D8 /* MyPage */ = {
+		0AFD1F81292B7121007A242B /* PageScene */ = {
 			isa = PBXGroup;
 			children = (
-				0A3ED14328F99F11000D55D8 /* TravelsCollectionViewCell.swift */,
-				0A6F107028FBFA7C002FB611 /* MenuTableViewCell.swift */,
+				0AFD1F8B292B72F5007A242B /* Model */,
+				0AFD1F85292B7167007A242B /* ViewModel */,
+				0AFD1F84292B7159007A242B /* ViewController */,
+				0AFD1F82292B713A007A242B /* View */,
 			);
-			path = MyPage;
+			path = PageScene;
 			sourceTree = "<group>";
 		};
-		0A5E904328E8575C00B381B8 /* Page */ = {
-			isa = PBXGroup;
-			children = (
-				0A5E904428E8578400B381B8 /* PageEditModeViewController.swift */,
-				0AAB2ACC28EAFD78009FBD96 /* MapSearchViewController.swift */,
-				0AAB2AD428EC1F11009FBD96 /* StickerPickerViewController.swift */,
-				0A939488291A1E0E007ADDAC /* PageViewModeViewController.swift */,
-			);
-			path = Page;
-			sourceTree = "<group>";
-		};
-		0A5E904628E857BB00B381B8 /* Sticker */ = {
+		0AFD1F82292B713A007A242B /* View */ = {
 			isa = PBXGroup;
 			children = (
 				0A5E904728E857E200B381B8 /* StickerView.swift */,
-				0AEC53EB28EF211D001B0169 /* StickerViewData.swift */,
 				0A5E904928E858C000B381B8 /* StickerContollerView.swift */,
 				0A5E904B28E858D200B381B8 /* StickerBorderView.swift */,
 				0AAB2ADD28EDA510009FBD96 /* MapStickerView.swift */,
 				0AAB2ADF28EDA553009FBD96 /* ImageStickerView.swift */,
 				0AAB2AE128EDA55D009FBD96 /* StickerStickerView.swift */,
 				0AAB2ADB28EDA067009FBD96 /* TextStickerView.swift */,
+				0AFD1F86292B7187007A242B /* Cell */,
 			);
-			path = Sticker;
+			path = View;
 			sourceTree = "<group>";
 		};
-		0A5E904D28E9947800B381B8 /* ViewModels */ = {
+		0AFD1F83292B7146007A242B /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				0A5E904E28E9948B00B381B8 /* PageViewModeViewModel.swift */,
-				E2B025BB28EB326C00B73891 /* MyHomeViewModel.swift */,
-				0A3ED14028F98956000D55D8 /* MyPageViewModel.swift */,
-				E2BEC45D28F806C40056E755 /* MyAlbumViewModel.swift */,
-				E2C27501290D62EB00319885 /* DiaryCollectionViewModel.swift */,
-				E2993A6729195B9400409C9B /* AlbumCollectionViewModel.swift */,
-				E2838BE7291E3A4C0013DD82 /* MapViewModel.swift */,
-				0A6230CE2929075A008CC131 /* PageEditModeViewModel.swift */,
+				0AFD1F80292B7114007A242B /* Presenter */,
+				0AFD1F93292B7441007A242B /* Model */,
+				0AFD1F95292B7456007A242B /* Classes */,
+				0AFD1F94292B744E007A242B /* Network */,
+				E276B91828E4693100163833 /* Extensions */,
 			);
-			path = ViewModels;
+			path = Sources;
 			sourceTree = "<group>";
 		};
-		0AAB2AD828EC8C69009FBD96 /* Page */ = {
+		0AFD1F84292B7159007A242B /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				0A5E904428E8578400B381B8 /* PageEditModeViewController.swift */,
+				0AAB2AD428EC1F11009FBD96 /* StickerPickerViewController.swift */,
+				0A939488291A1E0E007ADDAC /* PageViewModeViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		0AFD1F85292B7167007A242B /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				0AEC53EB28EF211D001B0169 /* StickerViewData.swift */,
+				0A6230CE2929075A008CC131 /* PageEditModeViewModel.swift */,
+				0A5E904E28E9948B00B381B8 /* PageViewModeViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		0AFD1F86292B7187007A242B /* Cell */ = {
 			isa = PBXGroup;
 			children = (
 				0A30BD48291A93AE00079326 /* PageViewModeCollectionViewCell.swift */,
@@ -400,7 +425,361 @@
 				0AD6FD7D2903054D00939F3D /* MapSearchResultTableViewCell.swift */,
 				0A1C3FE2291E9C2D009A8C31 /* PageCollectionViewHeaderCell.swift */,
 			);
-			path = Page;
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		0AFD1F87292B71FD007A242B /* UserScene */ = {
+			isa = PBXGroup;
+			children = (
+				0AFD1F8C292B7316007A242B /* Model */,
+				0AFD1F8A292B720C007A242B /* ViewModel */,
+				0AFD1F89292B720A007A242B /* ViewController */,
+				0AFD1F88292B7204007A242B /* View */,
+			);
+			path = UserScene;
+			sourceTree = "<group>";
+		};
+		0AFD1F88292B7204007A242B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				0AFD1F8D292B7352007A242B /* Cell */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		0AFD1F89292B720A007A242B /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				0A3ED14728FBE6EB000D55D8 /* MyPageViewController.swift */,
+				0A3ED14528F99FBF000D55D8 /* SetProfileImageViewController.swift */,
+				0A6F107428FC3782002FB611 /* LicenseViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		0AFD1F8A292B720C007A242B /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				0A3ED14028F98956000D55D8 /* MyPageViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		0AFD1F8B292B72F5007A242B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				0A6230CC29290492008CC131 /* PageSection.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		0AFD1F8C292B7316007A242B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		0AFD1F8D292B7352007A242B /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				0A3ED14328F99F11000D55D8 /* TravelsCollectionViewCell.swift */,
+				0A6F107028FBFA7C002FB611 /* MenuTableViewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		0AFD1F8E292B73DC007A242B /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				0AFD1F8F292B73EA007A242B /* Model */,
+				0AFD1F90292B73F2007A242B /* ViewModel */,
+				0AFD1F91292B73F8007A242B /* ViewController */,
+				0AFD1F92292B7400007A242B /* View */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		0AFD1F8F292B73EA007A242B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				E2BEC45F28F806F80056E755 /* AlbumData.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		0AFD1F90292B73F2007A242B /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				E2993A6729195B9400409C9B /* AlbumCollectionViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		0AFD1F91292B73F8007A242B /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				0AAB2ACC28EAFD78009FBD96 /* MapSearchViewController.swift */,
+				CC65515728F544ED00E637A2 /* PopUpViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		0AFD1F92292B7400007A242B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				E2993A6529195AD600409C9B /* AlbumCollectionView.swift */,
+				CCACFE60292F54FC0038D792 /* Cell */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		0AFD1F93292B7441007A242B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				0AE94ABB291182090051A710 /* ErrorMessage.swift */,
+				E276B91D28E46B3700163833 /* DiaryModel.swift */,
+				E276B91B28E46AE900163833 /* User.swift */,
+				E2FA41A228F48C1B00BBA354 /* DiaryCell.swift */,
+				E21342E228F6B6BC0048D9CF /* MapData.swift */,
+				CC6C7F22291D2A6300B88888 /* DiaryDayModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		0AFD1F94292B744E007A242B /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				0AE27F2428F442B100D79208 /* FirebaseStorage.swift */,
+				E21342D828F6B0660048D9CF /* FirebaseClient.swift */,
+				E2B025C628EC163500B73891 /* FirestoreClient.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		0AFD1F95292B7456007A242B /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				0AAEB39029309E1700AEB5B8 /* YPImagePickerManager.swift */,
+				E21342DC28F6B2740048D9CF /* HalfModalPresentationController.swift */,
+				E2838BF0291E3D010013DD82 /* MapHalfModalPresentationController.swift */,
+				0A5DC37A28F7F65B00AABED1 /* ImageManager.swift */,
+				E2C2A76B28F97DB900D48F8F /* LoadingIndicator.swift */,
+				E2D18FB2292F639C006F0E19 /* RemoveButton.swift */,
+				CCACFE52292BD2C30038D792 /* DynamicLinkBuilder.swift */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		0AFD1F96292B755C007A242B /* UIKit */ = {
+			isa = PBXGroup;
+			children = (
+				E276B91F28E4812E00163833 /* UIScreen+.swift */,
+				0AAB2AD228EB14A8009FBD96 /* UIView+.swift */,
+				CCE5BE19291E429F00D2DC8F /* UIImage+.swift */,
+				E2FA41A428F496D100BBA354 /* UIImageView+.swift */,
+				0AAB2AD028EAFF6D009FBD96 /* UICollectionView+.swift */,
+				0AAB2ACE28EAFF52009FBD96 /* UITableView+.swift */,
+				0A5235AF28F8510C00AC77AC /* UIFont+.swift */,
+				0A5235B128F854C200AC77AC /* UIColor+.swift */,
+				0A30BD46291A4DAE00079326 /* CALayer+.swift */,
+				CCACFE50292BD2890038D792 /* UIApplication+.swift */,
+			);
+			path = UIKit;
+			sourceTree = "<group>";
+		};
+		0AFD1F9B292B790C007A242B /* HomeScene */ = {
+			isa = PBXGroup;
+			children = (
+				0AFD1F9D292B7921007A242B /* ViewModel */,
+				0AFD1F9E292B7927007A242B /* ViewController */,
+				0AFD1F9F292B7933007A242B /* View */,
+			);
+			path = HomeScene;
+			sourceTree = "<group>";
+		};
+		0AFD1F9D292B7921007A242B /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				E2B025BB28EB326C00B73891 /* MyHomeViewModel.swift */,
+				E2C27501290D62EB00319885 /* DiaryCollectionViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		0AFD1F9E292B7927007A242B /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				E21342DE28F6B31D0048D9CF /* MyHomeViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		0AFD1F9F292B7933007A242B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				E2EA7F1528E5711E00AC1C49 /* DiaryCollectionHeaderView.swift */,
+				E2C2750A290D950400319885 /* DiaryCollectionView.swift */,
+				E26F0DB12916B33900B040C9 /* CollectionEmptyView.swift */,
+				E265C80F2914E9A4003380A5 /* HomeButtonView.swift */,
+				E2E3B868293097A100B750C9 /* FilterButton.swift */,
+				0AFD1FAF292B7E29007A242B /* Cell */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		0AFD1FA0292B79D0007A242B /* DiaryDaysScene */ = {
+			isa = PBXGroup;
+			children = (
+				0AFD1FA4292B79F4007A242B /* Model */,
+				0AFD1FA1292B79E5007A242B /* ViewModel */,
+				0AFD1FA2292B79EC007A242B /* ViewController */,
+				0AFD1FA3292B79F1007A242B /* View */,
+			);
+			path = DiaryDaysScene;
+			sourceTree = "<group>";
+		};
+		0AFD1FA1292B79E5007A242B /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				B9901C06291C2A2C00AF92DE /* MyDiaryDaysViewModel.swift */,
+				CC242EBD291CDC7F002AB747 /* DiaryDaysCollectionViewModel.swift */,
+				E2838BE7291E3A4C0013DD82 /* MapViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		0AFD1FA2292B79EC007A242B /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				B9901C04291C2A1A00AF92DE /* MyDiaryDaysViewController.swift */,
+				E2838BEE291E3CF20013DD82 /* MapListViewController.swift */,
+				E2DA8F6128F856A10098DD94 /* MyAlbumPhotoViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		0AFD1FA3292B79F1007A242B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				E27469AA29199DAD00BC906A /* PhotoCollectionView.swift */,
+				B9901C0A291CA42400AF92DE /* DiaryDaysCollectionView.swift */,
+				CCBF689429260C7700AD2B63 /* DiaryDaysSegmentedControlView.swift */,
+				E2FA41AF28F6A89900BBA354 /* MapView.swift */,
+				E2CCF30028F74450008A12F9 /* CustomAnnotationView.swift */,
+				E2838BE9291E3B3B0013DD82 /* MapListView.swift */,
+				E2838BEB291E3B490013DD82 /* SegmentedControlView.swift */,
+				0AFD1FA5292B7A8C007A242B /* Cell */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		0AFD1FA4292B79F4007A242B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				E2838BE5291E38EE0013DD82 /* MapModel.swift */,
+				E223B1B32927766D00BB5B17 /* MapCategory.swift */,
+				B9901C08291C2A3800AF92DE /* MyDiaryDaysModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		0AFD1FA5292B7A8C007A242B /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				E2838BE3291E38250013DD82 /* MapListCell.swift */,
+				CC6C7F20291CEB3600B88888 /* DiaryDaysCell.swift */,
+				E2BEC46228F82DC30056E755 /* MyAlbumTitleCollectionViewCell.swift */,
+				E2DA8F6328F857D80098DD94 /* MyAlbumPhotoCollectionViewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		0AFD1FA6292B7ACC007A242B /* DiaryConfigScene */ = {
+			isa = PBXGroup;
+			children = (
+				0AFD1FA7292B7AD9007A242B /* Model */,
+				0AFD1FA9292B7AEA007A242B /* ViewModel */,
+				0AFD1FAA292B7AEE007A242B /* ViewController */,
+				0AFD1FAB292B7AF4007A242B /* View */,
+			);
+			path = DiaryConfigScene;
+			sourceTree = "<group>";
+		};
+		0AFD1FA7292B7AD9007A242B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				CCD6D58D2914F6C600013367 /* DiaryConfigModel.swift */,
+				CC40BC1B28EEAEB200DF48E1 /* Day.swift */,
+				CC40BC1D28EEAEDA00DF48E1 /* MonthMetadata.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		0AFD1FA9292B7AEA007A242B /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				CCD6D58B29135A7300013367 /* DiaryConfigCellViewModel.swift */,
+				CC34140B29193E6E00A1FD17 /* DiaryColorCollectionViewModel.swift */,
+				CC0F434328F71E62003060D5 /* DiaryConfigViewModel.swift */,
+				CC3414072919310700A1FD17 /* DiaryColorCellViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		0AFD1FAA292B7AEE007A242B /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				CC6BD74328EBFA80001ED665 /* DiaryConfigViewController.swift */,
+				CC40BC1328EEADD100DF48E1 /* CalendarPickerViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		0AFD1FAB292B7AF4007A242B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CC34140929193C0A00A1FD17 /* DiaryColorCollectionView.swift */,
+				CC40BC1528EEADEB00DF48E1 /* CalendarPickerFooterView.swift */,
+				CC40BC1728EEADFD00DF48E1 /* CalendarPickerHeaderView.swift */,
+				CCBF68922924D8A800AD2B63 /* CalendarYearPickerView.swift */,
+				0AFD1FAC292B7B26007A242B /* Cell */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		0AFD1FAC292B7B26007A242B /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				CC6BD74528EC18B8001ED665 /* DiaryConfigCollectionViewCell.swift */,
+				CC341405291930F800A1FD17 /* DiaryColorCell.swift */,
+				CC40BC1928EEAE2400DF48E1 /* CalendarDateCollectionViewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		0AFD1FAD292B7BCE007A242B /* SignInScene */ = {
+			isa = PBXGroup;
+			children = (
+				0AFD1FAE292B7BDA007A242B /* ViewController */,
+			);
+			path = SignInScene;
+			sourceTree = "<group>";
+		};
+		0AFD1FAE292B7BDA007A242B /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				CCE1806E28E5919B00AF06DB /* SignInViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		0AFD1FAF292B7E29007A242B /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				E2FA41A028F4752D00BBA354 /* DiaryCollectionViewCell.swift */,
+			);
+			path = Cell;
 			sourceTree = "<group>";
 		};
 		8E295A9128EC2CD400127D41 /* Fonts */ = {
@@ -412,240 +791,88 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
-		B9901C03291C29FE00AF92DE /* MyDiaryDays */ = {
+		CCACFE54292BD2EE0038D792 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				B9901C04291C2A1A00AF92DE /* MyDiaryDaysViewController.swift */,
-				B9901C06291C2A2C00AF92DE /* MyDiaryDaysViewModel.swift */,
-				B9901C08291C2A3800AF92DE /* MyDiaryDaysModel.swift */,
-				B9901C0C291CA4B900AF92DE /* DiaryDaysCollectionView */,
-				CCBF689429260C7700AD2B63 /* DiaryDaysSegmentedControlView.swift */,
 			);
-			path = MyDiaryDays;
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		B9901C0C291CA4B900AF92DE /* DiaryDaysCollectionView */ = {
+		CCACFE59292F48780038D792 /* ThumbnailConfigScene */ = {
 			isa = PBXGroup;
 			children = (
-				B9901C0A291CA42400AF92DE /* DiaryDaysCollectionView.swift */,
-				CC242EBD291CDC7F002AB747 /* DiaryDaysCollectionViewModel.swift */,
-				CC6C7F20291CEB3600B88888 /* DiaryDaysCell.swift */,
+				CCACFE5D292F48BB0038D792 /* Model */,
+				CCACFE5C292F48B50038D792 /* ViewModel */,
+				CCACFE5B292F48AA0038D792 /* ViewController */,
+				CCACFE5A292F48980038D792 /* View */,
 			);
-			path = DiaryDaysCollectionView;
+			path = ThumbnailConfigScene;
 			sourceTree = "<group>";
 		};
-		CC3414032919309B00A1FD17 /* CalendarView */ = {
+		CCACFE5A292F48980038D792 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				CC40BC1328EEADD100DF48E1 /* CalendarPickerViewController.swift */,
-				CC40BC1528EEADEB00DF48E1 /* CalendarPickerFooterView.swift */,
-				CC40BC1728EEADFD00DF48E1 /* CalendarPickerHeaderView.swift */,
-				CC40BC1928EEAE2400DF48E1 /* CalendarDateCollectionViewCell.swift */,
-				CC40BC1B28EEAEB200DF48E1 /* Day.swift */,
-				CC40BC1D28EEAEDA00DF48E1 /* MonthMetadata.swift */,
-				CCBF68922924D8A800AD2B63 /* CalendarYearPickerView.swift */,
+				CCACFE63292F5A2D0038D792 /* ThumbnailPreviewView.swift */,
 			);
-			path = CalendarView;
+			path = View;
 			sourceTree = "<group>";
 		};
-		CC341404291930BE00A1FD17 /* DiaryColorCollectionView */ = {
+		CCACFE5B292F48AA0038D792 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				CC34140929193C0A00A1FD17 /* DiaryColorCollectionView.swift */,
-				CC34140B29193E6E00A1FD17 /* DiaryColorCollectionViewModel.swift */,
-				CC341405291930F800A1FD17 /* DiaryColorCell.swift */,
-				CC3414072919310700A1FD17 /* DiaryColorCellViewModel.swift */,
+				CCACFE5E292F51F80038D792 /* ThumbnailConfigViewController.swift */,
 			);
-			path = DiaryColorCollectionView;
+			path = ViewController;
 			sourceTree = "<group>";
 		};
-		CC3FEA222906CDAA005EE514 /* DiaryConfig */ = {
+		CCACFE5C292F48B50038D792 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				CC6BD74528EC18B8001ED665 /* DiaryConfigCollectionViewCell.swift */,
-				CCD6D58B29135A7300013367 /* DiaryConfigCellViewModel.swift */,
+				CCACFE61292F58510038D792 /* ThumbnailConfigViewModel.swift */,
+				CCACFE65292F5A380038D792 /* ThumbnailPreviewViewModel.swift */,
 			);
-			path = DiaryConfig;
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
-		CC65514E28F086D900E637A2 /* MyDiaryPages */ = {
+		CCACFE5D292F48BB0038D792 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				CC65514F28F0874800E637A2 /* MyDiaryPagesViewController.swift */,
-				CC65515128F0877900E637A2 /* MyDiaryPagesViewCollectionViewCell.swift */,
-				CC9F969528F7E0B100E4B68A /* MyDiaryPagesViewModel.swift */,
-				CC65515728F544ED00E637A2 /* PopUpViewController.swift */,
 			);
-			path = MyDiaryPages;
+			path = Model;
 			sourceTree = "<group>";
 		};
-		CC6BD74228EBFA6C001ED665 /* DiaryConfig */ = {
+		CCACFE60292F54FC0038D792 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
-				CC6BD74328EBFA80001ED665 /* DiaryConfigViewController.swift */,
-				CC0F434328F71E62003060D5 /* DiaryConfigViewModel.swift */,
-				CCD6D58D2914F6C600013367 /* DiaryConfigModel.swift */,
-				CC341404291930BE00A1FD17 /* DiaryColorCollectionView */,
-				CC3414032919309B00A1FD17 /* CalendarView */,
+				E2DA8F5F28F842310098DD94 /* MyAlbumCollectionViewCell.swift */,
 			);
-			path = DiaryConfig;
-			sourceTree = "<group>";
-		};
-		CCBF6891291E8FD600AD2B63 /* Album */ = {
-			isa = PBXGroup;
-			children = (
-				E2DA8F6128F856A10098DD94 /* MyAlbumPhotoViewController.swift */,
-			);
-			path = Album;
-			sourceTree = "<group>";
-		};
-		CCE1806D28E5917A00AF06DB /* SignIn */ = {
-			isa = PBXGroup;
-			children = (
-				CCE1806E28E5919B00AF06DB /* SignInViewController.swift */,
-			);
-			path = SignIn;
-			sourceTree = "<group>";
-		};
-		E25753B928ED8C0600023619 /* MyHome */ = {
-			isa = PBXGroup;
-			children = (
-				E2EA7F1528E5711E00AC1C49 /* DiaryCollectionHeaderView.swift */,
-				E2C2750A290D950400319885 /* DiaryCollectionView.swift */,
-				E265C80F2914E9A4003380A5 /* HomeButtonView.swift */,
-				E26F0DB12916B33900B040C9 /* CollectionEmptyView.swift */,
-			);
-			path = MyHome;
-			sourceTree = "<group>";
-		};
-		E25753BC28ED8E3B00023619 /* MyHome */ = {
-			isa = PBXGroup;
-			children = (
-				E2FA41A028F4752D00BBA354 /* DiaryCollectionViewCell.swift */,
-			);
-			path = MyHome;
-			sourceTree = "<group>";
-		};
-		E276B91328E468D700163833 /* Sources */ = {
-			isa = PBXGroup;
-			children = (
-				E2EA7F1428E570F100AC1C49 /* Views */,
-				E276B91A28E4697E00163833 /* ViewControllers */,
-				E276B91928E4697900163833 /* Models */,
-				E276B91828E4693100163833 /* Extensions */,
-				E276B91728E4692B00163833 /* Cells */,
-				E276B91628E4692500163833 /* Classes */,
-			);
-			path = Sources;
+			path = Cell;
 			sourceTree = "<group>";
 		};
 		E276B91428E468E900163833 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				8E295A9128EC2CD400127D41 /* Fonts */,
 				E28F080128E4655100832F4A /* AppDelegate.swift */,
 				E28F080328E4655100832F4A /* SceneDelegate.swift */,
+				E28F080A28E4655200832F4A /* Assets.xcassets */,
+				E28F080C28E4655200832F4A /* LaunchScreen.storyboard */,
 				E2F5691828E5CE170039BE37 /* GoogleService-Info.plist */,
+				0A6F107C28FC6258002FB611 /* License.txt */,
+				8E295A9128EC2CD400127D41 /* Fonts */,
 			);
 			path = Resources;
-			sourceTree = "<group>";
-		};
-		E276B91628E4692500163833 /* Classes */ = {
-			isa = PBXGroup;
-			children = (
-				E21342D828F6B0660048D9CF /* FirebaseClient.swift */,
-				E2B025C628EC163500B73891 /* FirestoreClient.swift */,
-				0AE27F2428F442B100D79208 /* FirebaseStorage.swift */,
-				E21342DC28F6B2740048D9CF /* HalfModalPresentationController.swift */,
-				0A5DC37A28F7F65B00AABED1 /* ImageManager.swift */,
-				E2C2A76B28F97DB900D48F8F /* LoadingIndicator.swift */,
-			);
-			path = Classes;
-			sourceTree = "<group>";
-		};
-		E276B91728E4692B00163833 /* Cells */ = {
-			isa = PBXGroup;
-			children = (
-				E2838BE2291E381C0013DD82 /* Map */,
-				CC3FEA222906CDAA005EE514 /* DiaryConfig */,
-				0A3ED14228F99EEF000D55D8 /* MyPage */,
-				E2BEC46128F82DAB0056E755 /* MyAlbum */,
-				E25753BC28ED8E3B00023619 /* MyHome */,
-				0AAB2AD828EC8C69009FBD96 /* Page */,
-			);
-			path = Cells;
 			sourceTree = "<group>";
 		};
 		E276B91828E4693100163833 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				E276B91F28E4812E00163833 /* UIScreen+.swift */,
-				0AAB2ACE28EAFF52009FBD96 /* TableView+.swift */,
-				0AAB2AD028EAFF6D009FBD96 /* CollectionView+.swift */,
-				0AAB2AD228EB14A8009FBD96 /* UIView+.swift */,
+				0AFD1F96292B755C007A242B /* UIKit */,
 				CC65514628EEBF7C00E637A2 /* Date+.swift */,
-				E2FA41A428F496D100BBA354 /* UIImageView+.swift */,
-				B93EC22828F7BC8000BB89C5 /* String+.swift */,
-				0A5235AF28F8510C00AC77AC /* UIFont+.swift */,
-				0A5235B128F854C200AC77AC /* UIColor+.swift */,
 				E2ED4871290ABE46002FEC2B /* Notification+.swift */,
-				0A30BD46291A4DAE00079326 /* CALayer+.swift */,
+				B93EC22828F7BC8000BB89C5 /* String+.swift */,
 				CCE5BE17291E425700D2DC8F /* NSMutableAttributedString+.swift */,
-				CCE5BE19291E429F00D2DC8F /* UIImage+.swift */,
 			);
 			path = Extensions;
-			sourceTree = "<group>";
-		};
-		E276B91928E4697900163833 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				0A5E904D28E9947800B381B8 /* ViewModels */,
-				E276B91B28E46AE900163833 /* User.swift */,
-				E276B91D28E46B3700163833 /* DiaryModel.swift */,
-				E2FA41A228F48C1B00BBA354 /* DiaryCell.swift */,
-				E21342E228F6B6BC0048D9CF /* MapData.swift */,
-				E2BEC45F28F806F80056E755 /* AlbumData.swift */,
-				0AE94ABB291182090051A710 /* ErrorMessage.swift */,
-				CC6C7F22291D2A6300B88888 /* DiaryDayModel.swift */,
-				E2838BE5291E38EE0013DD82 /* MapModel.swift */,
-				E223B1B32927766D00BB5B17 /* MapCategory.swift */,
-				0A6230CC29290492008CC131 /* PageSection.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		E276B91A28E4697E00163833 /* ViewControllers */ = {
-			isa = PBXGroup;
-			children = (
-				CCBF6891291E8FD600AD2B63 /* Album */,
-				E2838BED291E3CEB0013DD82 /* Map */,
-				0A3ED13F28F937EB000D55D8 /* MyPageViewControllers */,
-				B9901C03291C29FE00AF92DE /* MyDiaryDays */,
-				CC65514E28F086D900E637A2 /* MyDiaryPages */,
-				CC6BD74228EBFA6C001ED665 /* DiaryConfig */,
-				0A5E904328E8575C00B381B8 /* Page */,
-				CCE1806D28E5917A00AF06DB /* SignIn */,
-				E2EA7F0428E56BD700AC1C49 /* Main */,
-				E28F080528E4655100832F4A /* ViewController.swift */,
-			);
-			path = ViewControllers;
-			sourceTree = "<group>";
-		};
-		E2838BE2291E381C0013DD82 /* Map */ = {
-			isa = PBXGroup;
-			children = (
-				E2838BE3291E38250013DD82 /* MapListCell.swift */,
-			);
-			path = Map;
-			sourceTree = "<group>";
-		};
-		E2838BED291E3CEB0013DD82 /* Map */ = {
-			isa = PBXGroup;
-			children = (
-				E2838BEE291E3CF20013DD82 /* MapListViewController.swift */,
-				E2838BF0291E3D010013DD82 /* MapHalfModalPresentationController.swift */,
-			);
-			path = Map;
 			sourceTree = "<group>";
 		};
 		E28F07F528E4655100832F4A = {
@@ -655,6 +882,7 @@
 				E28F081728E4655200832F4A /* MacC-GoldenRatioTests */,
 				E28F082128E4655200832F4A /* MacC-GoldenRatioUITests */,
 				E28F07FF28E4655100832F4A /* Products */,
+				CCACFE54292BD2EE0038D792 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -671,13 +899,10 @@
 		E28F080028E4655100832F4A /* MacC-GoldenRatio */ = {
 			isa = PBXGroup;
 			children = (
+				0AFD1F99292B7813007A242B /* Info.plist */,
 				CC6BD73728E9790C001ED665 /* MacC-GoldenRatio.entitlements */,
+				0AFD1F83292B7146007A242B /* Sources */,
 				E276B91428E468E900163833 /* Resources */,
-				E276B91328E468D700163833 /* Sources */,
-				E28F080A28E4655200832F4A /* Assets.xcassets */,
-				E28F080C28E4655200832F4A /* LaunchScreen.storyboard */,
-				E28F080F28E4655200832F4A /* Info.plist */,
-				0A6F107C28FC6258002FB611 /* License.txt */,
 			);
 			path = "MacC-GoldenRatio";
 			sourceTree = "<group>";
@@ -697,55 +922,6 @@
 				E28F082428E4655200832F4A /* MacC_GoldenRatioUITestsLaunchTests.swift */,
 			);
 			path = "MacC-GoldenRatioUITests";
-			sourceTree = "<group>";
-		};
-		E2993A6429195ABE00409C9B /* Album */ = {
-			isa = PBXGroup;
-			children = (
-				E2993A6529195AD600409C9B /* AlbumCollectionView.swift */,
-				E27469AA29199DAD00BC906A /* PhotoCollectionView.swift */,
-			);
-			path = Album;
-			sourceTree = "<group>";
-		};
-		E2BEC46128F82DAB0056E755 /* MyAlbum */ = {
-			isa = PBXGroup;
-			children = (
-				E2BEC46228F82DC30056E755 /* MyAlbumTitleCollectionViewCell.swift */,
-				E2DA8F5F28F842310098DD94 /* MyAlbumCollectionViewCell.swift */,
-				E2DA8F6328F857D80098DD94 /* MyAlbumPhotoCollectionViewCell.swift */,
-			);
-			path = MyAlbum;
-			sourceTree = "<group>";
-		};
-		E2EA7F0428E56BD700AC1C49 /* Main */ = {
-			isa = PBXGroup;
-			children = (
-				E21342DE28F6B31D0048D9CF /* MyHomeViewController.swift */,
-			);
-			path = Main;
-			sourceTree = "<group>";
-		};
-		E2EA7F1428E570F100AC1C49 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				E2993A6429195ABE00409C9B /* Album */,
-				E2FA41AE28F6A89000BBA354 /* Place */,
-				E25753B928ED8C0600023619 /* MyHome */,
-				0A5E904628E857BB00B381B8 /* Sticker */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		E2FA41AE28F6A89000BBA354 /* Place */ = {
-			isa = PBXGroup;
-			children = (
-				E2FA41AF28F6A89900BBA354 /* MapView.swift */,
-				E2CCF30028F74450008A12F9 /* CustomAnnotationView.swift */,
-				E2838BE9291E3B3B0013DD82 /* MapListView.swift */,
-				E2838BEB291E3B490013DD82 /* SegmentedControlView.swift */,
-			);
-			path = Place;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -779,6 +955,8 @@
 				E2C8FA25291432B4009C58C9 /* RxCocoa */,
 				E2C8FA27291432B4009C58C9 /* RxSwift */,
 				0A1C3FE52920A573009A8C31 /* RxDataSources */,
+				CCACFE55292BD2EE0038D792 /* FirebaseDynamicLinks */,
+				0A70EB3E292F6398003492CD /* YPImagePicker */,
 			);
 			productName = "MacC-GoldenRatio";
 			productReference = E28F07FE28E4655100832F4A /* MacC-GoldenRatio.app */;
@@ -858,6 +1036,7 @@
 				E25753BD28ED9E0600023619 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				E2C8FA24291432B4009C58C9 /* XCRemoteSwiftPackageReference "RxSwift" */,
 				0A1C3FE42920A573009A8C31 /* XCRemoteSwiftPackageReference "RxDataSources" */,
+				0A70EB3D292F6398003492CD /* XCRemoteSwiftPackageReference "YPImagePicker" */,
 			);
 			productRefGroup = E28F07FF28E4655100832F4A /* Products */;
 			projectDirPath = "";
@@ -905,7 +1084,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E28F080628E4655100832F4A /* ViewController.swift in Sources */,
 				CC40BC1E28EEAEDA00DF48E1 /* MonthMetadata.swift in Sources */,
 				0AAB2ADC28EDA067009FBD96 /* TextStickerView.swift in Sources */,
 				CC6C7F23291D2A6300B88888 /* DiaryDayModel.swift in Sources */,
@@ -915,8 +1093,7 @@
 				0A5E904528E8578400B381B8 /* PageEditModeViewController.swift in Sources */,
 				E2FA41A328F48C1B00BBA354 /* DiaryCell.swift in Sources */,
 				0AAB2AD528EC1F11009FBD96 /* StickerPickerViewController.swift in Sources */,
-				E2BEC45E28F806C40056E755 /* MyAlbumViewModel.swift in Sources */,
-				0AAB2AD128EAFF6D009FBD96 /* CollectionView+.swift in Sources */,
+				0AAB2AD128EAFF6D009FBD96 /* UICollectionView+.swift in Sources */,
 				CC341406291930F800A1FD17 /* DiaryColorCell.swift in Sources */,
 				E2BEC46028F806F80056E755 /* AlbumData.swift in Sources */,
 				0A939489291A1E0E007ADDAC /* PageViewModeViewController.swift in Sources */,
@@ -933,10 +1110,10 @@
 				E276B92028E4812E00163833 /* UIScreen+.swift in Sources */,
 				CC40BC1F28EEB10800DF48E1 /* CalendarPickerViewController.swift in Sources */,
 				0A3ED14828FBE6EB000D55D8 /* MyPageViewController.swift in Sources */,
+				CCACFE66292F5A380038D792 /* ThumbnailPreviewViewModel.swift in Sources */,
 				0A5E904C28E858D200B381B8 /* StickerBorderView.swift in Sources */,
 				0A30BD47291A4DAF00079326 /* CALayer+.swift in Sources */,
 				E2838BE4291E38250013DD82 /* MapListCell.swift in Sources */,
-				CC65515028F0874800E637A2 /* MyDiaryPagesViewController.swift in Sources */,
 				0AEC53EC28EF211D001B0169 /* StickerViewData.swift in Sources */,
 				0A30BD49291A93AE00079326 /* PageViewModeCollectionViewCell.swift in Sources */,
 				0A5E904F28E9948B00B381B8 /* PageViewModeViewModel.swift in Sources */,
@@ -944,9 +1121,11 @@
 				0AAB2ADE28EDA511009FBD96 /* MapStickerView.swift in Sources */,
 				0AAB2AE028EDA553009FBD96 /* ImageStickerView.swift in Sources */,
 				E2C27502290D62EB00319885 /* DiaryCollectionViewModel.swift in Sources */,
+				CCACFE51292BD2890038D792 /* UIApplication+.swift in Sources */,
 				0A5235B028F8510C00AC77AC /* UIFont+.swift in Sources */,
 				0A3ED14128F98956000D55D8 /* MyPageViewModel.swift in Sources */,
 				CCBF689529260C7700AD2B63 /* DiaryDaysSegmentedControlView.swift in Sources */,
+				CCACFE62292F58510038D792 /* ThumbnailConfigViewModel.swift in Sources */,
 				CC3414082919310700A1FD17 /* DiaryColorCellViewModel.swift in Sources */,
 				CC6BD74428EBFA80001ED665 /* DiaryConfigViewController.swift in Sources */,
 				B9901C07291C2A2C00AF92DE /* MyDiaryDaysViewModel.swift in Sources */,
@@ -974,12 +1153,14 @@
 				0A5E904828E857E200B381B8 /* StickerView.swift in Sources */,
 				E223B1B42927766D00BB5B17 /* MapCategory.swift in Sources */,
 				E2838BE8291E3A4C0013DD82 /* MapViewModel.swift in Sources */,
-				CC9F969628F7E0B100E4B68A /* MyDiaryPagesViewModel.swift in Sources */,
 				0A5235B228F854C200AC77AC /* UIColor+.swift in Sources */,
 				0A6F107128FBFA7C002FB611 /* MenuTableViewCell.swift in Sources */,
 				CC65514728EEBF7C00E637A2 /* Date+.swift in Sources */,
 				E21342DD28F6B2740048D9CF /* HalfModalPresentationController.swift in Sources */,
 				E2838BEF291E3CF20013DD82 /* MapListViewController.swift in Sources */,
+				E2D18FB3292F639C006F0E19 /* RemoveButton.swift in Sources */,
+				CCACFE53292BD2C30038D792 /* DynamicLinkBuilder.swift in Sources */,
+				0AAEB39129309E1700AEB5B8 /* YPImagePickerManager.swift in Sources */,
 				E2838BEA291E3B3B0013DD82 /* MapListView.swift in Sources */,
 				E2EA7F1628E5711E00AC1C49 /* DiaryCollectionHeaderView.swift in Sources */,
 				B93EC22928F7BC8000BB89C5 /* String+.swift in Sources */,
@@ -993,7 +1174,7 @@
 				0A5E904828E857E200B381B8 /* StickerView.swift in Sources */,
 				E2ED4872290ABE46002FEC2B /* Notification+.swift in Sources */,
 				0A3ED14628F99FBF000D55D8 /* SetProfileImageViewController.swift in Sources */,
-				0AAB2ACF28EAFF52009FBD96 /* TableView+.swift in Sources */,
+				0AAB2ACF28EAFF52009FBD96 /* UITableView+.swift in Sources */,
 				CC6C7F21291CEB3600B88888 /* DiaryDaysCell.swift in Sources */,
 				B9901C0B291CA42400AF92DE /* DiaryDaysCollectionView.swift in Sources */,
 				E265C8102914E9A4003380A5 /* HomeButtonView.swift in Sources */,
@@ -1001,13 +1182,14 @@
 				0A3ED14428F99F11000D55D8 /* TravelsCollectionViewCell.swift in Sources */,
 				E2FA41B028F6A89900BBA354 /* MapView.swift in Sources */,
 				0AAB2ADA28EC8C8D009FBD96 /* StickerPickerCollectionViewCell.swift in Sources */,
+				CCACFE5F292F51F80038D792 /* ThumbnailConfigViewController.swift in Sources */,
 				0A5DC37B28F7F65B00AABED1 /* ImageManager.swift in Sources */,
-				CC65515228F0877900E637A2 /* MyDiaryPagesViewCollectionViewCell.swift in Sources */,
 				0AAB2AD328EB14A8009FBD96 /* UIView+.swift in Sources */,
 				E28F080428E4655100832F4A /* SceneDelegate.swift in Sources */,
 				CCBF68932924D8A800AD2B63 /* CalendarYearPickerView.swift in Sources */,
 				E2DA8F6228F856A10098DD94 /* MyAlbumPhotoViewController.swift in Sources */,
 				0A6230CF2929075A008CC131 /* PageEditModeViewModel.swift in Sources */,
+				CCACFE64292F5A2D0038D792 /* ThumbnailPreviewView.swift in Sources */,
 				E2838BE6291E38EE0013DD82 /* MapModel.swift in Sources */,
 				E2FA41A128F4752D00BBA354 /* DiaryCollectionViewCell.swift in Sources */,
 				CC34140A29193C0A00A1FD17 /* DiaryColorCollectionView.swift in Sources */,
@@ -1015,6 +1197,7 @@
 				CC65515828F544ED00E637A2 /* PopUpViewController.swift in Sources */,
 				E2C2750B290D950400319885 /* DiaryCollectionView.swift in Sources */,
 				B9901C05291C2A1A00AF92DE /* MyDiaryDaysViewController.swift in Sources */,
+				E2E3B869293097A100B750C9 /* FilterButton.swift in Sources */,
 				E2B025C728EC163500B73891 /* FirestoreClient.swift in Sources */,
 				E2B025C728EC163500B73891 /* FirestoreClient.swift in Sources */,
 			);
@@ -1187,14 +1370,17 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "MacC-GoldenRatio/MacC-GoldenRatio.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = ZNH7978JJQ;
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = ZNH7978JJQ;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = C643325Z95;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "MacC-GoldenRatio/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = TDAA;
+				INFOPLIST_KEY_NSCameraUsageDescription = "카메라를 사용하기 위해 카메라 접근 권한이 필요합니다.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "사용자의 위치를 활용해 지도를 표시하기 위한 권한이 필요합니다.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "마이크를 사용하기 위해 마이크 접근 권한이 필요합니다.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "사진을 저장하기 위해 앨범 접근 권한이 필요합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -1207,10 +1393,10 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.1.1;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.TwoInterval.MacC-GoldenRatio";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.San.MacC-GoldenRatio";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = DiaryAppForDevelopment;
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = DiaryAppForDevelopment;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "TDAA new profile";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
@@ -1232,11 +1418,13 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = ZNH7978JJQ;
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = ZNH7978JJQ;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = C643325Z95;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "MacC-GoldenRatio/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = TDAA;
+				INFOPLIST_KEY_NSCameraUsageDescription = "카메라를 사용하기 위해 카메라 접근 권한이 필요합니다.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "사용자의 위치를 활용해 지도를 표시하기 위한 권한이 필요합니다.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "마이크를 사용하기 위해 마이크 접근 권한이 필요합니다.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "사진을 저장하기 위해 앨범 접근 권한이 필요합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -1249,10 +1437,10 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.1.1;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.TwoInterval.MacC-GoldenRatio";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.San.MacC-GoldenRatio";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = DiaryAppForDistribution;
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = DiaryAppForDevelopment;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "TDAA new profile";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
@@ -1388,6 +1576,14 @@
 				minimumVersion = 5.0.0;
 			};
 		};
+		0A70EB3D292F6398003492CD /* XCRemoteSwiftPackageReference "YPImagePicker" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Yummypets/YPImagePicker.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 		E25753BD28ED9E0600023619 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher";
@@ -1427,6 +1623,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 0A1C3FE42920A573009A8C31 /* XCRemoteSwiftPackageReference "RxDataSources" */;
 			productName = RxDataSources;
+		};
+		0A70EB3E292F6398003492CD /* YPImagePicker */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0A70EB3D292F6398003492CD /* XCRemoteSwiftPackageReference "YPImagePicker" */;
+			productName = YPImagePicker;
+		};
+		CCACFE55292BD2EE0038D792 /* FirebaseDynamicLinks */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E2F5690728E5CCDC0039BE37 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDynamicLinks;
 		};
 		E25753BE28ED9E0600023619 /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;

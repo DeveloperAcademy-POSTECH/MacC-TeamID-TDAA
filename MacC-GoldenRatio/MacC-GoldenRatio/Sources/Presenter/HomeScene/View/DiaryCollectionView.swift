@@ -13,8 +13,11 @@ class DiaryCollectionView: UICollectionView {
 	private let disposeBag = DisposeBag()
 	private let myDevice = UIScreen.getDevice()
 	
-	override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
+	let viewModel: DiaryCollectionViewModel
+	
+	init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout, viewModel: DiaryCollectionViewModel) {
 		let layout = UICollectionViewFlowLayout()
+		self.viewModel = viewModel
 		super.init(frame: frame, collectionViewLayout: layout)
 		self.collectionViewLayout = layout
 		self.showsVerticalScrollIndicator = false
@@ -28,10 +31,19 @@ class DiaryCollectionView: UICollectionView {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
-	func bind(_ viewModel: DiaryCollectionViewModel) {
+	func bind() {
 		viewModel.collectionDiaryData
 			.bind(to: self.rx.items(cellIdentifier: "DiaryCollectionViewCell", cellType: DiaryCollectionViewCell.self)) { index, data, cell in
-				cell.setup(cellData: DiaryCell(diaryUUID: data.diaryUUID, diaryName: data.diaryName, diaryLocation: data.diaryLocation, diaryStartDate: data.diaryStartDate, diaryEndDate: data.diaryEndDate, diaryCover: data.diaryCover, diaryCoverImage: data.diaryCoverImage))
+				let cellData = DiaryCell(diaryUUID: data.diaryUUID, diaryName: data.diaryName, diaryLocation: data.diaryLocation, diaryStartDate: data.diaryStartDate, diaryEndDate: data.diaryEndDate, diaryCover: data.diaryCover, diaryCoverImage: data.diaryCoverImage, userUIDs: data.userUIDs)
+				cell.bind(viewModel: self.viewModel)
+				cell.setup(cellData: cellData)
+				cell.removeButton.diaryCell = cellData
+				
+				if self.viewModel.longPressedEnabled.value {
+					cell.startAnimate()
+				}else{
+					cell.stopAnimate()
+				}
 			}
 			.disposed(by: disposeBag)
 		
@@ -57,10 +69,10 @@ extension DiaryCollectionView: UICollectionViewDelegateFlowLayout {
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-		return 20
+		return 0
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-		return 20
+		return 10
 	}
 }

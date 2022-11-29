@@ -15,4 +15,5 @@ struct DiaryCell {
 	let diaryEndDate: String
 	let diaryCover: String
 	let diaryCoverImage: String?
+	let userUIDs: [String]
 }

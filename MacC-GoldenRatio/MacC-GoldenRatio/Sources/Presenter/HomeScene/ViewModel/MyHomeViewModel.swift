@@ -17,22 +17,20 @@ class MyHomeViewModel {
 	
 	private var myUID = Auth.auth().currentUser?.uid ?? ""
 	
+	let longPressedEnabled = BehaviorRelay(value: false)
+	let filterButtonTapped = BehaviorRelay(value: true)
+	
 	let diaryCollectionViewModel = DiaryCollectionViewModel()
 	let albumCollectionViewModel = AlbumCollectionViewModel()
 	
 	var isEqual = false
-	var isInitializing = true {
-		didSet {
-			if isInitializing {
-				LoadingIndicator.showLoading(loadingText: "다이어리를 불러오는 중입니다.")
-			} else {
-				LoadingIndicator.hideLoading()
-			}
-		}
-	}
 	
 	init() {
 		createCell()
+		
+		longPressedEnabled
+			.bind(to: diaryCollectionViewModel.longPressedEnabled)
+			.disposed(by: disposeBag)
 	}
 	
 	func createCell() {
@@ -44,7 +42,19 @@ class MyHomeViewModel {
 		
 		diaryResult
 			.map(getDiaryValue)
+			.map(sortDiary)
 			.bind(to: diaryCollectionViewModel.collectionDiaryData)
+			.disposed(by: disposeBag)
+		
+		filterButtonTapped
+			.asObservable()
+			.bind { _ in
+				diaryResult
+					.map(self.getDiaryValue)
+					.map(self.sortDiary)
+					.bind(to: self.diaryCollectionViewModel.collectionDiaryData)
+					.disposed(by: self.disposeBag)
+			}
 			.disposed(by: disposeBag)
 	}
 	
@@ -53,6 +63,16 @@ class MyHomeViewModel {
 			return []
 		}
 		return value
+	}
+	
+	func sortDiary(_ diaries: [Diary]) -> [Diary] {
+		return diaries.sorted { first, second in
+			if self.filterButtonTapped.value {
+				return first.diaryStartDate.toDate() ?? Date() > second.diaryStartDate.toDate() ?? Date()
+			} else {
+				return first.diaryName < second.diaryName
+			}
+		}
 	}
 	
 	func isDiaryCodeEqualTo(_ diaryUUID: String) {

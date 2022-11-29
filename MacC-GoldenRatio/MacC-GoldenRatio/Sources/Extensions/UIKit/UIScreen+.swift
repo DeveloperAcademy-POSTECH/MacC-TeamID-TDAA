@@ -117,7 +117,7 @@ extension UIScreen {
         
         var diaryCollectionViewCellSize: CGSize {
             switch self {
-			default: return CGSize(width: (UIScreen.main.bounds.size.width-60)/2, height: ((UIScreen.main.bounds.size.width-60)/2)*1.2121)
+			default: return CGSize(width: (UIScreen.main.bounds.size.width-60)/2+20, height: ((UIScreen.main.bounds.size.width-60)/2)*1.2121+10)
             }
         }
         
@@ -177,7 +177,7 @@ extension UIScreen {
         
         var diaryCollectionViewCellTitleLabelTop: CGFloat {
             switch self {
-            default: return 15
+            default: return 25
             }
         }
         

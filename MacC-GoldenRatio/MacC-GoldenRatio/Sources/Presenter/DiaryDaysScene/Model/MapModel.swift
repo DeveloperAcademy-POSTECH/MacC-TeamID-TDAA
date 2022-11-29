@@ -41,10 +41,10 @@ struct MapModel {
 				var annotations = [CustomAnnotation]()
 				data.locations.forEach { location in
 					if data.day != 10 {
-						let annotation = CustomAnnotation(coordinate: CLLocationCoordinate2D(latitude: location.locationCoordinate[0], longitude: location.locationCoordinate[1]), title: location.locationName, address: location.locationAddress, day: data.day, iconImage: "pin\(data.day%10)", category: location.locationCategory ?? "")
+						let annotation = CustomAnnotation(coordinate: CLLocationCoordinate2D(latitude: location.locationCoordinate[0], longitude: location.locationCoordinate[1]), title: location.locationName, address: location.locationAddress, day: data.day, iconImage: "mapPin\(data.day%10)", category: location.locationCategory ?? "")
 						annotations.append(annotation)
 					} else {
-						let annotation = CustomAnnotation(coordinate: CLLocationCoordinate2D(latitude: location.locationCoordinate[0], longitude: location.locationCoordinate[1]), title: location.locationName, address: location.locationAddress, day: data.day, iconImage: "pin10", category: location.locationCategory ?? "")
+						let annotation = CustomAnnotation(coordinate: CLLocationCoordinate2D(latitude: location.locationCoordinate[0], longitude: location.locationCoordinate[1]), title: location.locationName, address: location.locationAddress, day: data.day, iconImage: "mapPin10", category: location.locationCategory ?? "")
 						annotations.append(annotation)
 					}
 				}

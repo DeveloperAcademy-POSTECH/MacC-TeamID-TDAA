@@ -50,7 +50,7 @@ extension UIFont {
     }
 	
 	static var mapLabelFont: UIFont {
-		let font = UIFont(name: "GothicA1-Bold", size: 10) ?? UIFont.systemFont(ofSize: 10)
+		let font = UIFont(name: "GothicA1-Bold", size: 13) ?? UIFont.systemFont(ofSize: 13)
 		return font
 	}
 	

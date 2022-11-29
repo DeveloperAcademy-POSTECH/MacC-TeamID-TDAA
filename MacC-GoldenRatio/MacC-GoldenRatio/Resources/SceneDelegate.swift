@@ -95,7 +95,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             myHomeViewController.navigationController?.navigationBar.isHidden = true
             myHomeViewController.viewModel.updateJoinDiary(diaryUUID)
             DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
-                myHomeViewController.reloadDiaryCell()
+				NotificationCenter.default.post(name: .reloadDiary, object: nil)
                 myHomeViewController.view.showToastMessage("다이어리가 추가되었습니다.")
             }
         } else {

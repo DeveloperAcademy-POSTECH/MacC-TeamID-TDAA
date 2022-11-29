@@ -93,7 +93,9 @@ class MapView: UIView, MKMapViewDelegate, CLLocationManagerDelegate {
 		annotationView?.addSubview(countLabel)
 		
 		countLabel.snp.makeConstraints {
-			$0.center.equalToSuperview()
+			$0.height.equalTo(22)
+			$0.top.equalToSuperview().inset(5)
+			$0.leading.equalToSuperview().inset(11)
 		}
 		
 		annotationView?.image = UIImage(named: "\(annotation.iconImage)") ?? UIImage()

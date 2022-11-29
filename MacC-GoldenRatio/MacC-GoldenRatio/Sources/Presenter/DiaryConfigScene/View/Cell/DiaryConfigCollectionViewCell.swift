@@ -183,9 +183,10 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
             contentButton.backgroundColor = .clear
             contentButton.layer.cornerRadius = 20
             contentView.addSubview(contentButton)
-            contentButton.snp.makeConstraints{
+            contentButton.snp.makeConstraints {
                 $0.leading.equalTo(dividerView)
-                $0.width.height.equalTo(170)
+                $0.height.equalTo(170)
+                $0.width.equalTo(242)
                 $0.top.equalTo(contentTitle.snp.bottom).offset(10)
             }
         }

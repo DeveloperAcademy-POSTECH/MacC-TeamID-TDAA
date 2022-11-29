@@ -16,9 +16,8 @@ class DiaryConfigViewController: UIViewController {
     private var disposeBag = DisposeBag()
     private let device: UIScreen.DeviceSize = UIScreen.getDevice()
     private var dateInterval: [Date] = []
+    private let imagePickerManager = YPImagePickerManager(pickerType: .coverWithCrop)
     var viewModel = DiaryConfigViewModel(diary: nil)
-    
-    let imagePicker = UIImagePickerController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -103,7 +102,7 @@ class DiaryConfigViewController: UIViewController {
                     viewModel.diaryCoverImage
                         .subscribe(onNext: {
                             viewModel.coverImage = $0
-                            cell.contentButton.setImage($0.withCornerRadius($0.size.width / 8.5), for: .normal)
+                            cell.contentButton.setImage($0.withCornerRadius($0.size.height / 8.5), for: .normal)
                         })
                         .disposed(by: self.disposeBag)
                     cell.bind(data)
@@ -336,28 +335,9 @@ extension DiaryConfigViewController {
     }
     
     private func presentImagePicker() {
-        self.imagePicker.sourceType = .photoLibrary
-        self.imagePicker.allowsEditing = true
-        self.imagePicker.delegate = self
-        self.imagePicker.modalPresentationStyle = .currentContext
-        self.present(self.imagePicker, animated: true)
-    }
-}
-
-// MARK: ImagePikcerDelegate
-extension DiaryConfigViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        var selectImage = UIImage(named: "selectImage")
-        
-        if let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
-            selectImage = image
-        } else if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-            selectImage = image
-        }
-        
-        imagePicker.dismiss(animated: true, completion: {
-            self.viewModel.diaryCoverImage.accept(selectImage ?? UIImage())
-            self.viewModel.coverImage = selectImage ?? UIImage()
+        self.imagePickerManager.presentImagePicker(viewControllerToPresent: self, completion: { images in
+            self.viewModel.diaryCoverImage.accept(images[0])
+            self.viewModel.coverImage = images[0]
         })
     }
 }

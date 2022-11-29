@@ -39,11 +39,7 @@ class DiaryCollectionView: UICollectionView {
 				cell.setup(cellData: cellData)
 				cell.removeButton.diaryCell = cellData
 				
-				if self.viewModel.longPressedEnabled.value {
-					cell.startAnimate()
-				}else{
-					cell.stopAnimate()
-				}
+				self.viewModel.longPressedEnabled.value ? cell.startAnimate() : cell.stopAnimate()
 			}
 			.disposed(by: disposeBag)
 		

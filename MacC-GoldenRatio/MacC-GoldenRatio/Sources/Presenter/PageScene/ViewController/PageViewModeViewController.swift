@@ -224,10 +224,10 @@ class PageViewModeViewController: UIViewController {
         var isValid = false
         let pages = diary.diaryPages[selectedPageIndex.0].pages
         
-        for page in pages {
+        p: for page in pages {
             for item in page.items {
                 isValid = (item.itemType == .image) ? true : false
-                if isValid { break }
+                if isValid { break p }
             }
         }
         

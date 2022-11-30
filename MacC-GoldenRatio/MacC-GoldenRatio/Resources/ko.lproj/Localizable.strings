@@ -20,6 +20,10 @@
 "LzCreate" = "추가";
 "LzModify" = "수정";
 "LzDiary" = "다이어리";
+"LzOutAlertTitle" = "다이어리를 나가시겠습니까?";
+"LzOutAlertMessage" = "다이어리를 나가면 공동편집을 할 수 없습니다.";
+"LzOutAlertOut" = "다이어리 나가기";
+"LzThumbnailSelect" = "섬네일 선택";
 
 
 // CommonScene - Album
@@ -39,10 +43,10 @@
 "LzHomeJoinAlertTitle" = "초대코드 입력";
 "LzHomeJoinAlertMessage" = "받은 초대코드를 입력해주세요.";
 "LzHomeJoinAlertAdded" = "다이어리가 추가되었습니다.";
+"LzHomeJoinAlertFailed" = "다이어리 추가에 실패했습니다.";
 "LzHomeJoinAlertWrong" = "초대코드가 잘못되었습니다.";
-"LzHomeOutAlertTitle" = "다이어리를 나가시겠습니까?";
-"LzHomeOutAlertMessage" = "다이어리를 나가면 공동편집을 할 수 없습니다.";
-"LzHomeOutAlertOut" = "다이어리 나가기";
+"LzHomeDay" = "일";
+"LzHomeDays" = "일";
 
 
 // DiaryConfigScene
@@ -79,10 +83,42 @@
 "LzCalendarFrom" = "%@ 부터";
 
 
-// ThumbnailConfigScene
+// DiaryDaysScene
+"LzDiaryDaysDayLabel" = "%@일차";
+"LzDiaryDaysCodeCopy" = " 초대코드 복사";
+"LzDiaryDaysShareLink" = " 초대링크 공유";
+"LzDiaryDaysDiaryModify" = " 다이어리 수정";
+"LzDiaryDaysDiaryOut" = " 다이어리 탈퇴";
+"LzDiaryDaysCodeCopyMessage" = "초대코드가 복사되었습니다.";
 
 
 // UserScene
+"LzUserTitle" = "마이페이지";
+"LzUserNickName" = "닉네임";
+"LzUserEditProfile" = "프로필 설정";
+"LzUserTravelDestination" = "가본 여행지";
+"LzUserLogoutMessage" = "로그아웃 하시겠습니까?";
+"LzUserNickNameMessage" = "회원탈퇴 하시겠습니까?";
+"LzUserWithrawalMessage" = "닉네임을 입력해주세요.";
+"LzUserAppVersion" = "앱 버전";
+"LzUserOpenSource" = "오픈소스";
+"LzUserAppRate" = "앱 평가하기";
+"LzUserLogout" = "로그아웃";
+"LzUserWithrawal" = "회원탈퇴";
 
 
 // PageScene
+"LzPageDayLabel" = "%@일차";
+"LzPageEditPage" = " 페이지 편집";
+"LzPageSharePage" = " 페이지 공유";
+"LzPageAddPage" = " 페이지 추가";
+"LzPageDeletePage" = " 페이지 삭제";
+"LzPageSelectThumbnail" = " 섬네일 선택";
+"LzPageNoImageMessage" = "페이지에 선택할 이미지가 없습니다.";
+"LzPageTextPlaceholder" = "텍스트를 입력해주세요";
+
+
+// DynamicLinkBuilder
+"LzInvitationTitle" = "트다(TDAA)로 당신을 초대합니다";
+"LzInvitationMessage" = "우리 함께 여행 다이어리를 작성해보아요!";
+

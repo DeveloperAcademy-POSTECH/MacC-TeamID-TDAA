@@ -55,7 +55,7 @@ class MyPageViewController: UIViewController {
     private lazy var nickNameTitleLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.text = "닉네임"
+        label.text = "LzUserNickName".localized
         label.font = .labelSubTitleFont2
         
         return label
@@ -73,7 +73,7 @@ class MyPageViewController: UIViewController {
     private lazy var profileSettingButton: UIButton = {
         let button = UIButton()
 
-        let title = "프로필 설정"
+        let title = "LzUserEditProfile".localized
         let attributes = [NSAttributedString.Key.font:UIFont.labelSubTitleFont2]
         let attributedString = NSAttributedString(string: title, attributes: attributes)
         let mutableAttributedString = NSMutableAttributedString(attributedString: attributedString)
@@ -88,7 +88,7 @@ class MyPageViewController: UIViewController {
     private lazy var travelsTitleLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.text = "가본 여행지"
+        label.text = "LzUserTravelDestination".localized
         label.font = .labelSubTitleFont2
 
         return label
@@ -220,20 +220,20 @@ class MyPageViewController: UIViewController {
     }
     
     private func onTapLogOutButtonTapped() {
-        let ac = UIAlertController(title: "로그아웃 하시겠습니까?", message: nil, preferredStyle: .alert)
-        ac.addAction(UIAlertAction(title: "확인", style: .destructive) { _ in
+        let ac = UIAlertController(title: "LzUserLogoutMessage".localized, message: nil, preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "LzConfirm".localized, style: .destructive) { _ in
             self.authLogout()
         })
-        ac.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
+        ac.addAction(UIAlertAction(title: "LzCancel".localized, style: .cancel, handler: nil))
         present(ac, animated: true, completion: nil)
     }
     
     private func onTapWithdrawalButtonTapped() {
-        let ac = UIAlertController(title: "회원탈퇴 하시겠습니까?", message: nil, preferredStyle: .alert)
-        ac.addAction(UIAlertAction(title: "확인", style: .destructive) { _ in
+        let ac = UIAlertController(title: "LzUserWithrawalMessage".localized, message: nil, preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "LzConfirm".localized, style: .destructive) { _ in
             self.authWithdrawal()
         })
-        ac.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
+        ac.addAction(UIAlertAction(title: "LzCancel".localized, style: .cancel, handler: nil))
         present(ac, animated: true, completion: nil)
     }
     
@@ -306,17 +306,17 @@ extension MyPageViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch viewModel.menuArray[indexPath.item].0 {
-        case "오픈소스":
+        case "LzUserOpenSource".localized:
             let viewController = LicenseViewController()
             self.present(viewController, animated: true)
             break
-        case "앱 평가하기":
+        case "LzUserAppRate".localized:
             self.onTapRateApp()
             break
-        case "로그아웃":
+        case "LzUserLogout".localized:
             self.onTapLogOutButtonTapped()
             break
-        case "회원탈퇴":
+        case "LzUserWithrawal".localized:
             self.onTapWithdrawalButtonTapped()
             break
         default: break

@@ -20,10 +20,14 @@
 "LzCreate" = "Create";
 "LzModify" = "Modify";
 "LzDiary" = "Diary";
+"LzOutAlertTitle" = "Leave the diary?";
+"LzOutAlertMessage" = "If you leave the diary, you can't edit it together.";
+"LzOutAlertOut" = "Leave the diary";
+"LzThumbnailSelect" = "Select Thumbnail";
 
 
 // CommonScene - Album
-"LzAlbumEmpty" = "추가하신 사진이 없어요.";
+"LzAlbumEmpty" = "No photo in album";
 
 
 // SignInScene
@@ -37,13 +41,12 @@
 "LzHomeCreate" = " Create diary";
 "LzHomeJoin" = " Join with code";
 "LzHomeJoinAlertTitle" = "Invitation Code";
-"LzHomeJoinAlertMessage" = "Please enter the invitation code you received.
-";
+"LzHomeJoinAlertMessage" = "Please enter the invitation code you received.";
 "LzHomeJoinAlertAdded" = "The diary has been added.";
+"LzHomeJoinAlertFailed" = "Adding a diary failed.";
 "LzHomeJoinAlertWrong" = "Invalid invitation code.";
-"LzHomeOutAlertTitle" = "Would you like to leave the diary?";
-"LzHomeOutAlertMessage" = "If you leave the diary, you can't edit it together.";
-"LzHomeOutAlertOut" = "Leave the diary";
+"LzHomeDay" = "day";
+"LzHomeDays" = "days";
 
 
 // DiaryConfigScene
@@ -59,9 +62,9 @@
 "LzDiaryConfigSetImage" = "Set cover image";
 "LzDiaryConfigAlbum" = "Select a picture from album";
 "LzDiaryConfigDefaultImage" = "Change to Default Image";
-"LzDiaryConfigNamePlaceholder" = "Enter a name for the diary.";
-"LzDiaryConfigLocationPlaceholder" = "Enter a location for the diary.";
-"LzDiaryConfigDatePlaceholder" = "Select the date of your trip.";
+"LzDiaryConfigNamePlaceholder" = "Enter a name for the diary";
+"LzDiaryConfigLocationPlaceholder" = "Enter a location for the diary";
+"LzDiaryConfigDatePlaceholder" = "Select the date of your trip";
 
 
 // Calendar
@@ -79,13 +82,42 @@
 "LzCalendarSaturday" = "SAT";
 "LzCalendarFrom" = "From %@";
 
-// ThumbnailConfigScene
+
+// DiaryDaysScene
+"LzDiaryDaysDayLabel" = "Day %@";
+"LzDiaryDaysCodeCopy" = " Copy diary code";
+"LzDiaryDaysShareLink" = " Share diary link";
+"LzDiaryDaysDiaryModify" = " Modify the diary";
+"LzDiaryDaysDiaryOut" = " Leave the diary";
+"LzDiaryDaysCodeCopyMessage" = "Invitation code copied successfully.";
 
 
 // UserScene
+"LzUserTitle" = "My Page";
+"LzUserNickName" = "Nickname";
+"LzUserEditProfile" = "Edit Profile";
+"LzUserTravelDestination" = "Travel Destination";
+"LzUserLogoutMessage" = "Are you sure you want to log out?";
+"LzUserNickNameMessage" = "Would you like to withdraw your membership?";
+"LzUserWithrawalMessage" = "Enter your nickname";
+"LzUserAppVersion" = "App version";
+"LzUserOpenSource" = "Open source";
+"LzUserAppRate" = "Rate our App";
+"LzUserLogout" = "Sign out";
+"LzUserWithrawal" = "Withdrawal";
 
 
 // PageScene
+"LzPageDayLabel" = "Day %@";
+"LzPageEditPage" = " Edit page";
+"LzPageSharePage" = " Share page";
+"LzPageAddPage" = " Add page";
+"LzPageDeletePage" = " Delete page";
+"LzPageSelectThumbnail" = " Select Thumbnail";
+"LzPageNoImageMessage" = "There is no image to select on the page.";
+"LzPageTextPlaceholder" = "Enter text";
 
 
-
+// DynamicLinkBuilder
+"LzInvitationTitle" = "Invite you to TDAA";
+"LzInvitationMessage" = "Let's write a travel diary together!";

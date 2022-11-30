@@ -65,7 +65,7 @@ class PopUpViewController: UIViewController {
         view.axis = .vertical
         view.spacing = 22.0
         view.distribution = .fill
-        view.alignment = .center
+        view.alignment = "LzIdentifier".localized == "ko" ? .center : .leading
         return view
     }()
     
@@ -114,7 +114,7 @@ class PopUpViewController: UIViewController {
             containerView.snp.makeConstraints {
                 $0.trailing.equalToSuperview().inset(20)
                 $0.top.equalToSuperview().inset(100)
-                $0.width.equalTo(165)
+                $0.width.equalTo("LzIdentifier".localized == "ko" ? 165 : 210)
             }
             
         default:

@@ -152,8 +152,8 @@ final class MyHomeViewController: UIViewController, UIGestureRecognizerDelegate 
 		viewModel.diaryCollectionViewModel.removeData
 			.bind { data in
 				if data != nil {
-                    let ac = UIAlertController(title: "LzHomeOutAlertTitle".localized, message: "LzHomeOutAlertMessage".localized, preferredStyle: .alert)
-                    ac.addAction(UIAlertAction(title: "LzHomeOutAlertOut".localized, style: .destructive) { _ in
+                    let ac = UIAlertController(title: "LzOutAlertTitle".localized, message: "LzOutAlertMessage".localized, preferredStyle: .alert)
+                    ac.addAction(UIAlertAction(title: "LzOutAlertOut".localized, style: .destructive) { _ in
 						self.viewModel.diaryCollectionViewModel.outCurrentDiary(data!.diaryUUID, data!.userUIDs)
 						NotificationCenter.default.post(name: .reloadDiary, object: nil)
 					})

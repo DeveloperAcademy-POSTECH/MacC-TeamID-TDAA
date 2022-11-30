@@ -76,15 +76,15 @@ class ThumbnailConfigViewController: UIViewController {
     private func attribute() {
         view.backgroundColor = UIColor.appBackgroundColor
         
-        titleLabel.text = "섬네일 선택"
+        titleLabel.text = "LzThumbnailSelect".localized
         titleLabel.textColor = .black
         titleLabel.font = device.diaryConfigTitleFont
         
-        cancelButton.setTitle("취소", for: .normal)
+        cancelButton.setTitle("LzCreate".localized, for: .normal)
         cancelButton.titleLabel?.font = device.diaryConfigButtonFont
         cancelButton.tintColor = .navigationbarColor
         
-        doneButton.setTitle("완료", for: .normal)
+        doneButton.setTitle("LzDone".localized, for: .normal)
         doneButton.titleLabel?.font = device.diaryConfigButtonFont
         doneButton.tintColor = .navigationbarColor
         

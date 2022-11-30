@@ -1,0 +1,55 @@
+/* 
+  Localizable.strings
+  MacC-GoldenRatio
+
+  Created by DongKyu Kim on 2022/11/30.
+  
+  English Localizing
+ 
+  MARK: Rules
+  1. Presenter의 Scene 별로 구분되어 있습니다
+  2. "Lz(Localizing) + Scene 이름 + 컴포넌트/기능" 으로 구성됩니다.
+*/
+
+
+// Common Components
+"LzConfirm" = "Confirm";
+"LzDone" = "Done";
+"LzCancel" = "Cancel";
+
+
+// CommonScene - Album
+"LzAlbumEmpty" = "추가하신 사진이 없어요.";
+
+
+// SignInScene
+"LzSignInLogin" = "  Sign In with Apple";
+
+
+// HomeScene
+"LzHomeTitleLabel" = "Diary";
+"LzHomeDateFilter" = "Date";
+"LzHomeNameFilter" = "Name";
+"LzHomeCreate" = "Create diary";
+"LzHomeJoin" = "Join with code";
+"LzHomeJoinAlertTitle" = "Invitation Code";
+"LzHomeJoinAlertMessage" = "받은 초대코드를 입력해주세요.";
+"LzHomeJoinAlertAdded" = "다이어리가 추가되었습니다.";
+"LzHomeJoinAlertWrong" = "초대코드가 잘못되었습니다.";
+"LzHomeOutAlertTitle" = "다이어리를 나가시겠습니까?";
+"LzHomeOutAlertMessage" = "다이어리를 나가면 공동편집을 할 수 없습니다.";
+"LzHomeOutAlertOut" = "다이어리 나가기";
+
+// DiaryConfigScene
+
+
+// ThumbnailConfigScene
+
+
+// UserScene
+
+
+// PageScene
+
+
+

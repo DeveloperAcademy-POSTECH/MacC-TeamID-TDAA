@@ -9,6 +9,7 @@
   MARK: Rules
   1. Presenter의 Scene 별로 구분되어 있습니다
   2. "Lz(Localizing) + Scene 이름 + 컴포넌트/기능" 으로 구성됩니다.
+  3. 예외적으로, MapCategory는 MapCategory의 case rawValue를 활용하였습니다.
 */
 
 
@@ -121,3 +122,46 @@
 // DynamicLinkBuilder
 "LzInvitationTitle" = "Invite you to TDAA";
 "LzInvitationMessage" = "Let's write a travel diary together!";
+
+
+// Map Category
+"MKPOICategoryAirport" = "Airport";
+"MKPOICategoryAmusementPark" = "Amusement  Park";
+"MKPOICategoryAquarium" = "Aquarium";
+"MKPOICategoryAtm" = "ATM";
+"MKPOICategoryBakery" = "Bakery";
+"MKPOICategoryBank" = "Bank";
+"MKPOICategoryBeach" = "Beach";
+"MKPOICategoryBrewery" = "Brewery";
+"MKPOICategoryCafe" = "Cafe";
+"MKPOICategoryCampground" = "Campground";
+"MKPOICategoryCarRental" = "Car Rental";
+"MKPOICategoryEvCharger" = "Ev Charger";
+"MKPOICategoryFireStation" = "Fire Station";
+"MKPOICategoryFitnessCenter" = "Fitness  Center";
+"MKPOICategoryFoodMarket" = "Food Market";
+"MKPOICategoryGasStation" = "GasStation";
+"MKPOICategoryHospital" = "Hospital";
+"MKPOICategoryHotel" = "Hotel";
+"MKPOICategoryLaundry" = "Laundry";
+"MKPOICategoryLibrary" = "Library";
+"MKPOICategoryMarina" = "Marina";
+"MKPOICategoryMovieTheater" = "Movie  Theater";
+"MKPOICategoryMuseum" = "Museum";
+"MKPOICategoryNationalPark" = "National  Park";
+"MKPOICategoryNightlife" = "Nightlife";
+"MKPOICategoryPark" = "Park";
+"MKPOICategoryParking" = "Parking";
+"MKPOICategoryPharmacy" = "Pharmacy";
+"MKPOICategoryPolice" = "Police";
+"MKPOICategoryPostOffice" = "Post Office";
+"MKPOICategoryPublicTransport" = "Public Transport";
+"MKPOICategoryRestaurant" = "Restaurant";
+"MKPOICategoryRestroom" = "Restroom";
+"MKPOICategorySchool" = "School";
+"MKPOICategoryStadium" = "Stadium";
+"MKPOICategoryStore" = "Store";
+"MKPOICategoryTheater" = "Theater";
+"MKPOICategoryUniversity" = "University";
+"MKPOICategoryWinery" = "Winery";
+"MKPOICategoryZoo" = "Zoo";

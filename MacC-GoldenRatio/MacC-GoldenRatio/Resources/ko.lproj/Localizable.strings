@@ -13,6 +13,7 @@
 
 
 // Common Components
+"LzIdentifier" = "ko";
 "LzConfirm" = "확인";
 "LzDone" = "완료";
 "LzCancel" = "취소";
@@ -45,6 +46,7 @@
 
 
 // DiaryConfigScene
+"LzDiaryConfigTitle" = "다이어리 %@";
 "LzDiaryConfigCreate" = "다이어리 추가를 취소하시겠습니까?";
 "LzDiaryConfigModify" = "변경사항은 저장되지 않습니다. 정말 취소하시겠습니까?";
 "LzDiaryConfigDiaryName" = "다이어리 이름 *";
@@ -62,7 +64,19 @@
 
 
 // Calendar
-
+"LzCalendarSelectDate" = "날짜를 선택하세요";
+"LzCalendarOneDay" = " 당일치기";
+"LzCalendarYear" = "년";
+"LzCalendarMonth" = "월";
+"LzCalendarDay" = "일";
+"LzCalendarSunday" = "일";
+"LzCalendarMonday" = "월";
+"LzCalendarTueday" = "화";
+"LzCalendarWednesday" = "수";
+"LzCalendarThursday" = "목";
+"LzCalendarFriday" = "금";
+"LzCalendarSaturday" = "토";
+"LzCalendarFrom" = "%@ 부터";
 
 
 // ThumbnailConfigScene

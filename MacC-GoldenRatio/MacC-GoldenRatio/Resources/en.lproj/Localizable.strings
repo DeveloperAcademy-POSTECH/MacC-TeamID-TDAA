@@ -13,9 +13,13 @@
 
 
 // Common Components
-"LzConfirm" = "Confirm";
+"LzIdentifier" = "en";
+"LzConfirm" = "OK";
 "LzDone" = "Done";
 "LzCancel" = "Cancel";
+"LzCreate" = "Create";
+"LzModify" = "Modify";
+"LzDiary" = "Diary";
 
 
 // CommonScene - Album
@@ -30,18 +34,50 @@
 "LzHomeTitleLabel" = "Diary";
 "LzHomeDateFilter" = "Date";
 "LzHomeNameFilter" = "Name";
-"LzHomeCreate" = "Create diary";
-"LzHomeJoin" = "Join with code";
+"LzHomeCreate" = " Create diary";
+"LzHomeJoin" = " Join with code";
 "LzHomeJoinAlertTitle" = "Invitation Code";
-"LzHomeJoinAlertMessage" = "받은 초대코드를 입력해주세요.";
-"LzHomeJoinAlertAdded" = "다이어리가 추가되었습니다.";
-"LzHomeJoinAlertWrong" = "초대코드가 잘못되었습니다.";
-"LzHomeOutAlertTitle" = "다이어리를 나가시겠습니까?";
-"LzHomeOutAlertMessage" = "다이어리를 나가면 공동편집을 할 수 없습니다.";
-"LzHomeOutAlertOut" = "다이어리 나가기";
+"LzHomeJoinAlertMessage" = "Please enter the invitation code you received.
+";
+"LzHomeJoinAlertAdded" = "The diary has been added.";
+"LzHomeJoinAlertWrong" = "Invalid invitation code.";
+"LzHomeOutAlertTitle" = "Would you like to leave the diary?";
+"LzHomeOutAlertMessage" = "If you leave the diary, you can't edit it together.";
+"LzHomeOutAlertOut" = "Leave the diary";
+
 
 // DiaryConfigScene
+"LzDiaryConfigTitle" = "%@ Diary";
+"LzDiaryConfigCreate" = "Are you sure you want to cancel adding a diary?";
+"LzDiaryConfigModify" = "Changes are not saved. Are you sure you want to cancel?";
+"LzDiaryConfigDiaryName" = "Diary name *";
+"LzDiaryConfigDiaryLocation" = "Destination *";
+"LzDiaryConfigDiaryDate" = "Date *";
+"LzDiaryConfigDiaryColor" = "Diary Color *";
+"LzDiaryConfigDiaryImage" = "Cover Image";
+"LzDiaryConfigIncomplete" = "Creation did not complete.";
+"LzDiaryConfigSetImage" = "Set cover image";
+"LzDiaryConfigAlbum" = "Select a picture from album";
+"LzDiaryConfigDefaultImage" = "Change to Default Image";
+"LzDiaryConfigNamePlaceholder" = "Enter a name for the diary.";
+"LzDiaryConfigLocationPlaceholder" = "Enter a location for the diary.";
+"LzDiaryConfigDatePlaceholder" = "Select the date of your trip.";
 
+
+// Calendar
+"LzCalendarSelectDate" = "Select the date";
+"LzCalendarOneDay" = " a Day-Trip";
+"LzCalendarYear" = "";
+"LzCalendarMonth" = "";
+"LzCalendarDay" = " Days";
+"LzCalendarSunday" = "SUN";
+"LzCalendarMonday" = "MON";
+"LzCalendarTueday" = "TUE";
+"LzCalendarWednesday" = "WED";
+"LzCalendarThursday" = "THU";
+"LzCalendarFriday" = "FRI";
+"LzCalendarSaturday" = "SAT";
+"LzCalendarFrom" = "From %@";
 
 // ThumbnailConfigScene
 

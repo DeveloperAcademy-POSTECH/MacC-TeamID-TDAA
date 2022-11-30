@@ -9,7 +9,7 @@ import UIKit
 
 class CalendarPickerFooterView: UIView {
     private var timeInterval: [Date] = []
-    var buttonLabel: String = "날짜를 선택하세요" {
+    var buttonLabel: String = "LzCalendarSelectDate".localized {
         didSet {
             self.selectButton.setTitle(buttonLabel, for: .normal)
         }
@@ -33,7 +33,7 @@ class CalendarPickerFooterView: UIView {
         self.selectButtonCompletionHanlder = selectButtonCompletionHanlder
         
         if timeInterval.isEmpty {
-            self.buttonLabel = "날짜를 선택하세요"
+            self.buttonLabel = "LzCalendarSelectDate".localized
         } else {
             let startDate = timeInterval[0]
             let endDate = timeInterval[1]

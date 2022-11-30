@@ -69,7 +69,7 @@ class DiaryConfigViewController: UIViewController {
     func bind(_ viewModel: DiaryConfigViewModel) {
         self.viewModel = viewModel
         
-        stateTitle.text = "LzDiary".localized +  " \(viewModel.configState.identifier)" // TODO: observer 연결
+        stateTitle.text = "LzDiaryConfigTitle".localizedFormat(" \(viewModel.configState.identifier)")
         
         viewModel.cellData
             .drive(diaryConfigCollectionView.rx.items) { collectionView, row, data in

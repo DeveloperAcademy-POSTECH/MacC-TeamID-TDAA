@@ -11,7 +11,6 @@ import SnapKit
 import UIKit
 
 class DiaryConfigCollectionViewCell: UICollectionViewCell {
-    private let device = UIScreen.getDevice()
     private let disposeBag = DisposeBag()
     
     override init(frame: CGRect) {
@@ -27,7 +26,7 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
     
     private lazy var contentTitle: UILabel = {
         let title = UILabel()
-        title.font = device.diaryConfigCellTitleFont
+        title.font = .body
         title.textColor = .black
         return title
     }()
@@ -43,7 +42,7 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
     
     lazy var contentButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.titleLabel?.font = device.diaryConfigCellContentFont
+        button.titleLabel?.font = .body
         button.contentHorizontalAlignment = .left
         return button
     }()
@@ -139,7 +138,7 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
             titleInputField.text = diaryName
             contentView.addSubview(titleInputField)
             titleInputField.snp.makeConstraints {
-                $0.leading.equalToSuperview().inset(device.diaryConfigCellLeftInset)
+                $0.leading.equalToSuperview().inset(Layout.diaryConfigCellLeftInset)
                 $0.trailing.equalToSuperview().inset(50)
                 $0.height.equalTo(44)
                 $0.bottom.equalToSuperview()
@@ -204,19 +203,19 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
         }
         
         contentTitle.snp.makeConstraints {
-            $0.leading.equalToSuperview().inset(device.diaryConfigCellLeftInset+4)
+            $0.leading.equalToSuperview().inset(Layout.diaryConfigCellLeftInset+4)
             $0.top.equalToSuperview().inset(20)
         }
         
         clearButton.snp.makeConstraints {
-            $0.trailing.equalToSuperview().inset(device.diaryConfigCellRightInset)
-            $0.bottom.equalToSuperview().inset(device.diaryConfigCellBottomInset)
+            $0.trailing.equalToSuperview().inset(Layout.diaryConfigCellRightInset)
+            $0.bottom.equalToSuperview().inset(Layout.diaryConfigCellBottomInset)
             $0.size.equalTo(CGSize(width: 17, height: 17))
         }
         
         dividerView.snp.makeConstraints {
             $0.bottom.equalToSuperview()
-            $0.leading.equalToSuperview().inset(device.diaryConfigCellLeftInset)
+            $0.leading.equalToSuperview().inset(Layout.diaryConfigCellLeftInset)
             $0.trailing.equalToSuperview()
             $0.height.equalTo(1)
         }

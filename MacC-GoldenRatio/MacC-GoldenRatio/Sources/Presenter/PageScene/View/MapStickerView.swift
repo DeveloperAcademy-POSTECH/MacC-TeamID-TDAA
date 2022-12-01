@@ -32,7 +32,7 @@ class MapStickerView: StickerView {
     private let locationNameLabel: UILabel = {
         let label = UILabel()
         label.textColor = .darkgrayColor
-        label.font = .labelTitleFont
+        label.font = .title4
         label.textAlignment = .left
         
         return label
@@ -41,7 +41,7 @@ class MapStickerView: StickerView {
     private let locationAddressLabel: UILabel = {
         let label = UILabel()
         label.textColor = .calendarWeeklyGrayColor
-        label.font = .labelSubTitleFont
+        label.font = .caption2
         label.textAlignment = .left
         
         return label

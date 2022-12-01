@@ -14,14 +14,13 @@ import CryptoKit
 
 class MyPageViewController: UIViewController {
     private var cancelBag = Set<AnyCancellable>()
-    private let myDevice = UIScreen.getDevice()
     private let viewModel = MyPageViewModel.shared
     private var currentNonce: String?
 
 	private lazy var titleLabel: UILabel = {
 		let label = UILabel()
 		label.text = "마이페이지"
-		label.font = myDevice.myAlbumPhotoPageLabelFont
+		label.font = .body
 		label.textColor = .black
 		
 		return label
@@ -56,7 +55,7 @@ class MyPageViewController: UIViewController {
         let label = UILabel()
         label.textColor = .black
         label.text = "닉네임"
-        label.font = .labelSubTitleFont2
+        label.font = .subheadline2
         
         return label
     }()
@@ -65,7 +64,7 @@ class MyPageViewController: UIViewController {
         let label = UILabel()
         label.textColor = .black
         label.text = "홀리 마운틴"
-        label.font = .labelTtitleFont2
+        label.font = .body
         
         return label
     }()
@@ -74,7 +73,7 @@ class MyPageViewController: UIViewController {
         let button = UIButton()
 
         let title = "프로필 설정"
-        let attributes = [NSAttributedString.Key.font:UIFont.labelSubTitleFont2]
+        let attributes = [NSAttributedString.Key.font:UIFont.subheadline2]
         let attributedString = NSAttributedString(string: title, attributes: attributes)
         let mutableAttributedString = NSMutableAttributedString(attributedString: attributedString)
         mutableAttributedString.addAttribute(.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: NSRange(location: 0, length: title.count))
@@ -89,7 +88,7 @@ class MyPageViewController: UIViewController {
         let label = UILabel()
         label.textColor = .black
         label.text = "가본 여행지"
-        label.font = .labelSubTitleFont2
+        label.font = .subheadline2
 
         return label
     }()
@@ -128,7 +127,7 @@ class MyPageViewController: UIViewController {
             self.configureNickName()
             self.configureProfileImage()
             self.configureTravelLocations()
-            self.profileImageView.layer.cornerRadius = self.myDevice.myPageProfileImageSize.width * 0.5
+            self.profileImageView.layer.cornerRadius = Layout.myPageProfileImageSize.width * 0.5
         }
     }
 	
@@ -155,38 +154,38 @@ class MyPageViewController: UIViewController {
 		}
 		
         profileImageView.snp.makeConstraints { make in
-            make.top.equalTo(lineView.snp.bottom).offset(myDevice.myPageVerticalSpacing4)
-            make.leading.equalTo(view.safeAreaLayoutGuide).offset(myDevice.myPageHorizontalPadding)
-            make.size.equalTo(myDevice.myPageProfileImageSize)
+            make.top.equalTo(lineView.snp.bottom).offset(Layout.myPageVerticalSpacing4)
+            make.leading.equalTo(view.safeAreaLayoutGuide).offset(Layout.myPageHorizontalPadding)
+            make.size.equalTo(Layout.myPageProfileImageSize)
         }
         nickNameTitleLabel.snp.makeConstraints { make in
-            make.leading.equalTo(profileImageView.snp.trailing).offset(myDevice.myPageHorizontalSpacing2)
+            make.leading.equalTo(profileImageView.snp.trailing).offset(Layout.myPageHorizontalSpacing2)
             make.top.equalTo(profileImageView.snp.top)
             make.bottom.equalTo(profileImageView.snp.centerY)
         }
         nickNameLabel.snp.makeConstraints { make in
-            make.leading.equalTo(profileImageView.snp.trailing).offset(myDevice.myPageHorizontalSpacing2)
+            make.leading.equalTo(profileImageView.snp.trailing).offset(Layout.myPageHorizontalSpacing2)
             make.top.equalTo(profileImageView.snp.centerY)
             make.bottom.equalTo(profileImageView.snp.bottom)
         }
         profileSettingButton.snp.makeConstraints { make in
-            make.top.equalTo(profileImageView.snp.bottom).offset(myDevice.myPageVerticalSpacing)
-            make.leading.equalTo(view.safeAreaLayoutGuide).offset(myDevice.myPageHorizontalPadding)
+            make.top.equalTo(profileImageView.snp.bottom).offset(Layout.myPageVerticalSpacing)
+            make.leading.equalTo(view.safeAreaLayoutGuide).offset(Layout.myPageHorizontalPadding)
 
         }
         travelsTitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(profileSettingButton.snp.bottom).offset(myDevice.myPageVerticalSpacing3)
-            make.leading.equalTo(view.safeAreaLayoutGuide).offset(myDevice.myPageHorizontalPadding)
+            make.top.equalTo(profileSettingButton.snp.bottom).offset(Layout.myPageVerticalSpacing3)
+            make.leading.equalTo(view.safeAreaLayoutGuide).offset(Layout.myPageHorizontalPadding)
         }
         travelsCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(travelsTitleLabel.snp.bottom).offset(myDevice.myPageVerticalSpacing2)
-            make.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(myDevice.myPageHorizontalPadding)
-            make.bottom.equalTo(menuTableView.snp.top).offset(-myDevice.myPageVerticalSpacing2)
+            make.top.equalTo(travelsTitleLabel.snp.bottom).offset(Layout.myPageVerticalSpacing2)
+            make.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(Layout.myPageHorizontalPadding)
+            make.bottom.equalTo(menuTableView.snp.top).offset(-Layout.myPageVerticalSpacing2)
         }
         menuTableView.snp.makeConstraints { make in
             make.horizontalEdges.equalTo(view.safeAreaLayoutGuide)
             make.bottom.equalTo(view.safeAreaLayoutGuide)
-            make.height.equalTo(myDevice.myPageMenuTableViewHeight)
+            make.height.equalTo(Layout.myPageMenuTableViewHeight)
         }
     }
     

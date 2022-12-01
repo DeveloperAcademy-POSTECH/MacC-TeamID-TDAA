@@ -11,7 +11,7 @@ import UIKit
 class ImageStickerView: StickerView {
     
     private let imageView: UIImageView = {
-        let imageView = UIImageView(frame: CGRect(origin: .zero, size: UIScreen.getDevice().stickerDefaultSize))
+        let imageView = UIImageView(frame: CGRect(origin: .zero, size: Layout.stickerDefaultSize))
         imageView.contentMode = .scaleAspectFit
         
         return imageView

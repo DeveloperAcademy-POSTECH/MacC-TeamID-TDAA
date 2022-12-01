@@ -13,7 +13,6 @@ import UIKit
 
 class SignInViewController: UIViewController {
 
-    private let device: UIScreen.DeviceSize = UIScreen.getDevice()
     private var currentNonce: String?
     var completion: () -> Void = {}
     
@@ -47,9 +46,9 @@ class SignInViewController: UIViewController {
         button.backgroundColor = .black
         button.tintColor = .white
         button.setImage(UIImage(systemName: "applelogo"), for: .normal)
-        button.setPreferredSymbolConfiguration(.init(pointSize: device.logInButtonImagePointSize),forImageIn: .normal)
+        button.setPreferredSymbolConfiguration(.init(pointSize: Layout.logInButtonImagePointSize),forImageIn: .normal)
         button.setTitle("  Apple로 로그인", for: .normal)
-        button.titleLabel?.font = device.loginButtonFont
+        button.titleLabel?.font = .body
         button.addTarget(self, action: #selector(appleLoginButtonPressed), for: .touchUpInside)
         button.layer.cornerRadius = 4
         return button
@@ -138,9 +137,9 @@ class SignInViewController: UIViewController {
         }
         
         appleLoginButton.snp.makeConstraints {
-            $0.size.equalTo(device.logInButtonSize)
+            $0.size.equalTo(Layout.logInButtonSize)
             $0.centerX.equalToSuperview()
-            $0.bottom.equalToSuperview().inset(device.logInButtonBottomInset)
+            $0.bottom.equalToSuperview().inset(Layout.logInButtonBottomInset)
         }
     }
 }

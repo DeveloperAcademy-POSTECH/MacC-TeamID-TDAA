@@ -15,8 +15,6 @@ class PageViewModeViewController: UIViewController {
     
     private var pageViewModeViewModel: PageViewModeViewModel!
     
-    private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
-    
     private var source: RxCollectionViewSectionedReloadDataSource<PageSection>!
 
     private var completion: ((Diary) -> Void)!
@@ -40,7 +38,7 @@ class PageViewModeViewController: UIViewController {
         label.backgroundColor = UIColor.stickerBackgroundColor
         label.textColor = .white
         label.textAlignment = .center
-        label.font = .navigationTitleFont
+        label.font = .body
         label.layer.cornerRadius = 12.5
         label.clipsToBounds = true
         
@@ -91,7 +89,7 @@ class PageViewModeViewController: UIViewController {
         }
         
         self.pageDescriptionLabel.snp.makeConstraints { make in
-            make.trailing.top.equalTo(view.safeAreaLayoutGuide).inset(self.myDevice.pagePadding)
+            make.trailing.top.equalTo(view.safeAreaLayoutGuide).inset(Layout.pagePadding)
             make.width.equalTo(47)
             make.height.equalTo(25)
         }
@@ -113,9 +111,9 @@ class PageViewModeViewController: UIViewController {
         let rightBarButtonItem = UIBarButtonItem(image: rightBarButtonImage, style: .plain, target: self, action: #selector(onTapNavigationMenu))
         rightBarButtonItem.tintColor = .black
         
-        leftBarButtonItem.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.navigationTitleFont, NSAttributedString.Key.foregroundColor:UIColor.navigationbarColor], for: .normal)
+        leftBarButtonItem.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.body, NSAttributedString.Key.foregroundColor:UIColor.navigationbarColor], for: .normal)
         
-        rightBarButtonItem.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.navigationTitleFont, NSAttributedString.Key.foregroundColor:UIColor.navigationbarColor], for: .normal)
+        rightBarButtonItem.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.body, NSAttributedString.Key.foregroundColor:UIColor.navigationbarColor], for: .normal)
         
         self.navigationItem.setLeftBarButton(leftBarButtonItem, animated: false)
         self.navigationItem.setRightBarButton(rightBarButtonItem, animated: false)
@@ -123,7 +121,7 @@ class PageViewModeViewController: UIViewController {
         self.navigationController?.navigationBar.barTintColor = UIColor.appBackgroundColor
         self.navigationController?.navigationBar.layer.addBorder([.bottom], color: UIColor.separatorColor, width: 1)
         
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.navigationTitleFont, NSAttributedString.Key.foregroundColor:UIColor.black]
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.body, NSAttributedString.Key.foregroundColor:UIColor.black]
         
         self.pageViewModeViewModel.selectedPageIndexSubject
             .observe(on: MainScheduler.instance)

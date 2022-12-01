@@ -82,6 +82,7 @@
 		CCE1806F28E5919B00AF06DB /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE1806E28E5919B00AF06DB /* SignInViewController.swift */; };
 		CCE5BE18291E425700D2DC8F /* NSMutableAttributedString+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE5BE17291E425700D2DC8F /* NSMutableAttributedString+.swift */; };
 		CCE5BE1A291E429F00D2DC8F /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE5BE19291E429F00D2DC8F /* UIImage+.swift */; };
+		E20322022937398D00218F15 /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20322012937398D00218F15 /* Layout.swift */; };
 		E21342D928F6B0660048D9CF /* FirebaseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21342D828F6B0660048D9CF /* FirebaseClient.swift */; };
 		E21342DB28F6B0800048D9CF /* EF_Diary.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E21342DA28F6B07F0048D9CF /* EF_Diary.ttf */; };
 		E21342DD28F6B2740048D9CF /* HalfModalPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21342DC28F6B2740048D9CF /* HalfModalPresentationController.swift */; };
@@ -250,6 +251,7 @@
 		CCE1806E28E5919B00AF06DB /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		CCE5BE17291E425700D2DC8F /* NSMutableAttributedString+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSMutableAttributedString+.swift"; sourceTree = "<group>"; };
 		CCE5BE19291E429F00D2DC8F /* UIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
+		E20322012937398D00218F15 /* Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Layout.swift; sourceTree = "<group>"; };
 		E21342D828F6B0660048D9CF /* FirebaseClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseClient.swift; sourceTree = "<group>"; };
 		E21342DA28F6B07F0048D9CF /* EF_Diary.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = EF_Diary.ttf; sourceTree = "<group>"; };
 		E21342DC28F6B2740048D9CF /* HalfModalPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HalfModalPresentationController.swift; sourceTree = "<group>"; };
@@ -543,6 +545,7 @@
 				E2FA41A228F48C1B00BBA354 /* DiaryCell.swift */,
 				E21342E228F6B6BC0048D9CF /* MapData.swift */,
 				CC6C7F22291D2A6300B88888 /* DiaryDayModel.swift */,
+				E20322012937398D00218F15 /* Layout.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1089,6 +1092,7 @@
 				CC6C7F23291D2A6300B88888 /* DiaryDayModel.swift in Sources */,
 				E21342E328F6B6BC0048D9CF /* MapData.swift in Sources */,
 				0AAB2ACD28EAFD78009FBD96 /* MapSearchViewController.swift in Sources */,
+				E20322022937398D00218F15 /* Layout.swift in Sources */,
 				0A6230CD29290492008CC131 /* PageSection.swift in Sources */,
 				0A5E904528E8578400B381B8 /* PageEditModeViewController.swift in Sources */,
 				E2FA41A328F48C1B00BBA354 /* DiaryCell.swift in Sources */,

@@ -13,7 +13,6 @@ class MapView: UIView, MKMapViewDelegate, CLLocationManagerDelegate {
 	private let disposeBag = DisposeBag()
 	private let map = MKMapView()
 	private let mapModel = MapModel()
-	private let myDevice = UIScreen.getDevice()
 	private let locationManager = CLLocationManager()
 	private var selectedLocation: Location?
 	

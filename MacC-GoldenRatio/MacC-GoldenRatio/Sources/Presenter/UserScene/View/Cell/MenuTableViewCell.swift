@@ -10,7 +10,7 @@ import UIKit
 class MenuTableViewCell: UITableViewCell {
     private let menuLabel: UILabel = {
         let label = UILabel()
-        label.font = .labelTtitleFont2
+        label.font = .body
         label.textColor = .black
         
         return label
@@ -18,7 +18,7 @@ class MenuTableViewCell: UITableViewCell {
     
     private let subTitleLabel: UILabel = {
         let label = UILabel()
-        label.font = .labelSubTitleFont2
+        label.font = .subheadline2
         label.textColor = .buttonColor
 
         return label

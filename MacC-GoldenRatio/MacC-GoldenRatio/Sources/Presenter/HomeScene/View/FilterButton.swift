@@ -10,7 +10,7 @@ import UIKit
 final class FilterButton: UIButton {
 	override init(frame: CGRect) {
 		super.init(frame: frame)
-		self.titleLabel?.font = .homeFilterButtonTitleFont
+		self.titleLabel?.font = .caption1
 		self.layer.borderColor = UIColor.sandbrownColor.cgColor
 		self.layer.borderWidth = 1
 		self.layer.cornerRadius = 13

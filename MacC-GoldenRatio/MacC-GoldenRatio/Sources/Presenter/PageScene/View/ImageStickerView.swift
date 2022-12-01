@@ -68,7 +68,6 @@ class ImageStickerView: StickerView {
                 
                 guard imageUrl.verifyUrl() else {
                     self.removeFromSuperview()
-                    print("wrongURL")
                     return
                 }
                 
@@ -96,14 +95,17 @@ class ImageStickerView: StickerView {
     }
     
     private func upLoadImage(image: UIImage, path: String) {
-        FirebaseStorageManager.uploadImage(image: image, pathRoot: path) { url in
-            DispatchQueue.main.async {
-                self.imageView.image = image
-            }
-            guard let url = url else { return }
-            ImageManager.shared.cacheImage(urlString: url.absoluteString, image: image)
+        DispatchQueue.main.async {
+            self.imageView.image = image
+        }
+        
+        DispatchQueue.global().async {
+            FirebaseStorageManager.uploadImage(image: image, pathRoot: path) { url in
+                guard let url = url else { return }
+                ImageManager.shared.cacheImage(urlString: url.absoluteString, image: image)
 
-            self.stickerViewData?.updateContents(contents: [url.absoluteString])
+                self.stickerViewData?.updateContents(contents: [url.absoluteString])
+            }
         }
     }
 

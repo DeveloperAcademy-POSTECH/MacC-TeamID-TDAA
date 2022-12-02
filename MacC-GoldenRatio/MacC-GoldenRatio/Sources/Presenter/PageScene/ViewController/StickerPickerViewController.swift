@@ -9,7 +9,6 @@ import SnapKit
 import UIKit
 class StickerPickerViewController: UIViewController {
     var completion: (_ sticker: String) -> Void = { sticker in }
-    private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
     private let stickerArray: [String] = ["manLong", "manLong2", "womanLong", "womanLong2", "manShort", "womanShort", "neckPillow", "fork", "knife", "camera", "plate", "passport", "broom", "ghost1", "ghost2", "ghost3", "ghost4", "ghost5", "ghost6", "ghost7", "pot", "pumpkin1", "pumpkin2", "pumpkin3", "wizardHat"]
     
     private lazy var xMarkButton: UIButton = {
@@ -60,20 +59,20 @@ class StickerPickerViewController: UIViewController {
     
     private func configureConstraints() {
         xMarkButton.snp.makeConstraints { make in
-            make.trailing.top.equalToSuperview().inset(myDevice.stickerPickerPadding)
-            make.size.equalTo(myDevice.stickerPickerButtonFrameSize)
+            make.trailing.top.equalToSuperview().inset(Layout.stickerPickerPadding)
+            make.size.equalTo(Layout.stickerPickerButtonFrameSize)
         }
         
         stickerPickerCollectionView.snp.makeConstraints { make in
             make.top.equalTo(xMarkButton.snp.bottom)
-            make.leading.trailing.bottom.equalToSuperview().inset(myDevice.stickerPickerPadding)
+            make.leading.trailing.bottom.equalToSuperview().inset(Layout.stickerPickerPadding)
         }
     }
     
     private func configureButtonSize() {
         [xMarkButton].forEach{
             
-            let imageConfig = UIImage.SymbolConfiguration(pointSize: myDevice.stickerPickerButtonPointSize)
+            let imageConfig = UIImage.SymbolConfiguration(pointSize: Layout.stickerPickerButtonPointSize)
             if #available(iOS 15.0, *) {
                 var config = UIButton.Configuration.plain()
                 config.preferredSymbolConfigurationForImage = imageConfig

@@ -9,7 +9,6 @@ import SnapKit
 import UIKit
 
 class MyAlbumCollectionViewCell: UICollectionViewCell {
-	private let myDevice = UIScreen.getDevice()
 	lazy var imageView: UIImageView = {
 		let imageView =  UIImageView()
         imageView.contentMode = .scaleAspectFill

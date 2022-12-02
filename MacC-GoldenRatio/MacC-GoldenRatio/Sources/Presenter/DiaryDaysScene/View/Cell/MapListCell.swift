@@ -8,7 +8,6 @@ import SnapKit
 import UIKit
 
 class MapListCell: UICollectionViewCell {
-	private let myDevice = UIScreen.getDevice()
 	private lazy var titleLabel: UILabel = {
 		let label =  UILabel()
 		label.font = UIFont(name: "EF_Diary", size: 22)

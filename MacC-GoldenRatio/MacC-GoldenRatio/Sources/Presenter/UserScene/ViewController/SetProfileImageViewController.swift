@@ -10,7 +10,6 @@ import UIKit
 
 class SetProfileImageViewController: UIViewController {
     private var cancelBag = Set<AnyCancellable>()
-    private let myDevice = UIScreen.getDevice()
     private let viewModel = MyPageViewModel.shared
     private let imagePicker = UIImagePickerController()
     private var isUserSelectedNewProfileImage: Bool = false
@@ -19,7 +18,7 @@ class SetProfileImageViewController: UIViewController {
         let label = UILabel()
         label.textColor = .darkgrayColor
         label.text = "LzUserTitle".localized
-        label.font = .tabTitleFont
+        label.font = .title1
         
         return label
     }()
@@ -47,14 +46,14 @@ class SetProfileImageViewController: UIViewController {
         let label = UILabel()
         label.textColor = .black
         label.text = "LzUserNickName".localized
-        label.font = .labelTitleFont
+        label.font = .title4
         
         return label
     }()
     
     private lazy var nickNameTextField: UITextField = {
         let textField = UITextField()
-        textField.font = .labelTtitleFont2
+        textField.font = .body
         textField.textColor = .calendarWeeklyGrayColor
         textField.setUnderLine(width: 1)
         textField.tintColor = .calendarWeeklyGrayColor
@@ -99,8 +98,8 @@ class SetProfileImageViewController: UIViewController {
             self.view.addGestureRecognizer(tap)
             self.navigationController?.isNavigationBarHidden = true
             self.view.backgroundColor = UIColor.appBackgroundColor
-            self.profileImageView.layer.cornerRadius = self.myDevice.setProfileProfileImageSize.width * 0.5
-            self.profileCameraButton.layer.cornerRadius = self.myDevice.setProfileProfileImageSize.width * 0.28 * 0.5
+            self.profileImageView.layer.cornerRadius = Layout.setProfileProfileImageSize.width * 0.5
+            self.profileCameraButton.layer.cornerRadius = Layout.setProfileProfileImageSize.width * 0.28 * 0.5
             self.configureImagePicker()
             self.configureViews()
             self.configureUserData()
@@ -113,13 +112,13 @@ class SetProfileImageViewController: UIViewController {
             view.addSubview($0)
         }
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(myDevice.myPageVerticalPadding2)
-            make.leading.equalTo(view.safeAreaLayoutGuide).offset(myDevice.myPageHorizontalPadding)
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(Layout.myPageVerticalPadding2)
+            make.leading.equalTo(view.safeAreaLayoutGuide).offset(Layout.myPageHorizontalPadding)
         }
         profileImageView.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(myDevice.myPageVerticalSpacing)
+            make.top.equalTo(titleLabel.snp.bottom).offset(Layout.myPageVerticalSpacing)
             make.centerX.equalToSuperview()
-            make.size.equalTo(myDevice.setProfileProfileImageSize)
+            make.size.equalTo(Layout.setProfileProfileImageSize)
         }
         profileCameraButton.snp.makeConstraints { make in
             make.trailing.equalTo(profileImageView)
@@ -127,22 +126,22 @@ class SetProfileImageViewController: UIViewController {
             make.size.equalTo(profileImageView.snp.size).multipliedBy(0.28)
         }
         nickNameTitleLabel.snp.makeConstraints { make in
-            make.leading.equalTo(view.safeAreaLayoutGuide).offset(myDevice.myPageHorizontalPadding)
-            make.top.equalTo(profileImageView.snp.bottom).offset(myDevice.myPageVerticalSpacing3)
+            make.leading.equalTo(view.safeAreaLayoutGuide).offset(Layout.myPageHorizontalPadding)
+            make.top.equalTo(profileImageView.snp.bottom).offset(Layout.myPageVerticalSpacing3)
         }
         nickNameTextField.snp.makeConstraints { make in
-            make.horizontalEdges.equalToSuperview().inset(myDevice.myPageHorizontalPadding)
-            make.top.equalTo(nickNameTitleLabel.snp.bottom).offset(myDevice.myPageVerticalSpacing)
+            make.horizontalEdges.equalToSuperview().inset(Layout.myPageHorizontalPadding)
+            make.top.equalTo(nickNameTitleLabel.snp.bottom).offset(Layout.myPageVerticalSpacing)
         }
         confirmButton.snp.makeConstraints { make in
-            make.horizontalEdges.equalToSuperview().inset(myDevice.myPageHorizontalPadding2)
-            make.height.equalTo(myDevice.myPageButtonHeight)
-            make.bottom.equalTo(cancelButton.snp.top).offset(-myDevice.myPageVerticalSpacing)
+            make.horizontalEdges.equalToSuperview().inset(Layout.myPageHorizontalPadding2)
+            make.height.equalTo(Layout.myPageButtonHeight)
+            make.bottom.equalTo(cancelButton.snp.top).offset(-Layout.myPageVerticalSpacing)
         }
         cancelButton.snp.makeConstraints { make in
-            make.horizontalEdges.equalToSuperview().inset(myDevice.myPageHorizontalPadding2)
-            make.height.equalTo(myDevice.myPageButtonHeight)
-            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(myDevice.myPageVerticalSpacing4)
+            make.horizontalEdges.equalToSuperview().inset(Layout.myPageHorizontalPadding2)
+            make.height.equalTo(Layout.myPageButtonHeight)
+            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(Layout.myPageVerticalSpacing4)
         }
     }
     

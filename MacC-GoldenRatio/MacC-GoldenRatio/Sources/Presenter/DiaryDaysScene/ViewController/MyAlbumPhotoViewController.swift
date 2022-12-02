@@ -12,7 +12,6 @@ import UIKit
 
 final class MyAlbumPhotoViewController: UIViewController {
 	private let disposeBag = DisposeBag()
-	private let myDevice = UIScreen.getDevice()
 	let totalCount: Int
 	
 	private var previousOffset: CGFloat = 0
@@ -39,7 +38,7 @@ final class MyAlbumPhotoViewController: UIViewController {
 	
 	private lazy var titleLabel: UILabel = {
 		let label = UILabel()
-		label.font = myDevice.myAlbumPhotoPageLabelFont
+		label.font = .body
 		label.textColor = .black
 		
 		return label

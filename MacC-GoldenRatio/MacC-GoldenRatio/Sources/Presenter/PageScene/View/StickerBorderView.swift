@@ -10,7 +10,6 @@ import UIKit
 
 /// StickerView의 테두리를 나타내는 사각형 뷰
 class StickerBorderView: UIView {
-    private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
     private let disposeBag = DisposeBag()
     
     init(frame: CGRect, isStickerViewActive: Observable<Bool>) {
@@ -32,7 +31,7 @@ class StickerBorderView: UIView {
     
     private func setupView() {
         backgroundColor = UIColor.clear
-        layer.borderWidth = myDevice.stickerBorderWidth
+        layer.borderWidth = Layout.stickerBorderWidth
         layer.borderColor = UIColor.buttonColor.cgColor
     }
 

@@ -9,7 +9,6 @@ import SnapKit
 import UIKit
 
 class CalendarPickerHeaderView: UIView {
-    private let device = UIScreen.getDevice()
     
     lazy var monthLabel: UILabel = {
         let label = UILabel()

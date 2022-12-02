@@ -12,7 +12,6 @@ import UIKit
 
 final class MyHomeViewController: UIViewController, UIGestureRecognizerDelegate {
 	private let disposeBag = DisposeBag()
-	private let myDevice = UIScreen.getDevice()
     let viewModel = MyHomeViewModel()
 	
 	private var currentLongPressedCell: DiaryCollectionViewCell?
@@ -73,7 +72,7 @@ final class MyHomeViewController: UIViewController, UIGestureRecognizerDelegate 
 		
 		addDiaryButton.setupViews(UIImage(named: "plusButton"))
 		addDiaryButton.snp.makeConstraints {
-			$0.trailing.equalTo(view.safeAreaLayoutGuide).inset(myDevice.MyDiariesViewAddDiaryButtonPadding)
+			$0.trailing.equalTo(view.safeAreaLayoutGuide).inset(Layout.addDiaryButtonPadding)
 			$0.bottom.equalTo(view.safeAreaLayoutGuide).inset(40)
 		}
 		

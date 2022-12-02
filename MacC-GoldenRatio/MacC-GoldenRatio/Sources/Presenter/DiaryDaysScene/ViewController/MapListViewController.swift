@@ -11,7 +11,6 @@ import UIKit
 
 class MapListViewController: UIViewController {
 	private let disposeBag = DisposeBag()
-	private let myDevice = UIScreen.getDevice()
 	
 	private lazy var mapListView = MapListView()
 	

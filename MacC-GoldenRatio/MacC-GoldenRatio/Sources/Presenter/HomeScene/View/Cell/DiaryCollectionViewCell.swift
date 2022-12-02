@@ -12,25 +12,24 @@ import UIKit
 
 class DiaryCollectionViewCell: UICollectionViewCell {
 	private let disposeBag = DisposeBag()
-	private let myDevice = UIScreen.getDevice()
 	private var isAnimate: Bool = true
 	private lazy var titleLabel: UILabel = {
 		let label = UILabel()
-		label.font = UIFont.diaryTitleLabelFont
+		label.font = UIFont.title4
 		label.textColor = UIColor.darkgrayColor
 		return label
 	}()
 	
 	private lazy var dateLabel: UILabel = {
 		let label = UILabel()
-		label.font = UIFont.diaryDateLabelFont
+		label.font = UIFont.caption3
 		label.textColor = UIColor.darkgrayColor
 		return label
 	}()
 	
 	private lazy var addressLabel: UILabel = {
 		let label = UILabel()
-		label.font = UIFont.diaryAddressLabelFont
+		label.font = UIFont.caption4
 		label.textColor = UIColor.darkgrayColor
 		return label
 	}()
@@ -87,7 +86,7 @@ class DiaryCollectionViewCell: UICollectionViewCell {
 		
 		titleLabel.text = cellData.diaryName
 		titleLabel.snp.makeConstraints {
-			$0.top.equalToSuperview().inset(myDevice.diaryCollectionViewCellTitleLabelTop)
+			$0.top.equalToSuperview().inset(Layout.diaryCollectionViewCellTitleLabelTop)
 			$0.leading.trailing.equalToSuperview().inset(30)
 		}
 		

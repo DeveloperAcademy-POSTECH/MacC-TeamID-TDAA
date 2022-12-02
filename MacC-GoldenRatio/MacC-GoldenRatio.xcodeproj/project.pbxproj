@@ -83,6 +83,7 @@
 		CCE1806F28E5919B00AF06DB /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE1806E28E5919B00AF06DB /* SignInViewController.swift */; };
 		CCE5BE18291E425700D2DC8F /* NSMutableAttributedString+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE5BE17291E425700D2DC8F /* NSMutableAttributedString+.swift */; };
 		CCE5BE1A291E429F00D2DC8F /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE5BE19291E429F00D2DC8F /* UIImage+.swift */; };
+		E20322022937398D00218F15 /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20322012937398D00218F15 /* Layout.swift */; };
 		E21342D928F6B0660048D9CF /* FirebaseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21342D828F6B0660048D9CF /* FirebaseClient.swift */; };
 		E21342DB28F6B0800048D9CF /* EF_Diary.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E21342DA28F6B07F0048D9CF /* EF_Diary.ttf */; };
 		E21342DD28F6B2740048D9CF /* HalfModalPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21342DC28F6B2740048D9CF /* HalfModalPresentationController.swift */; };
@@ -95,7 +96,6 @@
 		E27469AB29199DAD00BC906A /* PhotoCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27469AA29199DAD00BC906A /* PhotoCollectionView.swift */; };
 		E276B91C28E46AE900163833 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E276B91B28E46AE900163833 /* User.swift */; };
 		E276B91E28E46B3700163833 /* DiaryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E276B91D28E46B3700163833 /* DiaryModel.swift */; };
-		E276B92028E4812E00163833 /* UIScreen+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E276B91F28E4812E00163833 /* UIScreen+.swift */; };
 		E2838BE4291E38250013DD82 /* MapListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2838BE3291E38250013DD82 /* MapListCell.swift */; };
 		E2838BE6291E38EE0013DD82 /* MapModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2838BE5291E38EE0013DD82 /* MapModel.swift */; };
 		E2838BE8291E3A4C0013DD82 /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2838BE7291E3A4C0013DD82 /* MapViewModel.swift */; };
@@ -254,6 +254,7 @@
 		CCE1806E28E5919B00AF06DB /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		CCE5BE17291E425700D2DC8F /* NSMutableAttributedString+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSMutableAttributedString+.swift"; sourceTree = "<group>"; };
 		CCE5BE19291E429F00D2DC8F /* UIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
+		E20322012937398D00218F15 /* Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Layout.swift; sourceTree = "<group>"; };
 		E21342D828F6B0660048D9CF /* FirebaseClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseClient.swift; sourceTree = "<group>"; };
 		E21342DA28F6B07F0048D9CF /* EF_Diary.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = EF_Diary.ttf; sourceTree = "<group>"; };
 		E21342DC28F6B2740048D9CF /* HalfModalPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HalfModalPresentationController.swift; sourceTree = "<group>"; };
@@ -265,7 +266,6 @@
 		E27469AA29199DAD00BC906A /* PhotoCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollectionView.swift; sourceTree = "<group>"; };
 		E276B91B28E46AE900163833 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		E276B91D28E46B3700163833 /* DiaryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryModel.swift; sourceTree = "<group>"; };
-		E276B91F28E4812E00163833 /* UIScreen+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+.swift"; sourceTree = "<group>"; };
 		E2838BE3291E38250013DD82 /* MapListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapListCell.swift; sourceTree = "<group>"; };
 		E2838BE5291E38EE0013DD82 /* MapModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapModel.swift; sourceTree = "<group>"; };
 		E2838BE7291E3A4C0013DD82 /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
@@ -547,6 +547,7 @@
 				E2FA41A228F48C1B00BBA354 /* DiaryCell.swift */,
 				E21342E228F6B6BC0048D9CF /* MapData.swift */,
 				CC6C7F22291D2A6300B88888 /* DiaryDayModel.swift */,
+				E20322012937398D00218F15 /* Layout.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -578,7 +579,6 @@
 		0AFD1F96292B755C007A242B /* UIKit */ = {
 			isa = PBXGroup;
 			children = (
-				E276B91F28E4812E00163833 /* UIScreen+.swift */,
 				0AAB2AD228EB14A8009FBD96 /* UIView+.swift */,
 				CCE5BE19291E429F00D2DC8F /* UIImage+.swift */,
 				E2FA41A428F496D100BBA354 /* UIImageView+.swift */,
@@ -1096,6 +1096,7 @@
 				CC6C7F23291D2A6300B88888 /* DiaryDayModel.swift in Sources */,
 				E21342E328F6B6BC0048D9CF /* MapData.swift in Sources */,
 				0AAB2ACD28EAFD78009FBD96 /* MapSearchViewController.swift in Sources */,
+				E20322022937398D00218F15 /* Layout.swift in Sources */,
 				0A6230CD29290492008CC131 /* PageSection.swift in Sources */,
 				0A5E904528E8578400B381B8 /* PageEditModeViewController.swift in Sources */,
 				E2FA41A328F48C1B00BBA354 /* DiaryCell.swift in Sources */,
@@ -1114,7 +1115,6 @@
 				CCE5BE1A291E429F00D2DC8F /* UIImage+.swift in Sources */,
 				E26F0DB22916B33900B040C9 /* CollectionEmptyView.swift in Sources */,
 				0A1C3FE3291E9C2D009A8C31 /* PageCollectionViewHeaderCell.swift in Sources */,
-				E276B92028E4812E00163833 /* UIScreen+.swift in Sources */,
 				CC40BC1F28EEB10800DF48E1 /* CalendarPickerViewController.swift in Sources */,
 				0A3ED14828FBE6EB000D55D8 /* MyPageViewController.swift in Sources */,
 				CCACFE66292F5A380038D792 /* ThumbnailPreviewViewModel.swift in Sources */,

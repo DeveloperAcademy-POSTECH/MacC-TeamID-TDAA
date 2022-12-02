@@ -96,4 +96,24 @@ extension UIColor {
         let color = UIColor(named: "separatorColor")!
         return color
     }
+	
+	static var calendarTermColor: UIColor {
+		let color = UIColor(named: "calendarTermColor") ?? .systemGray5
+		return color
+	}
+	
+	static var numberLabelColor: UIColor {
+		let color = UIColor(named: "calendarTextColor") ?? .black
+		return color
+	}
+	
+	static var numberSubLabelColor: UIColor {
+		let color = UIColor(named: "calendarSubTextColor") ?? .systemGray3
+		return color
+	}
+	
+	static var calendarButtonColor: UIColor {
+		let color = UIColor(named: "calendarCheckColor") ?? .systemGray
+		return color
+	}
 }

@@ -14,7 +14,6 @@ import UIKit
 
 class DiaryConfigViewController: UIViewController {
     private var disposeBag = DisposeBag()
-    private let device: UIScreen.DeviceSize = UIScreen.getDevice()
     private var dateInterval: [Date] = []
     private let imagePickerManager = YPImagePickerManager(pickerType: .coverWithCrop)
     var viewModel = DiaryConfigViewModel(diary: nil)
@@ -44,22 +43,22 @@ class DiaryConfigViewController: UIViewController {
     private lazy var stateTitle: UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.font = device.diaryConfigTitleFont
+        label.font = .body
         return label
     }()
     
     private lazy var cancelButton: UIButton = {
         let button = UIButton(type: .system)
+        button.titleLabel?.font = .body
         button.setTitle("LzCancel".localized, for: .normal)
-        button.titleLabel?.font = device.diaryConfigButtonFont
         button.tintColor = .navigationbarColor
         return button
     }()
     
     private lazy var doneButton: UIButton = {
         let button = UIButton(type: .system)
+        button.titleLabel?.font = .body
         button.setTitle("LzDone".localized, for: .normal)
-        button.titleLabel?.font = device.diaryConfigButtonFont
         button.tintColor = .navigationbarColor
         return button
     }()
@@ -172,13 +171,13 @@ class DiaryConfigViewController: UIViewController {
         }
         
         cancelButton.snp.makeConstraints {
-            $0.left.equalToSuperview().inset(device.diaryConfigCancelButtonLeftInset)
+            $0.left.equalToSuperview().inset(Layout.diaryConfigCancelButtonLeftInset)
             $0.height.equalTo(stateTitle)
             $0.top.equalTo(stateTitle)
         }
         
         doneButton.snp.makeConstraints {
-            $0.right.equalToSuperview().inset(device.diaryConfigDoneButtonRightInset)
+            $0.right.equalToSuperview().inset(Layout.diaryConfigDoneButtonRightInset)
             $0.height.equalTo(stateTitle)
             $0.top.equalTo(stateTitle)
         }

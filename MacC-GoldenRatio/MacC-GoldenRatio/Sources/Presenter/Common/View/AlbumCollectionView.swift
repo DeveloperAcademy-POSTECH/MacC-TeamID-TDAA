@@ -11,7 +11,6 @@ import UIKit
 
 class AlbumCollectionView: UICollectionView {
 	private let disposeBag = DisposeBag()
-	private let myDevice = UIScreen.getDevice()
 	
 	override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
 		let layout = UICollectionViewFlowLayout()

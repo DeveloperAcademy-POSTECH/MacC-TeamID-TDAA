@@ -9,7 +9,6 @@ import SnapKit
 import UIKit
 
 class CalendarPickerViewController: UIViewController {
-    private let device: UIScreen.DeviceSize = UIScreen.getDevice()
     var dateInterval: [Date]
     
     // MARK: Views
@@ -167,27 +166,27 @@ class CalendarPickerViewController: UIViewController {
         }
         
         collectionView.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview().inset(device.calendarCollectionViewInset)
+            $0.leading.trailing.equalToSuperview().inset(Layout.calendarCollectionViewInset)
             $0.centerY.equalToSuperview()
-            $0.height.equalToSuperview().multipliedBy(device.calendarCollectionViewMultiplier)
+            $0.height.equalToSuperview().multipliedBy(Layout.calendarCollectionViewMultiplier)
         }
         
         headerView.snp.makeConstraints {
             $0.leading.trailing.equalTo(collectionView)
             $0.bottom.equalTo(collectionView.snp.top)
-            $0.height.equalTo(device.calendarHeaderHeight)
+            $0.height.equalTo(Layout.calendarHeaderHeight)
         }
         
         footerView.snp.makeConstraints {
             $0.leading.trailing.equalTo(collectionView)
             $0.top.equalTo(collectionView.snp.bottom)
-            $0.height.equalTo(device.calendarFooterHeight)
+            $0.height.equalTo(Layout.calendarFooterHeight)
         }
         
         closeButton.snp.makeConstraints {
-            $0.top.equalTo(footerView.snp.bottom).offset(device.calendarCloseButtonTop)
+            $0.top.equalTo(footerView.snp.bottom).offset(Layout.calendarCloseButtonTop)
             $0.centerX.equalToSuperview()
-            $0.size.equalTo(device.calendarCloseButtonSize)
+            $0.size.equalTo(Layout.calendarCloseButtonSize)
         }
         
         monthPicker.snp.makeConstraints {

@@ -13,7 +13,6 @@ enum DateOption {
 }
 
 class CalendarDateCollectionViewCell: UICollectionViewCell {
-    private let device: UIScreen.DeviceSize = UIScreen.getDevice()
     var dateOption: DateOption = .normal
     
     lazy var selectionBackgroundView: UIView = {
@@ -24,20 +23,20 @@ class CalendarDateCollectionViewCell: UICollectionViewCell {
     
     lazy var termBackgroundView: UIView = {
         let view = UIView()
-        view.backgroundColor = device.calendarTermColor
+        view.backgroundColor = .calendarTermColor
         return view
     }()
     
     lazy var numberLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.font = device.numberLabelFont
+        label.font = .title4
         return label
     }()
     
     lazy var marker: UIView = {
         let view = UIView()
-        view.backgroundColor = device.calendarTermColor
+        view.backgroundColor = .calendarTermColor
         view.clipsToBounds = true
         return view
     }()
@@ -107,7 +106,7 @@ class CalendarDateCollectionViewCell: UICollectionViewCell {
                 termBackgroundView.snp.makeConstraints {
                     $0.leading.equalTo(numberLabel.snp.centerX).offset(2)
                     $0.top.equalTo(selectionBackgroundView.snp.top)
-                    $0.width.equalTo(contentView.snp.width).dividedBy(device.calendarCellDivider)
+                    $0.width.equalTo(contentView.snp.width).dividedBy(Layout.calendarCellDivider)
                     $0.height.equalTo(selectionBackgroundView.snp.height)
                 }
             }
@@ -119,7 +118,7 @@ class CalendarDateCollectionViewCell: UICollectionViewCell {
                 termBackgroundView.snp.makeConstraints {
                     $0.trailing.equalTo(numberLabel.snp.centerX).offset(-2)
                     $0.top.equalTo(selectionBackgroundView.snp.top)
-                    $0.width.equalTo(contentView.snp.width).dividedBy(device.calendarCellDivider)
+                    $0.width.equalTo(contentView.snp.width).dividedBy(Layout.calendarCellDivider)
                     $0.height.equalTo(selectionBackgroundView.snp.height)
                 }
             }
@@ -134,20 +133,20 @@ class CalendarDateCollectionViewCell: UICollectionViewCell {
                 termBackgroundView.snp.makeConstraints {
                     $0.leading.equalTo(numberLabel.snp.centerX).offset(2)
                     $0.top.equalTo(selectionBackgroundView.snp.top)
-                    $0.width.equalTo(contentView.snp.width).dividedBy(device.calendarCellDivider)
+                    $0.width.equalTo(contentView.snp.width).dividedBy(Layout.calendarCellDivider)
                     $0.height.equalTo(selectionBackgroundView.snp.height)
                 }
             } else if day.date.dayOfTheWeek() == "LzCalendarSaturday".localized {
                 termBackgroundView.snp.makeConstraints {
                     $0.trailing.equalTo(numberLabel.snp.centerX).offset(-2)
                     $0.top.equalTo(selectionBackgroundView.snp.top)
-                    $0.width.equalTo(contentView.snp.width).dividedBy(device.calendarCellDivider)
+                    $0.width.equalTo(contentView.snp.width).dividedBy(Layout.calendarCellDivider)
                     $0.height.equalTo(selectionBackgroundView.snp.height)
                 }
             } else {
                 termBackgroundView.snp.makeConstraints {
                     $0.center.equalTo(numberLabel)
-                    $0.width.equalTo(contentView.snp.width).multipliedBy(device.calendarCellMultiplier)
+                    $0.width.equalTo(contentView.snp.width).multipliedBy(Layout.calendarCellMultiplier)
                     $0.height.equalTo(selectionBackgroundView.snp.height)
                 }
             }
@@ -208,7 +207,7 @@ extension CalendarDateCollectionViewCell {
         accessibilityTraits.remove(.selected)
         accessibilityHint = "Tap to select"
         
-        numberLabel.textColor = isWithinDisplayedMonth ? .darkgrayColor : device.numberSubLabelColor
+        numberLabel.textColor = isWithinDisplayedMonth ? .darkgrayColor : .numberSubLabelColor
         
         marker.isHidden = true
         selectionBackgroundView.isHidden = true

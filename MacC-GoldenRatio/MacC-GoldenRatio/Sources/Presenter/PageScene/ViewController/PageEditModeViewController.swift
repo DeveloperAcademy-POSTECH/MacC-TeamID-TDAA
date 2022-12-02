@@ -14,10 +14,9 @@ import UIKit
 class PageEditModeViewController: UIViewController {
     private var completion: ((Diary, (Int,Int)) -> Void)!
     
-    private lazy var newStickerDefaultSize = UIScreen.getDevice().stickerDefaultSize
+    private lazy var newStickerDefaultSize = Layout.stickerDefaultSize
     private lazy var newStickerAppearPoint = CGPoint(x: self.view.center.x - ( self.newStickerDefaultSize.width * 0.5 ), y: self.view.center.y - self.newStickerDefaultSize.height)
     
-    private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
     private let imagePickerManager = YPImagePickerManager(pickerType: .multiSelectionWithCrop)
     private var myDiariesViewModalBackgroundView = UIView()
     private var pageEditModeViewModel: PageEditModeViewModel!
@@ -46,7 +45,7 @@ class PageEditModeViewController: UIViewController {
         label.backgroundColor = UIColor.stickerBackgroundColor
         label.textColor = .white
         label.textAlignment = .center
-        label.font = .navigationTitleFont
+        label.font = .body
         label.layer.cornerRadius = 12.5
         label.clipsToBounds = true
         
@@ -190,8 +189,8 @@ class PageEditModeViewController: UIViewController {
         let leftBarButtonItem = UIBarButtonItem(title: "LzCancel".localized, style: .plain, target: self, action: #selector(onTapNavigationCancel))
         let rightBarButtonItem = UIBarButtonItem(title: "LzDone".localized, style: .plain, target: self, action: #selector(onTapNavigationComplete))
         
-        leftBarButtonItem.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.navigationTitleFont, NSAttributedString.Key.foregroundColor:UIColor.sandbrownColor], for: .normal)
-        rightBarButtonItem.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.navigationTitleFont, NSAttributedString.Key.foregroundColor:UIColor.sandbrownColor], for: .normal)
+        leftBarButtonItem.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.body, NSAttributedString.Key.foregroundColor:UIColor.sandbrownColor], for: .normal)
+        rightBarButtonItem.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.body, NSAttributedString.Key.foregroundColor:UIColor.sandbrownColor], for: .normal)
         
         self.navigationItem.setLeftBarButton(leftBarButtonItem, animated: false)
         self.navigationItem.setRightBarButton(rightBarButtonItem, animated: false)
@@ -206,7 +205,7 @@ class PageEditModeViewController: UIViewController {
             .bind(to: self.navigationItem.rx.title)
             .disposed(by: self.pageEditModeViewModel.disposeBag)
         
-		self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.navigationTitleFont, NSAttributedString.Key.foregroundColor:UIColor.black]
+		self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.body, NSAttributedString.Key.foregroundColor:UIColor.black]
     }
 
     private func addSubviews() {
@@ -227,39 +226,39 @@ class PageEditModeViewController: UIViewController {
             }
             
             self.pageDescriptionLabel.snp.makeConstraints { make in
-                make.trailing.top.equalTo(self.backgroundView).inset(self.myDevice.pagePadding)
+                make.trailing.top.equalTo(self.backgroundView).inset(Layout.pagePadding)
                 make.width.equalTo(47)
                 make.height.equalTo(25)
             }
             
             self.mapToolButton.snp.makeConstraints { make in
-                make.leading.equalToSuperview().offset(self.myDevice.pagePadding)
-                make.bottom.equalTo(self.backgroundView.snp.bottom).inset(self.myDevice.pagePadding)
-                make.size.equalTo(self.myDevice.pageToolButtonSize)
+                make.leading.equalToSuperview().offset(Layout.pagePadding)
+                make.bottom.equalTo(self.backgroundView.snp.bottom).inset(Layout.pagePadding)
+                make.size.equalTo(Layout.pageToolButtonSize)
             }
             
             self.imageToolButton.snp.makeConstraints { make in
-                make.leading.equalTo(self.mapToolButton.snp.trailing).offset(self.myDevice.pageToolButtonInterval)
+                make.leading.equalTo(self.mapToolButton.snp.trailing).offset(Layout.pageToolButtonInterval)
                 make.centerY.equalTo(self.mapToolButton.snp.centerY)
-                make.size.equalTo(self.myDevice.pagePhotoToolButtonSize)
+                make.size.equalTo(Layout.pagePhotoToolButtonSize)
             }
             
             self.stickerToolButton.snp.makeConstraints { make in
-                make.leading.equalTo(self.imageToolButton.snp.trailing).offset(self.myDevice.pageToolButtonInterval)
-                make.bottom.equalTo(self.backgroundView.snp.bottom).inset(self.myDevice.pagePadding)
-                make.size.equalTo(self.myDevice.pageToolButtonSize)
+                make.leading.equalTo(self.imageToolButton.snp.trailing).offset(Layout.pageToolButtonInterval)
+                make.bottom.equalTo(self.backgroundView.snp.bottom).inset(Layout.pagePadding)
+                make.size.equalTo(Layout.pageToolButtonSize)
             }
             
             self.textToolButton.snp.makeConstraints { make in
-                make.leading.equalTo(self.stickerToolButton.snp.trailing).offset(self.myDevice.pageToolButtonInterval)
-                make.bottom.equalTo(self.backgroundView.snp.bottom).inset(self.myDevice.pagePadding)
-                make.size.equalTo(self.myDevice.pageToolButtonSize)
+                make.leading.equalTo(self.stickerToolButton.snp.trailing).offset(Layout.pageToolButtonInterval)
+                make.bottom.equalTo(self.backgroundView.snp.bottom).inset(Layout.pagePadding)
+                make.size.equalTo(Layout.pageToolButtonSize)
             }
             
             self.docsButton.snp.makeConstraints { make in
-                make.trailing.equalToSuperview().offset( -self.myDevice.pagePadding )
+                make.trailing.equalToSuperview().offset( -Layout.pagePadding )
                 make.centerY.equalTo(self.mapToolButton.snp.centerY)
-                make.size.equalTo(self.myDevice.pageDocsToolButtonSize)
+                make.size.equalTo(Layout.pageDocsToolButtonSize)
             }
         }
     }

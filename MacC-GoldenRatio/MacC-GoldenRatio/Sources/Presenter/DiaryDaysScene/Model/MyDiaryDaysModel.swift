@@ -87,7 +87,7 @@ class MyDiaryDaysModel {
     
     // 썸네일 URL이 있으면 전달, 없으면 랜덤하게 띄우기
     func diaryToDayModel(model: MyDiaryDaysModel, selectedDay: Int) -> DiaryDayModel {
-        let dayLabelData = "\(selectedDay)일차"
+        let dayLabelData = "LzDiaryDaysDayLabel".localizedFormat("\(selectedDay)")
         let dateLabelData = model.makeDateString(day: selectedDay)
         var diaryDayModel = DiaryDayModel(dayLabel: dayLabelData, dateLabel: dateLabelData, image: nil)
         let thumbnailURLString:String? = model.diary.pageThumbnails[selectedDay-1]

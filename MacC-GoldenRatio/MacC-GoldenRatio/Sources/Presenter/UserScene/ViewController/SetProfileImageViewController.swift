@@ -18,7 +18,7 @@ class SetProfileImageViewController: UIViewController {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.textColor = .darkgrayColor
-        label.text = "마이페이지"
+        label.text = "LzUserTitle".localized
         label.font = .tabTitleFont
         
         return label
@@ -46,7 +46,7 @@ class SetProfileImageViewController: UIViewController {
     private lazy var nickNameTitleLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.text = "닉네임"
+        label.text = "LzUserNickName".localized
         label.font = .labelTitleFont
         
         return label
@@ -59,7 +59,7 @@ class SetProfileImageViewController: UIViewController {
         textField.setUnderLine(width: 1)
         textField.tintColor = .calendarWeeklyGrayColor
         textField.clearButtonMode = .always
-        textField.placeholder = "닉네임을 입력해주세요."
+        textField.placeholder = "LzUserNickNameMessage".localized
         
         return textField
     }()
@@ -71,7 +71,7 @@ class SetProfileImageViewController: UIViewController {
         button.layer.cornerRadius = 5
         button.addTarget(self, action: #selector(onTapConfirmButton), for: .touchUpInside)
         let attributes = [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 14, weight: .semibold),NSAttributedString.Key.foregroundColor:UIColor.white.cgColor]
-        let attributedString = NSAttributedString(string: "확인", attributes: attributes)
+        let attributedString = NSAttributedString(string: "LzConfirm".localized, attributes: attributes)
         button.setAttributedTitle(attributedString, for: .normal)
 
         return button
@@ -85,7 +85,7 @@ class SetProfileImageViewController: UIViewController {
         button.layer.borderWidth = 1
         button.addTarget(self, action: #selector(onTapCancelButton), for: .touchUpInside)
         let attributes = [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 14, weight: .semibold),NSAttributedString.Key.foregroundColor:UIColor.sandbrownColor.cgColor]
-        let attributedString = NSAttributedString(string: "취소", attributes: attributes)
+        let attributedString = NSAttributedString(string: "LzCancel".localized, attributes: attributes)
         button.setAttributedTitle(attributedString, for: .normal)
 
         return button

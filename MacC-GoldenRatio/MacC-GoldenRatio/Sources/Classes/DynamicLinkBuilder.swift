@@ -20,8 +20,8 @@ class DynamicLinkBuilder {
         linkBuilder.iOSParameters?.appStoreID = "6443840961"
         
         linkBuilder.socialMetaTagParameters = DynamicLinkSocialMetaTagParameters()
-        linkBuilder.socialMetaTagParameters?.title = "트다(TDAA)로 당신을 초대합니다"
-        linkBuilder.socialMetaTagParameters?.descriptionText = "우리 함께 여행 다이어리를 작성해보아요!"
+        linkBuilder.socialMetaTagParameters?.title = "LzInvitationTitle".localized
+        linkBuilder.socialMetaTagParameters?.descriptionText = "LzInvitationMessage".localized
         linkBuilder.socialMetaTagParameters?.imageURL = URL(string: "https://github.com/Dorodong96/iOS-StudyProjects/blob/main/FastCampus/Challange%20Images/banner.png?raw=true")
         
         guard let longDynamicLink = linkBuilder.url else { return }

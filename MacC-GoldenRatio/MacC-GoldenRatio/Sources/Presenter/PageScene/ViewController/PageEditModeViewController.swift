@@ -187,8 +187,8 @@ class PageEditModeViewController: UIViewController {
     }
     
     private func configureNavigationBar() {
-        let leftBarButtonItem = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(onTapNavigationCancel))
-        let rightBarButtonItem = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(onTapNavigationComplete))
+        let leftBarButtonItem = UIBarButtonItem(title: "LzCancel".localized, style: .plain, target: self, action: #selector(onTapNavigationCancel))
+        let rightBarButtonItem = UIBarButtonItem(title: "LzDone".localized, style: .plain, target: self, action: #selector(onTapNavigationComplete))
         
         leftBarButtonItem.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.navigationTitleFont, NSAttributedString.Key.foregroundColor:UIColor.sandbrownColor], for: .normal)
         rightBarButtonItem.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.navigationTitleFont, NSAttributedString.Key.foregroundColor:UIColor.sandbrownColor], for: .normal)
@@ -201,7 +201,7 @@ class PageEditModeViewController: UIViewController {
         self.pageEditModeViewModel.selectedPageIndexSubject
             .observe(on: MainScheduler.instance)
             .map{
-                ($0.0 + 1).description + "일차"
+                "LzPageDayLabel".localizedFormat(($0.0 + 1).description)
             }
             .bind(to: self.navigationItem.rx.title)
             .disposed(by: self.pageEditModeViewModel.disposeBag)
@@ -337,8 +337,8 @@ class PageEditModeViewController: UIViewController {
 extension PageEditModeViewController {
     @objc private func onTapDocsButton() {
         let popUp = PopUpViewController(popUpPosition: .bottom2)
-        popUp.addButton(buttonTitle: " 페이지 추가", buttonSymbol: "plus.square", buttonSize: 17, action: onTapAddNextPageMenu)
-        popUp.addButton(buttonTitle: " 페이지 삭제", buttonSymbol: "minus.square", buttonSize: 17, action: onTapDeleteCurrentPageMenu)
+        popUp.addButton(buttonTitle: "LzPageAddPage".localized, buttonSymbol: "plus.square", buttonSize: 17, action: onTapAddNextPageMenu)
+        popUp.addButton(buttonTitle: "LzPageDeletePage".localized, buttonSymbol: "minus.square", buttonSize: 17, action: onTapDeleteCurrentPageMenu)
         present(popUp, animated: false)
     }
 

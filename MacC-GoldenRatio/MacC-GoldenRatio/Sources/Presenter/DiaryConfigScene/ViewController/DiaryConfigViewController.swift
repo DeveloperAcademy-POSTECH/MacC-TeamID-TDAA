@@ -50,7 +50,7 @@ class DiaryConfigViewController: UIViewController {
     
     private lazy var cancelButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("취소", for: .normal)
+        button.setTitle("LzCancel".localized, for: .normal)
         button.titleLabel?.font = device.diaryConfigButtonFont
         button.tintColor = .navigationbarColor
         return button
@@ -58,7 +58,7 @@ class DiaryConfigViewController: UIViewController {
     
     private lazy var doneButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("완료", for: .normal)
+        button.setTitle("LzDone".localized, for: .normal)
         button.titleLabel?.font = device.diaryConfigButtonFont
         button.tintColor = .navigationbarColor
         return button
@@ -69,7 +69,7 @@ class DiaryConfigViewController: UIViewController {
     func bind(_ viewModel: DiaryConfigViewModel) {
         self.viewModel = viewModel
         
-        stateTitle.text = "다이어리 \(viewModel.configState.identifier)" // TODO: observer 연결
+        stateTitle.text = "LzDiaryConfigTitle".localizedFormat(" \(viewModel.configState.identifier)")
         
         viewModel.cellData
             .drive(diaryConfigCollectionView.rx.items) { collectionView, row, data in
@@ -115,10 +115,10 @@ class DiaryConfigViewController: UIViewController {
         viewModel.presentAlert
             .emit(onNext: { _ in
                 let alertController = UIAlertController(title: nil, message: viewModel.configState.alertMessage, preferredStyle: .alert)
-                alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: { [weak self] _ in
+                alertController.addAction(UIAlertAction(title: "LzConfirm".localized, style: .default, handler: { [weak self] _ in
                     self?.dismiss(animated: true, completion: nil)
                 }))
-                alertController.addAction(UIAlertAction(title: "취소", style: .cancel))
+                alertController.addAction(UIAlertAction(title: "LzCancel".localized, style: .cancel))
                 self.present(alertController, animated: true)
             })
             .disposed(by: disposeBag)
@@ -130,7 +130,7 @@ class DiaryConfigViewController: UIViewController {
                 if viewModel.checkAvailable() {
                     self.dismiss()
                 } else {
-                    self.view.showToastMessage("작성이 완료되지 않았습니다.")
+                    self.view.showToastMessage("LzDiaryConfigIncomplete".localized)
                 }
             })
             .disposed(by: disposeBag)
@@ -312,17 +312,17 @@ extension DiaryConfigViewController {
             .asDriver(onErrorJustReturn: Void())
             .drive(onNext: {
                 if viewModel.coverImage != UIImage(named: "selectImage") {
-                    let alertController = UIAlertController(title: "대표 이미지 설정", message: nil, preferredStyle: .actionSheet)
+                    let alertController = UIAlertController(title: "LzDiaryConfigSetImage".localized, message: nil, preferredStyle: .actionSheet)
                     
-                    alertController.addAction(UIAlertAction(title: "앨범에서 사진 선택", style: .default, handler: { [weak self] _ in
+                    alertController.addAction(UIAlertAction(title: "LzDiaryConfigAlbum".localized, style: .default, handler: { [weak self] _ in
                         self?.view.endEditing(true)
                         self?.presentImagePicker()
                     }))
-                    alertController.addAction(UIAlertAction(title: "기본 이미지로 변경", style: .default, handler: { [weak self] _ in
+                    alertController.addAction(UIAlertAction(title: "LzDiaryConfigDefaultImage".localized, style: .default, handler: { [weak self] _ in
                         self?.viewModel.resetCoverImage()
                         self?.viewModel.coverImage = UIImage(named: "selectImage") ?? UIImage()
                     }))
-                    alertController.addAction(UIAlertAction(title: "취소", style: .cancel))
+                    alertController.addAction(UIAlertAction(title: "LzCancel".localized, style: .cancel))
                     self.present(alertController, animated: true)
                 } else {
                     self.view.endEditing(true)

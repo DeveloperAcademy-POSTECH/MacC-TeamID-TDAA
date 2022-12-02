@@ -19,18 +19,18 @@ enum ConfigState {
     var identifier: String {
         switch self {
         case .create:
-            return "추가"
+            return "LzCreate".localized
         case .modify:
-            return "수정"
+            return "LzModify".localized
         }
     }
     
     var alertMessage: String {
         switch self {
         case .create:
-            return "다이어리 추가를 취소하시겠습니까?"
+            return "LzDiaryConfigCreate".localized
         case .modify:
-            return "변경사항은 저장되지 않습니다. 정말 취소하시겠습니까?"
+            return "LzDiaryConfigModify".localized
         }
     }
 }
@@ -45,15 +45,15 @@ enum ConfigContentType: CaseIterable {
     var title: String {
         switch self {
         case .diaryName:
-            return "다이어리 이름 *"
+            return "LzDiaryConfigDiaryName".localized
         case .location:
-            return "여행지 *"
+            return "LzDiaryConfigDiaryLocation".localized
         case .diaryDate:
-            return "날짜 *"
+            return "LzDiaryConfigDiaryDate".localized
         case .diaryColor:
-            return "다이어리 표지 색상 *"
+            return "LzDiaryConfigDiaryColor".localized
         case .diaryImage:
-            return "대표 이미지"
+            return "LzDiaryConfigDiaryImage".localized
         }
     }
 }

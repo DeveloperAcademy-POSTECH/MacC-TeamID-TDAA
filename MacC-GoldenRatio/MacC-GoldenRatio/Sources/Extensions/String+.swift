@@ -46,4 +46,13 @@ extension String {
         guard self.hasPrefix(prefix) else { return self }
         return String(self.dropFirst(prefix.count))
     }
+    
+    var localized: String {
+        return NSLocalizedString(self, tableName: "Localizable", value: self, comment: "")
+    }
+    
+    func localizedFormat(_ arguments: CVarArg...) -> String {
+        let localizedValue = self.localized
+        return String(format: localizedValue, arguments: arguments)
+    }
 }

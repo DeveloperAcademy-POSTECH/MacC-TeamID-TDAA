@@ -92,7 +92,7 @@ class DiaryCollectionViewCell: UICollectionViewCell {
 		}
 		
 		let day = Calendar.current.dateComponents([.day], from: cellData.diaryStartDate.toDate() ?? Date(), to: cellData.diaryEndDate.toDate() ?? Date()).day
-		dateLabel.text = "\(cellData.diaryStartDate) (\((day ?? 0)+1)일)"
+        dateLabel.text = "\(cellData.diaryStartDate) (\((day ?? 0)+1)\(day == 0 ? "LzHomeDay".localized : "LzHomeDays".localized))"
 		dateLabel.snp.makeConstraints {
 			$0.top.equalTo(titleLabel.snp.bottom)
 			$0.leading.trailing.equalToSuperview().inset(30)

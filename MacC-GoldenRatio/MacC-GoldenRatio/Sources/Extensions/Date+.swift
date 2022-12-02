@@ -16,7 +16,7 @@ extension Date {
     }
     
     func dayOfTheWeek() -> String {
-        let weekdays = ["일", "월", "화", "수", "목", "금", "토"]
+        let weekdays = ["LzCalendarSunday".localized, "LzCalendarMonday".localized, "LzCalendarTueday".localized, "LzCalendarWednesday".localized, "LzCalendarThursday".localized, "LzCalendarFriday".localized, "LzCalendarSaturday".localized]
 
         return weekdays[Calendar.current.component(.weekday, from: self) - 1]
     }
@@ -36,7 +36,7 @@ extension Date {
     init(_ dateString:String) {
         let dateStringFormatter = DateFormatter()
         dateStringFormatter.dateFormat = "yyyy/MM"
-        dateStringFormatter.locale = Locale(identifier: "ko")
+        dateStringFormatter.locale = Locale(identifier: "LzIdentifier".localized)
         let date = dateStringFormatter.date(from: dateString)!
         self.init(timeInterval:0, since:date)
     }

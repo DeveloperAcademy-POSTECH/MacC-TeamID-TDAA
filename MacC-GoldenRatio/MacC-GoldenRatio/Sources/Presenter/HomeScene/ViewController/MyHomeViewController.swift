@@ -51,7 +51,7 @@ final class MyHomeViewController: UIViewController, UIGestureRecognizerDelegate 
 			$0.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(10)
 		}
 		
-		dateFilterButton.setTitle("날짜순", for: .normal)
+        dateFilterButton.setTitle("LzHomeDateFilter".localized, for: .normal)
 		dateFilterButton.backgroundColor = .sandbrownColor
 		dateFilterButton.setTitleColor(.white, for: .normal)
 		dateFilterButton.snp.makeConstraints {
@@ -61,7 +61,7 @@ final class MyHomeViewController: UIViewController, UIGestureRecognizerDelegate 
 			$0.leading.equalToSuperview().inset(20)
 		}
 		
-		nameFilterButton.setTitle("이름순", for: .normal)
+        nameFilterButton.setTitle("LzHomeNameFilter".localized, for: .normal)
 		nameFilterButton.backgroundColor = .white
 		nameFilterButton.setTitleColor(.sandbrownColor, for: .normal)
 		nameFilterButton.snp.makeConstraints {
@@ -105,8 +105,8 @@ final class MyHomeViewController: UIViewController, UIGestureRecognizerDelegate 
 				if !self.viewModel.longPressedEnabled.value {
 					self.addDiaryButton.setImage(UIImage(named: "closeButton"), for: .normal)
 					let popUp = PopUpViewController(popUpPosition: .bottom)
-					popUp.addButton(buttonTitle: " 다이어리 추가", buttonSymbol: "doc.badge.plus", buttonSize: 17, action: self.createButtonTapped)
-					popUp.addButton(buttonTitle: " 초대코드 참가", buttonSymbol: "envelope.open", buttonSize: 15, action: self.joinButtonTapped)
+                    popUp.addButton(buttonTitle: "LzHomeCreate".localized, buttonSymbol: "doc.badge.plus", buttonSize: 17, action: self.createButtonTapped)
+                    popUp.addButton(buttonTitle: "LzHomeJoin".localized, buttonSymbol: "envelope.open", buttonSize: 15, action: self.joinButtonTapped)
 					self.present(popUp, animated: false)
 				} else {
 					self.endEditMode()
@@ -152,12 +152,12 @@ final class MyHomeViewController: UIViewController, UIGestureRecognizerDelegate 
 		viewModel.diaryCollectionViewModel.removeData
 			.bind { data in
 				if data != nil {
-					let ac = UIAlertController(title: "다이어리를 나가시겠습니까?", message: "다이어리를 나가면 공동편집을 할 수 없습니다.", preferredStyle: .alert)
-					ac.addAction(UIAlertAction(title: "다이어리 나가기", style: .destructive) { _ in
+                    let ac = UIAlertController(title: "LzOutAlertTitle".localized, message: "LzOutAlertMessage".localized, preferredStyle: .alert)
+                    ac.addAction(UIAlertAction(title: "LzOutAlertOut".localized, style: .destructive) { _ in
 						self.viewModel.diaryCollectionViewModel.outCurrentDiary(data!.diaryUUID, data!.userUIDs)
 						NotificationCenter.default.post(name: .reloadDiary, object: nil)
 					})
-					ac.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
+                    ac.addAction(UIAlertAction(title: "LzCancel".localized, style: .cancel, handler: nil))
 					self.present(ac, animated: true, completion: nil)
 				}
 			}
@@ -229,23 +229,23 @@ final class MyHomeViewController: UIViewController, UIGestureRecognizerDelegate 
 	}
 	
 	@objc func joinButtonTapped() {
-		let joinDiaryAlert = UIAlertController(title: "초대코드 입력", message: "받은 초대코드를 입력해주세요.", preferredStyle: .alert)
-		let joinAction = UIAlertAction(title: "확인", style: .default) { action in
+        let joinDiaryAlert = UIAlertController(title: "LzHomeJoinAlertTitle".localized, message: "LzHomeJoinAlertMessage", preferredStyle: .alert)
+        let joinAction = UIAlertAction(title: "LzConfirm".localized, style: .default) { action in
 			if let textField = joinDiaryAlert.textFields?.first {
 				self.viewModel.isDiaryCodeEqualTo(textField.text ?? "")
 				DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.5) {
 					if self.viewModel.isEqual {
 						self.viewModel.updateJoinDiary(textField.text ?? "")
 						self.viewModel.createCell()
-						self.view.showToastMessage("다이어리가 추가되었습니다.")
+                        self.view.showToastMessage("LzHomeJoinAlertAdded".localized)
 					} else {
-						self.view.showToastMessage("초대코드가 잘못되었습니다.")
+                        self.view.showToastMessage("LzHomeJoinAlertWrong".localized)
 					}
 				}
 				self.dismiss(animated: true, completion: nil)
 			}
 		}
-		let cancelAction = UIAlertAction(title: "취소", style: .cancel) { action in
+        let cancelAction = UIAlertAction(title: "LzCancel".localized, style: .cancel) { action in
 			self.dismiss(animated: true, completion: nil)
 		}
 		joinDiaryAlert.addTextField()

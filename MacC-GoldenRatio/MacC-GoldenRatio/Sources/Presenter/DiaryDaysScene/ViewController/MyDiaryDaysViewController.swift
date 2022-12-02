@@ -184,10 +184,10 @@ class MyDiaryDaysViewController: UIViewController {
     
     private func menuButtonTapped() {
         let popUp = PopUpViewController(popUpPosition: .top)
-        popUp.addButton(buttonTitle: " 초대코드 복사", buttonSymbol: "envelope.arrow.triangle.branch", buttonSize: 15, action: copyButtonTapped)
-        popUp.addButton(buttonTitle: " 초대링크 공유", buttonSymbol: "link", buttonSize: 17, action: linkButtonTapped)
-        popUp.addButton(buttonTitle: " 다이어리 수정", buttonSymbol: "square.and.pencil",  buttonSize: 17, action: modifyButtonTapped)
-        popUp.addButton(buttonTitle: " 다이어리 탈퇴", buttonSymbol: "door.right.hand.open",  buttonSize: 17, action: outButtonTapped)
+        popUp.addButton(buttonTitle: "LzDiaryDaysCodeCopy".localized, buttonSymbol: "envelope.arrow.triangle.branch", buttonSize: 15, action: copyButtonTapped)
+        popUp.addButton(buttonTitle: "LzDiaryDaysShareLink".localized, buttonSymbol: "link", buttonSize: 17, action: linkButtonTapped)
+        popUp.addButton(buttonTitle: "LzDiaryDaysDiaryModify".localized, buttonSymbol: "square.and.pencil",  buttonSize: 17, action: modifyButtonTapped)
+        popUp.addButton(buttonTitle: "LzDiaryDaysDiaryOut".localized, buttonSymbol: "door.right.hand.open",  buttonSize: 17, action: outButtonTapped)
         present(popUp, animated: false)
     }
     
@@ -200,7 +200,7 @@ class MyDiaryDaysViewController: UIViewController {
     @objc private func copyButtonTapped() {
         UIPasteboard.general.string = self.viewModel!.myDiaryDaysModel.diary.diaryUUID
         
-        self.view.showToastMessage("초대코드가 복사되었습니다.")
+        self.view.showToastMessage("LzDiaryDaysCodeCopyMessage".localized)
     }
     
     @objc private func linkButtonTapped() {
@@ -227,14 +227,14 @@ class MyDiaryDaysViewController: UIViewController {
     }
     
     @objc private func outButtonTapped() {
-        let ac = UIAlertController(title: "다이어리를 나가시겠습니까?", message: "다이어리를 나가면 공동편집을 할 수 없습니다.", preferredStyle: .alert)
-        ac.addAction(UIAlertAction(title: "다이어리 나가기", style: .destructive) { _ in
+        let ac = UIAlertController(title: "LzOutAlertTitle".localized, message: "LzOutAlertMessage".localized, preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "LzOutAlertOut".localized, style: .destructive) { _ in
             print("다이어리 나가기")
             NotificationCenter.default.post(name: .reloadDiary, object: nil)
             self.viewModel!.myDiaryDaysModel.outCurrentDiary()
             self.backButtonTapped()
         })
-        ac.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
+        ac.addAction(UIAlertAction(title: "LzCancel".localized, style: .cancel, handler: nil))
         present(ac, animated: true, completion: nil)
     }
     
@@ -256,7 +256,7 @@ class MyDiaryDaysViewController: UIViewController {
         let titles = viewModel!.mapViewModel.mapData
             .value
             .map { data in
-                return "\(data.day)일차"
+                return "LzDiaryDaysDayLabel".localizedFormat("\(data.day)")
             }
         
         vc.configureSegmentedControl(titles: titles)

@@ -35,7 +35,7 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
         let textField = UITextField()
         textField.font = UIFont(name: "EF_Diary", size: 17)
         textField.returnKeyType = .done
-        textField.placeholder = "다이어리 이름을 입력해주세요."
+        textField.placeholder = "LzDiaryConfigNamePlaceholder".localized
         textField.becomeFirstResponder()
         return textField
     }()
@@ -128,8 +128,8 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
         } else {
             contentButton.setTitleColor(.placeholderText, for: .normal)
             diaryName = nil
-            locationName = "여행지를 입력해주세요."
-            dateText = "여행한 날짜를 선택해주세요."
+            locationName = "LzDiaryConfigLocationPlaceholder".localized
+            dateText = "LzDiaryConfigDatePlaceholder".localized
         }
         
         switch contentType {

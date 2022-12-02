@@ -1,0 +1,167 @@
+/* 
+  Localizable.strings
+  MacC-GoldenRatio
+
+  Created by DongKyu Kim on 2022/11/30.
+  
+  English Localizing
+ 
+  MARK: Rules
+  1. Presenter의 Scene 별로 구분되어 있습니다
+  2. "Lz(Localizing) + Scene 이름 + 컴포넌트/기능" 으로 구성됩니다.
+  3. 예외적으로, MapCategory는 MapCategory의 case rawValue를 활용하였습니다.
+*/
+
+
+// Common Components
+"LzIdentifier" = "en";
+"LzConfirm" = "OK";
+"LzDone" = "Done";
+"LzCancel" = "Cancel";
+"LzCreate" = "Create";
+"LzModify" = "Modify";
+"LzDiary" = "Diary";
+"LzOutAlertTitle" = "Leave the diary?";
+"LzOutAlertMessage" = "If you leave the diary, you can't edit it together.";
+"LzOutAlertOut" = "Leave the diary";
+"LzThumbnailSelect" = "Select Thumbnail";
+
+
+// CommonScene - Album
+"LzAlbumEmpty" = "No photo in album";
+
+
+// SignInScene
+"LzSignInLogin" = "  Sign In with Apple";
+
+
+// HomeScene
+"LzHomeTitleLabel" = "Diary";
+"LzHomeDateFilter" = "Date";
+"LzHomeNameFilter" = "Name";
+"LzHomeCreate" = " Create diary";
+"LzHomeJoin" = " Join with code";
+"LzHomeJoinAlertTitle" = "Invitation Code";
+"LzHomeJoinAlertMessage" = "Please enter the invitation code you received.";
+"LzHomeJoinAlertAdded" = "The diary has been added.";
+"LzHomeJoinAlertFailed" = "Adding a diary failed.";
+"LzHomeJoinAlertWrong" = "Invalid invitation code.";
+"LzHomeDay" = "day";
+"LzHomeDays" = "days";
+
+
+// DiaryConfigScene
+"LzDiaryConfigTitle" = "%@ Diary";
+"LzDiaryConfigCreate" = "Are you sure you want to cancel adding a diary?";
+"LzDiaryConfigModify" = "Changes are not saved. Are you sure you want to cancel?";
+"LzDiaryConfigDiaryName" = "Diary name *";
+"LzDiaryConfigDiaryLocation" = "Destination *";
+"LzDiaryConfigDiaryDate" = "Date *";
+"LzDiaryConfigDiaryColor" = "Diary Color *";
+"LzDiaryConfigDiaryImage" = "Cover Image";
+"LzDiaryConfigIncomplete" = "Creation did not complete.";
+"LzDiaryConfigSetImage" = "Set cover image";
+"LzDiaryConfigAlbum" = "Select a picture from album";
+"LzDiaryConfigDefaultImage" = "Change to Default Image";
+"LzDiaryConfigNamePlaceholder" = "Enter a name for the diary";
+"LzDiaryConfigLocationPlaceholder" = "Enter a location for the diary";
+"LzDiaryConfigDatePlaceholder" = "Select the date of your trip";
+
+
+// Calendar
+"LzCalendarSelectDate" = "Select the date";
+"LzCalendarOneDay" = " a Day-Trip";
+"LzCalendarYear" = "";
+"LzCalendarMonth" = "";
+"LzCalendarDay" = " Days";
+"LzCalendarSunday" = "SUN";
+"LzCalendarMonday" = "MON";
+"LzCalendarTueday" = "TUE";
+"LzCalendarWednesday" = "WED";
+"LzCalendarThursday" = "THU";
+"LzCalendarFriday" = "FRI";
+"LzCalendarSaturday" = "SAT";
+"LzCalendarFrom" = "From %@";
+
+
+// DiaryDaysScene
+"LzDiaryDaysDayLabel" = "Day %@";
+"LzDiaryDaysCodeCopy" = " Copy diary code";
+"LzDiaryDaysShareLink" = " Share diary link";
+"LzDiaryDaysDiaryModify" = " Modify the diary";
+"LzDiaryDaysDiaryOut" = " Leave the diary";
+"LzDiaryDaysCodeCopyMessage" = "Invitation code copied successfully.";
+
+
+// UserScene
+"LzUserTitle" = "My Page";
+"LzUserNickName" = "Nickname";
+"LzUserEditProfile" = "Edit Profile";
+"LzUserTravelDestination" = "Travel Destination";
+"LzUserLogoutMessage" = "Are you sure you want to log out?";
+"LzUserNickNameMessage" = "Would you like to withdraw your membership?";
+"LzUserWithrawalMessage" = "Enter your nickname";
+"LzUserAppVersion" = "App version";
+"LzUserOpenSource" = "Open source";
+"LzUserAppRate" = "Rate our App";
+"LzUserLogout" = "Sign out";
+"LzUserWithrawal" = "Withdrawal";
+
+
+// PageScene
+"LzPageDayLabel" = "Day %@";
+"LzPageEditPage" = " Edit page";
+"LzPageSharePage" = " Share page";
+"LzPageAddPage" = " Add page";
+"LzPageDeletePage" = " Delete page";
+"LzPageSelectThumbnail" = " Select Thumbnail";
+"LzPageNoImageMessage" = "There is no image to select on the page.";
+"LzPageTextPlaceholder" = "Enter text";
+
+
+// DynamicLinkBuilder
+"LzInvitationTitle" = "Invite you to TDAA";
+"LzInvitationMessage" = "Let's write a travel diary together!";
+
+
+// Map Category
+"MKPOICategoryAirport" = "Airport";
+"MKPOICategoryAmusementPark" = "Amusement  Park";
+"MKPOICategoryAquarium" = "Aquarium";
+"MKPOICategoryAtm" = "ATM";
+"MKPOICategoryBakery" = "Bakery";
+"MKPOICategoryBank" = "Bank";
+"MKPOICategoryBeach" = "Beach";
+"MKPOICategoryBrewery" = "Brewery";
+"MKPOICategoryCafe" = "Cafe";
+"MKPOICategoryCampground" = "Campground";
+"MKPOICategoryCarRental" = "Car Rental";
+"MKPOICategoryEvCharger" = "Ev Charger";
+"MKPOICategoryFireStation" = "Fire Station";
+"MKPOICategoryFitnessCenter" = "Fitness  Center";
+"MKPOICategoryFoodMarket" = "Food Market";
+"MKPOICategoryGasStation" = "GasStation";
+"MKPOICategoryHospital" = "Hospital";
+"MKPOICategoryHotel" = "Hotel";
+"MKPOICategoryLaundry" = "Laundry";
+"MKPOICategoryLibrary" = "Library";
+"MKPOICategoryMarina" = "Marina";
+"MKPOICategoryMovieTheater" = "Movie  Theater";
+"MKPOICategoryMuseum" = "Museum";
+"MKPOICategoryNationalPark" = "National  Park";
+"MKPOICategoryNightlife" = "Nightlife";
+"MKPOICategoryPark" = "Park";
+"MKPOICategoryParking" = "Parking";
+"MKPOICategoryPharmacy" = "Pharmacy";
+"MKPOICategoryPolice" = "Police";
+"MKPOICategoryPostOffice" = "Post Office";
+"MKPOICategoryPublicTransport" = "Public Transport";
+"MKPOICategoryRestaurant" = "Restaurant";
+"MKPOICategoryRestroom" = "Restroom";
+"MKPOICategorySchool" = "School";
+"MKPOICategoryStadium" = "Stadium";
+"MKPOICategoryStore" = "Store";
+"MKPOICategoryTheater" = "Theater";
+"MKPOICategoryUniversity" = "University";
+"MKPOICategoryWinery" = "Winery";
+"MKPOICategoryZoo" = "Zoo";

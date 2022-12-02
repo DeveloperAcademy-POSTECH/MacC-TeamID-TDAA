@@ -13,8 +13,8 @@ final class DiaryCollectionHeaderView: UIView {
 	
 	private lazy var titleLabel: UILabel = {
 		let label =  UILabel()
-		label.text = "다이어리"
 		label.font = .title1
+        label.text = "LzHomeTitleLabel".localized
 		label.textColor = UIColor.buttonColor
 		
 		return label

@@ -47,8 +47,8 @@ class SignInViewController: UIViewController {
         button.tintColor = .white
         button.setImage(UIImage(systemName: "applelogo"), for: .normal)
         button.setPreferredSymbolConfiguration(.init(pointSize: Layout.logInButtonImagePointSize),forImageIn: .normal)
-        button.setTitle("  Apple로 로그인", for: .normal)
         button.titleLabel?.font = .body
+        button.setTitle("LzSignInLogin".localized, for: .normal)
         button.addTarget(self, action: #selector(appleLoginButtonPressed), for: .touchUpInside)
         button.layer.cornerRadius = 4
         return button

@@ -1,0 +1,167 @@
+/* 
+  Localizable.strings
+  MacC-GoldenRatio
+
+  Created by DongKyu Kim on 2022/11/30.
+  
+  Korean Localizing
+  
+  MARK: Rules
+  1. Presenter의 Scene 별로 구분되어 있습니다
+  2. "Lz(Localizing) + Scene 이름 + 컴포넌트/기능" 으로 구성됩니다.
+  3. 예외적으로, MapCategory는 MapCategory의 case rawValue를 활용하였습니다.
+*/
+
+
+// Common Components
+"LzIdentifier" = "ko";
+"LzConfirm" = "확인";
+"LzDone" = "완료";
+"LzCancel" = "취소";
+"LzCreate" = "추가";
+"LzModify" = "수정";
+"LzDiary" = "다이어리";
+"LzOutAlertTitle" = "다이어리를 나가시겠습니까?";
+"LzOutAlertMessage" = "다이어리를 나가면 공동편집을 할 수 없습니다.";
+"LzOutAlertOut" = "다이어리 나가기";
+"LzThumbnailSelect" = "섬네일 선택";
+
+
+// CommonScene - Album
+"LzAlbumEmpty" = "추가하신 사진이 없어요.";
+
+
+// SignInScene
+"LzSignInLogin" = "  Apple로 로그인";
+
+
+// HomeScene
+"LzHomeTitleLabel" = "다이어리";
+"LzHomeDateFilter" = "날짜순";
+"LzHomeNameFilter" = "이름순";
+"LzHomeCreate" = " 다이어리 추가";
+"LzHomeJoin" = " 초대코드 참가";
+"LzHomeJoinAlertTitle" = "초대코드 입력";
+"LzHomeJoinAlertMessage" = "받은 초대코드를 입력해주세요.";
+"LzHomeJoinAlertAdded" = "다이어리가 추가되었습니다.";
+"LzHomeJoinAlertFailed" = "다이어리 추가에 실패했습니다.";
+"LzHomeJoinAlertWrong" = "초대코드가 잘못되었습니다.";
+"LzHomeDay" = "일";
+"LzHomeDays" = "일";
+
+
+// DiaryConfigScene
+"LzDiaryConfigTitle" = "다이어리 %@";
+"LzDiaryConfigCreate" = "다이어리 추가를 취소하시겠습니까?";
+"LzDiaryConfigModify" = "변경사항은 저장되지 않습니다. 정말 취소하시겠습니까?";
+"LzDiaryConfigDiaryName" = "다이어리 이름 *";
+"LzDiaryConfigDiaryLocation" = "여행지 *";
+"LzDiaryConfigDiaryDate" = "날짜 *";
+"LzDiaryConfigDiaryColor" = "다이어리 표지 색상 *";
+"LzDiaryConfigDiaryImage" = "대표 이미지";
+"LzDiaryConfigIncomplete" = "작성이 완료되지 않았습니다.";
+"LzDiaryConfigSetImage" = "대표 이미지 설정";
+"LzDiaryConfigAlbum" = "앨범에서 사진 선택";
+"LzDiaryConfigDefaultImage" = "기본 이미지로 변경";
+"LzDiaryConfigNamePlaceholder" = "다이어리 이름을 입력해주세요.";
+"LzDiaryConfigLocationPlaceholder" = "여행지를 입력해주세요.";
+"LzDiaryConfigDatePlaceholder" = "여행한 날짜를 선택해주세요.";
+
+
+// Calendar
+"LzCalendarSelectDate" = "날짜를 선택하세요";
+"LzCalendarOneDay" = " 당일치기";
+"LzCalendarYear" = "년";
+"LzCalendarMonth" = "월";
+"LzCalendarDay" = "일";
+"LzCalendarSunday" = "일";
+"LzCalendarMonday" = "월";
+"LzCalendarTueday" = "화";
+"LzCalendarWednesday" = "수";
+"LzCalendarThursday" = "목";
+"LzCalendarFriday" = "금";
+"LzCalendarSaturday" = "토";
+"LzCalendarFrom" = "%@ 부터";
+
+
+// DiaryDaysScene
+"LzDiaryDaysDayLabel" = "%@일차";
+"LzDiaryDaysCodeCopy" = " 초대코드 복사";
+"LzDiaryDaysShareLink" = " 초대링크 공유";
+"LzDiaryDaysDiaryModify" = " 다이어리 수정";
+"LzDiaryDaysDiaryOut" = " 다이어리 탈퇴";
+"LzDiaryDaysCodeCopyMessage" = "초대코드가 복사되었습니다.";
+
+
+// UserScene
+"LzUserTitle" = "마이페이지";
+"LzUserNickName" = "닉네임";
+"LzUserEditProfile" = "프로필 설정";
+"LzUserTravelDestination" = "가본 여행지";
+"LzUserLogoutMessage" = "로그아웃 하시겠습니까?";
+"LzUserNickNameMessage" = "회원탈퇴 하시겠습니까?";
+"LzUserWithrawalMessage" = "닉네임을 입력해주세요.";
+"LzUserAppVersion" = "앱 버전";
+"LzUserOpenSource" = "오픈소스";
+"LzUserAppRate" = "앱 평가하기";
+"LzUserLogout" = "로그아웃";
+"LzUserWithrawal" = "회원탈퇴";
+
+
+// PageScene
+"LzPageDayLabel" = "%@일차";
+"LzPageEditPage" = " 페이지 편집";
+"LzPageSharePage" = " 페이지 공유";
+"LzPageAddPage" = " 페이지 추가";
+"LzPageDeletePage" = " 페이지 삭제";
+"LzPageSelectThumbnail" = " 섬네일 선택";
+"LzPageNoImageMessage" = "페이지에 선택할 이미지가 없습니다.";
+"LzPageTextPlaceholder" = "텍스트를 입력해주세요";
+
+
+// DynamicLinkBuilder
+"LzInvitationTitle" = "트다(TDAA)로 당신을 초대합니다";
+"LzInvitationMessage" = "우리 함께 여행 다이어리를 작성해보아요!";
+
+
+// Map Category
+"MKPOICategoryAirport" = "공항";
+"MKPOICategoryAmusementPark" = "놀이공원";
+"MKPOICategoryAquarium" = "아쿠아리움";
+"MKPOICategoryAtm" = "ATM";
+"MKPOICategoryBakery" = "베이커리";
+"MKPOICategoryBank" = "은행";
+"MKPOICategoryBeach" = "해변";
+"MKPOICategoryBrewery" = "맥주 공장";
+"MKPOICategoryCafe" = "카페";
+"MKPOICategoryCampground" = "캠핑장";
+"MKPOICategoryCarRental" = "렌트카";
+"MKPOICategoryEvCharger" = "전기차 충전소";
+"MKPOICategoryFireStation" = "소방서";
+"MKPOICategoryFitnessCenter" = "헬스장";
+"MKPOICategoryFoodMarket" = "푸드코드";
+"MKPOICategoryGasStation" = "주유소";
+"MKPOICategoryHospital" = "병원";
+"MKPOICategoryHotel" = "호텔";
+"MKPOICategoryLaundry" = "세탁";
+"MKPOICategoryLibrary" = "도서관";
+"MKPOICategoryMarina" = "선착장";
+"MKPOICategoryMovieTheater" = "영화관";
+"MKPOICategoryMuseum" = "박물관";
+"MKPOICategoryNationalPark" = "국립공원";
+"MKPOICategoryNightlife" = "유흥업소";
+"MKPOICategoryPark" = "공원";
+"MKPOICategoryParking" = "주차";
+"MKPOICategoryPharmacy" = "약국";
+"MKPOICategoryPolice" = "경찰서";
+"MKPOICategoryPostOffice" = "우체국";
+"MKPOICategoryPublicTransport" = "대중교통";
+"MKPOICategoryRestaurant" = "음식점";
+"MKPOICategoryRestroom" = "화장실";
+"MKPOICategorySchool" = "학교";
+"MKPOICategoryStadium" = "경기장";
+"MKPOICategoryStore" = "상점";
+"MKPOICategoryTheater" = "공연장";
+"MKPOICategoryUniversity" = "대학교";
+"MKPOICategoryWinery" = "양조장";
+"MKPOICategoryZoo" = "동물원";

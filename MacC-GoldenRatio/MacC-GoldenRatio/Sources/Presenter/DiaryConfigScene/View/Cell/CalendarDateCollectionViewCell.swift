@@ -100,7 +100,7 @@ class CalendarDateCollectionViewCell: UICollectionViewCell {
             termBackgroundView.snp.removeConstraints()
             
         case .start: // 시작일 선택
-            if day.date.dayOfTheWeek() == "토" {
+            if day.date.dayOfTheWeek() == "LzCalendarSaturday".localized {
                 termBackgroundView.snp.removeConstraints()
             } else {
                 termBackgroundView.snp.makeConstraints {
@@ -112,7 +112,7 @@ class CalendarDateCollectionViewCell: UICollectionViewCell {
             }
             
         case .end: // 종료일 선택
-            if day.date.dayOfTheWeek() == "일" {
+            if day.date.dayOfTheWeek() == "LzCalendarSunday".localized {
                 termBackgroundView.snp.removeConstraints()
             } else {
                 termBackgroundView.snp.makeConstraints {
@@ -129,14 +129,14 @@ class CalendarDateCollectionViewCell: UICollectionViewCell {
                 $0.size.equalTo(CGSize(width: size, height: size))
             }
             
-            if day.date.dayOfTheWeek() == "일" {
+            if day.date.dayOfTheWeek() == "LzCalendarSunday".localized {
                 termBackgroundView.snp.makeConstraints {
                     $0.leading.equalTo(numberLabel.snp.centerX).offset(2)
                     $0.top.equalTo(selectionBackgroundView.snp.top)
                     $0.width.equalTo(contentView.snp.width).dividedBy(Layout.calendarCellDivider)
                     $0.height.equalTo(selectionBackgroundView.snp.height)
                 }
-            } else if day.date.dayOfTheWeek() == "토" {
+            } else if day.date.dayOfTheWeek() == "LzCalendarSaturday".localized {
                 termBackgroundView.snp.makeConstraints {
                     $0.trailing.equalTo(numberLabel.snp.centerX).offset(-2)
                     $0.top.equalTo(selectionBackgroundView.snp.top)

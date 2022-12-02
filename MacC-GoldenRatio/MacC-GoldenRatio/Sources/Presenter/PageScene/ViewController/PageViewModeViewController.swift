@@ -126,7 +126,7 @@ class PageViewModeViewController: UIViewController {
         self.pageViewModeViewModel.selectedPageIndexSubject
             .observe(on: MainScheduler.instance)
             .map{
-                ($0.0 + 1).description + "일차"
+                "LzPageDayLabel".localizedFormat(($0.0 + 1).description)
             }
             .bind(to: self.navigationItem.rx.title)
             .disposed(by: self.pageViewModeViewModel.disposeBag)
@@ -178,9 +178,9 @@ class PageViewModeViewController: UIViewController {
     
     @objc private func onTapNavigationMenu() {
         let popUp = PopUpViewController(popUpPosition: .top)
-        popUp.addButton(buttonTitle: " 페이지 편집", buttonSymbol: "square.and.pencil", buttonSize: 17, action: onTapEditCurrentPage)
-        popUp.addButton(buttonTitle: " 페이지 공유", buttonSymbol: "square.and.arrow.up", buttonSize: 17 , action: onTapShareCurrentPage)
-        popUp.addButton(buttonTitle: " 섬네일 선택", buttonSymbol: "photo.on.rectangle.angled", buttonSize: 15 , action: onTapThumbnailConfig)
+        popUp.addButton(buttonTitle: "LzPageEditPage".localized, buttonSymbol: "square.and.pencil", buttonSize: 17, action: onTapEditCurrentPage)
+        popUp.addButton(buttonTitle: "LzPageSharePage".localized, buttonSymbol: "square.and.arrow.up", buttonSize: 17 , action: onTapShareCurrentPage)
+        popUp.addButton(buttonTitle: "LzPageSelectThumbnail".localized, buttonSymbol: "photo.on.rectangle.angled", buttonSize: 15 , action: onTapThumbnailConfig)
 
         self.present(popUp, animated: false)
     }
@@ -239,8 +239,8 @@ class PageViewModeViewController: UIViewController {
             viewController.modalPresentationStyle = .fullScreen
             self.present(viewController, animated: true)
         } else {
-            let alert = UIAlertController(title: "섬네일 선택", message: "페이지에 선택할 이미지가 없습니다.", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "확인", style: .default))
+            let alert = UIAlertController(title: "LzThumbnailSelect".localized, message: "LzPageNoImageMessage".localized, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "LzConfirm".localized, style: .default))
             self.present(alert, animated: true)
         }
     }

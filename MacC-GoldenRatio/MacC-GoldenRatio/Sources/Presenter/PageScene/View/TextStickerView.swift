@@ -18,7 +18,7 @@ enum TextStickerViewMode {
 
 class TextStickerView: StickerView {
     let defaultPosition = CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 4)
-    private let placehloderText = "텍스트를 입력해주세요"
+    private let placehloderText = "LzPageTextPlaceholder".localized
 
     var editModeDefaultFrame: CGRect!
 

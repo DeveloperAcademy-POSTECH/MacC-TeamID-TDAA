@@ -39,7 +39,7 @@ class AlbumCollectionView: UICollectionView {
 				DispatchQueue.main.async {
 					if data.count == 0 {
 						let emptyView = CollectionEmptyView()
-						emptyView.setupViews(text: "추가하신 사진이 없어요.")
+                        emptyView.setupViews(text: "LzAlbumEmpty".localized)
 						self.backgroundView = emptyView
 					} else {
 						self.backgroundView = nil

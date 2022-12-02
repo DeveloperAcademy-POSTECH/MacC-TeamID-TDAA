@@ -8,6 +8,9 @@
 import UIKit
 
 struct Layout {
+	
+	private init() { }
+	
 	// MARK: MyHomeView
 	static let tabBarTitleLabelLeading: Int = 20
 	static let tabBarTitleLabelTop: Int = 30

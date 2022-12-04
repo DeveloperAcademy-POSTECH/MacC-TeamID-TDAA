@@ -25,6 +25,7 @@ class FirebaseStorageManager {
     }
 	
     static func downloadImage(urlString: String, completion: @escaping (UIImage?) -> Void) {
+        guard urlString.verifyUrl() else { return }
         let storageReference = Storage.storage().reference(forURL: urlString)
         let megaByte = Int64(1 * 1024 * 1024)
         

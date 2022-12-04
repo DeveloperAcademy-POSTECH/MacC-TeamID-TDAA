@@ -403,15 +403,12 @@ extension PageEditModeViewController {
     }
 
     @objc private func onTapNavigationComplete() {
-        self.pageEditModeViewModel.updateCurrentPageDataToDiaryModel(backgroundView: self.backgroundView)
-        
-        DispatchQueue.main.async {
-            guard let diary = try? self.pageEditModeViewModel.diaryObservable.value() else  { return }
-            guard let selectedPageIndex = try? self.pageEditModeViewModel.selectedPageIndexSubject.value() else  { return }
-            
+        self.pageEditModeViewModel.updateCurrentPageDataToDiaryModel(backgroundView: self.backgroundView) { diary, selectedPageIndex in
             self.completion(diary, selectedPageIndex)
             
-            self.navigationController?.popViewController(animated: true)
+            DispatchQueue.main.async {
+                self.navigationController?.popViewController(animated: true)
+            }
         }
     }
 }

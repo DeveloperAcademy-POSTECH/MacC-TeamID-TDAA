@@ -91,7 +91,7 @@ class StickerViewData {
             .disposed(by: disposeBag)
     }
     
-    func updateContents(contents: [String]) {
+    func updateContents(contents: [String], completion: (() -> Void)? = nil) {
         
         self.itemObservable
             .observe(on: MainScheduler.instance)
@@ -104,8 +104,13 @@ class StickerViewData {
             }
             .subscribe(onNext: {
                 self.itemObservable.onNext($0)
+                
+                if let completion = completion {
+                    completion()
+                }
             })
             .disposed(by: disposeBag)
+        
         
     }
     

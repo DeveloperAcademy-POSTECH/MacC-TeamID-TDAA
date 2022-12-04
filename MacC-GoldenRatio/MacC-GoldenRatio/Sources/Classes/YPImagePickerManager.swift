@@ -61,8 +61,9 @@ class YPImagePickerManager {
                     break
                 }
             }
-            completion(selectedImages)
-            imagePicker.dismiss(animated: true, completion: nil)
+            imagePicker.dismiss(animated: true, completion: {
+                completion(selectedImages)
+            })
         }
         viewControllerToPresent.present(imagePicker, animated: true)
     }

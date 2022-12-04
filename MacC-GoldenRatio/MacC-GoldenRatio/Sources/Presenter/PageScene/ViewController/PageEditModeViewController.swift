@@ -215,6 +215,10 @@ class PageEditModeViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(configureNavigationConfirmButtonEnabled(_:)), name: .isNavigationConfirmButtonEnabled, object: nil)
     }
     
+    private func deleteNavigationButtonNotification() {
+        NotificationCenter.default.removeObserver(self, name: .isNavigationConfirmButtonEnabled, object: nil)
+    }
+    
     @objc func configureNavigationConfirmButtonEnabled(_ notification: Notification) {
         guard let isEnabled = notification.object as? Bool else { return }
 
@@ -321,15 +325,14 @@ class PageEditModeViewController: UIViewController {
     
     private func addImageStickers(images: [UIImage]) {
         guard let diaryUUID = try? pageEditModeViewModel.diaryObservable.value().diaryUUID else { return }
-        
+        // 업로드 작업 동안 "완료" 버튼 비활성화
+        NotificationCenter.default.post(name: .isNavigationConfirmButtonEnabled, object: false)
+
         images.forEach {
             DispatchGroup.uploadImageDispatchGroup.enter()
             let imageStickerView = ImageStickerView(image: $0, diaryUUID: diaryUUID, appearPoint: newStickerAppearPoint)
             self.addSticker(stickerView: imageStickerView)
         }
-        // 업로드 작업 동안 "완료" 버튼 비활성화
-        NotificationCenter.default.post(name: .isNavigationConfirmButtonEnabled, object: false)
-
         // 업로드 작업 끝나면 "완료" 버튼 활성화
         DispatchGroup.uploadImageDispatchGroup.notify(queue: DispatchQueue.main) {
             NotificationCenter.default.post(name: .isNavigationConfirmButtonEnabled, object: true)
@@ -390,14 +393,14 @@ extension PageEditModeViewController {
     }
 
     @objc private func onTapNavigationCancel() {
-        self.pageEditModeViewModel.restoreOldDiary()
+        guard let oldDiary = self.pageEditModeViewModel.oldDiary else { return }
+        guard let selectedPageIndex = try? self.pageEditModeViewModel.selectedPageIndexSubject.value() else  { return }
+        
+        self.completion(oldDiary, selectedPageIndex)
+        
+        self.deleteNavigationButtonNotification()
         
         DispatchQueue.main.async {
-            guard let diary = try? self.pageEditModeViewModel.diaryObservable.value() else  { return }
-            guard let selectedPageIndex = try? self.pageEditModeViewModel.selectedPageIndexSubject.value() else  { return }
-            
-            self.completion(diary, selectedPageIndex)
-            
             self.navigationController?.popViewController(animated: true)
         }
     }
@@ -406,6 +409,8 @@ extension PageEditModeViewController {
         self.pageEditModeViewModel.updateCurrentPageDataToDiaryModel(backgroundView: self.backgroundView) { diary, selectedPageIndex in
             self.completion(diary, selectedPageIndex)
             
+            self.deleteNavigationButtonNotification()
+
             DispatchQueue.main.async {
                 self.navigationController?.popViewController(animated: true)
             }

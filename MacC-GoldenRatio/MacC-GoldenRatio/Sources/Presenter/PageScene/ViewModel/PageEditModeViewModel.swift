@@ -83,10 +83,6 @@ class PageEditModeViewModel {
     }
     
     // MARK: PageEditMode 메서드
-    func restoreOldDiary() {
-        self.diaryObservable.onNext(self.oldDiary)
-    }
-    
     func addNewPage(to: AddPage) {
         var selectedDayIndex = 0
         var newPageIndex = 0

@@ -41,6 +41,7 @@
 		0AAB2AE028EDA553009FBD96 /* ImageStickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2ADF28EDA553009FBD96 /* ImageStickerView.swift */; };
 		0AAB2AE228EDA55D009FBD96 /* StickerStickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB2AE128EDA55D009FBD96 /* StickerStickerView.swift */; };
 		0AAEB39129309E1700AEB5B8 /* YPImagePickerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAEB39029309E1700AEB5B8 /* YPImagePickerManager.swift */; };
+		0AC11EA6293B352A001736FA /* DispatchGroup+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC11EA5293B352A001736FA /* DispatchGroup+.swift */; };
 		0AD6FD7E2903054D00939F3D /* MapSearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD6FD7D2903054D00939F3D /* MapSearchResultTableViewCell.swift */; };
 		0AE27F2528F442B100D79208 /* FirebaseStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE27F2428F442B100D79208 /* FirebaseStorage.swift */; };
 		0AE94ABC291182090051A710 /* ErrorMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE94ABB291182090051A710 /* ErrorMessage.swift */; };
@@ -208,6 +209,7 @@
 		0AAB2ADF28EDA553009FBD96 /* ImageStickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageStickerView.swift; sourceTree = "<group>"; };
 		0AAB2AE128EDA55D009FBD96 /* StickerStickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerStickerView.swift; sourceTree = "<group>"; };
 		0AAEB39029309E1700AEB5B8 /* YPImagePickerManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YPImagePickerManager.swift; sourceTree = "<group>"; };
+		0AC11EA5293B352A001736FA /* DispatchGroup+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DispatchGroup+.swift"; sourceTree = "<group>"; };
 		0AD6FD7D2903054D00939F3D /* MapSearchResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapSearchResultTableViewCell.swift; sourceTree = "<group>"; };
 		0AE27F2428F442B100D79208 /* FirebaseStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseStorage.swift; sourceTree = "<group>"; };
 		0AE94ABB291182090051A710 /* ErrorMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMessage.swift; sourceTree = "<group>"; };
@@ -871,6 +873,7 @@
 				E2ED4871290ABE46002FEC2B /* Notification+.swift */,
 				B93EC22828F7BC8000BB89C5 /* String+.swift */,
 				CCE5BE17291E425700D2DC8F /* NSMutableAttributedString+.swift */,
+				0AC11EA5293B352A001736FA /* DispatchGroup+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1108,6 +1111,7 @@
 				E26F0DB22916B33900B040C9 /* CollectionEmptyView.swift in Sources */,
 				0A1C3FE3291E9C2D009A8C31 /* PageCollectionViewHeaderCell.swift in Sources */,
 				E276B92028E4812E00163833 /* UIScreen+.swift in Sources */,
+				0AC11EA6293B352A001736FA /* DispatchGroup+.swift in Sources */,
 				CC40BC1F28EEB10800DF48E1 /* CalendarPickerViewController.swift in Sources */,
 				0A3ED14828FBE6EB000D55D8 /* MyPageViewController.swift in Sources */,
 				CCACFE66292F5A380038D792 /* ThumbnailPreviewViewModel.swift in Sources */,

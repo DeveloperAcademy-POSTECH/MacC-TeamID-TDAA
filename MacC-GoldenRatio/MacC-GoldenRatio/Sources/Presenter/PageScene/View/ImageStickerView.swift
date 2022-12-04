@@ -99,12 +99,13 @@ class ImageStickerView: StickerView {
             self.imageView.image = image
         }
         
-        DispatchQueue.global().async {
+        DispatchQueue.global().async() {
             FirebaseStorageManager.uploadImage(image: image, pathRoot: path) { url in
                 guard let url = url else { return }
                 ImageManager.shared.cacheImage(urlString: url.absoluteString, image: image)
-
                 self.stickerViewData?.updateContents(contents: [url.absoluteString])
+                
+                DispatchGroup.uploadImageDispatchGroup.leave()
             }
         }
     }

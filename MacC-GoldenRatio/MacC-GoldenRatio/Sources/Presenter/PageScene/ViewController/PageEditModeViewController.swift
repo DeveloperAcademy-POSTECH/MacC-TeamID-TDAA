@@ -121,7 +121,9 @@ class PageEditModeViewController: UIViewController {
             
             self.setPageDescription()
             self.setStickerViews()
+            self.setNavigationButtonNotification()
         }
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -209,6 +211,18 @@ class PageEditModeViewController: UIViewController {
 		self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.navigationTitleFont, NSAttributedString.Key.foregroundColor:UIColor.black]
     }
 
+    private func setNavigationButtonNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(configureNavigationConfirmButtonEnabled(_:)), name: .isNavigationConfirmButtonEnabled, object: nil)
+    }
+    
+    @objc func configureNavigationConfirmButtonEnabled(_ notification: Notification) {
+        guard let isEnabled = notification.object as? Bool else { return }
+
+        DispatchQueue.main.async {
+            self.navigationItem.rightBarButtonItem?.isEnabled = isEnabled
+        }
+    }
+    
     private func addSubviews() {
         DispatchQueue.main.async {
             self.view.addSubview(self.backgroundView)
@@ -307,9 +321,18 @@ class PageEditModeViewController: UIViewController {
     
     private func addImageStickers(images: [UIImage]) {
         guard let diaryUUID = try? pageEditModeViewModel.diaryObservable.value().diaryUUID else { return }
+        
         images.forEach {
+            DispatchGroup.uploadImageDispatchGroup.enter()
             let imageStickerView = ImageStickerView(image: $0, diaryUUID: diaryUUID, appearPoint: newStickerAppearPoint)
             self.addSticker(stickerView: imageStickerView)
+        }
+        // 업로드 작업 동안 "완료" 버튼 비활성화
+        NotificationCenter.default.post(name: .isNavigationConfirmButtonEnabled, object: false)
+
+        // 업로드 작업 끝나면 "완료" 버튼 활성화
+        DispatchGroup.uploadImageDispatchGroup.notify(queue: DispatchQueue.main) {
+            NotificationCenter.default.post(name: .isNavigationConfirmButtonEnabled, object: true)
         }
     }
     

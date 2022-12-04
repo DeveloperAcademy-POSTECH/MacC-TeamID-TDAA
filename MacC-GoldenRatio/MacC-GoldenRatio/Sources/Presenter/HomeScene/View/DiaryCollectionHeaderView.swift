@@ -10,12 +10,11 @@ import SnapKit
 import UIKit
 
 final class DiaryCollectionHeaderView: UIView {
-	let myDevice = UIScreen.getDevice()
 	
 	private lazy var titleLabel: UILabel = {
 		let label =  UILabel()
-		label.text = "다이어리"
-		label.font = myDevice.TabBarTitleFont
+		label.font = .title1
+        label.text = "LzHomeTitleLabel".localized
 		label.textColor = UIColor.buttonColor
 		
 		return label
@@ -34,8 +33,8 @@ final class DiaryCollectionHeaderView: UIView {
 		addSubview(titleLabel)
 		
 		titleLabel.snp.makeConstraints {
-			$0.leading.equalToSuperview().inset(myDevice.TabBarTitleLabelLeading)
-			$0.top.equalToSuperview().offset(myDevice.TabBarTitleLabelTop)
+			$0.leading.equalToSuperview().inset(Layout.tabBarTitleLabelLeading)
+			$0.top.equalToSuperview().offset(Layout.tabBarTitleLabelTop)
 		}
 	}
 }

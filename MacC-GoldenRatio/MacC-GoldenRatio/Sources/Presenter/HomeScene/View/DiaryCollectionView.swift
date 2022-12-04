@@ -11,7 +11,6 @@ import UIKit
 
 class DiaryCollectionView: UICollectionView {
 	private let disposeBag = DisposeBag()
-	private let myDevice = UIScreen.getDevice()
 	
 	let viewModel: DiaryCollectionViewModel
 	
@@ -61,7 +60,7 @@ class DiaryCollectionView: UICollectionView {
 
 extension DiaryCollectionView: UICollectionViewDelegateFlowLayout {
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-		return myDevice.diaryCollectionViewCellSize
+		return Layout.diaryCollectionViewCellSize
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {

@@ -9,7 +9,6 @@ import SnapKit
 import UIKit
 
 class PopUpViewController: UIViewController {
-    private let device = UIScreen.getDevice()
     private var contentView: UIView?
     private var buttons: [UIButton] = []
     private var popUpPosition: PopUpPosition?
@@ -65,7 +64,7 @@ class PopUpViewController: UIViewController {
         view.axis = .vertical
         view.spacing = 22.0
         view.distribution = .fill
-        view.alignment = .center
+        view.alignment = "LzIdentifier".localized == "ko" ? .center : .leading
         return view
     }()
     
@@ -101,20 +100,20 @@ class PopUpViewController: UIViewController {
         switch popUpPosition {
         case .bottom:
             containerView.snp.makeConstraints {
-                $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(device.MyDiariesViewAddDiaryButtonPadding + 90)
-                $0.trailing.equalTo(view.safeAreaLayoutGuide).inset(device.MyDiariesViewAddDiaryButtonPadding)
+                $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(Layout.addDiaryButtonPadding + 90)
+                $0.trailing.equalTo(view.safeAreaLayoutGuide).inset(Layout.addDiaryButtonPadding)
             }
         case .bottom2:
             containerView.snp.makeConstraints {
-                $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(2*device.pagePadding + device.pageToolButtonSize.height)
-                $0.trailing.equalTo(view.safeAreaLayoutGuide).inset(device.pagePadding)
+                $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(2*Layout.pagePadding + Layout.pageToolButtonSize.height)
+                $0.trailing.equalTo(view.safeAreaLayoutGuide).inset(Layout.pagePadding)
             }
             
         case .top:
             containerView.snp.makeConstraints {
                 $0.trailing.equalToSuperview().inset(20)
                 $0.top.equalToSuperview().inset(100)
-                $0.width.equalTo(165)
+                $0.width.equalTo("LzIdentifier".localized == "ko" ? 165 : 210)
             }
             
         default:
@@ -136,7 +135,7 @@ class PopUpViewController: UIViewController {
     public func addButton(buttonTitle: String, action: (() -> Void)? = nil) {
         let button = UIButton()
         button.setTitle(buttonTitle, for: .normal)
-        button.titleLabel?.font = device.popUpModalFont
+        button.titleLabel?.font = .subheadline
         button.setTitleColor(.black, for: .normal)
         button.isUserInteractionEnabled = true
         button.addAction(for: .touchUpInside) { _ in
@@ -153,7 +152,7 @@ class PopUpViewController: UIViewController {
         button.setTitle(buttonTitle, for: .normal)
         button.setImage(UIImage(systemName: buttonSymbol, withConfiguration: configuration) ?? UIImage(), for: .normal)
         button.tintColor = .black
-        button.titleLabel?.font = device.popUpModalFont
+        button.titleLabel?.font = .subheadline
         button.setTitleColor(.black, for: .normal)
         button.isUserInteractionEnabled = true
         button.addAction(for: .touchUpInside) { _ in

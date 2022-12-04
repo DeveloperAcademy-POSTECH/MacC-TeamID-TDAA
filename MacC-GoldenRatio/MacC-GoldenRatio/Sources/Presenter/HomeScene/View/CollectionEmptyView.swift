@@ -11,11 +11,10 @@ import SnapKit
 import UIKit
 
 final class CollectionEmptyView: UIView {
-	private let myDevice = UIScreen.getDevice()
 	
 	private lazy var textLabel: UILabel = {
 		let label = UILabel()
-		label.font = myDevice.collectionBackgoundViewFont
+		label.font = .body
 		label.textColor = UIColor.calendarWeeklyGrayColor
 		label.textAlignment = .center
 		return label

@@ -96,10 +96,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             myHomeViewController.viewModel.updateJoinDiary(diaryUUID)
             DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
 				NotificationCenter.default.post(name: .reloadDiary, object: nil)
-                myHomeViewController.view.showToastMessage("다이어리가 추가되었습니다.")
+                myHomeViewController.view.showToastMessage("LzHomeJoinAlertAdded".localized)
             }
         } else {
-            UIApplication.currentViewController()?.view.showToastMessage("다이어리 추가에 실패했습니다.")
+            UIApplication.currentViewController()?.view.showToastMessage("LzHomeJoinAlertFailed".localized)
         }
     }
     

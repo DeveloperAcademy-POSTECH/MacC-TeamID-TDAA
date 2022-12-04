@@ -12,7 +12,6 @@ import UIKit
 
 class ThumbnailConfigViewController: UIViewController {
     private var disposeBag = DisposeBag()
-    private let device: UIScreen.DeviceSize = UIScreen.getDevice()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,16 +75,16 @@ class ThumbnailConfigViewController: UIViewController {
     private func attribute() {
         view.backgroundColor = UIColor.appBackgroundColor
         
-        titleLabel.text = "섬네일 선택"
+        titleLabel.text = "LzThumbnailSelect".localized
         titleLabel.textColor = .black
-        titleLabel.font = device.diaryConfigTitleFont
+        titleLabel.font = .body
         
-        cancelButton.setTitle("취소", for: .normal)
-        cancelButton.titleLabel?.font = device.diaryConfigButtonFont
+        cancelButton.setTitle("LzCreate".localized, for: .normal)
+        cancelButton.titleLabel?.font = .body
         cancelButton.tintColor = .navigationbarColor
         
-        doneButton.setTitle("완료", for: .normal)
-        doneButton.titleLabel?.font = device.diaryConfigButtonFont
+        doneButton.setTitle("LzDone".localized, for: .normal)
+        doneButton.titleLabel?.font = .body
         doneButton.tintColor = .navigationbarColor
         
         divider.backgroundColor = UIColor.placeholderText
@@ -102,13 +101,13 @@ class ThumbnailConfigViewController: UIViewController {
         }
         
         cancelButton.snp.makeConstraints {
-            $0.left.equalToSuperview().inset(device.diaryConfigCancelButtonLeftInset)
+            $0.left.equalToSuperview().inset(Layout.diaryConfigCancelButtonLeftInset)
             $0.height.equalTo(titleLabel)
             $0.top.equalTo(titleLabel)
         }
         
         doneButton.snp.makeConstraints {
-            $0.right.equalToSuperview().inset(device.diaryConfigDoneButtonRightInset)
+            $0.right.equalToSuperview().inset(Layout.diaryConfigDoneButtonRightInset)
             $0.height.equalTo(titleLabel)
             $0.top.equalTo(titleLabel)
         }

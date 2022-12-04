@@ -21,7 +21,6 @@ class StickerView: UIView {
     var disposeBag = DisposeBag()
     
     internal var stickerViewData: StickerViewData?
-    internal let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
 
     internal var touchStart: CGPoint?
     private var previousPoint: CGPoint?
@@ -127,7 +126,7 @@ class StickerView: UIView {
     internal func updateControlsPosition() {
         DispatchQueue.main.async {
             guard let borderView = self.borderView, let deleteController = self.deleteController, let resizingController = self.resizingController else { return }
-            let inset = self.myDevice.stickerBorderInset
+            let inset = Layout.stickerBorderInset
             borderView.frame = CGRect(x: -inset, y: -inset, width: self.bounds.size.width + inset * 2,
                                            height: self.bounds.size.height + inset * 2)
             deleteController.center = CGPoint(x: self.borderView.frame.maxX, y: self.borderView.frame.origin.y)

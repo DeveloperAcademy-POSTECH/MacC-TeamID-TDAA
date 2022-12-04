@@ -14,14 +14,13 @@ import CryptoKit
 
 class MyPageViewController: UIViewController {
     private var cancelBag = Set<AnyCancellable>()
-    private let myDevice = UIScreen.getDevice()
     private let viewModel = MyPageViewModel.shared
     private var currentNonce: String?
 
 	private lazy var titleLabel: UILabel = {
 		let label = UILabel()
 		label.text = "마이페이지"
-		label.font = myDevice.myAlbumPhotoPageLabelFont
+		label.font = .body
 		label.textColor = .black
 		
 		return label
@@ -55,8 +54,8 @@ class MyPageViewController: UIViewController {
     private lazy var nickNameTitleLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.text = "닉네임"
-        label.font = .labelSubTitleFont2
+        label.text = "LzUserNickName".localized
+        label.font = .subheadline2
         
         return label
     }()
@@ -65,16 +64,16 @@ class MyPageViewController: UIViewController {
         let label = UILabel()
         label.textColor = .black
         label.text = "홀리 마운틴"
-        label.font = .labelTtitleFont2
+        label.font = .body
         
         return label
     }()
     
     private lazy var profileSettingButton: UIButton = {
         let button = UIButton()
-
-        let title = "프로필 설정"
-        let attributes = [NSAttributedString.Key.font:UIFont.labelSubTitleFont2]
+        
+        let title = "LzUserEditProfile".localized
+        let attributes = [NSAttributedString.Key.font:UIFont.subheadline2]
         let attributedString = NSAttributedString(string: title, attributes: attributes)
         let mutableAttributedString = NSMutableAttributedString(attributedString: attributedString)
         mutableAttributedString.addAttribute(.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: NSRange(location: 0, length: title.count))
@@ -88,8 +87,8 @@ class MyPageViewController: UIViewController {
     private lazy var travelsTitleLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.text = "가본 여행지"
-        label.font = .labelSubTitleFont2
+        label.text = "LzUserTravelDestination".localized
+        label.font = .subheadline2
 
         return label
     }()
@@ -128,7 +127,7 @@ class MyPageViewController: UIViewController {
             self.configureNickName()
             self.configureProfileImage()
             self.configureTravelLocations()
-            self.profileImageView.layer.cornerRadius = self.myDevice.myPageProfileImageSize.width * 0.5
+            self.profileImageView.layer.cornerRadius = Layout.myPageProfileImageSize.width * 0.5
         }
     }
 	
@@ -155,38 +154,38 @@ class MyPageViewController: UIViewController {
 		}
 		
         profileImageView.snp.makeConstraints { make in
-            make.top.equalTo(lineView.snp.bottom).offset(myDevice.myPageVerticalSpacing4)
-            make.leading.equalTo(view.safeAreaLayoutGuide).offset(myDevice.myPageHorizontalPadding)
-            make.size.equalTo(myDevice.myPageProfileImageSize)
+            make.top.equalTo(lineView.snp.bottom).offset(Layout.myPageVerticalSpacing4)
+            make.leading.equalTo(view.safeAreaLayoutGuide).offset(Layout.myPageHorizontalPadding)
+            make.size.equalTo(Layout.myPageProfileImageSize)
         }
         nickNameTitleLabel.snp.makeConstraints { make in
-            make.leading.equalTo(profileImageView.snp.trailing).offset(myDevice.myPageHorizontalSpacing2)
+            make.leading.equalTo(profileImageView.snp.trailing).offset(Layout.myPageHorizontalSpacing2)
             make.top.equalTo(profileImageView.snp.top)
             make.bottom.equalTo(profileImageView.snp.centerY)
         }
         nickNameLabel.snp.makeConstraints { make in
-            make.leading.equalTo(profileImageView.snp.trailing).offset(myDevice.myPageHorizontalSpacing2)
+            make.leading.equalTo(profileImageView.snp.trailing).offset(Layout.myPageHorizontalSpacing2)
             make.top.equalTo(profileImageView.snp.centerY)
             make.bottom.equalTo(profileImageView.snp.bottom)
         }
         profileSettingButton.snp.makeConstraints { make in
-            make.top.equalTo(profileImageView.snp.bottom).offset(myDevice.myPageVerticalSpacing)
-            make.leading.equalTo(view.safeAreaLayoutGuide).offset(myDevice.myPageHorizontalPadding)
+            make.top.equalTo(profileImageView.snp.bottom).offset(Layout.myPageVerticalSpacing)
+            make.leading.equalTo(view.safeAreaLayoutGuide).offset(Layout.myPageHorizontalPadding)
 
         }
         travelsTitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(profileSettingButton.snp.bottom).offset(myDevice.myPageVerticalSpacing3)
-            make.leading.equalTo(view.safeAreaLayoutGuide).offset(myDevice.myPageHorizontalPadding)
+            make.top.equalTo(profileSettingButton.snp.bottom).offset(Layout.myPageVerticalSpacing3)
+            make.leading.equalTo(view.safeAreaLayoutGuide).offset(Layout.myPageHorizontalPadding)
         }
         travelsCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(travelsTitleLabel.snp.bottom).offset(myDevice.myPageVerticalSpacing2)
-            make.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(myDevice.myPageHorizontalPadding)
-            make.bottom.equalTo(menuTableView.snp.top).offset(-myDevice.myPageVerticalSpacing2)
+            make.top.equalTo(travelsTitleLabel.snp.bottom).offset(Layout.myPageVerticalSpacing2)
+            make.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(Layout.myPageHorizontalPadding)
+            make.bottom.equalTo(menuTableView.snp.top).offset(-Layout.myPageVerticalSpacing2)
         }
         menuTableView.snp.makeConstraints { make in
             make.horizontalEdges.equalTo(view.safeAreaLayoutGuide)
             make.bottom.equalTo(view.safeAreaLayoutGuide)
-            make.height.equalTo(myDevice.myPageMenuTableViewHeight)
+            make.height.equalTo(Layout.myPageMenuTableViewHeight)
         }
     }
     
@@ -220,20 +219,20 @@ class MyPageViewController: UIViewController {
     }
     
     private func onTapLogOutButtonTapped() {
-        let ac = UIAlertController(title: "로그아웃 하시겠습니까?", message: nil, preferredStyle: .alert)
-        ac.addAction(UIAlertAction(title: "확인", style: .destructive) { _ in
+        let ac = UIAlertController(title: "LzUserLogoutMessage".localized, message: nil, preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "LzConfirm".localized, style: .destructive) { _ in
             self.authLogout()
         })
-        ac.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
+        ac.addAction(UIAlertAction(title: "LzCancel".localized, style: .cancel, handler: nil))
         present(ac, animated: true, completion: nil)
     }
     
     private func onTapWithdrawalButtonTapped() {
-        let ac = UIAlertController(title: "회원탈퇴 하시겠습니까?", message: nil, preferredStyle: .alert)
-        ac.addAction(UIAlertAction(title: "확인", style: .destructive) { _ in
+        let ac = UIAlertController(title: "LzUserWithrawalMessage".localized, message: nil, preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "LzConfirm".localized, style: .destructive) { _ in
             self.authWithdrawal()
         })
-        ac.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
+        ac.addAction(UIAlertAction(title: "LzCancel".localized, style: .cancel, handler: nil))
         present(ac, animated: true, completion: nil)
     }
     
@@ -306,17 +305,17 @@ extension MyPageViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch viewModel.menuArray[indexPath.item].0 {
-        case "오픈소스":
+        case "LzUserOpenSource".localized:
             let viewController = LicenseViewController()
             self.present(viewController, animated: true)
             break
-        case "앱 평가하기":
+        case "LzUserAppRate".localized:
             self.onTapRateApp()
             break
-        case "로그아웃":
+        case "LzUserLogout".localized:
             self.onTapLogOutButtonTapped()
             break
-        case "회원탈퇴":
+        case "LzUserWithrawal".localized:
             self.onTapWithdrawalButtonTapped()
             break
         default: break

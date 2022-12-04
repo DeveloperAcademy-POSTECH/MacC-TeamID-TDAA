@@ -9,7 +9,6 @@ import SnapKit
 import UIKit
 
 class CalendarPickerViewController: UIViewController {
-    private let device: UIScreen.DeviceSize = UIScreen.getDevice()
     var dateInterval: [Date]
     
     // MARK: Views
@@ -167,27 +166,27 @@ class CalendarPickerViewController: UIViewController {
         }
         
         collectionView.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview().inset(device.calendarCollectionViewInset)
+            $0.leading.trailing.equalToSuperview().inset(Layout.calendarCollectionViewInset)
             $0.centerY.equalToSuperview()
-            $0.height.equalToSuperview().multipliedBy(device.calendarCollectionViewMultiplier)
+            $0.height.equalToSuperview().multipliedBy(Layout.calendarCollectionViewMultiplier)
         }
         
         headerView.snp.makeConstraints {
             $0.leading.trailing.equalTo(collectionView)
             $0.bottom.equalTo(collectionView.snp.top)
-            $0.height.equalTo(device.calendarHeaderHeight)
+            $0.height.equalTo(Layout.calendarHeaderHeight)
         }
         
         footerView.snp.makeConstraints {
             $0.leading.trailing.equalTo(collectionView)
             $0.top.equalTo(collectionView.snp.bottom)
-            $0.height.equalTo(device.calendarFooterHeight)
+            $0.height.equalTo(Layout.calendarFooterHeight)
         }
         
         closeButton.snp.makeConstraints {
-            $0.top.equalTo(footerView.snp.bottom).offset(device.calendarCloseButtonTop)
+            $0.top.equalTo(footerView.snp.bottom).offset(Layout.calendarCloseButtonTop)
             $0.centerX.equalToSuperview()
-            $0.size.equalTo(device.calendarCloseButtonSize)
+            $0.size.equalTo(Layout.calendarCloseButtonSize)
         }
         
         monthPicker.snp.makeConstraints {
@@ -207,7 +206,7 @@ class CalendarPickerViewController: UIViewController {
         
         if monthPicker.isHidden == true {
             collectionView.reloadData()
-            self.footerView.buttonLabel = "날짜를 선택하세요"
+            self.footerView.buttonLabel = "LzCalendarSelectDate".localized
             self.footerView.selectButton.isEnabled = false
             UIView.animate(withDuration: 0.2) {
                 let angle = CGAffineTransform(rotationAngle: 0)
@@ -216,7 +215,7 @@ class CalendarPickerViewController: UIViewController {
             }
         } else {
             self.dateInterval.removeAll()
-            self.footerView.buttonLabel = "확인"
+            self.footerView.buttonLabel = "LzConfirm".localized
             self.footerView.selectButton.isEnabled = true
             UIView.animate(withDuration: 0.2) {
                 let angle = CGAffineTransform(rotationAngle: .pi/2)
@@ -384,7 +383,7 @@ extension CalendarPickerViewController: UICollectionViewDelegateFlowLayout {
         case 1:
             self.footerView.selectButton.isEnabled = false
             let startDate = dateInterval[0]
-            self.footerView.buttonLabel = "\(startDate.customFormat()) (\(startDate.dayOfTheWeek())) 부터"
+            self.footerView.buttonLabel =  "LzCalendarFrom".localizedFormat("\(startDate.customFormat()) (\(startDate.dayOfTheWeek()))")
         case 2:
             self.footerView.selectButton.isEnabled = true
             let startDate = dateInterval[0]
@@ -395,14 +394,14 @@ extension CalendarPickerViewController: UICollectionViewDelegateFlowLayout {
                 return
             } else {
                 if startDate == endDate {
-                    self.footerView.buttonLabel = "\(startDate.customFormat()) (\(startDate.dayOfTheWeek())) 당일치기"
+                    self.footerView.buttonLabel = "\(startDate.customFormat()) (\(startDate.dayOfTheWeek()))" + "LzCalendarOneDay".localized
                 } else {
-                    self.footerView.buttonLabel = "\(startDate.customFormat()) (\(startDate.dayOfTheWeek())) ~ \(endDate.customFormat()) (\(endDate.dayOfTheWeek())) ∙ \(timeInterval)박"
+                    self.footerView.buttonLabel = "\(startDate.customFormat()) (\(startDate.dayOfTheWeek())) ~ \(endDate.customFormat()) (\(endDate.dayOfTheWeek())) ∙ \(timeInterval+1)" + "LzCalendarDay".localized
                 }
             }
         default:
             self.footerView.selectButton.isEnabled = false
-            self.footerView.buttonLabel = "날짜를 선택하세요"
+            self.footerView.buttonLabel = "LzCalendarSelectDate".localized
         }
     }
 }
@@ -431,9 +430,9 @@ extension CalendarPickerViewController: UIPickerViewDelegate, UIPickerViewDataSo
         
         switch component {
         case 0:
-            return "\(pickerView.availableYear[row])년"
+            return "\(pickerView.availableYear[row])" + "LzCalendarYear".localized
         case 1:
-            return "\(pickerView.allMonth[row])월"
+            return "\(pickerView.allMonth[row])" + "LzCalendarMonth".localized
         default:
             return ""
         }

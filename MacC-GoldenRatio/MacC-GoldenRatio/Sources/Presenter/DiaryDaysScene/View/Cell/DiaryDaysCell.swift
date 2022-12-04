@@ -47,11 +47,11 @@ class DiaryDaysCell: UICollectionViewCell {
         gradientLayer.position = contentView.center
         
         dayLabel.textColor = .white
-        dayLabel.font = UIFont.dayLabelFont
+        dayLabel.font = UIFont.title2
         dayLabel.backgroundColor = .clear
         
         dateLabel.textColor = .white
-        dateLabel.font = UIFont.labelTitleFont
+        dateLabel.font = UIFont.title4
         dateLabel.backgroundColor = .clear
         
         contentView.addSubview(backImageView)

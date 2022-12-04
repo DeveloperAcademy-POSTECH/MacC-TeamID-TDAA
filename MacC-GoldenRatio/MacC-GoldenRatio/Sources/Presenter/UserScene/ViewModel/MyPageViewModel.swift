@@ -17,7 +17,7 @@ class MyPageViewModel {
     @Published var myUser: User = User(userUID: "", userName: "", userImageURL: "", diaryUUIDs: [""])
     @Published var myProfileImage: UIImage = UIImage()
     @Published var myTravelLocations: [String] = []
-    lazy var menuArray: [(String, String?)] = [("앱 버전", version?.description), ("오픈소스",">"), ("앱 평가하기",">"), ("로그아웃", ">"), ("회원탈퇴", ">")]
+    lazy var menuArray: [(String, String?)] = [("LzUserAppVersion".localized, version?.description), ("LzUserOpenSource".localized,">"), ("LzUserAppRate".localized,">"), ("LzUserLogout".localized, ">"), ("LzUserWithrawal".localized, ">")]
     
     var version: String? {
         guard let dictionary = Bundle.main.infoDictionary,

@@ -11,7 +11,6 @@ import UIKit
 
 class MapSearchViewController: UIViewController {
     var completion: (_ mapItem: MKMapItem) -> Void = { mapItem in }
-    private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
     
     private var searchCompleter = MKLocalSearchCompleter()
     private var searchResults = [MKLocalSearchCompletion]()
@@ -52,7 +51,7 @@ class MapSearchViewController: UIViewController {
     private func configureConstraints() {
         searchBar.snp.makeConstraints { make in
             make.horizontalEdges.equalToSuperview()
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).inset(myDevice.mapSearchViewSearchBarTopPadding)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).inset(Layout.mapSearchViewSearchBarTopPadding)
         }
         searchResultTable.snp.makeConstraints { make in
             make.top.equalTo(searchBar.snp.bottom)
@@ -113,7 +112,7 @@ extension MapSearchViewController: UITableViewDataSource {
 
 extension MapSearchViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return myDevice.mapSearchTableViewCellHeight
+        return Layout.mapSearchTableViewCellHeight
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

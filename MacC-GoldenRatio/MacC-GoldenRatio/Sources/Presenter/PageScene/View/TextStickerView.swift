@@ -18,7 +18,7 @@ enum TextStickerViewMode {
 
 class TextStickerView: StickerView {
     let defaultPosition = CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 4)
-    private let placehloderText = "텍스트를 입력해주세요"
+    private let placehloderText = "LzPageTextPlaceholder".localized
 
     var editModeDefaultFrame: CGRect!
 
@@ -31,7 +31,7 @@ class TextStickerView: StickerView {
     
     let textView: UITextView = {
         let textView = UITextView(frame: .init(origin: .zero, size: .init(width: 200, height: 40)))
-        textView.font = .navigationTitleFont
+        textView.font = .body
         textView.backgroundColor = .clear
         textView.isEditable = false
         textView.isUserInteractionEnabled = false
@@ -124,7 +124,7 @@ class TextStickerView: StickerView {
                     self.textView.textColor = .black
                 }
                 
-                var attributes: [NSAttributedString.Key: Any] = [.font: UIFont.navigationTitleFont, .foregroundColor: UIColor.black]
+                var attributes: [NSAttributedString.Key: Any] = [.font: UIFont.body, .foregroundColor: UIColor.black]
                 if self.textView.text == self.placehloderText {
                     attributes[.foregroundColor] = UIColor.gray
                 }
@@ -356,7 +356,7 @@ extension TextStickerView: UITextViewDelegate {
         if textView.text == "" {
             DispatchQueue.main.async {
                 let textView = UITextView()
-                textView.font = .navigationTitleFont
+                textView.font = .body
                 textView.text = self.placehloderText
                 
                 let size = CGSize(width: 2000, height: 2000)

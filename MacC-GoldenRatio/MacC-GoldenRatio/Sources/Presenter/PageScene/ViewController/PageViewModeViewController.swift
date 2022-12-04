@@ -15,8 +15,6 @@ class PageViewModeViewController: UIViewController {
     
     private var pageViewModeViewModel: PageViewModeViewModel!
     
-    private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
-    
     private var source: RxCollectionViewSectionedReloadDataSource<PageSection>!
 
     private var completion: ((Diary) -> Void)!
@@ -40,7 +38,7 @@ class PageViewModeViewController: UIViewController {
         label.backgroundColor = UIColor.stickerBackgroundColor
         label.textColor = .white
         label.textAlignment = .center
-        label.font = .navigationTitleFont
+        label.font = .body
         label.layer.cornerRadius = 12.5
         label.clipsToBounds = true
         
@@ -91,7 +89,7 @@ class PageViewModeViewController: UIViewController {
         }
         
         self.pageDescriptionLabel.snp.makeConstraints { make in
-            make.trailing.top.equalTo(view.safeAreaLayoutGuide).inset(self.myDevice.pagePadding)
+            make.trailing.top.equalTo(view.safeAreaLayoutGuide).inset(Layout.pagePadding)
             make.width.equalTo(47)
             make.height.equalTo(25)
         }
@@ -113,9 +111,9 @@ class PageViewModeViewController: UIViewController {
         let rightBarButtonItem = UIBarButtonItem(image: rightBarButtonImage, style: .plain, target: self, action: #selector(onTapNavigationMenu))
         rightBarButtonItem.tintColor = .black
         
-        leftBarButtonItem.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.navigationTitleFont, NSAttributedString.Key.foregroundColor:UIColor.navigationbarColor], for: .normal)
+        leftBarButtonItem.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.body, NSAttributedString.Key.foregroundColor:UIColor.navigationbarColor], for: .normal)
         
-        rightBarButtonItem.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.navigationTitleFont, NSAttributedString.Key.foregroundColor:UIColor.navigationbarColor], for: .normal)
+        rightBarButtonItem.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.body, NSAttributedString.Key.foregroundColor:UIColor.navigationbarColor], for: .normal)
         
         self.navigationItem.setLeftBarButton(leftBarButtonItem, animated: false)
         self.navigationItem.setRightBarButton(rightBarButtonItem, animated: false)
@@ -123,12 +121,12 @@ class PageViewModeViewController: UIViewController {
         self.navigationController?.navigationBar.barTintColor = UIColor.appBackgroundColor
         self.navigationController?.navigationBar.layer.addBorder([.bottom], color: UIColor.separatorColor, width: 1)
         
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.navigationTitleFont, NSAttributedString.Key.foregroundColor:UIColor.black]
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.body, NSAttributedString.Key.foregroundColor:UIColor.black]
         
         self.pageViewModeViewModel.selectedPageIndexSubject
             .observe(on: MainScheduler.instance)
             .map{
-                ($0.0 + 1).description + "일차"
+                "LzPageDayLabel".localizedFormat(($0.0 + 1).description)
             }
             .bind(to: self.navigationItem.rx.title)
             .disposed(by: self.pageViewModeViewModel.disposeBag)
@@ -180,9 +178,9 @@ class PageViewModeViewController: UIViewController {
     
     @objc private func onTapNavigationMenu() {
         let popUp = PopUpViewController(popUpPosition: .top)
-        popUp.addButton(buttonTitle: " 페이지 편집", buttonSymbol: "square.and.pencil", buttonSize: 17, action: onTapEditCurrentPage)
-        popUp.addButton(buttonTitle: " 페이지 공유", buttonSymbol: "square.and.arrow.up", buttonSize: 17 , action: onTapShareCurrentPage)
-        popUp.addButton(buttonTitle: " 섬네일 선택", buttonSymbol: "photo.on.rectangle.angled", buttonSize: 15 , action: onTapThumbnailConfig)
+        popUp.addButton(buttonTitle: "LzPageEditPage".localized, buttonSymbol: "square.and.pencil", buttonSize: 17, action: onTapEditCurrentPage)
+        popUp.addButton(buttonTitle: "LzPageSharePage".localized, buttonSymbol: "square.and.arrow.up", buttonSize: 17 , action: onTapShareCurrentPage)
+        popUp.addButton(buttonTitle: "LzPageSelectThumbnail".localized, buttonSymbol: "photo.on.rectangle.angled", buttonSize: 15 , action: onTapThumbnailConfig)
 
         self.present(popUp, animated: false)
     }
@@ -241,8 +239,8 @@ class PageViewModeViewController: UIViewController {
             viewController.modalPresentationStyle = .fullScreen
             self.present(viewController, animated: true)
         } else {
-            let alert = UIAlertController(title: "섬네일 선택", message: "페이지에 선택할 이미지가 없습니다.", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "확인", style: .default))
+            let alert = UIAlertController(title: "LzThumbnailSelect".localized, message: "LzPageNoImageMessage".localized, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "LzConfirm".localized, style: .default))
             self.present(alert, animated: true)
         }
     }

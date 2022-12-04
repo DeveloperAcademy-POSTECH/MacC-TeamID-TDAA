@@ -54,11 +54,11 @@ class ThumbnailPreviewView: UIView {
         gradientLayer.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width-40, height: 170)
         
         dayLabel.textColor = .white
-        dayLabel.font = UIFont.previewDayLabelFont
+        dayLabel.font = UIFont.title3
         dayLabel.backgroundColor = .clear
         
         dateLabel.textColor = .white
-        dateLabel.font = UIFont.previewDateLabelFont
+        dateLabel.font = UIFont.headline
         dateLabel.backgroundColor = .clear
         
         self.addSubview(backImageView)

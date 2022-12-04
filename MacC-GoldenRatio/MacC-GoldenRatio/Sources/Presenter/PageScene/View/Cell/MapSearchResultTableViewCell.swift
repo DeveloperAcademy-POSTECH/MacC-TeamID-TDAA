@@ -10,11 +10,10 @@ import UIKit
 import MapKit
 
 class MapSearchResultTableViewCell: UITableViewCell {
-    private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
     
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = .labelTtitleFont2
+        label.font = .body
         label.textColor = .black
         
         return label
@@ -22,7 +21,7 @@ class MapSearchResultTableViewCell: UITableViewCell {
     
     private let subTitleLabel: UILabel = {
         let label = UILabel()
-        label.font = .labelSubTitleFont2
+        label.font = .subheadline2
         label.textColor = .buttonColor
 
         return label
@@ -49,14 +48,14 @@ class MapSearchResultTableViewCell: UITableViewCell {
         contentView.addSubview(subTitleLabel)
 
         titleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(myDevice.mapSearchTableViewCellVerticalPadding)
-            $0.horizontalEdges.equalToSuperview().inset(myDevice.mapSearchTableViewCellHorizontalPadding)
+            $0.top.equalToSuperview().inset(Layout.mapSearchTableViewCellVerticalPadding)
+            $0.horizontalEdges.equalToSuperview().inset(Layout.mapSearchTableViewCellHorizontalPadding)
         }
         
         subTitleLabel.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom)
-            $0.bottom.equalToSuperview().inset(myDevice.mapSearchTableViewCellVerticalPadding)
-            $0.horizontalEdges.equalToSuperview().inset(myDevice.mapSearchTableViewCellHorizontalPadding)
+            $0.bottom.equalToSuperview().inset(Layout.mapSearchTableViewCellVerticalPadding)
+            $0.horizontalEdges.equalToSuperview().inset(Layout.mapSearchTableViewCellHorizontalPadding)
         }
     }
     
@@ -65,23 +64,23 @@ class MapSearchResultTableViewCell: UITableViewCell {
         let titleString = mapSearchResult.title
         let attributedTitleString = NSMutableAttributedString(string: titleString)
         attributedTitleString.addAttribute(.foregroundColor, value: UIColor.gray, range: (titleString as NSString).range(of: titleString))
-        attributedTitleString.addAttribute(.font, value: UIFont.labelTtitleFont2, range: (titleString as NSString).range(of: titleString))
+        attributedTitleString.addAttribute(.font, value: UIFont.body, range: (titleString as NSString).range(of: titleString))
         // subTitleAttribute
         let subTitleString = mapSearchResult.subtitle
         let attribtuedSubTitleString = NSMutableAttributedString(string: subTitleString)
         attribtuedSubTitleString.addAttribute(.foregroundColor, value: UIColor.gray, range: (subTitleString as NSString).range(of: subTitleString))
-        attribtuedSubTitleString.addAttribute(.font, value: UIFont.labelSubTitleFont2, range: (subTitleString as NSString).range(of: subTitleString))
+        attribtuedSubTitleString.addAttribute(.font, value: UIFont.subheadline2, range: (subTitleString as NSString).range(of: subTitleString))
         
         let titleRange = mapSearchResult.titleHighlightRanges
         titleRange.forEach{
             attributedTitleString.addAttribute(.foregroundColor, value: UIColor.black, range: $0.rangeValue)
-            attributedTitleString.addAttribute(.font, value: UIFont.labelTtitleFont2, range: $0.rangeValue)
+            attributedTitleString.addAttribute(.font, value: UIFont.body, range: $0.rangeValue)
         }
         
         let subTitleRange = mapSearchResult.subtitleHighlightRanges
         subTitleRange.forEach{
             attribtuedSubTitleString.addAttribute(.foregroundColor, value: UIColor.black, range: $0.rangeValue)
-            attribtuedSubTitleString.addAttribute(.font, value: UIFont.labelSubTitleFont2, range: $0.rangeValue)
+            attribtuedSubTitleString.addAttribute(.font, value: UIFont.subheadline2, range: $0.rangeValue)
         }
         
         self.titleLabel.attributedText = attributedTitleString

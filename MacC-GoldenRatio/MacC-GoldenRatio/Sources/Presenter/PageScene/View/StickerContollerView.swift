@@ -11,7 +11,6 @@ import UIKit
 
 /// 스티커에 붙어있는 버튼  ex) 이동, 삭제 버튼
 class StickerControllerView: UIImageView {
-    private let myDevice: UIScreen.DeviceSize = UIScreen.getDevice()
     private let disposeBag = DisposeBag()
 
     init(image: UIImage?, gestureRecognizer: UIGestureRecognizer, isStickerViewActive: Observable<Bool>) {
@@ -20,7 +19,7 @@ class StickerControllerView: UIImageView {
         DispatchQueue.main.async {
             self.tintColor = .buttonColor
             self.addGestureRecognizer(gestureRecognizer)
-            self.frame = CGRect(origin: .zero, size: self.myDevice.stickerControllerSize)
+            self.frame = CGRect(origin: .zero, size: Layout.stickerControllerSize)
 
             self.layer.cornerRadius = self.frame.width / 2
             self.isUserInteractionEnabled = true

@@ -35,7 +35,7 @@ final class MyHomeViewController: UIViewController, UIGestureRecognizerDelegate 
 	}
 	
 	private func setupSubViews() {
-		self.view.backgroundColor = UIColor(named: "appBackgroundColor") ?? UIColor.clear
+        self.view.backgroundColor = UIColor.beige100
 
 		[collectionHeaderView, collectionView, addDiaryButton, profileButton, dateFilterButton, nameFilterButton].forEach { view.addSubview($0) }
 		

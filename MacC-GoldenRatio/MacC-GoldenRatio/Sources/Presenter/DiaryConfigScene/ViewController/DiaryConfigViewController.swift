@@ -29,7 +29,7 @@ class DiaryConfigViewController: UIViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.rx.setDelegate(self)
             .disposed(by: disposeBag)
-        collectionView.backgroundColor = UIColor(named: "appBackgroundColor")!
+        collectionView.backgroundColor = UIColor.beige100
         
         return collectionView
     }()

@@ -111,7 +111,7 @@ class DiaryConfigCollectionViewCell: UICollectionViewCell {
     
     func contentAttribute(_ contentType: ConfigContentType, diary: Diary?) {
         let attributedString = NSMutableAttributedString(string: contentType.title)
-        attributedString.setColor(color: UIColor.requiredItemsColor, forText: "*")
+        attributedString.setColor(color: UIColor.essential, forText: "*")
         contentTitle.attributedText = attributedString
         
         var diaryName: String?

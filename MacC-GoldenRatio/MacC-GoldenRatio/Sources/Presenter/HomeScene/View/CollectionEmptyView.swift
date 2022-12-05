@@ -15,7 +15,7 @@ final class CollectionEmptyView: UIView {
 	private lazy var textLabel: UILabel = {
 		let label = UILabel()
 		label.font = .body
-		label.textColor = UIColor.calendarWeeklyGrayColor
+		label.textColor = UIColor.gray400
 		label.textAlignment = .center
 		return label
 	}()

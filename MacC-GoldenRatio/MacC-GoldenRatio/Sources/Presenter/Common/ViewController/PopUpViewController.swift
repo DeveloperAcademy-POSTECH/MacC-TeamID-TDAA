@@ -152,7 +152,7 @@ class PopUpViewController: UIViewController {
         button.setTitle(buttonTitle, for: .normal)
         button.setImage(UIImage(systemName: buttonSymbol, withConfiguration: configuration) ?? UIImage(), for: .normal)
         button.tintColor = .black
-        button.titleLabel?.font = .subheadline
+        button.titleLabel?.font = .body
         button.setTitleColor(.black, for: .normal)
         button.isUserInteractionEnabled = true
         button.addAction(for: .touchUpInside) { _ in

@@ -23,14 +23,14 @@ class MapListCell: UICollectionViewCell {
 	private lazy var categoryLabel: UILabel = {
 		let label =  UILabel()
 		label.font = UIFont(name: "EF_Diary", size: 15)
-		label.textColor = .separatorColor
+		label.textColor = .gray200
 		return label
 	}()
 	
 	private lazy var addressLabel: UILabel = {
 		let label =  UILabel()
 		label.font = UIFont(name: "EF_Diary", size: 17)
-		label.textColor = .separatorColor2
+		label.textColor = .gray300
 		label.numberOfLines = 2
 		return label
 	}()

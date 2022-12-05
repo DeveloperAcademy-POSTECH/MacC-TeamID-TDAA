@@ -51,7 +51,7 @@ final class MyHomeViewController: UIViewController, UIGestureRecognizerDelegate 
 		}
 		
         dateFilterButton.setTitle("LzHomeDateFilter".localized, for: .normal)
-		dateFilterButton.backgroundColor = .sandbrownColor
+		dateFilterButton.backgroundColor = .beige600
 		dateFilterButton.setTitleColor(.white, for: .normal)
 		dateFilterButton.snp.makeConstraints {
 			$0.width.equalTo(53)
@@ -62,7 +62,7 @@ final class MyHomeViewController: UIViewController, UIGestureRecognizerDelegate 
 		
         nameFilterButton.setTitle("LzHomeNameFilter".localized, for: .normal)
 		nameFilterButton.backgroundColor = .white
-		nameFilterButton.setTitleColor(.sandbrownColor, for: .normal)
+		nameFilterButton.setTitleColor(.beige600, for: .normal)
 		nameFilterButton.snp.makeConstraints {
 			$0.width.equalTo(53)
 			$0.height.equalTo(26)
@@ -79,7 +79,7 @@ final class MyHomeViewController: UIViewController, UIGestureRecognizerDelegate 
 		let image = UIImage(
 			systemName: "person.circle",
 			withConfiguration: UIImage.SymbolConfiguration(pointSize: 35)
-		)?.withTintColor(UIColor.sandbrownColor, renderingMode: .alwaysOriginal)
+		)?.withTintColor(UIColor.beige600, renderingMode: .alwaysOriginal)
 		profileButton.setupViews(image)
 		profileButton.snp.makeConstraints {
 			$0.top.equalTo(view.safeAreaLayoutGuide).inset(25)
@@ -126,10 +126,10 @@ final class MyHomeViewController: UIViewController, UIGestureRecognizerDelegate 
 		
 		dateFilterButton.rx.tap
 			.bind {
-				self.dateFilterButton.backgroundColor = .sandbrownColor
+				self.dateFilterButton.backgroundColor = .beige600
 				self.dateFilterButton.setTitleColor(.white, for: .normal)
 				self.nameFilterButton.backgroundColor = .white
-				self.nameFilterButton.setTitleColor(.sandbrownColor, for: .normal)
+				self.nameFilterButton.setTitleColor(.beige600, for: .normal)
 				Observable.just(true)
 					.bind(to: self.viewModel.filterButtonTapped)
 					.disposed(by: self.disposeBag)
@@ -139,8 +139,8 @@ final class MyHomeViewController: UIViewController, UIGestureRecognizerDelegate 
 		nameFilterButton.rx.tap
 			.bind {
 				self.dateFilterButton.backgroundColor = .white
-				self.dateFilterButton.setTitleColor(.sandbrownColor, for: .normal)
-				self.nameFilterButton.backgroundColor = .sandbrownColor
+				self.dateFilterButton.setTitleColor(.beige600, for: .normal)
+				self.nameFilterButton.backgroundColor = .beige600
 				self.nameFilterButton.setTitleColor(.white, for: .normal)
 				Observable.just(false)
 					.bind(to: self.viewModel.filterButtonTapped)

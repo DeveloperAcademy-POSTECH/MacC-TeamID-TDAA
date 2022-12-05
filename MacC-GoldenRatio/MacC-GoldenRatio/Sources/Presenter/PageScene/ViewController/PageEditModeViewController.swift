@@ -25,7 +25,7 @@ class PageEditModeViewController: UIViewController {
         let backgroundImageView = UIView()
         backgroundImageView.clipsToBounds = true
         backgroundImageView.isUserInteractionEnabled = true
-        backgroundImageView.backgroundColor = .appBackgroundColor
+        backgroundImageView.backgroundColor = .beige100
         
         return backgroundImageView
     }()
@@ -42,7 +42,7 @@ class PageEditModeViewController: UIViewController {
     
     private lazy var pageDescriptionLabel: UILabel = {
         let label = UILabel()
-        label.backgroundColor = UIColor.stickerBackgroundColor
+        label.backgroundColor = UIColor.beige400
         label.textColor = .white
         label.textAlignment = .center
         label.font = .body
@@ -111,7 +111,7 @@ class PageEditModeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         DispatchQueue.main.async {
-            self.view.backgroundColor = .appBackgroundColor
+            self.view.backgroundColor = .beige100
                         
             self.addSubviews()
             self.configureConstraints()
@@ -191,13 +191,13 @@ class PageEditModeViewController: UIViewController {
         let leftBarButtonItem = UIBarButtonItem(title: "LzCancel".localized, style: .plain, target: self, action: #selector(onTapNavigationCancel))
         let rightBarButtonItem = UIBarButtonItem(title: "LzDone".localized, style: .plain, target: self, action: #selector(onTapNavigationComplete))
         
-        leftBarButtonItem.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.body, NSAttributedString.Key.foregroundColor:UIColor.sandbrownColor], for: .normal)
-        rightBarButtonItem.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.body, NSAttributedString.Key.foregroundColor:UIColor.sandbrownColor], for: .normal)
+        leftBarButtonItem.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.body, NSAttributedString.Key.foregroundColor:UIColor.beige600], for: .normal)
+        rightBarButtonItem.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.body, NSAttributedString.Key.foregroundColor:UIColor.beige600], for: .normal)
         
         self.navigationItem.setLeftBarButton(leftBarButtonItem, animated: false)
         self.navigationItem.setRightBarButton(rightBarButtonItem, animated: false)
         
-        self.navigationController?.navigationBar.barTintColor = UIColor.appBackgroundColor
+        self.navigationController?.navigationBar.barTintColor = UIColor.beige100
         
         self.pageEditModeViewModel.selectedPageIndexSubject
             .observe(on: MainScheduler.instance)

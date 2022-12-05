@@ -11,7 +11,7 @@ class PageViewModeCollectionViewCell: UICollectionViewCell {
     
     let pageBackgroundView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.appBackgroundColor
+        view.backgroundColor = UIColor.beige100
         view.clipsToBounds = true
         
         return view
@@ -19,7 +19,7 @@ class PageViewModeCollectionViewCell: UICollectionViewCell {
     
     let separatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.separatorColor
+        view.backgroundColor = UIColor.gray200
         
         return view
     }()

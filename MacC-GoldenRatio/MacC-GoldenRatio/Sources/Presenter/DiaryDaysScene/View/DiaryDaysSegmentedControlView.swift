@@ -16,7 +16,7 @@ class DiaryDaysSegmentedControlView: UISegmentedControl {
       let yPosition = self.bounds.size.height - 5.0
       let frame = CGRect(x: xPosition, y: yPosition, width: width, height: height)
       let view = UIView(frame: frame)
-      view.backgroundColor = UIColor.sandbrownColor
+      view.backgroundColor = UIColor.beige600
       self.addSubview(view)
       return view
     }()

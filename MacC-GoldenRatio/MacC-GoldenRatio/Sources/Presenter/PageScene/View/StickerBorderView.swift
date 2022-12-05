@@ -32,7 +32,7 @@ class StickerBorderView: UIView {
     private func setupView() {
         backgroundColor = UIColor.clear
         layer.borderWidth = Layout.stickerBorderWidth
-        layer.borderColor = UIColor.buttonColor.cgColor
+        layer.borderColor = UIColor.gray500.cgColor
     }
 
     private func bindLastEditorObservable(isStickerViewActive: Observable<Bool>) {

@@ -39,7 +39,7 @@ class MapListViewController: UIViewController {
 												   font: UIFont(name: "EF_Diary", size: 20)!,
 												   spacing: 10,
 												   selectedLabelColor: .black,
-												   unselectedLabelColor: UIColor(named: "separatorColor") ?? .placeholderText,
+                                                   unselectedLabelColor: UIColor.gray200,
 												   selectedLineColor: .black,
 												   day: viewModel.selectDay.value-1)
 		segmentedControlView.configure(config)

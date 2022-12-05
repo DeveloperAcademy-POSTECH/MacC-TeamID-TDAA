@@ -86,7 +86,7 @@ class MapView: UIView, MKMapViewDelegate, CLLocationManagerDelegate {
 		let countLabel = UILabel()
 		countLabel.text = "\(annotation.day)"
 		countLabel.font = .boldSubheadline
-		countLabel.textColor = UIColor.darkgrayColor
+		countLabel.textColor = UIColor.gray500
 		countLabel.textAlignment = .center
 		
 		annotationView?.addSubview(countLabel)

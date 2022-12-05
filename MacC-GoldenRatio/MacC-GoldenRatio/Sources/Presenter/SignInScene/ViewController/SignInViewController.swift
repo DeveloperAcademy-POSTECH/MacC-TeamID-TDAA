@@ -31,7 +31,7 @@ class SignInViewController: UIViewController {
         
         var multipleAttributes: [NSAttributedString.Key : Any] = [:]
         multipleAttributes[NSAttributedString.Key.paragraphStyle] = paragraphStyle
-        multipleAttributes[NSAttributedString.Key.foregroundColor] = UIColor(named: "sandbrownColor")
+        multipleAttributes[NSAttributedString.Key.foregroundColor] = UIColor.beige600
         multipleAttributes[NSAttributedString.Key.font] = UIFont(name: "EF_Diary", size: 30) ?? UIFont.systemFont(ofSize: 30)
         multipleAttributes[NSAttributedString.Key.kern] = 10
         

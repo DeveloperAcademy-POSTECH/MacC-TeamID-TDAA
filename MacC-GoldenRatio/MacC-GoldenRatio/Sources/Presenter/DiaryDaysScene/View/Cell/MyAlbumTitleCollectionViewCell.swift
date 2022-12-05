@@ -30,7 +30,7 @@ class MyAlbumTitleCollectionViewCell: UICollectionViewCell {
 				titleLabel.textColor = .black
 			} else {
 				lineView.isHidden = true
-				titleLabel.textColor = .middleGrayColor
+				titleLabel.textColor = .gray400
 			}
 		}
 	}
@@ -42,7 +42,7 @@ class MyAlbumTitleCollectionViewCell: UICollectionViewCell {
 			titleLabel.textColor = .black
 		} else {
 			lineView.isHidden = true
-			titleLabel.textColor = .middleGrayColor
+			titleLabel.textColor = .gray400
 		}
 		titleLabel.text = title
 		titleLabel.textAlignment = .center

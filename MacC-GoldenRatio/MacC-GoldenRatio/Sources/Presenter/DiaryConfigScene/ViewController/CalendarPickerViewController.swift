@@ -320,7 +320,7 @@ extension CalendarPickerViewController: UICollectionViewDataSource {
             // 시작일, 종료일
             if dateInterval.contains(date) {
                 cell.day?.isSelected = true
-                cell.selectionBackgroundView.backgroundColor = (cell.day?.date == startDate ? .startDateColor : .endDateColor)
+                cell.selectionBackgroundView.backgroundColor = (cell.day?.date == startDate ? .beige500 : .beige600)
             }
             
             // 시작일과 종료일을 포함한 기간

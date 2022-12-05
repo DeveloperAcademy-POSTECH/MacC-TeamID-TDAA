@@ -119,7 +119,7 @@ class TextStickerView: StickerView {
                 self.textView.text = $0
                 
                 if $0 == self.placehloderText {
-                    self.textView.textColor = .calendarWeeklyGrayColor
+                    self.textView.textColor = .gray400
                 } else {
                     self.textView.textColor = .black
                 }

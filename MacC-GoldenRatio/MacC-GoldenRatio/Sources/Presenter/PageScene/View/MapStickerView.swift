@@ -14,7 +14,7 @@ class MapStickerView: StickerView {
 
     private let locationView: UIView = {
         let view = UIView()
-        view.backgroundColor = .startDateColor
+        view.backgroundColor = .beige500
         view.layer.cornerRadius = 5
         
         return view
@@ -23,7 +23,7 @@ class MapStickerView: StickerView {
     private let pinImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "mappin.and.ellipse")
-        imageView.tintColor = .darkgrayColor
+        imageView.tintColor = .gray500
         imageView.contentMode = .scaleAspectFit
 
         return imageView
@@ -31,7 +31,7 @@ class MapStickerView: StickerView {
     
     private let locationNameLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .darkgrayColor
+        label.textColor = .gray500
         label.font = .title4
         label.textAlignment = .left
         
@@ -40,7 +40,7 @@ class MapStickerView: StickerView {
     
     private let locationAddressLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .calendarWeeklyGrayColor
+        label.textColor = .gray400
         label.font = .caption2
         label.textAlignment = .left
         

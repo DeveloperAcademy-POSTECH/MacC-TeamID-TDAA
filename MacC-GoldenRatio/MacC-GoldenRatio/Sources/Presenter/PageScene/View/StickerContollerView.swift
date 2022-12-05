@@ -17,7 +17,7 @@ class StickerControllerView: UIImageView {
         super.init(image: image)
 
         DispatchQueue.main.async {
-            self.tintColor = .buttonColor
+            self.tintColor = .gray500
             self.addGestureRecognizer(gestureRecognizer)
             self.frame = CGRect(origin: .zero, size: Layout.stickerControllerSize)
 

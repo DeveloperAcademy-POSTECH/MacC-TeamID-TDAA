@@ -19,7 +19,7 @@ class DiaryColorCell: UICollectionViewCell {
     
     private lazy var circleBackground: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(patternImage: UIImage(named: "diaryInnerTexture.png") ?? UIImage())
+        view.backgroundColor = UIColor.diaryInnerTexture
         return view
     }()
     

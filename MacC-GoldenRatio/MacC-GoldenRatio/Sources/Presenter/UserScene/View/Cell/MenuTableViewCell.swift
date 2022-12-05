@@ -19,7 +19,7 @@ class MenuTableViewCell: UITableViewCell {
     private let subTitleLabel: UILabel = {
         let label = UILabel()
         label.font = .subheadline2
-        label.textColor = .buttonColor
+        label.textColor = .gray500
 
         return label
     }()

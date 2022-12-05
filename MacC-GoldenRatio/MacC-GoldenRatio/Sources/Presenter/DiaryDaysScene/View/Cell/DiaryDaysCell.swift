@@ -30,7 +30,7 @@ class DiaryDaysCell: UICollectionViewCell {
     }
     
     private func attribute() {
-        contentView.backgroundColor = UIColor.separatorColor2
+        contentView.backgroundColor = UIColor.gray300
         
         backImageView.contentMode = .scaleAspectFill
         backImageView.clipsToBounds = true

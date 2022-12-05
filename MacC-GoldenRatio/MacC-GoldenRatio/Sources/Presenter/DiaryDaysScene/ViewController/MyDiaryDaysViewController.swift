@@ -81,9 +81,9 @@ class MyDiaryDaysViewController: UIViewController {
                 
                 let configuration = UIImage.SymbolConfiguration(pointSize: 30, weight: .regular, scale: .medium)
                 
-                self.segmentedControl.setImage(UIImage(systemName: "doc.text.image", withConfiguration: configuration)?.withTintColor(state[0] ? .stickerBackgroundColor : .sandbrownColor , renderingMode: .alwaysOriginal), forSegmentAt: 0)
-                self.segmentedControl.setImage(UIImage(systemName: "photo", withConfiguration: configuration)?.withTintColor(state[1] ? .stickerBackgroundColor : .sandbrownColor , renderingMode: .alwaysOriginal), forSegmentAt: 1)
-                self.segmentedControl.setImage(UIImage(systemName: "mappin.and.ellipse", withConfiguration: configuration)?.withTintColor(state[2] ? .stickerBackgroundColor : .sandbrownColor , renderingMode: .alwaysOriginal), forSegmentAt: 2)
+                self.segmentedControl.setImage(UIImage(systemName: "doc.text.image", withConfiguration: configuration)?.withTintColor(state[0] ? .beige400 : .beige600 , renderingMode: .alwaysOriginal), forSegmentAt: 0)
+                self.segmentedControl.setImage(UIImage(systemName: "photo", withConfiguration: configuration)?.withTintColor(state[1] ? .beige400 : .beige600 , renderingMode: .alwaysOriginal), forSegmentAt: 1)
+                self.segmentedControl.setImage(UIImage(systemName: "mappin.and.ellipse", withConfiguration: configuration)?.withTintColor(state[2] ? .beige400 : .beige600 , renderingMode: .alwaysOriginal), forSegmentAt: 2)
             })
             .disposed(by: disposeBag)
         
@@ -130,7 +130,7 @@ class MyDiaryDaysViewController: UIViewController {
     
     // MARK: Attribute & Layout
     private func attribute() {
-        self.view.backgroundColor = UIColor.appBackgroundColor
+        self.view.backgroundColor = UIColor.beige100
         self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         NotificationCenter.default.addObserver(self, selector: #selector(mapListHalfModal(notification:)), name: .mapAnnotationTapped, object: nil)

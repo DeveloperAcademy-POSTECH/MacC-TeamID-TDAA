@@ -223,6 +223,7 @@ class PageEditModeViewController: UIViewController {
 
         DispatchQueue.main.async {
             self.navigationItem.rightBarButtonItem?.isEnabled = isEnabled
+            self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.body], for: .disabled)
         }
     }
     

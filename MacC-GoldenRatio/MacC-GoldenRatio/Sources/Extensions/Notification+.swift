@@ -14,4 +14,5 @@ extension Notification.Name {
 	static let mapListSwipeLeft = Notification.Name("mapListSwipeLeft")
 	static let mapListSwipeRight = Notification.Name("mapListSwipeRight")
 	static let mapListTapped = Notification.Name("mapListTapped")
+    static let isNavigationConfirmButtonEnabled = NSNotification.Name("isNavigationConfirmButtonEnabled")
 }

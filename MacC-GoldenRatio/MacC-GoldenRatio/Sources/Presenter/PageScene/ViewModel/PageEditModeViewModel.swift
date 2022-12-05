@@ -83,10 +83,6 @@ class PageEditModeViewModel {
     }
     
     // MARK: PageEditMode 메서드
-    func restoreOldDiary() {
-        self.diaryObservable.onNext(self.oldDiary)
-    }
-    
     func addNewPage(to: AddPage) {
         var selectedDayIndex = 0
         var newPageIndex = 0
@@ -181,7 +177,7 @@ class PageEditModeViewModel {
             }.disposed(by: self.disposeBag)
         
     }
-
+    
     func moveToPreviousPage() {
         
         selectedPageIndexSubject
@@ -197,10 +193,10 @@ class PageEditModeViewModel {
                 
             })
             .disposed(by: disposeBag)
-
+        
     }
-
-    func updateCurrentPageDataToDiaryModel(backgroundView: UIView) {
+    
+    func updateCurrentPageDataToDiaryModel(backgroundView: UIView, completion: ((Diary, (Int,Int)) -> Void)? = nil) {
         var selectedDayIndex = 0
         var selectedPageIndex = 0
         
@@ -234,6 +230,10 @@ class PageEditModeViewModel {
                     newDiary.diaryPages[selectedDayIndex].pages[selectedPageIndex].items = newItems
                     
                     self.diaryObservable.onNext(newDiary)
+                    
+                    if let completion = completion {
+                        completion(newDiary, (selectedDayIndex,selectedPageIndex))
+                    }
                 }
             })
             .disposed(by: self.disposeBag)

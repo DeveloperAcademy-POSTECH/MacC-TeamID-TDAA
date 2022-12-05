@@ -89,12 +89,14 @@ class MyDiaryDaysModel {
     func diaryToDayModel(model: MyDiaryDaysModel, selectedDay: Int) -> DiaryDayModel {
         let dayLabelData = "LzDiaryDaysDayLabel".localizedFormat("\(selectedDay)")
         let dateLabelData = model.makeDateString(day: selectedDay)
-        var diaryDayModel = DiaryDayModel(dayLabel: dayLabelData, dateLabel: dateLabelData, image: nil)
+        var diaryDayModel = DiaryDayModel(dayLabel: dayLabelData, dateLabel: dateLabelData, image: UIImage(named: "diaryDaysDefault"))
         let thumbnailURLString:String? = model.diary.pageThumbnails[selectedDay-1]
         
         if self.checkThumbnailValid(url: thumbnailURLString) {
             // 썸네일 이미지 URL이 있는 경우 -> 이미지 다운로드 후 리턴
             guard let thumbnailURLString = thumbnailURLString else { return diaryDayModel }
+            guard thumbnailURLString.verifyUrl() else { return diaryDayModel }
+            
             if let image = ImageManager.shared.searchImage(urlString: thumbnailURLString) {
                 // 썸네일 있고 캐시에 이미지 있음
                 diaryDayModel = DiaryDayModel(dayLabel: dayLabelData, dateLabel: dateLabelData, image: image)

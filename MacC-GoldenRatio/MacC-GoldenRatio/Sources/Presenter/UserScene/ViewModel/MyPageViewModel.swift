@@ -110,8 +110,6 @@ class MyPageViewModel {
                     if !userUIDs.isEmpty {
                         let pagesFieldData = ["userUIDs" : userUIDs]
                         try await diaryRef.updateData(pagesFieldData)
-                        print(uid)
-                        print(userUIDs)
                     } else {
                         // 자신밖에 없으면 다이어리 삭제
                         diaryRef.delete() { err in

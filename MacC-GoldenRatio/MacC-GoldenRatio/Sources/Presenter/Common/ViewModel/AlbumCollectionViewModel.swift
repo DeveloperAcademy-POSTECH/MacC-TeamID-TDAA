@@ -67,15 +67,17 @@ struct AlbumCollectionViewModel {
 	func fetchLoadData(_ albumData: AlbumData) -> [UIImage] {
 		var images = [UIImage]()
 		for url in albumData.imageURLs ?? [] {
-			if let image = ImageManager.shared.searchImage(urlString: url){
-				images.append(image)
-			} else {
-				FirebaseStorageManager.downloadImage(urlString: url, completion: {
-					let image = $0 ?? UIImage()
-					ImageManager.shared.cacheImage(urlString: url, image: image)
-					images.append(image)
-				})
-			}
+            if url.verifyUrl() {
+                if let image = ImageManager.shared.searchImage(urlString: url){
+                    images.append(image)
+                } else {
+                    FirebaseStorageManager.downloadImage(urlString: url, completion: {
+                        let image = $0 ?? UIImage()
+                        ImageManager.shared.cacheImage(urlString: url, image: image)
+                        images.append(image)
+                    })
+                }
+            }
 		}
 		return images
 	}

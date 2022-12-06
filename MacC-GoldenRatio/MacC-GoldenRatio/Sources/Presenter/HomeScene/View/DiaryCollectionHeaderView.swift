@@ -15,7 +15,7 @@ final class DiaryCollectionHeaderView: UIView {
 		let label =  UILabel()
 		label.font = .title1
         label.text = "LzHomeTitleLabel".localized
-		label.textColor = UIColor.buttonColor
+		label.textColor = UIColor.gray500
 		
 		return label
 	}()

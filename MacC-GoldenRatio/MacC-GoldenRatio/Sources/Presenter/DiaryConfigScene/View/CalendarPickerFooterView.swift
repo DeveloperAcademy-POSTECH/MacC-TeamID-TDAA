@@ -19,7 +19,7 @@ class CalendarPickerFooterView: UIView {
         let button = UIButton()
         button.setTitle(buttonLabel, for: .normal)
         button.titleLabel?.font = UIFont(name: "EF_Diary", size: 14) ?? UIFont.systemFont(ofSize: 14)
-        button.backgroundColor = .sandbrownColor
+        button.backgroundColor = .beige600
         button.layer.cornerRadius = 5
         button.addTarget(self, action: #selector(selectButtonTapped), for: .touchUpInside)
         button.isEnabled = false

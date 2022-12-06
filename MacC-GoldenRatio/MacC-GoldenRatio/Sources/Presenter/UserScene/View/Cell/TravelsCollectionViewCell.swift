@@ -16,7 +16,7 @@ class TravelsCollectionViewCell: UICollectionViewCell {
     private let locationLabel: UILabel = {
         let label = UILabel()
         label.font = .subheadline2
-        label.textColor = .buttonColor
+        label.textColor = .gray500
         label.textAlignment = .center
         
         return label

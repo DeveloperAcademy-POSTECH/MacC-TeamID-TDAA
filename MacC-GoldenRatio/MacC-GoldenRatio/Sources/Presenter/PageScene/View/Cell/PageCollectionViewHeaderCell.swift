@@ -11,7 +11,7 @@ import SnapKit
 final class PageCollectionViewHeaderCell: UICollectionReusableView {
     let view: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.separatorColor
+        view.backgroundColor = UIColor.gray200
         
         return view
     }()

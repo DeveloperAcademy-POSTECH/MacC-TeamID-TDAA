@@ -16,21 +16,21 @@ class DiaryCollectionViewCell: UICollectionViewCell {
 	private lazy var titleLabel: UILabel = {
 		let label = UILabel()
 		label.font = UIFont.title4
-		label.textColor = UIColor.darkgrayColor
+		label.textColor = UIColor.gray500
 		return label
 	}()
 	
 	private lazy var dateLabel: UILabel = {
 		let label = UILabel()
 		label.font = UIFont.caption3
-		label.textColor = UIColor.darkgrayColor
+		label.textColor = UIColor.gray500
 		return label
 	}()
 	
 	private lazy var addressLabel: UILabel = {
 		let label = UILabel()
 		label.font = UIFont.caption4
-		label.textColor = UIColor.darkgrayColor
+		label.textColor = UIColor.gray500
 		return label
 	}()
 	

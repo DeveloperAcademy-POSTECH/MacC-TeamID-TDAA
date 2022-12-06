@@ -29,7 +29,7 @@ class DiaryConfigViewController: UIViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.rx.setDelegate(self)
             .disposed(by: disposeBag)
-        collectionView.backgroundColor = UIColor(named: "appBackgroundColor")!
+        collectionView.backgroundColor = UIColor.beige100
         
         return collectionView
     }()
@@ -51,7 +51,7 @@ class DiaryConfigViewController: UIViewController {
         let button = UIButton(type: .system)
         button.titleLabel?.font = .body
         button.setTitle("LzCancel".localized, for: .normal)
-        button.tintColor = .navigationbarColor
+        button.tintColor = .beige600
         return button
     }()
     
@@ -59,7 +59,7 @@ class DiaryConfigViewController: UIViewController {
         let button = UIButton(type: .system)
         button.titleLabel?.font = .body
         button.setTitle("LzDone".localized, for: .normal)
-        button.tintColor = .navigationbarColor
+        button.tintColor = .beige600
         return button
     }()
     
@@ -151,7 +151,7 @@ class DiaryConfigViewController: UIViewController {
         let tapGesture = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
         view.addGestureRecognizer(tapGesture)
         tapGesture.cancelsTouchesInView = false
-        view.backgroundColor = UIColor.appBackgroundColor
+        view.backgroundColor = UIColor.beige100
         
         diaryConfigCollectionView.register(DiaryConfigCollectionViewCell.self, forCellWithReuseIdentifier: "DiaryConfigTitleCell")
         diaryConfigCollectionView.register(DiaryConfigCollectionViewCell.self, forCellWithReuseIdentifier: "DiaryConfigLocationCell")

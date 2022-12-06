@@ -19,7 +19,7 @@ class MyPageViewController: UIViewController {
 
 	private lazy var titleLabel: UILabel = {
 		let label = UILabel()
-		label.text = "마이페이지"
+        label.text = "LzUserTitle".localized
 		label.font = .body
 		label.textColor = .black
 		
@@ -38,7 +38,7 @@ class MyPageViewController: UIViewController {
 	
 	private lazy var lineView: UIView = {
 		let view = UIView()
-		view.backgroundColor = UIColor(named: "separatorColor") ?? .placeholderText
+        view.backgroundColor = UIColor.gray200
 		
 		return view
 	}()
@@ -121,7 +121,7 @@ class MyPageViewController: UIViewController {
         DispatchQueue.main.async {
 			self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
 			self.navigationController?.interactivePopGestureRecognizer?.delegate = self
-            self.view.backgroundColor = UIColor.appBackgroundColor
+            self.view.backgroundColor = UIColor.beige100
             self.setupViewModel()
             self.configureViews()
             self.configureNickName()

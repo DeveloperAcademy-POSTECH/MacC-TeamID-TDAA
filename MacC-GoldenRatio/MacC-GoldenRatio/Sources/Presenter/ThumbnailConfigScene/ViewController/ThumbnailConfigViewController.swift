@@ -73,19 +73,19 @@ class ThumbnailConfigViewController: UIViewController {
     }
     
     private func attribute() {
-        view.backgroundColor = UIColor.appBackgroundColor
+        view.backgroundColor = UIColor.beige100
         
         titleLabel.text = "LzThumbnailSelect".localized
         titleLabel.textColor = .black
         titleLabel.font = .body
         
-        cancelButton.setTitle("LzCreate".localized, for: .normal)
+        cancelButton.setTitle("LzCancel".localized, for: .normal)
         cancelButton.titleLabel?.font = .body
-        cancelButton.tintColor = .navigationbarColor
+        cancelButton.tintColor = .beige600
         
         doneButton.setTitle("LzDone".localized, for: .normal)
         doneButton.titleLabel?.font = .body
-        doneButton.tintColor = .navigationbarColor
+        doneButton.tintColor = .beige600
         
         divider.backgroundColor = UIColor.placeholderText
     }

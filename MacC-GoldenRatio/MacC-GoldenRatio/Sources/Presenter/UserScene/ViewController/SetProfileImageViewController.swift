@@ -16,7 +16,7 @@ class SetProfileImageViewController: UIViewController {
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .darkgrayColor
+        label.textColor = .gray500
         label.text = "LzUserTitle".localized
         label.font = .title1
         
@@ -36,7 +36,7 @@ class SetProfileImageViewController: UIViewController {
         let cameraImage = UIImage(systemName: "camera")
         button.setImage(cameraImage, for: .normal)
         button.tintColor = .white
-        button.backgroundColor = .sandbrownColor
+        button.backgroundColor = .beige600
         button.addTarget(self, action: #selector(onTapCameraButton), for: .touchUpInside)
         
         return button
@@ -54,9 +54,9 @@ class SetProfileImageViewController: UIViewController {
     private lazy var nickNameTextField: UITextField = {
         let textField = UITextField()
         textField.font = .body
-        textField.textColor = .calendarWeeklyGrayColor
+        textField.textColor = .gray400
         textField.setUnderLine(width: 1)
-        textField.tintColor = .calendarWeeklyGrayColor
+        textField.tintColor = .gray400
         textField.clearButtonMode = .always
         textField.placeholder = "LzUserNickNameMessage".localized
         
@@ -66,13 +66,17 @@ class SetProfileImageViewController: UIViewController {
     private lazy var confirmButton: UIButton = {
         let button = UIButton()
         button.tintColor = .white
-        button.backgroundColor = .sandbrownColor
+        button.backgroundColor = .beige600
         button.layer.cornerRadius = 5
         button.addTarget(self, action: #selector(onTapConfirmButton), for: .touchUpInside)
-        let attributes = [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 14, weight: .semibold),NSAttributedString.Key.foregroundColor:UIColor.white.cgColor]
+        
+        let attributes = [
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14, weight: .semibold),
+            NSAttributedString.Key.foregroundColor: UIColor.white
+        ]
         let attributedString = NSAttributedString(string: "LzConfirm".localized, attributes: attributes)
         button.setAttributedTitle(attributedString, for: .normal)
-
+        
         return button
     }()
     
@@ -80,13 +84,17 @@ class SetProfileImageViewController: UIViewController {
         let button = UIButton()
         button.backgroundColor = .white
         button.layer.cornerRadius = 5
-        button.layer.borderColor = UIColor.sandbrownColor.cgColor
+        button.layer.borderColor = UIColor.beige600.cgColor
         button.layer.borderWidth = 1
         button.addTarget(self, action: #selector(onTapCancelButton), for: .touchUpInside)
-        let attributes = [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 14, weight: .semibold),NSAttributedString.Key.foregroundColor:UIColor.sandbrownColor.cgColor]
+        
+        let attributes = [
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14, weight: .semibold),
+            NSAttributedString.Key.foregroundColor: UIColor.beige600
+        ]
         let attributedString = NSAttributedString(string: "LzCancel".localized, attributes: attributes)
         button.setAttributedTitle(attributedString, for: .normal)
-
+        
         return button
     }()
     
@@ -97,7 +105,7 @@ class SetProfileImageViewController: UIViewController {
             let tap = UITapGestureRecognizer(target: self, action: #selector(self.onTapView))
             self.view.addGestureRecognizer(tap)
             self.navigationController?.isNavigationBarHidden = true
-            self.view.backgroundColor = UIColor.appBackgroundColor
+            self.view.backgroundColor = UIColor.beige100
             self.profileImageView.layer.cornerRadius = Layout.setProfileProfileImageSize.width * 0.5
             self.profileCameraButton.layer.cornerRadius = Layout.setProfileProfileImageSize.width * 0.28 * 0.5
             self.configureImagePicker()

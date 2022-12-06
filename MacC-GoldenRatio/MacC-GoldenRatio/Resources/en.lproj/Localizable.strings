@@ -99,8 +99,8 @@
 "LzUserEditProfile" = "Edit Profile";
 "LzUserTravelDestination" = "Travel Destination";
 "LzUserLogoutMessage" = "Are you sure you want to log out?";
-"LzUserNickNameMessage" = "Would you like to withdraw your membership?";
-"LzUserWithrawalMessage" = "Enter your nickname";
+"LzUserNickNameMessage" = "Enter your nickname";
+"LzUserWithrawalMessage" = "Would you like to withdraw your membership?";
 "LzUserAppVersion" = "App version";
 "LzUserOpenSource" = "Open source";
 "LzUserAppRate" = "Rate our App";

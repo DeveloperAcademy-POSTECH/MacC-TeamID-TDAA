@@ -99,8 +99,8 @@
 "LzUserEditProfile" = "프로필 설정";
 "LzUserTravelDestination" = "가본 여행지";
 "LzUserLogoutMessage" = "로그아웃 하시겠습니까?";
-"LzUserNickNameMessage" = "회원탈퇴 하시겠습니까?";
-"LzUserWithrawalMessage" = "닉네임을 입력해주세요.";
+"LzUserNickNameMessage" = "닉네임을 입력해주세요.";
+"LzUserWithrawalMessage" = "회원탈퇴 하시겠습니까?";
 "LzUserAppVersion" = "앱 버전";
 "LzUserOpenSource" = "오픈소스";
 "LzUserAppRate" = "앱 평가하기";

@@ -23,7 +23,7 @@ class CalendarDateCollectionViewCell: UICollectionViewCell {
     
     lazy var termBackgroundView: UIView = {
         let view = UIView()
-        view.backgroundColor = .calendarTermColor
+        view.backgroundColor = .beige200
         return view
     }()
     
@@ -36,7 +36,7 @@ class CalendarDateCollectionViewCell: UICollectionViewCell {
     
     lazy var marker: UIView = {
         let view = UIView()
-        view.backgroundColor = .calendarTermColor
+        view.backgroundColor = .beige200
         view.clipsToBounds = true
         return view
     }()
@@ -207,7 +207,7 @@ extension CalendarDateCollectionViewCell {
         accessibilityTraits.remove(.selected)
         accessibilityHint = "Tap to select"
         
-        numberLabel.textColor = isWithinDisplayedMonth ? .darkgrayColor : .numberSubLabelColor
+        numberLabel.textColor = isWithinDisplayedMonth ? .gray500 : .gray100
         
         marker.isHidden = true
         selectionBackgroundView.isHidden = true

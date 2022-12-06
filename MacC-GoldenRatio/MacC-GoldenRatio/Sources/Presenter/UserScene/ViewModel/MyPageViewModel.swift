@@ -46,7 +46,7 @@ class MyPageViewModel {
             self.myProfileImage = UIImage(
                 systemName: "person.circle",
                 withConfiguration: UIImage.SymbolConfiguration(pointSize: 62)
-            )!.withTintColor(UIColor.sandbrownColor, renderingMode: .alwaysOriginal)
+            )!.withTintColor(UIColor.beige600, renderingMode: .alwaysOriginal)
             
             return
         }

@@ -228,7 +228,7 @@ final class MyHomeViewController: UIViewController, UIGestureRecognizerDelegate 
 	}
 	
 	@objc func joinButtonTapped() {
-        let joinDiaryAlert = UIAlertController(title: "LzHomeJoinAlertTitle".localized, message: "LzHomeJoinAlertMessage", preferredStyle: .alert)
+        let joinDiaryAlert = UIAlertController(title: "LzHomeJoinAlertTitle".localized, message: "LzHomeJoinAlertMessage".localized, preferredStyle: .alert)
         let joinAction = UIAlertAction(title: "LzConfirm".localized, style: .default) { action in
 			if let textField = joinDiaryAlert.textFields?.first {
 				self.viewModel.isDiaryCodeEqualTo(textField.text ?? "")

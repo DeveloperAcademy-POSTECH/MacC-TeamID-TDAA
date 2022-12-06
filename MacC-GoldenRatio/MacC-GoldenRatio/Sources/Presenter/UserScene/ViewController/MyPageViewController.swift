@@ -19,7 +19,7 @@ class MyPageViewController: UIViewController {
 
 	private lazy var titleLabel: UILabel = {
 		let label = UILabel()
-		label.text = "마이페이지"
+        label.text = "LzUserTitle".localized
 		label.font = .body
 		label.textColor = .black
 		

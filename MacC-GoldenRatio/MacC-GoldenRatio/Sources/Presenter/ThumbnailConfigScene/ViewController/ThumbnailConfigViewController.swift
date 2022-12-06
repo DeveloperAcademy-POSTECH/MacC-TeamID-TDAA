@@ -79,7 +79,7 @@ class ThumbnailConfigViewController: UIViewController {
         titleLabel.textColor = .black
         titleLabel.font = .body
         
-        cancelButton.setTitle("LzCreate".localized, for: .normal)
+        cancelButton.setTitle("LzCancel".localized, for: .normal)
         cancelButton.titleLabel?.font = .body
         cancelButton.tintColor = .beige600
         

@@ -70,9 +70,11 @@ class SetProfileImageViewController: UIViewController {
         button.layer.cornerRadius = 5
         button.addTarget(self, action: #selector(onTapConfirmButton), for: .touchUpInside)
         
-        let attributedString = NSMutableAttributedString(string: "LzConfirm".localized, attributes: nil)
-        attributedString.addAttribute(.font, value: UIFont.systemFont(ofSize: 14, weight: .semibold), range: NSRange(location: 0, length: attributedString.length))
-        attributedString.addAttribute(.foregroundColor, value: UIColor.white, range: NSRange(location: 0, length: attributedString.length))
+        let attributes = [
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14, weight: .semibold),
+            NSAttributedString.Key.foregroundColor: UIColor.white
+        ]
+        let attributedString = NSAttributedString(string: "LzConfirm".localized, attributes: attributes)
         button.setAttributedTitle(attributedString, for: .normal)
         
         return button
@@ -86,9 +88,11 @@ class SetProfileImageViewController: UIViewController {
         button.layer.borderWidth = 1
         button.addTarget(self, action: #selector(onTapCancelButton), for: .touchUpInside)
         
-        let attributedString = NSMutableAttributedString(string: "LzCancel".localized, attributes: nil)
-        attributedString.addAttribute(.font, value: UIFont.systemFont(ofSize: 14, weight: .semibold), range: NSRange(location: 0, length: attributedString.length))
-        attributedString.addAttribute(.foregroundColor, value: UIColor.beige600, range: NSRange(location: 0, length: attributedString.length))
+        let attributes = [
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14, weight: .semibold),
+            NSAttributedString.Key.foregroundColor: UIColor.beige600
+        ]
+        let attributedString = NSAttributedString(string: "LzCancel".localized, attributes: attributes)
         button.setAttributedTitle(attributedString, for: .normal)
         
         return button

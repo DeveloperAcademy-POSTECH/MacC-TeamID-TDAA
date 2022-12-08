@@ -30,9 +30,10 @@ class ImageManager {
         if fileManager.fileExists(atPath: imageFilePathURL.path) {
             guard let imageData = try? Data(contentsOf: imageFilePathURL) else { return nil }
             guard let image = UIImage(data: imageData) else { return nil }
-
-            DispatchQueue.global().async { [weak self] in
-                self?.cacheImages.setObject(image, forKey: nsString)
+            
+            DispatchQueue.global(qos: .utility).async { [weak self] in
+                let imageSize = imageData.count
+                self?.cacheImages.setObject(image, forKey: nsString, cost: imageSize)
             }
 
             return image
@@ -47,8 +48,9 @@ class ImageManager {
             guard let compressedImage = UIImage(data: compressedImageData) else { return }
             
             // 메모리 캐시
+            let compressedImageSize = compressedImageData.count
             let nsString = NSString(string: urlString)
-            self?.cacheImages.setObject(compressedImage, forKey: nsString)
+            self?.cacheImages.setObject(compressedImage, forKey: nsString, cost: compressedImageSize)
             
             // 디스크 캐시
             guard let imageFilePathURL = self?.imageFilePathURL(urlString: urlString) else { return }

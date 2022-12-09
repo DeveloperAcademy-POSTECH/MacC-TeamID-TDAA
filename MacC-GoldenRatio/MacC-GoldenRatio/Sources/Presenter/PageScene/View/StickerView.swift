@@ -345,6 +345,16 @@ class StickerView: UIView {
         
     }
     
+    override internal func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        guard let isStickerViewActive = try? self.isStickerViewActive.value(), isStickerViewActive == true else { return }
+
+        enableTranslucency(state: false)
+        
+        self.stickerViewData?.updateUIItem(frame: self.frame, bounds: self.bounds, transform: self.transform)
+        
+    }
+    
     override internal func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
      
         guard let isStickerViewActive = try? self.isStickerViewActive.value(), isStickerViewActive == true else { return }

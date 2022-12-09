@@ -27,29 +27,36 @@ class ImageManager {
 
         // 디스크 캐시
         guard let imageFilePathURL = imageFilePathURL(urlString: urlString) else { return nil }
-        
         if fileManager.fileExists(atPath: imageFilePathURL.path) {
             guard let imageData = try? Data(contentsOf: imageFilePathURL) else { return nil }
             guard let image = UIImage(data: imageData) else { return nil }
+            
+            DispatchQueue.global(qos: .utility).async { [weak self] in
+                let imageSize = imageData.count
+                self?.cacheImages.setObject(image, forKey: nsString, cost: imageSize)
+            }
 
-            cacheImages.setObject(image, forKey: nsString)
             return image
         }
         return nil
     }
     
     func cacheImage(urlString: String, image: UIImage) {
-        // 메모리 캐시
-        let nsString = NSString(string: urlString)
-        cacheImages.setObject(image, forKey: nsString)
-        
-        // 디스크 캐시
-        guard let imageFilePathURL = imageFilePathURL(urlString: urlString) else { return }
-        
-        guard let imageData = image.pngData() else { return }
-        let imageNSData = NSData(data: imageData)
-        
-        imageNSData.write(to: imageFilePathURL, atomically: true)
+        DispatchQueue.global(qos: .utility).async { [weak self] in
+            // 이미지 압축
+            guard let compressedImageData = image.jpegData(compressionQuality: 0.4) else { return }
+            guard let compressedImage = UIImage(data: compressedImageData) else { return }
+            
+            // 메모리 캐시
+            let compressedImageSize = compressedImageData.count
+            let nsString = NSString(string: urlString)
+            self?.cacheImages.setObject(compressedImage, forKey: nsString, cost: compressedImageSize)
+            
+            // 디스크 캐시
+            guard let imageFilePathURL = self?.imageFilePathURL(urlString: urlString) else { return }
+            let imageNSData = NSData(data: compressedImageData)
+            imageNSData.write(to: imageFilePathURL, atomically: true)
+        }
     }
     
     private func imageFilePathURL(urlString: String) -> URL? {
